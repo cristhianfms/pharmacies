@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using WebApi.Controllers;
 using WebApi.Models;
+using WebApi.Test.Utils;
 
 namespace WebApi.Test
 {
@@ -45,9 +46,7 @@ namespace WebApi.Test
             var okResult = result as OkObjectResult;
             var createdPharmacy = okResult.Value as PharmacyModel;
 
-
-            Assert.IsTrue(result is OkResult);
-            Assert.IsTrue(ModelComparer.PharmacyCompare(pharmacyModel, createdPharmacy));
+            Assert.IsTrue(ModelsComparer.PharmacyCompare(pharmacyModel, createdPharmacy));
             _pharmacyLogicMock.VerifyAll();
         }
 
