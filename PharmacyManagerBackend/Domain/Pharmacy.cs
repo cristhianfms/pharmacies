@@ -5,6 +5,7 @@ namespace Domain
 {
     public class Pharmacy
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public List<Drug> Drugs { get; set; }
