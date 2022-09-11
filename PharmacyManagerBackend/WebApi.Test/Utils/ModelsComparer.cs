@@ -8,6 +8,10 @@ namespace WebApi.Test.Utils
         {
             return pharmacy1.Name.Equals(pharmacy2.Name) && pharmacy1.Address.Equals(pharmacy2.Address);
         }
+        public static bool InvitationCompare(InvitationModel invitation1, InvitationModel invitation2)
+        {
+            return false;
+        }
 
     }
 }

@@ -13,6 +13,7 @@ namespace WebApi.Utils
                 Address = pharmacyModel.Address
             };
         }
+
         public static PharmacyModel ToModel(Pharmacy pharmacy)
         {
             return new PharmacyModel
@@ -21,6 +22,19 @@ namespace WebApi.Utils
                 Address = pharmacy.Address
             };
         }
-
+        public static Invitation ToEntity(InvitationModel invitationModel)
+        {
+            return new Invitation
+            {
+                
+            };
+        }
+        public static InvitationModel ToModel(Invitation invitation)
+        {
+            return new InvitationModel
+            {
+               
+            };
+        }
     }
 }
