@@ -27,7 +27,7 @@ namespace WebApi.Utils
             return new User
             {
                 UserName = userModel.UserName,
-                Mail    = userModel.Mail,
+                Email    = userModel.Email,
                 Address = userModel.Address
             };
         }
@@ -36,7 +36,7 @@ namespace WebApi.Utils
             return new UserModel
             {
                 UserName = user.UserName,
-                Mail    = user.Mail,
+                Email    = user.Email,
                 Address = user.Address
             };
         }

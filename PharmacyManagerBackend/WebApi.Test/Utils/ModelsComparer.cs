@@ -11,7 +11,7 @@ namespace WebApi.Test.Utils
         public static bool UserCompare(UserModel user1, UserModel user2)
         {
             return user1.UserName.Equals(user2.UserName) 
-                && user1.Mail.Equals(user2.Mail) 
+                && user1.Email.Equals(user2.Email) 
                 && user1.Address.Equals(user2.Address);
         }
 
