@@ -7,8 +7,9 @@ using WebApi.Utils;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[Controller]")]
     [ApiController]
+    [Route("api/[Controller]")]
+    
     public class UsersController : ControllerBase
     {
         private UserLogic _userLogic;
