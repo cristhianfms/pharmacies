@@ -22,5 +22,24 @@ namespace WebApi.Utils
             };
         }
 
+        public static User ToEntity(UserModel userModel)
+        {
+            return new User
+            {
+                UserName = userModel.UserName,
+                Mail    = userModel.Mail,
+                Address = userModel.Address
+            };
+        }
+        public static UserModel ToModel(User user)
+        {
+            return new UserModel
+            {
+                UserName = user.UserName,
+                Mail    = user.Mail,
+                Address = user.Address
+            };
+        }
+
     }
 }
