@@ -16,18 +16,18 @@ namespace WebApi.Test
     public class UserControllerTest
     {
         private Mock<UserLogic> _userLogicMock;
-        private UserController _userApiController;
+        private UsersController _userApiController;
         private User _user;
 
         [TestInitialize]
         public void InitTest()
         {
             _userLogicMock = new Mock<UserLogic>(MockBehavior.Strict);
-            _userApiController = new UserController(_userLogicMock.Object);
+            _userApiController = new UsersController(_userLogicMock.Object);
             _user = new User()
             {
                 UserName = "Usuario1",
-                Mail = "ususario@user.com",
+                Email = "ususario@user.com",
                 Address = "Cuareim 123",
                 Password = "Usuario+1",
             };
@@ -40,7 +40,7 @@ namespace WebApi.Test
             var userModel = new UserModel()
             {
                 UserName = "Usuario1",
-                Mail = "ususario@user.com",
+                Email = "ususario@user.com",
                 Address = "Cuareim 123",
             };
 

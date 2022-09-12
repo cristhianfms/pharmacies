@@ -7,13 +7,15 @@ using WebApi.Utils;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+
     [ApiController]
-    public class UserController : ControllerBase
+    [Route("users")]
+
+    public class UsersController : ControllerBase
     {
         private UserLogic _userLogic;
 
-        public UserController(UserLogic userLogic)
+        public UsersController(UserLogic userLogic)
         {
             this._userLogic = userLogic;
         }
