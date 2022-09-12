@@ -7,7 +7,7 @@ using WebApi.Utils;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("pharmacy")]
+    [Route("pharmacies")]
     public class PharmacyController : ControllerBase 
     {
         private PharmacyLogic _pharmacyLogic;
