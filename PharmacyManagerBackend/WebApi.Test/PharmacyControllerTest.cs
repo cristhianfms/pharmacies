@@ -14,14 +14,14 @@ namespace WebApi.Test
     public class PharmacyControllerTest
     {
         private Mock<PharmacyLogic> _pharmacyLogicMock;
-        private PharmacyController _pharmacyApiController;
+        private PharmaciesController _pharmacyApiController;
         private Pharmacy _pharmacy;
 
         [TestInitialize]
         public void InitTest()
         {
             _pharmacyLogicMock = new Mock<PharmacyLogic>(MockBehavior.Strict);
-            _pharmacyApiController = new PharmacyController(_pharmacyLogicMock.Object);
+            _pharmacyApiController = new PharmaciesController(_pharmacyLogicMock.Object);
             _pharmacy = new Pharmacy()
             {
                 Name = "Farmashop",

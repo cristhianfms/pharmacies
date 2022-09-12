@@ -3,6 +3,8 @@
   <ItemGroup>
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\AuthDomain\AuthDomain.csproj" />
+    <ProjectReference Include="..\AuthLogic\AuthLogic.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
