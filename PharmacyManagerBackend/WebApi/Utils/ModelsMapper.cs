@@ -1,3 +1,4 @@
+using AuthDomain;
 using Domain;
 using WebApi.Models;
 
@@ -22,6 +23,28 @@ namespace WebApi.Utils
             };
         }
 
+        public static Session ToEntity(SessionRequestModel sessionPostModel)
+        {
+            User user = new User
+            {
+                UserName = sessionPostModel.UserName,
+                Password = sessionPostModel.Password
+            };
+
+            return new Session
+            {
+                User = user
+            };
+        }
+
+        public static SessionResponseModel ToModel(Session session)
+        {
+            return new SessionResponseModel
+            {
+                Token = session.Token
+            };
+        }
+        
         public static User ToEntity(UserModel userModel)
         {
             return new User
