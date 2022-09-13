@@ -44,5 +44,25 @@ namespace WebApi.Utils
                 Token = session.Token
             };
         }
+        
+        public static User ToEntity(UserModel userModel)
+        {
+            return new User
+            {
+                UserName = userModel.UserName,
+                Email    = userModel.Email,
+                Address = userModel.Address
+            };
+        }
+        public static UserModel ToModel(User user)
+        {
+            return new UserModel
+            {
+                UserName = user.UserName,
+                Email    = user.Email,
+                Address = user.Address
+            };
+        }
+
     }
 }
