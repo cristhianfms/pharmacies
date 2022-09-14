@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using AuthDomain;
-using AuthLogic;
+using BusinessLogic;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

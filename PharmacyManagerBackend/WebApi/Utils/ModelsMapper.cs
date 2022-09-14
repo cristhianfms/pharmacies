@@ -1,4 +1,3 @@
-using AuthDomain;
 using Domain;
 using WebApi.Models;
 

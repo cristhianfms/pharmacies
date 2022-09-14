@@ -1,7 +1,7 @@
 ﻿using System;
-using AuthDomain;
+using Domain;
 
-namespace AuthLogic
+namespace BusinessLogic
 {
     public class SessionLogic
     {

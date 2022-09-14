@@ -1,5 +1,5 @@
-using AuthDomain;
-using AuthLogic;
+using BusinessLogic;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Utils;
