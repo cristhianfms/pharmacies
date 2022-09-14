@@ -1,4 +1,5 @@
 using BusinessLogic;
+using BusinessLogic.Dtos;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
@@ -18,13 +19,13 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(SessionRequestModel sessionPostModel)
+        public IActionResult CreateSession([FromBody] CredentialsModel credentialsModel)
         {
-            Session session = ModelsMapper.ToEntity(sessionPostModel);
-            Session sessionCreated = _sessionLogic.Create(session);
-            SessionResponseModel sessionCreatedModel = ModelsMapper.ToModel(sessionCreated);
+            CredentialsDto credentials = ModelsMapper.ToEntity(credentialsModel);
+            TokenDto token = _sessionLogic.Create(credentials);
+            TokenModel tokenModel = ModelsMapper.ToModel(token);
             
-            return Ok(sessionCreatedModel);
+            return Ok(tokenModel);
         }
     }
 }

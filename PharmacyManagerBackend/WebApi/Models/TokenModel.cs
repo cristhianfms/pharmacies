@@ -2,7 +2,7 @@ using System;
 
 namespace WebApi.Models
 {
-    public class SessionResponseModel
+    public class TokenModel
     {
         public Guid Token { get; set; }
     }
