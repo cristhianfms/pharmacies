@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBusinessLogic", "IBusiness
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Test", "Domain.Test\Domain.Test.csproj", "{79482D85-27CD-448F-B04E-4140572EB56E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,5 +130,17 @@ Global
 		{79482D85-27CD-448F-B04E-4140572EB56E}.Release|x64.Build.0 = Release|Any CPU
 		{79482D85-27CD-448F-B04E-4140572EB56E}.Release|x86.ActiveCfg = Release|Any CPU
 		{79482D85-27CD-448F-B04E-4140572EB56E}.Release|x86.Build.0 = Release|Any CPU
+		{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}.Debug|x64.Build.0 = Debug|Any CPU
+		{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}.Debug|x86.Build.0 = Debug|Any CPU
+		{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}.Release|x64.ActiveCfg = Release|Any CPU
+		{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}.Release|x64.Build.0 = Release|Any CPU
+		{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}.Release|x86.ActiveCfg = Release|Any CPU
+		{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
