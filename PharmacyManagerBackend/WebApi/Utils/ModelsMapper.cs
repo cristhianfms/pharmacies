@@ -1,5 +1,5 @@
-using BusinessLogic.Dtos;
 using Domain;
+using Domain.Dtos;
 using WebApi.Models;
 
 namespace WebApi.Utils

@@ -1,5 +1,6 @@
 ﻿using System;
 using BusinessLogic;
+using IBusinessLogic;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Factory
@@ -14,8 +15,9 @@ namespace Factory
 
         public void AddCustomServices()
         {
-            _services.AddScoped<PharmacyLogic, PharmacyLogic>();
-            _services.AddScoped<SessionLogic, SessionLogic>();
+            _services.AddScoped<IPharmacyLogic, PharmacyLogic>();
+            _services.AddScoped<ISessionLogic, SessionLogic>();
+            _services.AddScoped<IUserLogic, UserLogic>();
         }
     }
 }

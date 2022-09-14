@@ -1,6 +1,6 @@
 using System;
-using BusinessLogic.Dtos;
 using Domain;
+using Domain.Dtos;
 using Exceptions;
 using IDataAccess;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

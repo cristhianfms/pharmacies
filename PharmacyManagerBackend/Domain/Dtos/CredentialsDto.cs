@@ -1,7 +1,7 @@
 using System;
 using Exceptions;
 
-namespace BusinessLogic.Dtos
+namespace Domain.Dtos
 {
     public class CredentialsDto
     {

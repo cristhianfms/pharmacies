@@ -1,6 +1,5 @@
-﻿using BusinessLogic;
-using Domain;
-using Microsoft.AspNetCore.Http;
+﻿using Domain;
+using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Utils;
@@ -8,19 +7,19 @@ using WebApi.Utils;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("api/[Controller]")]
+    [Route("api/[controller]")]
     
     public class UsersController : ControllerBase
     {
-        private UserLogic _userLogic;
+        private IUserLogic _userLogic;
 
-        public UsersController(UserLogic userLogic)
+        public UsersController(IUserLogic userLogic)
         {
             this._userLogic = userLogic;
         }
 
         [HttpPost]
-        public IActionResult Create(UserModel userModel)
+        public IActionResult Create([FromBody] UserModel userModel)
         {
             User user = ModelsMapper.ToEntity(userModel);
             User userCreated = _userLogic.Create(user);

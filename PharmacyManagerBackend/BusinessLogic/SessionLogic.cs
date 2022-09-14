@@ -1,12 +1,13 @@
 ﻿using System;
-using BusinessLogic.Dtos;
 using Domain;
+using Domain.Dtos;
 using Exceptions;
+using IBusinessLogic;
 using IDataAccess;
 
 namespace BusinessLogic
 {
-    public class SessionLogic
+    public class SessionLogic: ISessionLogic
     {
         private readonly ISessionRepository _sessionRepository;
         private readonly IUserRepository _userRepository;
@@ -16,7 +17,7 @@ namespace BusinessLogic
             this._userRepository = userRepository;
         }
 
-        public virtual TokenDto Create(CredentialsDto credentialsDto)
+        public TokenDto Create(CredentialsDto credentialsDto)
         {
             credentialsDto.ValidateNotNullCredentials();
 

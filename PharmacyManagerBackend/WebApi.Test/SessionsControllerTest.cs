@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using BusinessLogic;
-using BusinessLogic.Dtos;
-using Domain;
+using Domain.Dtos;
+using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -14,13 +12,13 @@ namespace WebApi.Test
     [TestClass]
     public class SessionsControllerTest
     {
-        private Mock<SessionLogic> _sessionLogicMock;
+        private Mock<ISessionLogic> _sessionLogicMock;
         private SessionsController _sessionsApiController;
 
         [TestInitialize]
         public void InitTest()
         {
-            _sessionLogicMock = new Mock<SessionLogic>(MockBehavior.Strict);
+            _sessionLogicMock = new Mock<ISessionLogic>(MockBehavior.Strict);
             _sessionsApiController = new SessionsController(_sessionLogicMock.Object);
         }
         

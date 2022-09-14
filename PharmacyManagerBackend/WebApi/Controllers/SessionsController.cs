@@ -1,6 +1,5 @@
-using BusinessLogic;
-using BusinessLogic.Dtos;
-using Domain;
+using Domain.Dtos;
+using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Utils;
@@ -8,12 +7,12 @@ using WebApi.Utils;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("api/[Controller]")]
+    [Route("api/[controller]")]
     public class SessionsController : ControllerBase 
     {
-        private SessionLogic _sessionLogic;
+        private ISessionLogic _sessionLogic;
 
-        public SessionsController(SessionLogic sessionLogic)
+        public SessionsController(ISessionLogic sessionLogic)
         {
             this._sessionLogic = sessionLogic;
         }

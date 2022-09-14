@@ -1,6 +1,6 @@
 using System;
-using BusinessLogic.Dtos;
 using Domain;
+using Domain.Dtos;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebApi.Models;
 using WebApi.Utils;

@@ -1,8 +1,8 @@
-using BusinessLogic.Dtos;
+using Domain.Dtos;
 using Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BusinessLogic.Test.DTO
+namespace BusinessLogic.Test.Dtos
 {
     [TestClass]
     public class CredentialsDtoTest

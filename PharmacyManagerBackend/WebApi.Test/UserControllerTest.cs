@@ -1,11 +1,9 @@
-﻿using BusinessLogic;
+﻿
 using Domain;
+using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using WebApi.Controllers;
 using WebApi.Models;
 using WebApi.Test.Utils;
@@ -15,14 +13,14 @@ namespace WebApi.Test
     [TestClass]
     public class UserControllerTest
     {
-        private Mock<UserLogic> _userLogicMock;
+        private Mock<IUserLogic> _userLogicMock;
         private UsersController _userApiController;
         private User _user;
 
         [TestInitialize]
         public void InitTest()
         {
-            _userLogicMock = new Mock<UserLogic>(MockBehavior.Strict);
+            _userLogicMock = new Mock<IUserLogic>(MockBehavior.Strict);
             _userApiController = new UsersController(_userLogicMock.Object);
             _user = new User()
             {

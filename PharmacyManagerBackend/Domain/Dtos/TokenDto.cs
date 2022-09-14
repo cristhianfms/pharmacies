@@ -1,6 +1,6 @@
 using System;
 
-namespace BusinessLogic.Dtos
+namespace Domain.Dtos
 {
     public class TokenDto
     {

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
+    <ProjectReference Include="..\IBusinessLogic\IBusinessLogic.csproj" />
   </ItemGroup>
 
 </Project>
