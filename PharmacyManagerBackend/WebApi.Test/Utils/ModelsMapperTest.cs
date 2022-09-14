@@ -1,5 +1,5 @@
 using System;
-using AuthDomain;
+using Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebApi.Models;
 using WebApi.Utils;
