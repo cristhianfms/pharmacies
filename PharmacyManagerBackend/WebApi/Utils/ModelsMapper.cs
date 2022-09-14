@@ -26,14 +26,20 @@ namespace WebApi.Utils
         {
             return new Invitation
             {
-                
+                Id = invitationModel.Id,
+                UserName = invitationModel.UserName,
+                Role = invitationModel.Role,
+                Code = invitationModel.Code
             };
         }
         public static InvitationModel ToModel(Invitation invitation)
         {
             return new InvitationModel
             {
-               
+                Id = invitation.Id,
+                UserName = invitation.UserName,
+                Role = invitation.Role,
+                Code = invitation.Code
             };
         }
     }

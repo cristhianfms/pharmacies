@@ -10,7 +10,7 @@ namespace WebApi.Test.Utils
         }
         public static bool InvitationCompare(InvitationModel invitation1, InvitationModel invitation2)
         {
-            return false;
+            return invitation1.Id == invitation2.Id && invitation1.UserName.Equals(invitation2.UserName);
         }
 
     }

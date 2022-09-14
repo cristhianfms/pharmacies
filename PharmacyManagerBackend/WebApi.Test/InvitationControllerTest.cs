@@ -24,7 +24,10 @@ namespace WebApi.Test
             _invitationApiController = new InvitationController(_invitationLogicMock.Object);
             _invitation = new Invitation()
             {
-                
+                Id = 1,
+                UserName = "JuanPerez",
+                Role = new Role(),
+                Code = "2A5678BX"
             };
         }
 
@@ -35,7 +38,10 @@ namespace WebApi.Test
             _invitationLogicMock.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(_invitation);
             var invitationModel = new InvitationModel()
             {
-                
+                Id = 1,
+                UserName = "JuanPerez",
+                Role = new Role(),
+                Code = "2A5678BX"
             };
 
 
