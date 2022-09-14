@@ -1,5 +1,5 @@
-using BusinessLogic;
-using Domain;
+using Domain.Dtos;
+using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Utils;
@@ -7,24 +7,24 @@ using WebApi.Utils;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("api/[Controller]")]
+    [Route("api/[controller]")]
     public class SessionsController : ControllerBase 
     {
-        private SessionLogic _sessionLogic;
+        private ISessionLogic _sessionLogic;
 
-        public SessionsController(SessionLogic sessionLogic)
+        public SessionsController(ISessionLogic sessionLogic)
         {
             this._sessionLogic = sessionLogic;
         }
 
         [HttpPost]
-        public IActionResult Create(SessionRequestModel sessionPostModel)
+        public IActionResult CreateSession([FromBody] CredentialsModel credentialsModel)
         {
-            Session session = ModelsMapper.ToEntity(sessionPostModel);
-            Session sessionCreated = _sessionLogic.Create(session);
-            SessionResponseModel sessionCreatedModel = ModelsMapper.ToModel(sessionCreated);
+            CredentialsDto credentials = ModelsMapper.ToEntity(credentialsModel);
+            TokenDto token = _sessionLogic.Create(credentials);
+            TokenModel tokenModel = ModelsMapper.ToModel(token);
             
-            return Ok(sessionCreatedModel);
+            return Ok(tokenModel);
         }
     }
 }

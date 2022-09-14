@@ -1,5 +1,6 @@
 using System;
 using Domain;
+using Domain.Dtos;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebApi.Models;
 using WebApi.Utils;
@@ -11,31 +12,31 @@ namespace WebApi.Test.Utils
     {
 
         [TestMethod]
-        public void SessionToSessionResponseModelOk()
+        public void CredentialsDtoToCredentialsModelOk()
         {
-            Session session = new Session
+            TokenDto token = new TokenDto
             {
                 Token = Guid.NewGuid()
             };
 
-            SessionResponseModel sessionResponseModel = ModelsMapper.ToModel(session);
+            TokenModel tokenModel = ModelsMapper.ToModel(token);
 
-            Assert.AreEqual(session.Token, sessionResponseModel.Token);
+            Assert.AreEqual(token.Token, tokenModel.Token);
         }
 
         [TestMethod]
         public void SessionRequestModelToSessionOK()
         {
-            SessionRequestModel sessionRequestModel = new SessionRequestModel
+            CredentialsModel credentialsModel = new CredentialsModel
             {
                 UserName = "Cris",
                 Password = "Cris.2022"
             };
 
-            Session session = ModelsMapper.ToEntity(sessionRequestModel);
+            CredentialsDto credentialsDto = ModelsMapper.ToEntity(credentialsModel);
 
-            Assert.AreEqual(session.User.UserName, sessionRequestModel.UserName);
-            Assert.AreEqual(session.User.Password, sessionRequestModel.Password);
+            Assert.AreEqual(credentialsModel.UserName, credentialsDto.UserName);
+            Assert.AreEqual(credentialsModel.Password, credentialsDto.Password);
         }
     }
 }

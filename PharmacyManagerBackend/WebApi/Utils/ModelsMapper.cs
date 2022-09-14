@@ -1,4 +1,5 @@
 using Domain;
+using Domain.Dtos;
 using WebApi.Models;
 
 namespace WebApi.Utils
@@ -22,25 +23,20 @@ namespace WebApi.Utils
             };
         }
 
-        public static Session ToEntity(SessionRequestModel sessionPostModel)
+        public static CredentialsDto ToEntity(CredentialsModel credentialsModel)
         {
-            User user = new User
+            return new CredentialsDto
             {
-                UserName = sessionPostModel.UserName,
-                Password = sessionPostModel.Password
-            };
-
-            return new Session
-            {
-                User = user
+                UserName = credentialsModel.UserName,
+                Password = credentialsModel.Password
             };
         }
 
-        public static SessionResponseModel ToModel(Session session)
+        public static TokenModel ToModel(TokenDto tokenDto)
         {
-            return new SessionResponseModel
+            return new TokenModel
             {
-                Token = session.Token
+                Token = tokenDto.Token
             };
         }
         

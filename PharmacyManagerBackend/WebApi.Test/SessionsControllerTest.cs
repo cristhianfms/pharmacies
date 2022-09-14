@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using BusinessLogic;
-using Domain;
+using Domain.Dtos;
+using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -13,42 +12,36 @@ namespace WebApi.Test
     [TestClass]
     public class SessionsControllerTest
     {
-        private Mock<SessionLogic> _sessionLogicMock;
+        private Mock<ISessionLogic> _sessionLogicMock;
         private SessionsController _sessionsApiController;
 
         [TestInitialize]
         public void InitTest()
         {
-            _sessionLogicMock = new Mock<SessionLogic>(MockBehavior.Strict);
+            _sessionLogicMock = new Mock<ISessionLogic>(MockBehavior.Strict);
             _sessionsApiController = new SessionsController(_sessionLogicMock.Object);
         }
         
         [TestMethod]
         public void CreateSessionOk()
         {
-            var user = new User 
+            var token = new TokenDto()
             {
-                UserName = "Cris",
-                Password = "Cris.2022"
-            };
-            var session = new Session()
-            {
-                User = user,
                 Token = Guid.NewGuid()
             };
-            var sessionRequestModel = new SessionRequestModel()
+            var credentialsModel = new CredentialsModel()
             {
-                UserName = user.UserName,
-                Password = user.Password    
+                UserName = "Cris",
+                Password = "Cris.2022"  
             };
-            _sessionLogicMock.Setup(m => m.Create(It.IsAny<Session>())).Returns(session);
+            _sessionLogicMock.Setup(m => m.Create(It.IsAny<CredentialsDto>())).Returns(token);
 
 
-            var result = _sessionsApiController.Create(sessionRequestModel);
+            var result = _sessionsApiController.CreateSession(credentialsModel);
             var okResult = result as OkObjectResult;
-            var sessionResponseModel = okResult.Value as SessionResponseModel;
+            var tokenModel = okResult.Value as TokenModel;
 
-            Assert.AreEqual(sessionResponseModel.Token, session.Token);
+            Assert.AreEqual(token.Token, tokenModel.Token);
             _sessionLogicMock.VerifyAll();
         }
 

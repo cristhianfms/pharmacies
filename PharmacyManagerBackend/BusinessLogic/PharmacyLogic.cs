@@ -1,13 +1,14 @@
 ﻿using System;
 using Domain;
+using IBusinessLogic;
 
 namespace BusinessLogic
 {
-    public class PharmacyLogic
+    public class PharmacyLogic : IPharmacyLogic
     {
-        public virtual Pharmacy Create(Pharmacy pharmacy)
+        public Pharmacy Create(Pharmacy pharmacy)
         {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

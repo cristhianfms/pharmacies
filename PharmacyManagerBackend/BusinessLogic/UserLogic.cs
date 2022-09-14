@@ -1,13 +1,11 @@
 ﻿using Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using IBusinessLogic;
 
 namespace BusinessLogic
 {
-    public class UserLogic
+    public class UserLogic: IUserLogic
     {
-        public virtual User Create(User user)
+        public User Create(User user)
         {
             return null;
         }
