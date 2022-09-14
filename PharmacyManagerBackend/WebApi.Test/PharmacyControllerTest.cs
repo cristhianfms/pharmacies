@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using BusinessLogic;
 using Domain;
+using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -13,15 +13,15 @@ namespace WebApi.Test
     [TestClass]
     public class PharmacyControllerTest
     {
-        private Mock<PharmacyLogic> _pharmacyLogicMock;
-        private PharmacyController _pharmacyApiController;
+        private Mock<IPharmacyLogic> _pharmacyLogicMock;
+        private PharmaciesController _pharmacyApiController;
         private Pharmacy _pharmacy;
 
         [TestInitialize]
         public void InitTest()
         {
-            _pharmacyLogicMock = new Mock<PharmacyLogic>(MockBehavior.Strict);
-            _pharmacyApiController = new PharmacyController(_pharmacyLogicMock.Object);
+            _pharmacyLogicMock = new Mock<IPharmacyLogic>(MockBehavior.Strict);
+            _pharmacyApiController = new PharmaciesController(_pharmacyLogicMock.Object);
             _pharmacy = new Pharmacy()
             {
                 Name = "Farmashop",

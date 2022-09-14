@@ -1,4 +1,5 @@
 using Domain;
+using Domain.Dtos;
 using WebApi.Models;
 
 namespace WebApi.Utils
@@ -22,6 +23,7 @@ namespace WebApi.Utils
                 Address = pharmacy.Address
             };
         }
+
         public static Invitation ToEntity(InvitationModel invitationModel)
         {
             return new Invitation
@@ -32,6 +34,7 @@ namespace WebApi.Utils
                 Code = invitationModel.Code
             };
         }
+        
         public static InvitationModel ToModel(Invitation invitation)
         {
             return new InvitationModel
@@ -40,6 +43,42 @@ namespace WebApi.Utils
                 UserName = invitation.UserName,
                 Role = invitation.Role,
                 Code = invitation.Code
+            };
+        }
+
+        public static CredentialsDto ToEntity(CredentialsModel credentialsModel)
+        {
+            return new CredentialsDto
+            {
+                UserName = credentialsModel.UserName,
+                Password = credentialsModel.Password
+            };
+        }
+
+        public static TokenModel ToModel(TokenDto tokenDto)
+        {
+            return new TokenModel
+            {
+                Token = tokenDto.Token
+            };
+        }
+        
+        public static User ToEntity(UserModel userModel)
+        {
+            return new User
+            {
+                UserName = userModel.UserName,
+                Email    = userModel.Email,
+                Address = userModel.Address
+            };
+        }
+        public static UserModel ToModel(User user)
+        {
+            return new UserModel
+            {
+                UserName = user.UserName,
+                Email    = user.Email,
+                Address = user.Address
             };
         }
     }
