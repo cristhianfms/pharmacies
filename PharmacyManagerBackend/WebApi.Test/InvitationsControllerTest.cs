@@ -11,7 +11,7 @@ using WebApi.Test.Utils;
 namespace WebApi.Test
 {
     [TestClass]
-    public class InvitationControllerTest
+    public class InvitationsControllerTest
     {
         private Mock<InvitationLogic> _invitationLogicMock;
         private InvitationController _invitationApiController;
