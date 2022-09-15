@@ -11,7 +11,7 @@ using WebApi.Test.Utils;
 namespace WebApi.Test
 {
     [TestClass]
-    public class UserControllerTest
+    public class UsersControllerTest
     {
         private Mock<IUserLogic> _userLogicMock;
         private UsersController _userApiController;
