@@ -7,7 +7,7 @@ using WebApi.Utils;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("invitation")]
+    [Route("api/[controller]")]
     public class InvitationController : ControllerBase
     {
         private InvitationLogic _invitationLogic;
