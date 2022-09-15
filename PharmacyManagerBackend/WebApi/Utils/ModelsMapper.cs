@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Domain;
 using Domain.Dtos;
 using WebApi.Models;
@@ -34,7 +36,7 @@ namespace WebApi.Utils
                 Code = invitationModel.Code
             };
         }
-        
+
         public static InvitationModel ToModel(Invitation invitation)
         {
             return new InvitationModel
@@ -62,13 +64,13 @@ namespace WebApi.Utils
                 Token = tokenDto.Token
             };
         }
-        
+
         public static User ToEntity(UserModel userModel)
         {
             return new User
             {
                 UserName = userModel.UserName,
-                Email    = userModel.Email,
+                Email = userModel.Email,
                 Address = userModel.Address
             };
         }
@@ -77,8 +79,51 @@ namespace WebApi.Utils
             return new UserModel
             {
                 UserName = user.UserName,
-                Email    = user.Email,
+                Email = user.Email,
                 Address = user.Address
+            };
+        }
+
+        public static PurchaseDto ToEntity(PurchaseRequestModel purchaseRequestModel)
+        {
+            List<PurchaseItemDto> purchaseItems = purchaseRequestModel.Items.Select(i => ToEntity(i)).ToList();
+            return new PurchaseDto
+            {
+                UserEmail = purchaseRequestModel.UserEmail,
+                Items = purchaseItems
+            };
+        }
+
+        private static PurchaseItemDto ToEntity(PurchaseItemModel purchaseItemModel)
+        {
+            return new PurchaseItemDto
+            {
+                Quantity = purchaseItemModel.Quantity,
+                DrugCode = purchaseItemModel.DrugCode,
+                PharmacyName = purchaseItemModel.PharmacyName
+            };
+        }
+
+
+        public static PurchaseResponseModel ToModel(PurchaseDto purchaseDto)
+        {
+            List<PurchaseItemModel> purchaseItems = purchaseDto.Items.Select(i => ToModel(i)).ToList();
+            return new PurchaseResponseModel
+            {
+                Id = purchaseDto.Id,
+                UserEmail = purchaseDto.UserEmail,
+                Items = purchaseItems,
+                CreatedDate = purchaseDto.CreatedDate
+            };
+        }
+
+        private static PurchaseItemModel ToModel(PurchaseItemDto purchaseItem)
+        {
+            return new PurchaseItemModel
+            {
+                Quantity = purchaseItem.Quantity,
+                DrugCode = purchaseItem.DrugCode,
+                PharmacyName = purchaseItem.PharmacyName
             };
         }
     }
