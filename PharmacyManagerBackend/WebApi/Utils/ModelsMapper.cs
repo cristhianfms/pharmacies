@@ -83,48 +83,5 @@ namespace WebApi.Utils
                 Address = user.Address
             };
         }
-
-        public static PurchaseDto ToEntity(PurchaseRequestModel purchaseRequestModel)
-        {
-            List<PurchaseItemDto> purchaseItems = purchaseRequestModel.Items.Select(i => ToEntity(i)).ToList();
-            return new PurchaseDto
-            {
-                UserEmail = purchaseRequestModel.UserEmail,
-                Items = purchaseItems
-            };
-        }
-
-        private static PurchaseItemDto ToEntity(PurchaseItemModel purchaseItemModel)
-        {
-            return new PurchaseItemDto
-            {
-                Quantity = purchaseItemModel.Quantity,
-                DrugCode = purchaseItemModel.DrugCode,
-                PharmacyName = purchaseItemModel.PharmacyName
-            };
-        }
-
-
-        public static PurchaseResponseModel ToModel(PurchaseDto purchaseDto)
-        {
-            List<PurchaseItemModel> purchaseItems = purchaseDto.Items.Select(i => ToModel(i)).ToList();
-            return new PurchaseResponseModel
-            {
-                Id = purchaseDto.Id,
-                UserEmail = purchaseDto.UserEmail,
-                Items = purchaseItems,
-                CreatedDate = purchaseDto.CreatedDate
-            };
-        }
-
-        private static PurchaseItemModel ToModel(PurchaseItemDto purchaseItem)
-        {
-            return new PurchaseItemModel
-            {
-                Quantity = purchaseItem.Quantity,
-                DrugCode = purchaseItem.DrugCode,
-                PharmacyName = purchaseItem.PharmacyName
-            };
-        }
     }
 }

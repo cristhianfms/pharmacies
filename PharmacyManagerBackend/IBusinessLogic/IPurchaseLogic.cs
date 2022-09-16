@@ -9,5 +9,6 @@ namespace IBusinessLogic
     public interface IPurchaseLogic
     {
         PurchaseDto Create(PurchaseDto purchase);
+        PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto);
     }
 }
