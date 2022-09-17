@@ -14,13 +14,15 @@ namespace BusinessLogic.Test
         private InvitationLogic _invitationLogic;
         private Mock<IBaseRepository<Invitation>> _invitationRepository;
         private Mock<UserLogic> _userLogic;
+        private Mock<RoleLogic> _roleLogic;
 
         [TestInitialize]
         public void Initialize()
         {
             this._userLogic = new Mock<UserLogic>(MockBehavior.Strict);
+            this._roleLogic = new Mock<RoleLogic>(MockBehavior.Strict);
             this._invitationRepository = new Mock<IBaseRepository<Invitation>>(MockBehavior.Strict);
-            this._invitationLogic = new InvitationLogic(this._invitationRepository.Object, _userLogic.Object);
+            this._invitationLogic = new InvitationLogic(this._invitationRepository.Object, this._userLogic.Object, this._roleLogic.Object);
         }
 
         [TestMethod]
@@ -107,6 +109,25 @@ namespace BusinessLogic.Test
                 UserName = "cris01",
                 Role = new Role()
             };
+
+            Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void CreateInvitationInvalidRoleNameShouldThrowError()
+        {
+            Invitation invitationToCreate = new Invitation()
+            {
+                UserName = "cris01",
+                Role = new Role()
+                {
+                    Name = "Invalid"
+                }
+            };
+
+            _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Returns(new User());
+            _roleLogic.Setup(m => m.GetRoleByName(invitationToCreate.Role.Name)).Throws(new ResourceNotFoundException(""));
 
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
         }

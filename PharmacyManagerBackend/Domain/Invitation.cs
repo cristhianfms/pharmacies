@@ -21,7 +21,7 @@ namespace Domain
             }
             else if (String.IsNullOrEmpty(Role.Name))
             {
-                throw new ValidationException("Name can't be empty");
+                throw new ValidationException("Role can't be empty");
             }
         }
     }

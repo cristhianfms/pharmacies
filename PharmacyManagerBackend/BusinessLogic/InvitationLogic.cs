@@ -11,8 +11,9 @@ namespace BusinessLogic
     {
         private IBaseRepository<Invitation> _invitationRepository;
         private UserLogic _userLogic;
+        private RoleLogic _roleLogic;
 
-        public InvitationLogic(IBaseRepository<Invitation> invitationRepository, UserLogic userLogic)
+        public InvitationLogic(IBaseRepository<Invitation> invitationRepository, UserLogic userLogic, RoleLogic roleLogic)
         {
             this._invitationRepository = invitationRepository;
             this._userLogic = userLogic;
