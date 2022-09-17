@@ -18,7 +18,7 @@ namespace BusinessLogic.Test
         public void Initialize()
         {
             this._invitationRepository = new Mock<IBaseRepository<Invitation>>(MockBehavior.Strict);
-            this._invitationLogic = new InvitationLogic();
+            this._invitationLogic = new InvitationLogic(this._invitationRepository.Object);
         }
 
         [TestMethod]
