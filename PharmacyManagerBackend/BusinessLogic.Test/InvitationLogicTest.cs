@@ -97,5 +97,17 @@ namespace BusinessLogic.Test
 
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void CreateInvitationWithoutRoleShouldThrowError()
+        {
+            Invitation invitationToCreate = new Invitation()
+            {
+                UserName = "cris01",
+            };
+
+            Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
+        }
     }
 }
