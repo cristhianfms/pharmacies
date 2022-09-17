@@ -24,7 +24,7 @@ namespace BusinessLogic
             invitation.CheckIsValid();
             checkIfUserNameIsRepeated(invitation.UserName);
             
-            int codeGenerated = generateNewInvitationCode();
+            string codeGenerated = generateNewInvitationCode();
             invitation.Code = codeGenerated;
             
             Invitation createdInvitation = _invitationRepository.Create(invitation);
@@ -48,6 +48,14 @@ namespace BusinessLogic
             {
                 throw new ValidationException("username already exists");
             }
+        }
+
+        private string generateNewInvitationCode()
+        {
+            Random generator = new Random();
+            String code = generator.Next(0, 1000000).ToString("D6");
+           
+            return code;
         }
     }
 }
