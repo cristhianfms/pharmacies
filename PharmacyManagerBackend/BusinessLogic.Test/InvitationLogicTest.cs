@@ -105,6 +105,7 @@ namespace BusinessLogic.Test
             Invitation invitationToCreate = new Invitation()
             {
                 UserName = "cris01",
+                Role = new Role()
             };
 
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
