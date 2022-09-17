@@ -49,5 +49,20 @@ namespace BusinessLogic.Test
             Assert.AreEqual(invitationRepository.UserName, createdInvitation.UserName);
             Assert.AreEqual(invitationRepository.Role.Name, createdInvitation.Role.Name);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void CreateInvitationWithoutNameShouldThrowError()
+        {
+            Invitation invitationToCreate = new Invitation()
+            {
+                Role = new Role()
+                {
+                    Name = "Employee"
+                }
+            };
+
+            Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
+        }
     }
 }
