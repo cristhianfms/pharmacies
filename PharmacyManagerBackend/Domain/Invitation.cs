@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Exceptions;
 
 namespace Domain
 {
@@ -11,6 +12,13 @@ namespace Domain
         public int RoleId { get; set; }
         public Role Role { get; set; }
         public string Code { get; set; }
-        
+
+        public void CheckIsValid()
+        {
+            if (String.IsNullOrEmpty(UserName))
+            {
+                throw new ValidationException("Name can't be empty");
+            }
+        }
     }
 }
