@@ -64,5 +64,31 @@ namespace BusinessLogic.Test
 
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void CreateInvitationRepeatedUserNameShouldThrowError()
+        {
+            Invitation invitationRepository = new Invitation()
+            {
+                Id = 1,
+                UserName = "cris01",
+                Role = new Role()
+                {
+                    Name = "Employee"
+                }
+            };
+            Invitation invitationToCreate = new Invitation()
+            {
+                UserName = "cris01",
+                Role = new Role()
+                {
+                    Name = "Employee"
+                }
+            };
+            _invitationRepository.Setup(m => m.Create(invitationToCreate)).Returns(invitationRepository);
+
+            Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
+        }
     }
 }
