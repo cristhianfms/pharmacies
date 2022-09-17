@@ -23,7 +23,11 @@ namespace WebApi.Test
             _drugApiController = new DrugController(_drugLogicMock.Object);
             _drug = new Drug()
             {
-                Id = 1
+                Id = 1,
+                DrugCode = "2A5",
+                Price = 150,
+                NeedsPrescription = false,
+                Stock = 20
             };
         }
 
@@ -34,9 +38,12 @@ namespace WebApi.Test
             _drugLogicMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(_drug);
             var drugModel = new DrugModel()
             {
-               
+                Id = 1,
+                DrugCode = "2A5",
+                Price = 150,
+                NeedsPrescription = false,
+                Stock = 20
             };
-
 
             var result = _drugApiController.Create(drugModel);
             var okResult = result as OkObjectResult;

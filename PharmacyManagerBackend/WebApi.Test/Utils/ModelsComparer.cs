@@ -23,7 +23,7 @@ namespace WebApi.Test.Utils
 
         public static bool DrugCompare(DrugModel drug1, DrugModel drug2)
         {
-            return false;
+            return drug1.Id == drug2.Id && drug1.DrugCode.Equals(drug2.DrugCode);
         }
     }
 }

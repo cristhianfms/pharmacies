@@ -86,7 +86,11 @@ namespace WebApi.Utils
         {
             return new Drug
             {
-
+                Id = drugModel.Id,
+                DrugCode = drugModel.DrugCode,
+                NeedsPrescription = drugModel.NeedsPrescription,
+                Price = drugModel.Price,
+                Stock = drugModel.Stock
             };
         }
 
@@ -94,7 +98,11 @@ namespace WebApi.Utils
         {
             return new DrugModel
             {
-
+                Id = drug.Id,
+                DrugCode = drug.DrugCode,
+                NeedsPrescription = drug.NeedsPrescription,
+                Price = drug.Price,
+                Stock = drug.Stock
             };
         }
     }
