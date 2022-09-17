@@ -1,5 +1,5 @@
-using BusinessLogic;
 using Domain;
+using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Utils;
@@ -10,15 +10,15 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     public class InvitationController : ControllerBase
     {
-        private InvitationLogic _invitationLogic;
+        private IInvitationLogic _invitationLogic;
 
-        public InvitationController([FromBody] InvitationLogic invitationLogic)
+        public InvitationController(IInvitationLogic invitationLogic)
         {
             this._invitationLogic = invitationLogic;
         }
 
         [HttpPost]
-        public IActionResult Create(InvitationModel invitationModel)
+        public IActionResult Create([FromBody] InvitationModel invitationModel)
         {
             Invitation invitation = ModelsMapper.ToEntity(invitationModel);
             Invitation invitationCreated = _invitationLogic.Create(invitation);
