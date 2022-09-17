@@ -17,6 +17,7 @@ namespace BusinessLogic
 
         public virtual Invitation Create(Invitation invitation)
         {
+            invitation.CheckIsValid();
             Invitation createdInvitation = _invitationRepository.Create(invitation);
 
             return createdInvitation;
