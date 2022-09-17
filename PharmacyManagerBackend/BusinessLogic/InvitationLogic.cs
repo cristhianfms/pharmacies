@@ -23,7 +23,10 @@ namespace BusinessLogic
         {
             invitation.CheckIsValid();
             checkIfUserNameIsRepeated(invitation.UserName);
-
+            
+            int codeGenerated = generateNewInvitationCode();
+            invitation.Code = codeGenerated;
+            
             Invitation createdInvitation = _invitationRepository.Create(invitation);
 
             return createdInvitation;

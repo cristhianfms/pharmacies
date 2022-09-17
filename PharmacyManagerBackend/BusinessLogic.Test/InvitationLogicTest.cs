@@ -53,6 +53,7 @@ namespace BusinessLogic.Test
             Assert.AreEqual(invitationRepository.Id, createdInvitation.Id);
             Assert.AreEqual(invitationRepository.UserName, createdInvitation.UserName);
             Assert.AreEqual(invitationRepository.Role.Name, createdInvitation.Role.Name);
+            Assert.IsTrue(createdInvitation.Code.ToString().Length == 6);
             _userLogic.VerifyAll();
             _invitationRepository.VerifyAll();
         }
