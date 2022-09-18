@@ -52,5 +52,24 @@ namespace WebApi.Test
             Assert.IsTrue(ModelsComparer.DrugCompare(drugModel, createdDrug));
             _drugLogicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void DeleteDrugOk()
+        {
+            _drugLogicMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(_drug);
+            var drugModel = new DrugModel()
+            {
+                Id = 1,
+                DrugCode = "2A5",
+                Price = 150,
+                NeedsPrescription = false,
+                Stock = 20
+            };
+            _drugLogicMock.VerifyAll();
+            var result = _drugApiController.Delete(1);
+            
+            Assert.IsTrue(result is OkObjectResult);
+           
+        }
     }
 }

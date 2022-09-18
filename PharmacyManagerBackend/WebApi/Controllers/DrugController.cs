@@ -18,13 +18,25 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(DrugModel drugModel)
+        public IActionResult Create([FromBody]DrugModel drugModel)
         {
             Drug drug = ModelsMapper.ToEntity(drugModel);
             Drug drugCreated = _drugLogic.Create(drug);
             DrugModel drugCreatedModel = ModelsMapper.ToModel(drugCreated);
 
             return Ok(drugCreatedModel);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            Drug drug = _drugLogic.FindDrug(id);
+            if (drug == null)
+            {
+                return NotFound();
+            }
+           _drugLogic.DeleteDrug(drug);
+            return Ok("Se elimino correctamente");
         }
     }
 }
