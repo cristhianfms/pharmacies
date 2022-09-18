@@ -29,7 +29,7 @@ namespace WebApi.Test
         }
 
         [TestMethod]
-        public void CreateUserOk()
+        public void CreatePurchaseOk()
         {
             PurchaseItemDto purchaseItemDto = new PurchaseItemDto
             {
