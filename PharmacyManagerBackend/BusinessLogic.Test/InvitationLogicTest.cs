@@ -24,7 +24,7 @@ namespace BusinessLogic.Test
             this._roleLogic = new Mock<RoleLogic>(MockBehavior.Strict);
             this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict);
             this._invitationRepository = new  Mock<IInvitationRepository>(MockBehavior.Strict);
-            this._invitationLogic = new InvitationLogic(this._invitationRepository.Object, this._userLogic.Object, this._roleLogic.Object, this._pharmacyLogic);
+            this._invitationLogic = new InvitationLogic(this._invitationRepository.Object, this._userLogic.Object, this._roleLogic.Object, this._pharmacyLogic.Object);
         }
 
         [TestMethod]
@@ -66,6 +66,7 @@ namespace BusinessLogic.Test
             Assert.IsTrue(createdInvitation.Code.Length == 6);
             _userLogic.VerifyAll();
             _invitationRepository.VerifyAll();
+            _pharmacyLogic.VerifyAll();
         }
 
         [TestMethod]
@@ -92,7 +93,10 @@ namespace BusinessLogic.Test
             _invitationRepository.SetupSequence(m => m.GetInvitationByCode(It.IsAny<string>()))
                 .Returns(new Invitation(){})
                 .Throws(new ResourceNotFoundException(""));
-            
+            _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy(){
+                Name = invitationToCreate.PharmacyName
+            });
+
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
         
             Assert.AreEqual(invitationRepository.Id, createdInvitation.Id);
@@ -102,6 +106,7 @@ namespace BusinessLogic.Test
             Assert.IsTrue(createdInvitation.Code.Length == invitationCodeRequiredLength);
             _userLogic.VerifyAll();
             _invitationRepository.VerifyAll();
+            _pharmacyLogic.VerifyAll();
         }
 
         [TestMethod]

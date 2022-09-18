@@ -10,5 +10,10 @@ namespace BusinessLogic
         {
             throw new NotImplementedException();
         }
+
+        public virtual Pharmacy GetPharmacyByName(string pharmacyName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

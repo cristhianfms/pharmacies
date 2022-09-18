@@ -13,27 +13,29 @@ namespace BusinessLogic
         private IInvitationRepository _invitationRepository;
         private UserLogic _userLogic;
         private RoleLogic _roleLogic;
+        private PharmacyLogic _pharmacyLogic;
 
         public InvitationLogic(){}
 
-        public InvitationLogic(IInvitationRepository invitationRepository, UserLogic userLogic, RoleLogic roleLogic)
+        public InvitationLogic(IInvitationRepository invitationRepository, UserLogic userLogic, RoleLogic roleLogic, PharmacyLogic pharmacyLogic)
         {
             this._invitationRepository = invitationRepository;
             this._userLogic = userLogic;
+            this._pharmacyLogic = pharmacyLogic;
         }
 
         public virtual Invitation Create(InvitationDto invitationDto)
         {
             checkIfUserNameIsRepeated(invitationDto.UserName);
+
+            Pharmacy pharmacy = _pharmacyLogic.GetPharmacyByName(invitationDto.PharmacyName);
             
             Invitation invitationToCreate = new Invitation(){
                 UserName = invitationDto.UserName,
                 Role = new Role(){
                     Name = invitationDto.RoleName
                 },
-                Pharmacy = new Pharmacy(){
-                    Name = invitationDto.PharmacyName
-                }
+                Pharmacy = pharmacy
             };
 
             string codeGenerated = generateNewInvitationCode();
