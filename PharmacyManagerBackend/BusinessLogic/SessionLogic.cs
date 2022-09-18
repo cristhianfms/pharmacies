@@ -10,18 +10,18 @@ namespace BusinessLogic
     public class SessionLogic: ISessionLogic
     {
         private readonly ISessionRepository _sessionRepository;
-        private readonly IUserRepository _userRepository;
-        public SessionLogic(ISessionRepository sessionRepository, IUserRepository userRepository)
+        private readonly UserLogic _userLogic;
+        public SessionLogic(ISessionRepository sessionRepository, UserLogic userLogic)
         {
             this._sessionRepository = sessionRepository;
-            this._userRepository = userRepository;
+            this._userLogic= userLogic;
         }
 
         public TokenDto Create(CredentialsDto credentialsDto)
         {
             credentialsDto.ValidateNotNullCredentials();
 
-            User registeredUser = _userRepository.FindUserByUserName(credentialsDto.UserName);
+            User registeredUser = _userLogic.GetUserByUserName(credentialsDto.UserName);
             checkIfUserIsNotNull(registeredUser);
             checkIfPassowrdIsCorrect(registeredUser, credentialsDto);
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Domain;
 using Domain.Dtos;
 using Exceptions;
@@ -134,11 +135,21 @@ namespace BusinessLogic.Test
                 RegistrationDate = registrationDate
             };
 
-            _userRepository.Setup(m => m.Create(It.IsAny<User>())).Returns(userRepository);
+            _userRepository.Setup(m => m.GetAll(It.IsAny<Func<User, bool>>())).Returns(new List<User>(){userRepository});
             
             User userReturned = _userLogic.GetUserByUserName(userName);
 
-            Assert.AreEqual(userRepository, userReturned)
+            Assert.AreEqual(userRepository, userReturned);
+            _userRepository.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ResourceNotFoundException))]
+        public void GetUserByUserNameNotFoundShouldFail()
+        {
+            _userRepository.Setup(m => m.GetAll(It.IsAny<Func<User, bool>>())).Returns(new List<User>(){});
+            
+            _userLogic.GetUserByUserName("userName");
         }
     }
 }

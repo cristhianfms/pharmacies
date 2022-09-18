@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Domain;
 using Exceptions;
 using IBusinessLogic;
 using IDataAccess;
+using System.Linq;
 
 namespace BusinessLogic
 {
@@ -51,7 +53,19 @@ namespace BusinessLogic
 
         public virtual User GetUserByUserName(string userName)
         {
-            return null;
+            IEnumerable<User> users = _userRepository.GetAll(u => u.UserName == userName);
+
+            User userToReturn;
+            try
+            {
+                userToReturn = users.First();
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new ResourceNotFoundException("username doesn't exist");
+            }
+
+            return userToReturn;
         }
 
         private Invitation getCreatedInvitation(string invitationCode)
