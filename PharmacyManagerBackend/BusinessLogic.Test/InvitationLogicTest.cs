@@ -41,17 +41,13 @@ namespace BusinessLogic.Test
                     Name = "PharmacyB"
                 }
             };
-            Invitation invitationToCreate = new Invitation()
+            InvitationDto invitationToCreate = new InvitationDto()
             {
                 UserName = "cris01",
-                Role = new Role()
-                {
-                    Name = "Employee"
-                },
-                Pharmacy = new Pharmacy(){
-                    Name = "PharmacyB"
-                }
+                RoleName = "Employee",
+                PharmacyName = "PharmacyB"
             };
+
             _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Throws(new ResourceNotFoundException(""));
             _invitationRepository.Setup(m => m.Create(invitationToCreate)).Returns(invitationRepository);
             _invitationRepository.Setup(m => m.GetInvitationByCode(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
