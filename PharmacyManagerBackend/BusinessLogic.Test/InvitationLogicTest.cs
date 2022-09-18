@@ -36,7 +36,10 @@ namespace BusinessLogic.Test
                 {
                     Name = "Employee"
                 },
-                Code = "123456"
+                Code = "123456",
+                Pharmacy = new Pharmacy(){
+                    Name = "PharmacyB"
+                }
             };
             Invitation invitationToCreate = new Invitation()
             {
@@ -44,6 +47,9 @@ namespace BusinessLogic.Test
                 Role = new Role()
                 {
                     Name = "Employee"
+                },
+                Pharmacy = new Pharmacy(){
+                    Name = "PharmacyB"
                 }
             };
             _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Throws(new ResourceNotFoundException(""));
@@ -55,6 +61,7 @@ namespace BusinessLogic.Test
             Assert.AreEqual(invitationRepository.Id, createdInvitation.Id);
             Assert.AreEqual(invitationRepository.UserName, createdInvitation.UserName);
             Assert.AreEqual(invitationRepository.Role.Name, createdInvitation.Role.Name);
+            Assert.AreEqual(invitationRepository.Pharmacy.Name, createdInvitation.Pharmacy.Name);
             Assert.IsTrue(createdInvitation.Code.Length == 6);
             _userLogic.VerifyAll();
             _invitationRepository.VerifyAll();
