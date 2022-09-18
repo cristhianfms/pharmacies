@@ -13,6 +13,7 @@ namespace BusinessLogic.Test
     {
         private UserLogic _userLogic;
         private Mock<IUserRepository> _userRepository;
+        private Mock<InvitationLogic> _invitationLogic;
 
         [TestInitialize]
         public void Initialize()
@@ -51,6 +52,46 @@ namespace BusinessLogic.Test
             User userCreated = _userLogic.Create(userToCreate);
 
             Assert.AreEqual(userCreated, userRepository);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void CreateNewUserWithoutInvitationShouldFail()
+        {
+            string invitationCode = "123456";
+            DateTime registrationDate = DateTime.Now;
+            User userRepository = new User()
+            {
+                Id = 1,
+                UserName = "Cris01",
+                Role = new Role()
+                {
+                    Name = "Admin"
+                },
+                Email = "cris@gmail.com",
+                Address = "calle a 123",
+                Password = "pass.1234",
+                RegistrationDate = registrationDate
+            };
+            User userToCreate = new User()
+            {
+                UserName = userRepository.UserName,
+                Role = userRepository.Role,
+                Email = userRepository.Email,
+                Address = userRepository.Address,
+                Password = userRepository.Password
+            };
+            Invitation userInvitation = new Invitation {
+                UserName = "Cris01",
+                Role = new Role()
+                {
+                    Name = "Admin"
+                },
+                Code = invitationCode
+            };
+            _invitationLogic.Setup(m => m.GetInvitationByCode(invitationCode).Returns(userInvitation));
+
+            _userLogic.Create(userToCreate);
         }
     }
 }
