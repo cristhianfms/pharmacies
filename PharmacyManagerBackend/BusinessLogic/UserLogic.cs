@@ -36,7 +36,7 @@ namespace BusinessLogic
             };
 
             User createdUser = _userRepository.Create(userToCreate);
-
+            _invitationLogic.Delete(invitation.Id);
             return createdUser;
         }
 

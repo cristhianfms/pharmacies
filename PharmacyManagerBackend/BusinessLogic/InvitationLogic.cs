@@ -38,6 +38,11 @@ namespace BusinessLogic
             throw new NotImplementedException();
         }
 
+        public virtual void Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         private void checkIfUserNameIsRepeated(string userName)
         {
             bool userExist = true;
