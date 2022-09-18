@@ -19,44 +19,12 @@ namespace BusinessLogic.Test
         public void Initialize()
         {
             this._userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
-            _userLogic = new UserLogic(this._userRepository.Object);
+            this._invitationLogic = new Mock<InvitationLogic>(MockBehavior.Strict);
+            _userLogic = new UserLogic(this._userRepository.Object, this._invitationLogic.Object);
         }
 
         [TestMethod]
         public void CreateNewUserOk()
-        {
-            DateTime registrationDate = DateTime.Now;
-            User userRepository = new User()
-            {
-                Id = 1,
-                UserName = "Cris01",
-                Role = new Role()
-                {
-                    Name = "Admin"
-                },
-                Email = "cris@gmail.com",
-                Address = "calle a 123",
-                Password = "pass.1234",
-                RegistrationDate = registrationDate
-            };
-            User userToCreate = new User()
-            {
-                UserName = userRepository.UserName,
-                Role = userRepository.Role,
-                Email = userRepository.Email,
-                Address = userRepository.Address,
-                Password = userRepository.Password
-            };
-            _userRepository.Setup(m => m.Create(It.IsAny<User>())).Returns(userRepository);
-
-            User userCreated = _userLogic.Create(userToCreate);
-
-            Assert.AreEqual(userCreated, userRepository);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void CreateNewUserWithoutInvitationShouldFail()
         {
             string invitationCode = "123456";
             DateTime registrationDate = DateTime.Now;
@@ -73,15 +41,16 @@ namespace BusinessLogic.Test
                 Password = "pass.1234",
                 RegistrationDate = registrationDate
             };
-            User userToCreate = new User()
+            UserDto userToCreate = new UserDto()
             {
                 UserName = userRepository.UserName,
-                Role = userRepository.Role,
                 Email = userRepository.Email,
                 Address = userRepository.Address,
-                Password = userRepository.Password
+                Password = userRepository.Password,
+                InvitationCode = invitationCode,
             };
-            Invitation userInvitation = new Invitation {
+            Invitation userInvitation = new Invitation
+            {
                 UserName = "Cris01",
                 Role = new Role()
                 {
@@ -89,7 +58,30 @@ namespace BusinessLogic.Test
                 },
                 Code = invitationCode
             };
-            _invitationLogic.Setup(m => m.GetInvitationByCode(invitationCode).Returns(userInvitation));
+            _invitationLogic.Setup(m => m.GetInvitationByCode(invitationCode)).Returns(userInvitation);
+            _userRepository.Setup(m => m.Create(It.IsAny<User>())).Returns(userRepository);
+
+            User userCreated = _userLogic.Create(userToCreate);
+
+            Assert.AreEqual(userCreated, userRepository);
+            _invitationLogic.VerifyAll();
+            _userRepository.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void CreateNewUserWithoutInvitationShouldFail()
+        {
+            string invitationCode = "123456";
+            UserDto userToCreate = new UserDto()
+            {
+                UserName = "Cris01",
+                Email = "cris@gmail.com",
+                Address = "calle a 123",
+                Password = "pass.1234",
+                InvitationCode = invitationCode,
+            };
+            _invitationLogic.Setup(m => m.GetInvitationByCode(invitationCode)).Throws(new ResourceNotFoundException(""));
 
             _userLogic.Create(userToCreate);
         }
