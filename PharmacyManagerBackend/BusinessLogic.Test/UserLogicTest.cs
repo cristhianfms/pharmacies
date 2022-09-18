@@ -51,6 +51,7 @@ namespace BusinessLogic.Test
             };
             Invitation userInvitation = new Invitation
             {
+                Id = 1,
                 UserName = "Cris01",
                 Role = new Role()
                 {
@@ -59,6 +60,7 @@ namespace BusinessLogic.Test
                 Code = invitationCode
             };
             _invitationLogic.Setup(m => m.GetInvitationByCode(invitationCode)).Returns(userInvitation);
+            _invitationLogic.Setup(m => m.Delete(userInvitation.Id)).Callback(() => { });
             _userRepository.Setup(m => m.Create(It.IsAny<User>())).Returns(userRepository);
 
             User userCreated = _userLogic.Create(userToCreate);
