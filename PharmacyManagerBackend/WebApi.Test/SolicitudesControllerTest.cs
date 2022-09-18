@@ -6,6 +6,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WebApi.Controllers;
 using WebApi.Models;
 
 namespace WebApi.Test
@@ -14,13 +15,13 @@ namespace WebApi.Test
     public class SolicitudesControllerTest
     {
         private Mock<ISolicitudeLogic> _solicitudeLogicMock;
-        private SolicitudeController _solicitudeApiController;
+        private SolicitudesController _solicitudeApiController;
 
         [TestInitialize]
         public void InitTest()
         {
             _solicitudeLogicMock = new Mock<ISolicitudeLogic>(MockBehavior.Strict);
-            _solicitudeApiController = new SolicitudeController(_solicitudeLogicMock.Object);
+            _solicitudeApiController = new SolicitudesController(_solicitudeLogicMock.Object);
         }
 
 
@@ -30,7 +31,6 @@ namespace WebApi.Test
 
              SolicitudeItem solicitudeItem = new SolicitudeItem()
             {
-                Id = 1,
                 DrugQuantity = 20,
                 DrugCode = "XF324",
             };
@@ -75,7 +75,6 @@ namespace WebApi.Test
             var createdSolicitude = okResult.Value as SolicitudeResponseModel;
 
 
-            Assert.IsTrue(result is OkResult);
             Assert.AreEqual(solicitude.Id, createdSolicitude.Id);
             Assert.AreEqual(solicitude.State, createdSolicitude.State);
             Assert.AreEqual(solicitude.Date, createdSolicitude.Date);

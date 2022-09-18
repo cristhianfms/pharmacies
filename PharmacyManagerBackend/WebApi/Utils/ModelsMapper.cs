@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Domain;
 using Domain.Dtos;
+using System.Collections.Generic;
+using System.Linq;
 using WebApi.Models;
 
 namespace WebApi.Utils
@@ -81,6 +83,45 @@ namespace WebApi.Utils
                 UserName = user.UserName,
                 Email = user.Email,
                 Address = user.Address
+            };
+        }
+        public static Solicitude ToEntity(SolicitudeRequestModel solicitudeRequestModel)
+        {
+            List<SolicitudeItem> solicitudeItems = solicitudeRequestModel.SolicitudeItems.Select(i => ToEntity(i)).ToList();
+            return new Solicitude()
+            {
+
+                Items = solicitudeItems,
+            };
+        }
+
+        private static SolicitudeItem ToEntity (SolicitudeItemModel solicitudeItemModel)
+        {
+            return new SolicitudeItem()
+            {
+                DrugQuantity = solicitudeItemModel.DrugQuantity,
+                DrugCode = solicitudeItemModel.DrugCode,
+            };
+        }
+
+        public static SolicitudeResponseModel ToModel(Solicitude solicitude)
+        {
+            List<SolicitudeItemModel> solicitudeItems = solicitude.Items.Select(i => ToModel(i)).ToList();
+            return new SolicitudeResponseModel()
+            {
+                Id = solicitude.Id,
+                State = solicitude.State,
+                Date = solicitude.Date,
+                SolicitudeItems = solicitudeItems
+            };
+        }
+
+        private static SolicitudeItemModel ToModel(SolicitudeItem solicitudeItem)
+        {
+            return new SolicitudeItemModel()
+            {
+                DrugQuantity = solicitudeItem.DrugQuantity,
+                DrugCode = solicitudeItem.DrugCode,
             };
         }
     }
