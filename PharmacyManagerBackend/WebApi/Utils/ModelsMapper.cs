@@ -65,22 +65,27 @@ namespace WebApi.Utils
             };
         }
 
-        public static User ToEntity(UserModel userModel)
+        public static UserDto ToEntity(UserRequestModel userRequestModel)
         {
-            return new User
+            return new UserDto
             {
-                UserName = userModel.UserName,
-                Email = userModel.Email,
-                Address = userModel.Address
+                UserName = userRequestModel.UserName,
+                InvitationCode = userRequestModel.InvitationCode,
+                Email = userRequestModel.Email,
+                Address = userRequestModel.Address,
+                Password = userRequestModel.Password
             };
         }
-        public static UserModel ToModel(User user)
+        public static UserResponseModel ToModel(User user)
         {
-            return new UserModel
+            return new UserResponseModel
             {
+                Id = user.Id,
                 UserName = user.UserName,
+                Role = user.Role.Name,
                 Email = user.Email,
-                Address = user.Address
+                Address = user.Address,
+                PharmacyName = user.Pharmacy.Name
             };
         }
     }
