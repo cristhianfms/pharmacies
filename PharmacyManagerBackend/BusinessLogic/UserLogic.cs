@@ -32,7 +32,8 @@ namespace BusinessLogic
                 Email = userDto.Email,
                 Address = userDto.Password,
                 Password = userDto.Password,
-                RegistrationDate = DateTime.Now
+                RegistrationDate = DateTime.Now,
+                Pharmacy = invitation.Pharmacy
             };
 
             User createdUser = _userRepository.Create(userToCreate);
