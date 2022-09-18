@@ -95,11 +95,12 @@ namespace BusinessLogic.Test
                 .Throws(new ResourceNotFoundException(""));
             
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
-
+        
             Assert.AreEqual(invitationRepository.Id, createdInvitation.Id);
             Assert.AreEqual(invitationRepository.UserName, createdInvitation.UserName);
             Assert.AreEqual(invitationRepository.Role.Name, createdInvitation.Role.Name);
-            Assert.IsTrue(createdInvitation.Code.Length == 6);
+            const int invitationCodeRequiredLength = 6;
+            Assert.IsTrue(createdInvitation.Code.Length == invitationCodeRequiredLength);
             _userLogic.VerifyAll();
             _invitationRepository.VerifyAll();
         }
