@@ -12,14 +12,10 @@ namespace BusinessLogic
             return null;
         }
 
-        public void DeleteDrug(Drug drug)
+        public virtual void DeleteDrug(Drug drug)
         {
             
         }
 
-        public Drug FindDrug(int id)
-        {
-            return null;
-        }
     }
 }

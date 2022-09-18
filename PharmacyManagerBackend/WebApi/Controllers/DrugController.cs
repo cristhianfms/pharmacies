@@ -28,13 +28,8 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
-        {
-            Drug drug = _drugLogic.FindDrug(id);
-            if (drug == null)
-            {
-                return NotFound();
-            }
+        public IActionResult Delete(Drug drug)
+        {            
            _drugLogic.DeleteDrug(drug);
             return Ok("Se elimino correctamente");
         }
