@@ -19,11 +19,11 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] UserModel userModel)
+        public IActionResult Create([FromBody] UserRequestModel userRequestModel)
         {
-            User user = ModelsMapper.ToEntity(userModel);
-            User userCreated = _userLogic.Create(user);
-            UserModel userCreatedModel = ModelsMapper.ToModel(userCreated);
+            UserDto userToCreate = ModelsMapper.ToEntity(userRequestModel);
+            User userCreated = _userLogic.Create(userToCreate);
+            UserResponseModel userCreatedModel = ModelsMapper.ToModel(userCreated);
             
             return Ok(userCreatedModel);
         }

@@ -14,7 +14,7 @@ namespace WebApi.Test.Utils
             return invitation1.Id == invitation2.Id && invitation1.UserName.Equals(invitation2.UserName);
         }
         
-        public static bool UserCompare(UserModel user1, UserModel user2)
+        public static bool UserCompare(UserRequestModel user1, UserResponseModel user2)
         {
             return user1.UserName.Equals(user2.UserName) 
                 && user1.Email.Equals(user2.Email) 

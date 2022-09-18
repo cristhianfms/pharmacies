@@ -4,11 +4,7 @@ using IDataAccess;
 
 namespace DataAccess
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        public User FindUserByUserName(string userName)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

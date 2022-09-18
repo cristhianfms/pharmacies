@@ -13,14 +13,14 @@ namespace BusinessLogic.Test
     {
         private SessionLogic _sessionLogic;
         private Mock<ISessionRepository> _sessionRepository;
-        private Mock<IUserRepository> _userRepository;
+        private Mock<UserLogic> _userLogic;
 
         [TestInitialize]
         public void Initialize()
         {
             this._sessionRepository = new Mock<ISessionRepository>(MockBehavior.Strict);
-            this._userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
-            _sessionLogic = new SessionLogic(this._sessionRepository.Object, this._userRepository.Object);
+            this._userLogic = new Mock<UserLogic>(MockBehavior.Strict);
+            _sessionLogic = new SessionLogic(this._sessionRepository.Object, this._userLogic.Object);
         }
 
         [TestMethod]
@@ -50,13 +50,13 @@ namespace BusinessLogic.Test
 
             _sessionRepository.Setup(m => m.FindSessionByUserId(It.IsAny<int>())).Returns((Session)null);
             _sessionRepository.Setup(m => m.Create(It.IsAny<Session>())).Returns(session);
-            _userRepository.Setup(m => m.FindUserByUserName(It.IsAny<string>())).Returns(user);
+            _userLogic.Setup(m => m.GetUserByUserName(It.IsAny<string>())).Returns(user);
 
             TokenDto tokenReturned = _sessionLogic.Create(credentialsDto);
 
             Assert.AreEqual(token, tokenReturned.Token);
             _sessionRepository.VerifyAll();
-            _userRepository.VerifyAll();
+            _userLogic.VerifyAll();
         }
 
         [TestMethod]
@@ -85,13 +85,13 @@ namespace BusinessLogic.Test
             };
 
             _sessionRepository.Setup(m => m.FindSessionByUserId(It.IsAny<int>())).Returns(session);
-            _userRepository.Setup(m => m.FindUserByUserName(It.IsAny<string>())).Returns(user);
+            _userLogic.Setup(m => m.GetUserByUserName(It.IsAny<string>())).Returns(user);
 
             TokenDto tokenReturned = _sessionLogic.Create(credentialsDto);
 
             Assert.AreEqual(token, tokenReturned.Token);
             _sessionRepository.VerifyAll();
-            _userRepository.VerifyAll();
+            _userLogic.VerifyAll();
         }
 
         [TestMethod]
@@ -129,7 +129,7 @@ namespace BusinessLogic.Test
                 UserName = "ricardofort",
                 Password = "1234"
             };
-            _userRepository.Setup(m => m.FindUserByUserName(It.IsAny<string>())).Returns((User)null);
+            _userLogic.Setup(m => m.GetUserByUserName(It.IsAny<string>())).Returns((User)null);
 
             _sessionLogic.Create(credentialsDto);
         }
@@ -160,7 +160,7 @@ namespace BusinessLogic.Test
                 Password = "1234"
             };
             _sessionRepository.Setup(m => m.FindSessionByUserId(It.IsAny<int>())).Returns(session);
-            _userRepository.Setup(m => m.FindUserByUserName(It.IsAny<string>())).Returns(user);
+            _userLogic.Setup(m => m.GetUserByUserName(It.IsAny<string>())).Returns(user);
 
             _sessionLogic.Create(credentialsDto);
         }
