@@ -114,5 +114,31 @@ namespace BusinessLogic.Test
 
             _userLogic.Create(userToCreate);
         }
+
+        [TestMethod]
+        public void GetUserByUserNameOk()
+        {
+            DateTime registrationDate = DateTime.Now;
+            string userName = "Cris01";
+            User userRepository = new User()
+            {
+                Id = 1,
+                UserName = userName,
+                Role = new Role()
+                {
+                    Name = "Admin"
+                },
+                Email = "cris@gmail.com",
+                Address = "calle a 123",
+                Password = "pass.1234",
+                RegistrationDate = registrationDate
+            };
+
+            _userRepository.Setup(m => m.Create(It.IsAny<User>())).Returns(userRepository);
+            
+            User userReturned = _userLogic.GetUserByUserName(userName);
+
+            Assert.AreEqual(userRepository, userReturned)
+        }
     }
 }
