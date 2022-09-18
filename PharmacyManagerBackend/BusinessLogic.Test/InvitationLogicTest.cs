@@ -48,7 +48,8 @@ namespace BusinessLogic.Test
             };
             _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Throws(new ResourceNotFoundException(""));
             _invitationRepository.Setup(m => m.Create(invitationToCreate)).Returns(invitationRepository);
-
+            _invitationRepository.Setup(m => m.GetInvitationByCode(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
+            
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
 
             Assert.AreEqual(invitationRepository.Id, createdInvitation.Id);
