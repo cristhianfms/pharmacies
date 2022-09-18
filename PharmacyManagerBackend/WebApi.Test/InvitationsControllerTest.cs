@@ -40,10 +40,9 @@ namespace WebApi.Test
             {
                 Id = 1,
                 UserName = "JuanPerez",
-                Role = new Role(){
-                    Name = "Admin"
-                },
-                Code = "2A5678BX"
+                RoleName = "Admin",
+                Code = "2A5678BX", 
+                PharmacyName = "FarmaciaB"
             };
 
 

@@ -5,7 +5,8 @@ namespace WebApi.Models
     {
         public int Id { get; set; }
         public string UserName { get; set; }
-        public Role Role { get; set; }
+        public string RoleName { get; set; }
         public string Code { get; set; }
+        public string PharmacyName { get; set; }
     }
 }
