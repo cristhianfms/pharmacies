@@ -22,6 +22,9 @@ namespace BusinessLogic
         public virtual User Create(UserDto userDto)
         {
             Invitation invitation = getCreatedInvitation(userDto.InvitationCode);
+
+            checkInvitationUserName(invitation, userDto.UserName);
+
             User userToCreate = new User()
             {
                 UserName = invitation.UserName,
@@ -35,6 +38,14 @@ namespace BusinessLogic
             User createdUser = _userRepository.Create(userToCreate);
 
             return createdUser;
+        }
+
+        private void checkInvitationUserName(Invitation invitation, string userName)
+        {
+            if (invitation.UserName != userName)
+            {
+                throw new ValidationException("invalid invitation code");
+            }
         }
 
         public virtual User GetUserByUserName(string userName)
