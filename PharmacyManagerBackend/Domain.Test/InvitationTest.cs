@@ -19,8 +19,6 @@ namespace BusinessLogic.Test.Dtos
                     Name = "Employee"
                 }
             };
-
-            invitation.CheckIsValid();
         }
 
         [TestMethod]
@@ -35,8 +33,6 @@ namespace BusinessLogic.Test.Dtos
                     Name = "Employee"
                 }
             };
-
-            invitation.CheckIsValid();
         }
 
         [TestMethod]
@@ -51,8 +47,6 @@ namespace BusinessLogic.Test.Dtos
                     Name = ""
                 }
             };
-
-            invitation.CheckIsValid();
         }
     }
 }

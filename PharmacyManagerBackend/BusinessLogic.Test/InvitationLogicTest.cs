@@ -99,21 +99,6 @@ namespace BusinessLogic.Test
 
         [TestMethod]
         [ExpectedException(typeof(ValidationException))]
-        public void CreateInvitationWithoutNameShouldThrowError()
-        {
-            Invitation invitationToCreate = new Invitation()
-            {
-                Role = new Role()
-                {
-                    Name = "Employee"
-                }
-            };
-
-            Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
         public void CreateInvitationRepeatedUserNameShouldThrowError()
         {
             Invitation invitationRepository = new Invitation()
@@ -136,19 +121,6 @@ namespace BusinessLogic.Test
 
             _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Returns(new User());
             _invitationRepository.Setup(m => m.Create(invitationToCreate)).Returns(invitationRepository);
-
-            Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void CreateInvitationWithoutRoleShouldThrowError()
-        {
-            Invitation invitationToCreate = new Invitation()
-            {
-                UserName = "cris01",
-                Role = new Role()
-            };
 
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
         }
