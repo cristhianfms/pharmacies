@@ -14,12 +14,17 @@ namespace BusinessLogic
 
         public virtual void DeleteDrug(Drug drug)
         {
-            
+
         }
 
         public virtual IEnumerable<Drug> GetAllDrugs()
         {
-            throw new NotImplementedException();
+            return null;
+        }
+
+        public virtual Drug GetDrug(Drug drug)
+        {
+            return null;
         }
     }
 }

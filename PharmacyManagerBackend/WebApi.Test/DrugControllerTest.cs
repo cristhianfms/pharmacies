@@ -77,5 +77,15 @@ namespace WebApi.Test
 
         }
 
+        [TestMethod]
+        public void GetDrugOk()
+        {
+            _drugLogicMock.Setup(m => m.GetDrug(_drug)).Returns(It.IsAny<Drug>);
+
+            var result = _drugApiController.GetDrug(_drug);
+
+            Assert.IsTrue(result is OkObjectResult);
+        }
+
     }
 }
