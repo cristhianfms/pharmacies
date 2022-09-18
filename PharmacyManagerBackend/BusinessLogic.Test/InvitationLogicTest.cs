@@ -15,14 +15,16 @@ namespace BusinessLogic.Test
         private Mock<IInvitationRepository> _invitationRepository;
         private Mock<UserLogic> _userLogic;
         private Mock<RoleLogic> _roleLogic;
+        private Mock<PharmacyLogic> _pharmacyLogic;
 
         [TestInitialize]
         public void Initialize()
         {
             this._userLogic = new Mock<UserLogic>(MockBehavior.Strict);
             this._roleLogic = new Mock<RoleLogic>(MockBehavior.Strict);
+            this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict);
             this._invitationRepository = new  Mock<IInvitationRepository>(MockBehavior.Strict);
-            this._invitationLogic = new InvitationLogic(this._invitationRepository.Object, this._userLogic.Object, this._roleLogic.Object);
+            this._invitationLogic = new InvitationLogic(this._invitationRepository.Object, this._userLogic.Object, this._roleLogic.Object, this._pharmacyLogic);
         }
 
         [TestMethod]
@@ -51,6 +53,9 @@ namespace BusinessLogic.Test
             _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Throws(new ResourceNotFoundException(""));
             _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
             _invitationRepository.Setup(m => m.GetInvitationByCode(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
+            _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy(){
+                Name = invitationToCreate.PharmacyName
+            });
             
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
 
