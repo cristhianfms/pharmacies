@@ -141,10 +141,11 @@ namespace BusinessLogic.Test
             InvitationDto invitationToCreate = new InvitationDto()
             {
                 UserName = "cris01",
-                RoleName = "Employee"
+                RoleName = "Employee",
+                PharmacyName = "Farmashop"
             };
 
-            _userLogic.Setup(m => m.GetUserByUserName(  invitationToCreate.UserName)).Returns(new User());
+            _userLogic.Setup(m => m.GetUserByUserName(  invitationToCreate.UserName)).Throws(new ResourceNotFoundException(""));
             _roleLogic.Setup(m => m.GetRoleByName(invitationToCreate.RoleName)).Throws(new ResourceNotFoundException(""));
 
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
