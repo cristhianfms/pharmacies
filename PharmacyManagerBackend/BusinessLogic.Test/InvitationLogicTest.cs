@@ -12,7 +12,7 @@ namespace BusinessLogic.Test
     public class InvitationLogicTest
     {
         private InvitationLogic _invitationLogic;
-        private Mock<IBaseRepository<Invitation>> _invitationRepository;
+        private Mock<IInvitationRepository> _invitationRepository;
         private Mock<UserLogic> _userLogic;
         private Mock<RoleLogic> _roleLogic;
 
@@ -21,7 +21,7 @@ namespace BusinessLogic.Test
         {
             this._userLogic = new Mock<UserLogic>(MockBehavior.Strict);
             this._roleLogic = new Mock<RoleLogic>(MockBehavior.Strict);
-            this._invitationRepository = new Mock<IBaseRepository<Invitation>>(MockBehavior.Strict);
+            this._invitationRepository = new  Mock<IInvitationRepository>(MockBehavior.Strict);
             this._invitationLogic = new InvitationLogic(this._invitationRepository.Object, this._userLogic.Object, this._roleLogic.Object);
         }
 

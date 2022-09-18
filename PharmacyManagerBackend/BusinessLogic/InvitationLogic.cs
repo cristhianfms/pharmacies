@@ -9,11 +9,11 @@ namespace BusinessLogic
 {
     public class InvitationLogic : IInvitationLogic
     {
-        private IBaseRepository<Invitation> _invitationRepository;
+        private IInvitationRepository _invitationRepository;
         private UserLogic _userLogic;
         private RoleLogic _roleLogic;
 
-        public InvitationLogic(IBaseRepository<Invitation> invitationRepository, UserLogic userLogic, RoleLogic roleLogic)
+        public InvitationLogic(IInvitationRepository invitationRepository, UserLogic userLogic, RoleLogic roleLogic)
         {
             this._invitationRepository = invitationRepository;
             this._userLogic = userLogic;
@@ -23,10 +23,10 @@ namespace BusinessLogic
         {
             invitation.CheckIsValid();
             checkIfUserNameIsRepeated(invitation.UserName);
-            
+
             string codeGenerated = generateNewInvitationCode();
             invitation.Code = codeGenerated;
-            
+
             Invitation createdInvitation = _invitationRepository.Create(invitation);
 
             return createdInvitation;
@@ -53,9 +53,28 @@ namespace BusinessLogic
         private string generateNewInvitationCode()
         {
             Random generator = new Random();
-            String code = generator.Next(0, 1000000).ToString("D6");
-           
+            String code;
+            do
+            {
+                code = generator.Next(0, 1000000).ToString("D6");
+            } while (isExistantCode(code));
+
             return code;
+        }
+
+        private bool isExistantCode(string code)
+        {
+            bool invitationExists = true;
+            try
+            {
+                _invitationRepository.GetInvitationByCode(code);
+            }
+            catch (ResourceNotFoundException e)
+            {
+                invitationExists = false;
+            }
+
+            return invitationExists;
         }
     }
 }
