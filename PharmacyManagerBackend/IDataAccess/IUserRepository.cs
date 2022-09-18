@@ -3,7 +3,7 @@ using Domain;
 
 namespace IDataAccess
 {
-    public interface IUserRepository
+    public interface IUserRepository: IBaseRepository<User>
     {
         User FindUserByUserName(string userName);
     }
