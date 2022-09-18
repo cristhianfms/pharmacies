@@ -85,5 +85,32 @@ namespace BusinessLogic.Test
 
             _userLogic.Create(userToCreate);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void InvitationCodeForDiferentUserShouldFail()
+        {
+            string invitationCode = "123456";
+            UserDto userToCreate = new UserDto()
+            {
+                UserName = "Cris01",
+                Email = "cris@gmail.com",
+                Address = "calle a 123",
+                Password = "pass.1234",
+                InvitationCode = invitationCode,
+            };
+            Invitation userInvitation = new Invitation
+            {
+                UserName = "OtherUserName",
+                Role = new Role()
+                {
+                    Name = "Admin"
+                },
+                Code = invitationCode
+            };
+            _invitationLogic.Setup(m => m.GetInvitationByCode(invitationCode)).Returns(userInvitation);
+
+            _userLogic.Create(userToCreate);
+        }
     }
 }
