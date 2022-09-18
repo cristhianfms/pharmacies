@@ -3,6 +3,7 @@ using Domain;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Utils;
+using System.Collections.Generic;
 
 namespace WebApi.Controllers
 {
@@ -36,8 +37,8 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            //_drugLogic.GetAllDrugs();
-            return Ok();
+            IEnumerable<Drug> allDrugs = _drugLogic.GetAllDrugs();
+            return Ok(allDrugs);
         }
     }
 }

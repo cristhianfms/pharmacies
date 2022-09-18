@@ -8,6 +8,7 @@ using WebApi.Models;
 using WebApi.Test.Utils;
 using System.Collections.Generic;
 
+
 namespace WebApi.Test
 {
     [TestClass]
@@ -68,9 +69,9 @@ namespace WebApi.Test
         [TestMethod]
         public void GetAllDrugsOk()
         {
-            _drugLogicMock.Setup(m => m.GetAllDrugs()).Verifiable();
+            _drugLogicMock.Setup(m => m.GetAllDrugs()).Returns(It.IsAny<IEnumerable<Drug>>);
 
-            var result = _drugApiController.GetAll(_drug);
+            var result = _drugApiController.GetAll();
 
             Assert.IsTrue(result is OkObjectResult);
 
