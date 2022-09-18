@@ -59,11 +59,11 @@ namespace WebApi.Test
         public void DeleteDrugOk()
         {
             _drugLogicMock.Setup(m => m.DeleteDrug(_drug)).Verifiable();
-            
+
             var result = _drugApiController.Delete(_drug);
-            
+
             Assert.IsTrue(result is OkObjectResult);
-           
+
         }
 
         [TestMethod]

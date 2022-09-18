@@ -19,7 +19,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]DrugModel drugModel)
+        public IActionResult Create([FromBody] DrugModel drugModel)
         {
             Drug drug = ModelsMapper.ToEntity(drugModel);
             Drug drugCreated = _drugLogic.Create(drug);
@@ -30,8 +30,8 @@ namespace WebApi.Controllers
 
         [HttpDelete]
         public IActionResult Delete(Drug drug)
-        {            
-           _drugLogic.DeleteDrug(drug);
+        {
+            _drugLogic.DeleteDrug(drug);
             return Ok("Se elimino correctamente");
         }
 
@@ -45,8 +45,8 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult GetDrug(Drug drug)
         {
-            //Drug drug = _drugLogic.GetDrug(drug);
-            return Ok(drug);
+            Drug myDrug = _drugLogic.GetDrug(drug);
+            return Ok(myDrug);
         }
     }
 }
