@@ -167,5 +167,27 @@ namespace BusinessLogic.Test
 
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void CreateInvitationInvalidPharmacyNameShouldThrowError()
+        {
+            InvitationDto invitationToCreate = new InvitationDto()
+            {
+                UserName = "cris01",
+                RoleName = "x",
+                PharmacyName = "Farmashop"
+            };
+
+            _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Throws(new ResourceNotFoundException(""));
+             _roleLogic.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
+            {
+                Name = invitationToCreate.RoleName
+            });
+            _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
+
+
+            Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
+        }
     }
 }
