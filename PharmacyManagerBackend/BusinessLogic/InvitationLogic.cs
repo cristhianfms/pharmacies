@@ -77,7 +77,7 @@ namespace BusinessLogic
 
         public virtual Invitation GetInvitationByCode(string invitationCode)
         {
-            throw new NotImplementedException();
+            return _invitationRepository.GetFirst(i => i.Code == invitationCode);
         }
 
         public virtual void Delete(int id)

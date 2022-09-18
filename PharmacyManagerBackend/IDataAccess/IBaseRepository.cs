@@ -8,5 +8,6 @@ namespace IDataAccess
     {
         T Create(T entity);
         IEnumerable<T> GetAll(Func<T, bool> expresion = null);
+        T GetFirst(Func<T, bool> expresion);
     }
 }
