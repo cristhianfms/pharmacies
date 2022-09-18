@@ -31,8 +31,6 @@ namespace BusinessLogic
             Pharmacy pharmacy = getExistantPharmacy(invitationDto.PharmacyName);
             Role role = getExistantRole(invitationDto.RoleName);
 
-            _roleLogic.GetRoleByName(invitationDto.RoleName);
-
             Invitation invitationToCreate = new Invitation()
             {
                 UserName = invitationDto.UserName,

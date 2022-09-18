@@ -189,5 +189,29 @@ namespace BusinessLogic.Test
 
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
         }
+
+
+        [TestMethod]
+        public void GetInvitationByCodeOk()
+        {
+            string invitationCode = "123456";
+            Invitation invitationRepository = new Invitation()
+            {
+                Id = 1,
+                UserName = "cris01",
+                Role = new Role()
+                {
+                    Name = "Employee"
+                },
+                Code = invitationCode
+            };
+            
+            _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(invitationRepository);
+
+
+            Invitation invitationReturned = _invitationLogic.GetInvitationByCode(invitationCode);
+
+            Assert.AreEqual(invitationRepository, invitationReturned);
+        }
     }
 }
