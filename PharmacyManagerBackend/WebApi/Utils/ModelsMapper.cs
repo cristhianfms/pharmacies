@@ -34,8 +34,15 @@ namespace WebApi.Utils
             {
                 Id = invitationModel.Id,
                 UserName = invitationModel.UserName,
-                Role = invitationModel.Role,
-                Code = invitationModel.Code
+                Role = new Role()
+                {
+                    Name = invitationModel.RoleName
+                },
+                Code = invitationModel.Code,
+                Pharmacy = new Pharmacy()
+                {
+                    Name = invitationModel.PharmacyName
+                }
             };
         }
 
@@ -45,8 +52,9 @@ namespace WebApi.Utils
             {
                 Id = invitation.Id,
                 UserName = invitation.UserName,
-                Role = invitation.Role,
-                Code = invitation.Code
+                RoleName = invitation.Role.Name,
+                Code = invitation.Code,
+                PharmacyName = invitation.Pharmacy.Name
             };
         }
 
@@ -67,20 +75,24 @@ namespace WebApi.Utils
             };
         }
 
-        public static User ToEntity(UserModel userModel)
+        public static UserDto ToEntity(UserRequestModel userRequestModel)
         {
-            return new User
+            return new UserDto
             {
-                UserName = userModel.UserName,
-                Email = userModel.Email,
-                Address = userModel.Address
+                UserName = userRequestModel.UserName,
+                InvitationCode = userRequestModel.InvitationCode,
+                Email = userRequestModel.Email,
+                Address = userRequestModel.Address,
+                Password = userRequestModel.Password
             };
         }
-        public static UserModel ToModel(User user)
+        public static UserResponseModel ToModel(User user)
         {
-            return new UserModel
+            return new UserResponseModel
             {
+                Id = user.Id,
                 UserName = user.UserName,
+                Role = user.Role.Name,
                 Email = user.Email,
                 Address = user.Address
             };
@@ -122,6 +134,8 @@ namespace WebApi.Utils
             {
                 DrugQuantity = solicitudeItem.DrugQuantity,
                 DrugCode = solicitudeItem.DrugCode,
+                Address = user.Address,
+                PharmacyName = user.Pharmacy.Name
             };
         }
     }

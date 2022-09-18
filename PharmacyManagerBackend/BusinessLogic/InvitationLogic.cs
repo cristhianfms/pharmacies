@@ -13,6 +13,8 @@ namespace BusinessLogic
         private UserLogic _userLogic;
         private RoleLogic _roleLogic;
 
+        public InvitationLogic(){}
+
         public InvitationLogic(IInvitationRepository invitationRepository, UserLogic userLogic, RoleLogic roleLogic)
         {
             this._invitationRepository = invitationRepository;
@@ -29,6 +31,16 @@ namespace BusinessLogic
             Invitation createdInvitation = _invitationRepository.Create(invitation);
 
             return createdInvitation;
+        }
+
+        public virtual Invitation GetInvitationByCode(string invitationCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Delete(int id)
+        {
+            throw new NotImplementedException();
         }
 
         private void checkIfUserNameIsRepeated(string userName)
