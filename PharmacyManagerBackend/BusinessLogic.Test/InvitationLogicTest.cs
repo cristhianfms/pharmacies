@@ -61,6 +61,43 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+        public void CreateNewInvitationRepeatedCodeOnceOK()
+        {
+            Invitation invitationRepository = new Invitation()
+            {
+                Id = 1,
+                UserName = "cris01",
+                Role = new Role()
+                {
+                    Name = "Employee"
+                },
+                Code = "123456"
+            };
+            Invitation invitationToCreate = new Invitation()
+            {
+                UserName = "cris01",
+                Role = new Role()
+                {
+                    Name = "Employee"
+                }
+            };
+            _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Throws(new ResourceNotFoundException(""));
+            _invitationRepository.Setup(m => m.Create(invitationToCreate)).Returns(invitationRepository);
+            _invitationRepository.SetupSequence(m => m.GetInvitationByCode(It.IsAny<string>()))
+                .Returns(new Invitation(){})
+                .Throws(new ResourceNotFoundException(""));
+            
+            Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
+
+            Assert.AreEqual(invitationRepository.Id, createdInvitation.Id);
+            Assert.AreEqual(invitationRepository.UserName, createdInvitation.UserName);
+            Assert.AreEqual(invitationRepository.Role.Name, createdInvitation.Role.Name);
+            Assert.IsTrue(createdInvitation.Code.Length == 6);
+            _userLogic.VerifyAll();
+            _invitationRepository.VerifyAll();
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ValidationException))]
         public void CreateInvitationWithoutNameShouldThrowError()
         {
