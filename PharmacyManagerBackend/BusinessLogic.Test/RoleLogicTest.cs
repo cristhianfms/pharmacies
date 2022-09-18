@@ -1,5 +1,6 @@
 using System;
 using Domain;
+using IDataAccess;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -15,7 +16,7 @@ namespace BusinessLogic.Test
         public void Initialize()
         {
             this._roleRepository = new Mock<IRoleRepository>(MockBehavior.Strict);
-            _roleLogic = new RoleLogic(this._roleLogic.Object);
+            _roleLogic = new RoleLogic(this._roleRepository.Object);
         }
 
         [TestMethod]
