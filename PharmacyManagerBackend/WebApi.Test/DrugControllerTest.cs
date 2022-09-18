@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebApi.Controllers;
 using WebApi.Models;
 using WebApi.Test.Utils;
+using System.Collections.Generic;
 
 namespace WebApi.Test
 {
@@ -63,5 +64,17 @@ namespace WebApi.Test
             Assert.IsTrue(result is OkObjectResult);
            
         }
+
+        [TestMethod]
+        public void GetAllDrugsOk()
+        {
+            _drugLogicMock.Setup(m => m.GetAllDrugs()).Verifiable();
+
+            var result = _drugApiController.GetAll(_drug);
+
+            Assert.IsTrue(result is OkObjectResult);
+
+        }
+
     }
 }

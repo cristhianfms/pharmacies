@@ -17,5 +17,9 @@ namespace BusinessLogic
             
         }
 
+        public virtual IEnumerable<Drug> GetAllDrugs()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

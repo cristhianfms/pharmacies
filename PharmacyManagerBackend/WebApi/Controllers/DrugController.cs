@@ -33,5 +33,11 @@ namespace WebApi.Controllers
            _drugLogic.DeleteDrug(drug);
             return Ok("Se elimino correctamente");
         }
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            //_drugLogic.GetAllDrugs();
+            return Ok();
+        }
     }
 }
