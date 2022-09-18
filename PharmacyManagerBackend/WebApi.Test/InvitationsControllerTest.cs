@@ -26,7 +26,14 @@ namespace WebApi.Test
             {
                 Id = 1,
                 UserName = "JuanPerez",
-                Role = new Role(),
+                Role = new Role()
+                {
+                    Name = "Employee"
+                },
+                Pharmacy = new Pharmacy()
+                {
+                    Name = "FarmaciaB"
+                },
                 Code = "2A5678BX"
             };
         }
@@ -40,8 +47,8 @@ namespace WebApi.Test
             {
                 Id = 1,
                 UserName = "JuanPerez",
-                RoleName = "Admin",
-                Code = "2A5678BX", 
+                RoleName = "Employee",
+                Code = "2A5678BX",
                 PharmacyName = "FarmaciaB"
             };
 

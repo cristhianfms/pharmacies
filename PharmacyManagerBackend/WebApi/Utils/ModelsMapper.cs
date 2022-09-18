@@ -32,8 +32,15 @@ namespace WebApi.Utils
             {
                 Id = invitationModel.Id,
                 UserName = invitationModel.UserName,
-                Role = invitationModel.Role,
-                Code = invitationModel.Code
+                Role = new Role()
+                {
+                    Name = invitationModel.RoleName
+                },
+                Code = invitationModel.Code,
+                Pharmacy = new Pharmacy()
+                {
+                    Name = invitationModel.PharmacyName
+                }
             };
         }
 
@@ -43,8 +50,9 @@ namespace WebApi.Utils
             {
                 Id = invitation.Id,
                 UserName = invitation.UserName,
-                Role = invitation.Role,
-                Code = invitation.Code
+                RoleName = invitation.Role.Name,
+                Code = invitation.Code,
+                PharmacyName = invitation.Pharmacy.Name
             };
         }
 
