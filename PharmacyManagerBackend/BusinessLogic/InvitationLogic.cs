@@ -15,26 +15,28 @@ namespace BusinessLogic
         private RoleLogic _roleLogic;
         private PharmacyLogic _pharmacyLogic;
 
-        public InvitationLogic(){}
+        public InvitationLogic() { }
 
         public InvitationLogic(IInvitationRepository invitationRepository, UserLogic userLogic, RoleLogic roleLogic, PharmacyLogic pharmacyLogic)
         {
             this._invitationRepository = invitationRepository;
             this._userLogic = userLogic;
             this._pharmacyLogic = pharmacyLogic;
+            this._roleLogic = roleLogic;
         }
 
         public virtual Invitation Create(InvitationDto invitationDto)
         {
             checkIfUserNameIsRepeated(invitationDto.UserName);
+            Pharmacy pharmacy = getExistantPharmacy(invitationDto.PharmacyName);
+            Role role = getExistantRole(invitationDto.RoleName);
 
-            Pharmacy pharmacy = _pharmacyLogic.GetPharmacyByName(invitationDto.PharmacyName);
-            
-            Invitation invitationToCreate = new Invitation(){
+            _roleLogic.GetRoleByName(invitationDto.RoleName);
+
+            Invitation invitationToCreate = new Invitation()
+            {
                 UserName = invitationDto.UserName,
-                Role = new Role(){
-                    Name = invitationDto.RoleName
-                },
+                Role = role,
                 Pharmacy = pharmacy
             };
 
@@ -44,6 +46,35 @@ namespace BusinessLogic
             Invitation createdInvitation = _invitationRepository.Create(invitationToCreate);
 
             return createdInvitation;
+        }
+
+        private Pharmacy getExistantPharmacy(string pharmacyName)
+        {
+            Pharmacy pharmacy;
+            try
+            {
+                pharmacy = _pharmacyLogic.GetPharmacyByName(pharmacyName);
+            }
+            catch (ResourceNotFoundException e)
+            {
+                throw new ValidationException("pharmacy doesn't exist");
+            }
+
+            return pharmacy;
+        }
+
+        private Role getExistantRole(string roleName)
+        {
+            Role role;
+            try
+            {
+                role = _roleLogic.GetRoleByName(roleName);
+            }
+            catch (ResourceNotFoundException e)
+            {
+                throw new ValidationException("role doesn't exist");
+            }
+            return role;
         }
 
         public virtual Invitation GetInvitationByCode(string invitationCode)
