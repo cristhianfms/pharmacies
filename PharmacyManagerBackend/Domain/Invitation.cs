@@ -7,22 +7,23 @@ namespace Domain
 {
     public class Invitation
     {
+        private string userName;
+        private Role role;
         public int Id { get; set; }
-        public string UserName { get; set; }
+        public string UserName
+        {
+            get { return userName; }
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                {
+                    throw new ValidationException("Name can't be empty");
+                }
+                userName = value;
+            }
+        }
         public int RoleId { get; set; }
         public Role Role { get; set; }
         public string Code { get; set; }
-
-        public void CheckIsValid()
-        {
-            if (String.IsNullOrEmpty(UserName))
-            {
-                throw new ValidationException("Name can't be empty");
-            }
-            else if (String.IsNullOrEmpty(Role.Name))
-            {
-                throw new ValidationException("Role can't be empty");
-            }
-        }
     }
 }
