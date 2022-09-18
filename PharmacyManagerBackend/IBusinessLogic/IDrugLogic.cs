@@ -7,6 +7,6 @@ namespace IBusinessLogic
     public interface IDrugLogic
     {
         Drug Create(Drug drug);
-        void DeleteDrug(Drug drug);
+        void Delete(Drug drug);
     }
 }
