@@ -49,7 +49,7 @@ namespace BusinessLogic.Test
             };
 
             _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Throws(new ResourceNotFoundException(""));
-            _invitationRepository.Setup(m => m.Create(invitationToCreate)).Returns(invitationRepository);
+            _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
             _invitationRepository.Setup(m => m.GetInvitationByCode(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
             
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
@@ -76,16 +76,14 @@ namespace BusinessLogic.Test
                 },
                 Code = "123456"
             };
-            Invitation invitationToCreate = new Invitation()
+            InvitationDto invitationToCreate = new InvitationDto()
             {
                 UserName = "cris01",
-                Role = new Role()
-                {
-                    Name = "Employee"
-                }
+                RoleName = "Employee"
             };
+
             _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Throws(new ResourceNotFoundException(""));
-            _invitationRepository.Setup(m => m.Create(invitationToCreate)).Returns(invitationRepository);
+            _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
             _invitationRepository.SetupSequence(m => m.GetInvitationByCode(It.IsAny<string>()))
                 .Returns(new Invitation(){})
                 .Throws(new ResourceNotFoundException(""));
@@ -114,17 +112,14 @@ namespace BusinessLogic.Test
                     Name = "Employee"
                 }
             };
-            Invitation invitationToCreate = new Invitation()
+            InvitationDto invitationToCreate = new InvitationDto()
             {
                 UserName = "cris01",
-                Role = new Role()
-                {
-                    Name = "Employee"
-                }
+                RoleName = "Employee"
             };
 
             _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Returns(new User());
-            _invitationRepository.Setup(m => m.Create(invitationToCreate)).Returns(invitationRepository);
+            _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
 
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
         }
@@ -133,17 +128,14 @@ namespace BusinessLogic.Test
         [ExpectedException(typeof(ValidationException))]
         public void CreateInvitationInvalidRoleNameShouldThrowError()
         {
-            Invitation invitationToCreate = new Invitation()
+            InvitationDto invitationToCreate = new InvitationDto()
             {
                 UserName = "cris01",
-                Role = new Role()
-                {
-                    Name = "Invalid"
-                }
+                RoleName = "Employee"
             };
 
-            _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Returns(new User());
-            _roleLogic.Setup(m => m.GetRoleByName(invitationToCreate.Role.Name)).Throws(new ResourceNotFoundException(""));
+            _userLogic.Setup(m => m.GetUserByUserName(  invitationToCreate.UserName)).Returns(new User());
+            _roleLogic.Setup(m => m.GetRoleByName(invitationToCreate.RoleName)).Throws(new ResourceNotFoundException(""));
 
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
         }

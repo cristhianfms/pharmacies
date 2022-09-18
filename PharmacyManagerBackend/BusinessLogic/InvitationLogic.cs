@@ -4,6 +4,7 @@ using IBusinessLogic;
 using Domain;
 using IDataAccess;
 using Exceptions;
+using Domain.Dtos;
 
 namespace BusinessLogic
 {
@@ -21,14 +22,24 @@ namespace BusinessLogic
             this._userLogic = userLogic;
         }
 
-        public virtual Invitation Create(Invitation invitation)
+        public virtual Invitation Create(InvitationDto invitationDto)
         {
-            checkIfUserNameIsRepeated(invitation.UserName);
+            checkIfUserNameIsRepeated(invitationDto.UserName);
+            
+            Invitation invitationToCreate = new Invitation(){
+                UserName = invitationDto.UserName,
+                Role = new Role(){
+                    Name = invitationDto.RoleName
+                },
+                Pharmacy = new Pharmacy(){
+                    Name = invitationDto.PharmacyName
+                }
+            };
 
             string codeGenerated = generateNewInvitationCode();
-            invitation.Code = codeGenerated;
+            invitationToCreate.Code = codeGenerated;
 
-            Invitation createdInvitation = _invitationRepository.Create(invitation);
+            Invitation createdInvitation = _invitationRepository.Create(invitationToCreate);
 
             return createdInvitation;
         }
