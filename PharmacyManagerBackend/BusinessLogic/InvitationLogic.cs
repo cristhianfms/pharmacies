@@ -21,7 +21,6 @@ namespace BusinessLogic
 
         public virtual Invitation Create(Invitation invitation)
         {
-            invitation.CheckIsValid();
             checkIfUserNameIsRepeated(invitation.UserName);
 
             string codeGenerated = generateNewInvitationCode();
