@@ -82,10 +82,5 @@ namespace BusinessLogic
 
             return invitation;
         }
-
-        public virtual User GetUserByUserName(string userName)
-        {
-            return null;
-        }
     }
 }

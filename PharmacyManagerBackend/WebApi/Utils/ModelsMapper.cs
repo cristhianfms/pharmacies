@@ -94,7 +94,8 @@ namespace WebApi.Utils
                 UserName = user.UserName,
                 Role = user.Role.Name,
                 Email = user.Email,
-                Address = user.Address
+                Address = user.Address,
+                PharmacyName = user.Pharmacy.Name
             };
         }
         public static Solicitude ToEntity(SolicitudeRequestModel solicitudeRequestModel)
@@ -133,9 +134,7 @@ namespace WebApi.Utils
             return new SolicitudeItemModel()
             {
                 DrugQuantity = solicitudeItem.DrugQuantity,
-                DrugCode = solicitudeItem.DrugCode,
-                Address = user.Address,
-                PharmacyName = user.Pharmacy.Name
+                DrugCode = solicitudeItem.DrugCode
             };
         }
     }
