@@ -3,7 +3,7 @@ using Domain;
 
 namespace IDataAccess
 {
-    public interface IUserRepository: IBaseRepository<User>
+    public interface IRoleRepository: IBaseRepository<Role>
     {
     }
 }

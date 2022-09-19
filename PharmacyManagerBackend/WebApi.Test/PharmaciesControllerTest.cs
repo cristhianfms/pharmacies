@@ -11,7 +11,7 @@ using WebApi.Test.Utils;
 namespace WebApi.Test
 {
     [TestClass]
-    public class PharmacyControllerTest
+    public class PharmaciesControllerTest
     {
         private Mock<IPharmacyLogic> _pharmacyLogicMock;
         private PharmaciesController _pharmacyApiController;

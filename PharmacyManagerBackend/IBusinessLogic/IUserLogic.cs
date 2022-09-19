@@ -5,6 +5,6 @@ namespace IBusinessLogic
 {
     public interface IUserLogic
     {
-        User Create(User user);
+        User Create(UserDto userDto);
     }
 }

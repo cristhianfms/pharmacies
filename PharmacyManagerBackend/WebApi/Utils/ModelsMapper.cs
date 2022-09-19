@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Domain;
 using Domain.Dtos;
 using WebApi.Models;
@@ -24,14 +26,13 @@ namespace WebApi.Utils
             };
         }
 
-        public static Invitation ToEntity(InvitationModel invitationModel)
+        public static InvitationDto ToEntity(InvitationModel invitationModel)
         {
-            return new Invitation
+            return new InvitationDto
             {
-                Id = invitationModel.Id,
                 UserName = invitationModel.UserName,
-                Role = invitationModel.Role,
-                Code = invitationModel.Code
+                RoleName = invitationModel.RoleName,
+                PharmacyName = invitationModel.PharmacyName
             };
         }
 
@@ -41,8 +42,9 @@ namespace WebApi.Utils
             {
                 Id = invitation.Id,
                 UserName = invitation.UserName,
-                Role = invitation.Role,
-                Code = invitation.Code
+                RoleName = invitation.Role.Name,
+                Code = invitation.Code,
+                PharmacyName = invitation.Pharmacy.Name
             };
         }
 
@@ -63,22 +65,27 @@ namespace WebApi.Utils
             };
         }
 
-        public static User ToEntity(UserModel userModel)
+        public static UserDto ToEntity(UserRequestModel userRequestModel)
         {
-            return new User
+            return new UserDto
             {
-                UserName = userModel.UserName,
-                Email = userModel.Email,
-                Address = userModel.Address
+                UserName = userRequestModel.UserName,
+                InvitationCode = userRequestModel.InvitationCode,
+                Email = userRequestModel.Email,
+                Address = userRequestModel.Address,
+                Password = userRequestModel.Password
             };
         }
-        public static UserModel ToModel(User user)
+        public static UserResponseModel ToModel(User user)
         {
-            return new UserModel
+            return new UserResponseModel
             {
+                Id = user.Id,
                 UserName = user.UserName,
+                Role = user.Role.Name,
                 Email = user.Email,
-                Address = user.Address
+                Address = user.Address,
+                PharmacyName = user.Pharmacy.Name
             };
         }
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BusinessLogic;
 using Domain;
 using Moq;
 using Microsoft.AspNetCore.Mvc;
@@ -7,26 +6,35 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebApi.Controllers;
 using WebApi.Models;
 using WebApi.Test.Utils;
+using IBusinessLogic;
+using Domain.Dtos;
 
 namespace WebApi.Test
 {
     [TestClass]
-    public class InvitationControllerTest
+    public class InvitationsControllerTest
     {
-        private Mock<InvitationLogic> _invitationLogicMock;
+        private Mock<IInvitationLogic> _invitationLogicMock;
         private InvitationController _invitationApiController;
         private Invitation _invitation;
 
         [TestInitialize]
         public void InitTest()
         {
-            _invitationLogicMock = new Mock<InvitationLogic>(MockBehavior.Strict);
+            _invitationLogicMock = new Mock<IInvitationLogic>(MockBehavior.Strict);
             _invitationApiController = new InvitationController(_invitationLogicMock.Object);
             _invitation = new Invitation()
             {
                 Id = 1,
                 UserName = "JuanPerez",
-                Role = new Role(),
+                Role = new Role()
+                {
+                    Name = "Employee"
+                },
+                Pharmacy = new Pharmacy()
+                {
+                    Name = "FarmaciaB"
+                },
                 Code = "2A5678BX"
             };
         }
@@ -35,13 +43,14 @@ namespace WebApi.Test
         [TestMethod]
         public void CreateInvitationOk()
         {
-            _invitationLogicMock.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(_invitation);
+            _invitationLogicMock.Setup(m => m.Create(It.IsAny<InvitationDto>())).Returns(_invitation);
             var invitationModel = new InvitationModel()
             {
                 Id = 1,
                 UserName = "JuanPerez",
-                Role = new Role(),
-                Code = "2A5678BX"
+                RoleName = "Employee",
+                Code = "2A5678BX",
+                PharmacyName = "FarmaciaB"
             };
 
 

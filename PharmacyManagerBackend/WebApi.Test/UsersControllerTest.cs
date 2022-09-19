@@ -11,7 +11,7 @@ using WebApi.Test.Utils;
 namespace WebApi.Test
 {
     [TestClass]
-    public class UserControllerTest
+    public class UsersControllerTest
     {
         private Mock<IUserLogic> _userLogicMock;
         private UsersController _userApiController;
@@ -24,29 +24,43 @@ namespace WebApi.Test
             _userApiController = new UsersController(_userLogicMock.Object);
             _user = new User()
             {
+                Id = 1,
                 UserName = "Usuario1",
                 Email = "ususario@user.com",
                 Address = "Cuareim 123",
                 Password = "Usuario+1",
+                Pharmacy = new Pharmacy()
+                {
+                    Name = "Pharmashop"
+                },
+                Role = new Role()
+                {
+                    Name = "Employee"
+                }
             };
         }
 
         [TestMethod]
         public void CreateUserOk()
         {
-            _userLogicMock.Setup(m => m.Create(It.IsAny<User>())).Returns(_user);
-            var userModel = new UserModel()
+            _userLogicMock.Setup(m => m.Create(It.IsAny<UserDto>())).Returns(_user);
+            var userToCreate = new UserRequestModel()
             {
                 UserName = "Usuario1",
                 Email = "ususario@user.com",
                 Address = "Cuareim 123",
+                InvitationCode = "123456",
+                Password = "Usuario+1"
             };
 
-            var result = _userApiController.Create(userModel);
+            var result = _userApiController.Create(userToCreate);
             var okResult = result as OkObjectResult;
-            var createdUser = okResult.Value as UserModel;
+            var createdUserModel = okResult.Value as UserResponseModel;
 
-            Assert.IsTrue(ModelsComparer.UserCompare(userModel, createdUser));
+            Assert.AreEqual(_user.Pharmacy.Name, createdUserModel.PharmacyName);
+            Assert.AreEqual(_user.Role.Name, createdUserModel.Role);
+            Assert.AreEqual(_user.Id, createdUserModel.Id);
+            Assert.IsTrue(ModelsComparer.UserCompare(userToCreate, createdUserModel));
             _userLogicMock.VerifyAll();
         }
 
