@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using DataAccess.Context;
 using Domain;
+using Exceptions;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -202,6 +203,14 @@ namespace DataAccess.Test
             User returnedUser = this._userRepository.GetFirst(expresion);
 
             Assert.AreEqual(userB.UserName, returnedUser.UserName);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ResourceNotFoundException))]
+        public void GetFirstShoudlThrowExcptionWhenUserNotExists()
+        {
+            Func<User, bool> expresion = c => c.UserName == "Rick";
+            User returnedUser = this._userRepository.GetFirst(expresion);
         }
     }
 }
