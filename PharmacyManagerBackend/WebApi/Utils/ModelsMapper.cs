@@ -125,6 +125,7 @@ namespace WebApi.Utils
                 Id = solicitude.Id,
                 State = solicitude.State,
                 Date = solicitude.Date,
+                EmployeeUserName = solicitude.Employee.UserName,
                 SolicitudeItems = solicitudeItems
             };
         }
@@ -136,6 +137,15 @@ namespace WebApi.Utils
                 DrugQuantity = solicitudeItem.DrugQuantity,
                 DrugCode = solicitudeItem.DrugCode
             };
+        }
+        public static List <SolicitudeResponseModel> ToModelList(List<Solicitude> solicitudes)
+        {
+            List <SolicitudeResponseModel> solicitudeResponseModels = new List <SolicitudeResponseModel>();
+            foreach (Solicitude _solicitude in solicitudes)
+            {
+               solicitudeResponseModels.Add(ToModel(_solicitude));
+            }
+            return solicitudeResponseModels;
         }
     }
 }
