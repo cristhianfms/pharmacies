@@ -74,5 +74,35 @@ namespace DataAccess.Test
                 Assert.AreEqual(createdUser, userInDB);
             }
         }
+
+        [TestMethod]
+        public void GetAllUsersOK()
+        {
+            User userInRepository = new User()
+            {
+                UserName = "Cris",
+                Role = new Role()
+                {
+                    Name = "ADMIN"
+                },
+                Email = "cris@gmail.com",
+                Address = "Address",
+                Password = "Password",
+                RegistrationDate = DateTime.Now,
+                Pharmacy = new Pharmacy()
+                {
+                    Name = "Pharmashop"
+                }
+            };
+            List<User> users = new List<User>() { userInRepository };
+            using (var context = new PharmacyManagerContext(this._contextOptions))
+            {
+                context.AddRange(users);
+                context.SaveChanges();
+            }
+
+            List<User> returnedUsers = this._userRepository.GetAll().ToList();
+            Assert.IsTrue(returnedUsers.Exists(user => user == userInRepository));
+        }
     }
 }
