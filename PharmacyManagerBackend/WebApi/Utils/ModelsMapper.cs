@@ -26,21 +26,13 @@ namespace WebApi.Utils
             };
         }
 
-        public static Invitation ToEntity(InvitationModel invitationModel)
+        public static InvitationDto ToEntity(InvitationModel invitationModel)
         {
-            return new Invitation
+            return new InvitationDto
             {
-                Id = invitationModel.Id,
                 UserName = invitationModel.UserName,
-                Role = new Role()
-                {
-                    Name = invitationModel.RoleName
-                },
-                Code = invitationModel.Code,
-                Pharmacy = new Pharmacy()
-                {
-                    Name = invitationModel.PharmacyName
-                }
+                RoleName = invitationModel.RoleName,
+                PharmacyName = invitationModel.PharmacyName
             };
         }
 

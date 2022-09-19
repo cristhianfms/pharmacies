@@ -26,5 +26,10 @@ namespace DataAccess
         {
             throw new NotImplementedException();
         }
+
+        public T GetFirst(Func<T, bool> expresion)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

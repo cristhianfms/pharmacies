@@ -53,19 +53,7 @@ namespace BusinessLogic
 
         public virtual User GetUserByUserName(string userName)
         {
-            IEnumerable<User> users = _userRepository.GetAll(u => u.UserName == userName);
-
-            User userToReturn;
-            try
-            {
-                userToReturn = users.First();
-            }
-            catch (InvalidOperationException e)
-            {
-                throw new ResourceNotFoundException("username doesn't exist");
-            }
-
-            return userToReturn;
+            return _userRepository.GetFirst(u => u.UserName == userName);
         }
 
         private Invitation getCreatedInvitation(string invitationCode)

@@ -1,4 +1,5 @@
 using Domain;
+using Domain.Dtos;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
@@ -20,8 +21,8 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] InvitationModel invitationModel)
         {
-            Invitation invitation = ModelsMapper.ToEntity(invitationModel);
-            Invitation invitationCreated = _invitationLogic.Create(invitation);
+            InvitationDto invitationToCreate = ModelsMapper.ToEntity(invitationModel);
+            Invitation invitationCreated = _invitationLogic.Create(invitationToCreate);
             InvitationModel invitationCreatedModel = ModelsMapper.ToModel(invitationCreated);
 
             return Ok(invitationCreatedModel);
