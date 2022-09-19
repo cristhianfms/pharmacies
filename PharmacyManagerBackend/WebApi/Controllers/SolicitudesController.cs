@@ -1,10 +1,10 @@
 ﻿using Domain;
+using Domain.Dtos;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using WebApi.Models;
 using WebApi.Utils;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApi.Controllers
 {
@@ -18,6 +18,7 @@ namespace WebApi.Controllers
             this._solicitudeLogic = solicitudeLogic;
         }
 
+
         [HttpPost]
         public IActionResult Create([FromBody] SolicitudeRequestModel solicitudeRequestModel)
         {
@@ -26,6 +27,15 @@ namespace WebApi.Controllers
             SolicitudeResponseModel solicitudeResponseModel = ModelsMapper.ToModel(solicitudeCreated);
 
             return Ok(solicitudeResponseModel);
+        }
+
+
+        [HttpGet]
+        public IActionResult GetSolicitudes([FromQuery] QuerySolicitudeDto querySolicitudeDto)
+        {
+            List <Solicitude> solicitudes = _solicitudeLogic.GetSolicitudes(querySolicitudeDto);
+            List <SolicitudeResponseModel> solicitudeModels = ModelsMapper.ToModelList(solicitudes);
+            return Ok(solicitudeModels);
         }
     }
 }
