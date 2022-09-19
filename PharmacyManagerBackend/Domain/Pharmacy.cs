@@ -9,8 +9,7 @@ namespace Domain
         public string Name { get; set; }
         public string Address { get; set; }
         public virtual List<Drug> Drugs { get; set; }
-        //public virtual List <User> Employees { get; set; }
-        
-        //public User Owner { get; set; }
+        public virtual List <User> Employees { get; set; }
+        public User Owner { get; set; }
     }
 }

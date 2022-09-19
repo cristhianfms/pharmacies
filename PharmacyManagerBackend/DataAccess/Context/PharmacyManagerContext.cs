@@ -38,7 +38,6 @@ namespace DataAccess.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-
             // Roles
             Role admin = new Role() { Id = 1, Name = "ADMIN" };
             Role owner = new Role() { Id = 2, Name = "OWNER" };
