@@ -12,7 +12,7 @@ namespace BusinessLogic
             return null;
         }
 
-        public virtual void DeleteDrug(Drug drug)
+        public virtual void Delete(Drug drug)
         {
 
         }

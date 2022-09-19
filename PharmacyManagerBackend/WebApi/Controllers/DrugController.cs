@@ -31,7 +31,7 @@ namespace WebApi.Controllers
         [HttpDelete]
         public IActionResult Delete(Drug drug)
         {
-            _drugLogic.DeleteDrug(drug);
+            _drugLogic.Delete(drug);
             return Ok("Se elimino correctamente");
         }
 

@@ -58,7 +58,7 @@ namespace WebApi.Test
         [TestMethod]
         public void DeleteDrugOk()
         {
-            _drugLogicMock.Setup(m => m.DeleteDrug(_drug)).Verifiable();
+            _drugLogicMock.Setup(m => m.Delete(_drug)).Verifiable();
 
             var result = _drugApiController.Delete(_drug);
 
