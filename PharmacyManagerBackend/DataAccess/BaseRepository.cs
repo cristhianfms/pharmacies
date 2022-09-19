@@ -7,6 +7,15 @@ namespace DataAccess
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
+
+        private readonly DbContext _context;
+        private readonly DbSet<T> _table;
+        public BaseRepository(DbContext dbContext)
+        {
+            this._context = dbContext;
+            this._table = _context.Set<T>();
+        }
+        
         public Session Create(Session session)
         {
             throw new NotImplementedException();
