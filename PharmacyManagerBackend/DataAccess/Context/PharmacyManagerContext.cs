@@ -7,11 +7,12 @@ namespace DataAccess.Context
 {
     public class PharmacyManagerContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<Session> Sessions { get; set; }
-        public DbSet<Invitation> Invitations { get; set; }
-        public DbSet<Pharmacy> Pharmacies { get; set; }
+        public DbSet<User> UserDB { get; set; }
+        public DbSet<Role> RoleDB { get; set; }
+        public DbSet<Session> SessionDB { get; set; }
+        public DbSet<Invitation> InvitationDB { get; set; }
+        public DbSet<Pharmacy> PharmacieDB { get; set; }
+        public DbSet<Drug> DrugDB { get; set; }
 
         public PharmacyManagerContext(DbContextOptions options) : base(options)
         {
@@ -36,10 +37,7 @@ namespace DataAccess.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //TODO: delete after tests
-            modelBuilder.Entity<Pharmacy>().HasData(
-                new Pharmacy() { Id = 1, Name = "pharmacy", Address = "address 1" }
-            );
+
 
             // Roles
             Role admin = new Role() { Id = 1, Name = "ADMIN" };
@@ -49,6 +47,11 @@ namespace DataAccess.Context
                 admin,
                 owner,
                 employee
+            );
+
+            //TODO: delete after tests
+            modelBuilder.Entity<Pharmacy>().HasData(
+                new Pharmacy() { Id = 1, Name = "pharmacy", Address = "address 1" }
             );
 
             // Users

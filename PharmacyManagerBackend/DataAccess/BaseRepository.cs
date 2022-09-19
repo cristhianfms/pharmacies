@@ -18,7 +18,10 @@ namespace DataAccess
 
         public T Create(T entity)
         {
-            throw new NotImplementedException();
+            _table.Add(entity);
+            _context.SaveChanges();
+            
+            return entity;
         }
 
         public IEnumerable<T> GetAll(Func<T, bool> expresion = null)

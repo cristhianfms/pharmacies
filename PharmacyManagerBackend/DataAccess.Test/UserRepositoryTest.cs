@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DataAccess.Context;
@@ -14,17 +15,21 @@ namespace DataAccess.Test
     {
         private DbConnection _connection;
         private BaseRepository<User> _userRepository;
+        private BaseRepository<Role> _roleRepository;
+        private BaseRepository<Pharmacy> _pharmacyRepository;
+
         private PharmacyManagerContext _pharmacyManagerContext;
         private DbContextOptions<PharmacyManagerContext> _contextOptions;
 
-        [TestMethod]
-        public void ConcertRepositoryTest()
+        public UserRepositoryTest()
         {
             this._connection = new SqliteConnection("Filename=:memory:");
             this._contextOptions = new DbContextOptionsBuilder<PharmacyManagerContext>().UseSqlite(this._connection).Options;
 
             this._pharmacyManagerContext = new PharmacyManagerContext(this._contextOptions);
             this._userRepository = new BaseRepository<User>(this._pharmacyManagerContext);
+            this._roleRepository = new BaseRepository<Role>(this._pharmacyManagerContext);
+            this._pharmacyRepository = new BaseRepository<Pharmacy>(this._pharmacyManagerContext);
         }
 
         [TestInitialize]
@@ -48,7 +53,7 @@ namespace DataAccess.Test
                 UserName = "Cris",
                 Role = new Role()
                 {
-                    Id = 1
+                    Name = "ADMIN"
                 },
                 Email = "cris@gmail.com",
                 Address = "Address",
@@ -56,7 +61,7 @@ namespace DataAccess.Test
                 RegistrationDate = DateTime.Now,
                 Pharmacy = new Pharmacy()
                 {
-                    Id = 1
+                    Name = "Pharmashop"
                 }
             };
 
@@ -65,11 +70,9 @@ namespace DataAccess.Test
             using (var context = new PharmacyManagerContext(this._contextOptions))
             {
                 var users = context.Set<User>();
-                Assert.AreEqual(1, users.Count());
                 User userInDB = users.FirstOrDefault(user => user.Id == createdUser.Id);
                 Assert.AreEqual(createdUser, userInDB);
             }
         }
-        
     }
 }
