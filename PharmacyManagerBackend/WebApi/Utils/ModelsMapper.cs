@@ -34,7 +34,7 @@ namespace WebApi.Utils
                 Code = invitationModel.Code
             };
         }
-        
+
         public static InvitationModel ToModel(Invitation invitation)
         {
             return new InvitationModel
@@ -62,13 +62,13 @@ namespace WebApi.Utils
                 Token = tokenDto.Token
             };
         }
-        
+
         public static User ToEntity(UserModel userModel)
         {
             return new User
             {
                 UserName = userModel.UserName,
-                Email    = userModel.Email,
+                Email = userModel.Email,
                 Address = userModel.Address
             };
         }
@@ -77,8 +77,32 @@ namespace WebApi.Utils
             return new UserModel
             {
                 UserName = user.UserName,
-                Email    = user.Email,
+                Email = user.Email,
                 Address = user.Address
+            };
+        }
+
+        public static Drug ToEntity(DrugModel drugModel)
+        {
+            return new Drug
+            {
+                Id = drugModel.Id,
+                DrugCode = drugModel.DrugCode,
+                NeedsPrescription = drugModel.NeedsPrescription,
+                Price = drugModel.Price,
+                Stock = drugModel.Stock
+            };
+        }
+
+        public static DrugModel ToModel(Drug drug)
+        {
+            return new DrugModel
+            {
+                Id = drug.Id,
+                DrugCode = drug.DrugCode,
+                NeedsPrescription = drug.NeedsPrescription,
+                Price = drug.Price,
+                Stock = drug.Stock
             };
         }
     }
