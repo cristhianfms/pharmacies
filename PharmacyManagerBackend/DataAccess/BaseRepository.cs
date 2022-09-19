@@ -44,7 +44,9 @@ namespace DataAccess
 
         public T GetFirst(Func<T, bool> expresion)
         {
-            throw new NotImplementedException();
+            IEnumerable<T> entities = _table.Where(expresion);
+            
+            return entities.First(expresion);
         }
     }
 }
