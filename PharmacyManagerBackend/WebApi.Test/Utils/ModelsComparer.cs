@@ -21,5 +21,9 @@ namespace WebApi.Test.Utils
                 && user1.Address.Equals(user2.Address);
         }
 
+        public static bool DrugCompare(DrugModel drug1, DrugModel drug2)
+        {
+            return drug1.Id == drug2.Id && drug1.DrugCode.Equals(drug2.DrugCode);
+        }
     }
 }

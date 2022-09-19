@@ -88,5 +88,29 @@ namespace WebApi.Utils
                 PharmacyName = user.Pharmacy.Name
             };
         }
+
+        public static Drug ToEntity(DrugModel drugModel)
+        {
+            return new Drug
+            {
+                Id = drugModel.Id,
+                DrugCode = drugModel.DrugCode,
+                NeedsPrescription = drugModel.NeedsPrescription,
+                Price = drugModel.Price,
+                Stock = drugModel.Stock
+            };
+        }
+
+        public static DrugModel ToModel(Drug drug)
+        {
+            return new DrugModel
+            {
+                Id = drug.Id,
+                DrugCode = drug.DrugCode,
+                NeedsPrescription = drug.NeedsPrescription,
+                Price = drug.Price,
+                Stock = drug.Stock
+            };
+        }
     }
 }
