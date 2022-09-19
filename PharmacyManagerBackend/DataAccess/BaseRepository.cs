@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using Domain;
 using IDataAccess;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-
         private readonly DbContext _context;
         private readonly DbSet<T> _table;
         public BaseRepository(DbContext dbContext)
@@ -15,18 +15,8 @@ namespace DataAccess
             this._context = dbContext;
             this._table = _context.Set<T>();
         }
-        
-        public Session Create(Session session)
-        {
-            throw new NotImplementedException();
-        }
 
         public T Create(T entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Session FindSessionByUserId(int id)
         {
             throw new NotImplementedException();
         }

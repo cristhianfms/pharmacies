@@ -20,12 +20,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Test", "Domain.Test\Domain.Test.csproj", "{79482D85-27CD-448F-B04E-4140572EB56E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{1ED05E92-85F0-4237-BDFB-7AE8BD82F4A0}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations", "Migrations\Migrations.csproj", "{F8B44FE5-A128-4B24-ABAC-8DCD81DD6BA6}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Test", "DataAccess.Test\DataAccess.Test.csproj", "{40BD243D-DD10-447D-BE1B-DB455FCCD4D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDataAccess", "IDataAccess\IDataAccess.csproj", "{B98F302F-0552-4701-A465-098D824AEE40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "Exceptions\Exceptions.csproj", "{6B8E936A-B56B-4EC8-AD7B-571978FA7C39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Test", "DataAccess.Test\DataAccess.Test.csproj", "{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -196,5 +196,17 @@ Global
 		{6B8E936A-B56B-4EC8-AD7B-571978FA7C39}.Release|x64.Build.0 = Release|Any CPU
 		{6B8E936A-B56B-4EC8-AD7B-571978FA7C39}.Release|x86.ActiveCfg = Release|Any CPU
 		{6B8E936A-B56B-4EC8-AD7B-571978FA7C39}.Release|x86.Build.0 = Release|Any CPU
+		{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}.Debug|x64.Build.0 = Debug|Any CPU
+		{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}.Debug|x86.Build.0 = Debug|Any CPU
+		{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}.Release|x64.ActiveCfg = Release|Any CPU
+		{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}.Release|x64.Build.0 = Release|Any CPU
+		{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}.Release|x86.ActiveCfg = Release|Any CPU
+		{82C3D5D0-B97B-47E4-A314-16AFF7AEDB17}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
