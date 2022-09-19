@@ -102,7 +102,106 @@ namespace DataAccess.Test
             }
 
             List<User> returnedUsers = this._userRepository.GetAll().ToList();
-            Assert.IsTrue(returnedUsers.Exists(user => user == userInRepository));
+            Assert.IsTrue(returnedUsers.Exists(user => user.UserName == userInRepository.UserName));
+        }
+
+        [TestMethod]
+        public void GetAllUsersWithExpresion()
+        {
+            User userA = new User()
+            {
+                UserName = "Cris",
+                Role = new Role()
+                {
+                    Name = "ADMIN"
+                },
+                Email = "cris@gmail.com",
+                Address = "Address",
+                Password = "Password",
+                RegistrationDate = DateTime.Now,
+                Pharmacy = new Pharmacy()
+                {
+                    Name = "Pharmashop"
+                }
+            };
+            User userB = new User()
+            {
+                UserName = "Rick",
+                Role = new Role()
+                {
+                    Name = "ADMIN"
+                },
+                Email = "rick@gmail.com",
+                Address = "Address b",
+                Password = "Password+b",
+                RegistrationDate = DateTime.Now,
+                Pharmacy = new Pharmacy()
+                {
+                    Name = "PharmaMall"
+                }
+            };
+            var usersInBD = new List<User> { userA, userB };
+            var usersExpected = new List<User> { userB };
+            using (var context = new PharmacyManagerContext(this._contextOptions))
+            {
+                context.AddRange(usersInBD);
+                context.SaveChanges();
+            }
+
+            Func<User, bool> expresion = c => c.UserName == "Rick";
+            List<User> returnedUsers = this._userRepository.GetAll(expresion).ToList();
+
+            Assert.AreEqual(usersExpected.Count(), returnedUsers.Count());
+            Assert.AreEqual(usersExpected[0].UserName, returnedUsers[0].UserName);
+        }
+
+        [TestMethod]
+        public void GetFirstOk()
+        {
+            User userA = new User()
+            {
+                UserName = "Cris",
+                Role = new Role()
+                {
+                    Name = "ADMIN"
+                },
+                Email = "cris@gmail.com",
+                Address = "Address",
+                Password = "Password",
+                RegistrationDate = DateTime.Now,
+                Pharmacy = new Pharmacy()
+                {
+                    Name = "Pharmashop"
+                }
+            };
+            User userB = new User()
+            {
+                UserName = "Rick",
+                Role = new Role()
+                {
+                    Name = "ADMIN"
+                },
+                Email = "rick@gmail.com",
+                Address = "Address b",
+                Password = "Password+b",
+                RegistrationDate = DateTime.Now,
+                Pharmacy = new Pharmacy()
+                {
+                    Name = "PharmaMall"
+                }
+            };
+            var usersInBD = new List<User> { userA, userB };
+            var usersExpected = new List<User> { userB };
+            using (var context = new PharmacyManagerContext(this._contextOptions))
+            {
+                context.AddRange(usersInBD);
+                context.SaveChanges();
+            }
+
+            Func<User, bool> expresion = c => c.UserName == userB.UserName;
+            User returnedUser = this._userRepository.GetFirst(expresion);
+
+            Assert.AreEqual(userB.UserName, returnedUser.UserName);
         }
     }
 }
