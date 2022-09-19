@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Domain;
+using Exceptions;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,8 +46,17 @@ namespace DataAccess
         public T GetFirst(Func<T, bool> expresion)
         {
             IEnumerable<T> entities = _table.Where(expresion);
-            
-            return entities.First(expresion);
+            T entityToReturn;
+            try
+            {
+                entityToReturn = entities.First(expresion);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ResourceNotFoundException("resource not found");
+            }
+
+            return entityToReturn;
         }
     }
 }
