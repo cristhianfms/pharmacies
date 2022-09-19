@@ -32,7 +32,7 @@ namespace BusinessLogic
                 UserName = invitation.UserName,
                 Role = invitation.Role,
                 Email = userDto.Email,
-                Address = userDto.Password,
+                Address = userDto.Address,
                 Password = userDto.Password,
                 RegistrationDate = DateTime.Now,
                 Pharmacy = invitation.Pharmacy

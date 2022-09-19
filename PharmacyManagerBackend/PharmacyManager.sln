@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IDataAccess", "IDataAccess\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exceptions", "Exceptions\Exceptions.csproj", "{59E34DC7-FD8D-4E1B-AA3A-7D095859C902}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Test", "DataAccess.Test\DataAccess.Test.csproj", "{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,6 +183,18 @@ Global
 		{59E34DC7-FD8D-4E1B-AA3A-7D095859C902}.Release|x64.Build.0 = Release|Any CPU
 		{59E34DC7-FD8D-4E1B-AA3A-7D095859C902}.Release|x86.ActiveCfg = Release|Any CPU
 		{59E34DC7-FD8D-4E1B-AA3A-7D095859C902}.Release|x86.Build.0 = Release|Any CPU
+		{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}.Debug|x64.Build.0 = Debug|Any CPU
+		{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}.Debug|x86.Build.0 = Debug|Any CPU
+		{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}.Release|x64.ActiveCfg = Release|Any CPU
+		{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}.Release|x64.Build.0 = Release|Any CPU
+		{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}.Release|x86.ActiveCfg = Release|Any CPU
+		{D6914CF6-A6B0-4444-83A9-A18CFB6044CA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
