@@ -1,4 +1,9 @@
+using Domain;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Models;
+using WebApi.Utils;
+using System.Collections.Generic;
+using IBusinessLogic;
 
 namespace WebApi.Controllers;
 
@@ -6,9 +11,9 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 public class DrugController : ControllerBase
 {
-    private DrugLogic _drugLogic;
+    private IDrugLogic _drugLogic;
 
-    public DrugController(DrugLogic drugLogic)
+    public DrugController(IDrugLogic drugLogic)
     {
         this._drugLogic = drugLogic;
     }

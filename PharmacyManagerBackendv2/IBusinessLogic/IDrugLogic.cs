@@ -7,5 +7,7 @@ public interface IDrugLogic
 {
     Drug Create(Drug drug);
     void Delete(Drug drug);
+    IEnumerable<Drug> GetAllDrugs();
+    Drug GetDrug(Drug drug);
 }
 
