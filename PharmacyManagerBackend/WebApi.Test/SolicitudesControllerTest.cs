@@ -186,26 +186,30 @@ namespace WebApi.Test
         [TestMethod]
         public void UpdateSolicitudeStateOk()
         {
-            Solicitude solicitudeToBeUpdate = new Solicitude()
+
+            SolicitudeResponseModel solicitudeToBeUpdate = ModelsMapper.ToModel(_solicitudeForTest);
+            
+            SolicitudeResponseModel solicitudeModelUpdated = new SolicitudeResponseModel()
             {
-                Id = _solicitudeForTest.Id,
+                Id = solicitudeToBeUpdate.Id,
                 State = State.ACCEPTED,
-                Date = _solicitudeForTest.Date,
-                Items = _solicitudeForTest.Items,
-                Employee = _solicitudeForTest.Employee
+                Date = solicitudeToBeUpdate.Date,
+                SolicitudeItems = solicitudeToBeUpdate.SolicitudeItems,
+                EmployeeUserName = solicitudeToBeUpdate.EmployeeUserName
             };
 
             _solicitudeLogicMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<Solicitude>())).Returns(_solicitudeForTest);
 
-            var result = _solicitudeApiController.Update(_solicitudeForTest.Id, solicitudeToBeUpdate);
+            var result = _solicitudeApiController.Update(_solicitudeForTest.Id, solicitudeModelUpdated);
             var okResult = result as OkObjectResult;
             var solicitudeUpdated = okResult.Value as SolicitudeResponseModel;
 
             Assert.AreEqual(solicitudeToBeUpdate.Id, solicitudeUpdated.Id);
+            Assert.AreNotEqual(solicitudeToBeUpdate.State, solicitudeUpdated.State);
             Assert.AreEqual(solicitudeToBeUpdate.Date, solicitudeUpdated.Date);
-            Assert.AreEqual(solicitudeToBeUpdate.Employee.UserName, solicitudeUpdated.EmployeeUserName);
-            Assert.AreEqual(solicitudeToBeUpdate.Items[0].DrugCode, solicitudeUpdated.SolicitudeItems[0].DrugCode);
-            Assert.AreEqual(solicitudeToBeUpdate.Items[0].DrugQuantity, solicitudeUpdated.SolicitudeItems[0].DrugQuantity);
+            Assert.AreEqual(solicitudeToBeUpdate.EmployeeUserName, solicitudeUpdated.EmployeeUserName);
+            Assert.AreEqual(solicitudeToBeUpdate.SolicitudeItems[0].DrugCode, solicitudeUpdated.SolicitudeItems[0].DrugCode);
+            Assert.AreEqual(solicitudeToBeUpdate.SolicitudeItems[0].DrugQuantity, solicitudeUpdated.SolicitudeItems[0].DrugQuantity);
    
             _solicitudeLogicMock.VerifyAll();
         }
