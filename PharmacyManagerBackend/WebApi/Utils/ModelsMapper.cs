@@ -116,6 +116,15 @@ namespace WebApi.Utils
                 DrugCode = solicitudeItemModel.DrugCode,
             };
         }
+        public static Solicitude ToEntity(SolicitudeResponseModel solicitudeResponseModel)
+        {
+            List<SolicitudeItem> solicitudeItems = solicitudeResponseModel.SolicitudeItems.Select(i => ToEntity(i)).ToList();
+            return new Solicitude()
+            {
+
+                Items = solicitudeItems,
+            };
+        }
 
         public static SolicitudeResponseModel ToModel(Solicitude solicitude)
         {

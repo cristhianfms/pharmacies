@@ -205,7 +205,7 @@ namespace WebApi.Test
             var solicitudeUpdated = okResult.Value as SolicitudeResponseModel;
 
             Assert.AreEqual(solicitudeToBeUpdate.Id, solicitudeUpdated.Id);
-            Assert.AreNotEqual(solicitudeToBeUpdate.State, solicitudeUpdated.State);
+            Assert.AreEqual(solicitudeToBeUpdate.State, solicitudeUpdated.State);
             Assert.AreEqual(solicitudeToBeUpdate.Date, solicitudeUpdated.Date);
             Assert.AreEqual(solicitudeToBeUpdate.EmployeeUserName, solicitudeUpdated.EmployeeUserName);
             Assert.AreEqual(solicitudeToBeUpdate.SolicitudeItems[0].DrugCode, solicitudeUpdated.SolicitudeItems[0].DrugCode);

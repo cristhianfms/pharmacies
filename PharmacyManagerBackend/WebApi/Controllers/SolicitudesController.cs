@@ -35,7 +35,18 @@ namespace WebApi.Controllers
         {
             List <Solicitude> solicitudes = _solicitudeLogic.GetSolicitudes(querySolicitudeDto);
             List <SolicitudeResponseModel> solicitudeModels = ModelsMapper.ToModelList(solicitudes);
+
             return Ok(solicitudeModels);
+        }
+
+        [HttpPut]
+        public IActionResult Update(int id, SolicitudeResponseModel solicitudeResponseModel)
+        {
+            Solicitude solicitudeToUpdate = ModelsMapper.ToEntity(solicitudeResponseModel);
+            Solicitude solicitudeUpdated = _solicitudeLogic.Update(id, solicitudeToUpdate);
+            SolicitudeResponseModel solicitudeUpdatedModel = ModelsMapper.ToModel(solicitudeUpdated);
+
+            return Ok(solicitudeUpdatedModel);
         }
     }
 }
