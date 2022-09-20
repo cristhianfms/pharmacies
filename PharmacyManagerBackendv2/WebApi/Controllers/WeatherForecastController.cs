@@ -3,30 +3,44 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class WeatherForecastController : ControllerBase
+[Route("api/[controller]")]
+public class DrugController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+    private DrugLogic _drugLogic;
 
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public DrugController(DrugLogic drugLogic)
     {
-        _logger = logger;
+        this._drugLogic = drugLogic;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpPost]
+    public IActionResult Create([FromBody] DrugModel drugModel)
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+        Drug drug = ModelsMapper.ToEntity(drugModel);
+        Drug drugCreated = _drugLogic.Create(drug);
+        DrugModel drugCreatedModel = ModelsMapper.ToModel(drugCreated);
+
+        return Ok(drugCreatedModel);
+    }
+
+    [HttpDelete]
+    public IActionResult Delete(Drug drug)
+    {
+        _drugLogic.Delete(drug);
+        return Ok("Se elimino correctamente");
+    }
+
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        IEnumerable<Drug> allDrugs = _drugLogic.GetAllDrugs();
+        return Ok(allDrugs);
+    }
+
+    [HttpGet]
+    public IActionResult GetDrug(Drug drug)
+    {
+        Drug myDrug = _drugLogic.GetDrug(drug);
+        return Ok(myDrug);
     }
 }
