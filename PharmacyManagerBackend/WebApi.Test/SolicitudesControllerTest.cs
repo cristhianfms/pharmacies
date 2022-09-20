@@ -182,6 +182,32 @@ namespace WebApi.Test
             CollectionAssert.AreEqual(solicitudesToReturnModels, solicitudes);
             _solicitudeLogicMock.VerifyAll();
         }
-        
+
+        [TestMethod]
+        public void UpdateSolicitudeStateOk()
+        {
+            Solicitude solicitudeToBeUpdate = new Solicitude()
+            {
+                Id = _solicitudeForTest.Id,
+                State = State.ACCEPTED,
+                Date = _solicitudeForTest.Date,
+                Items = _solicitudeForTest.Items,
+                Employee = _solicitudeForTest.Employee
+            };
+
+            _solicitudeLogicMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<Solicitude>())).Returns(_solicitudeForTest);
+
+            var result = _solicitudeApiController.Update(_solicitudeForTest.Id, solicitudeToBeUpdate);
+            var okResult = result as OkObjectResult;
+            var solicitudeUpdated = okResult.Value as SolicitudeResponseModel;
+
+            Assert.AreEqual(solicitudeToBeUpdate.Id, solicitudeUpdated.Id);
+            Assert.AreEqual(solicitudeToBeUpdate.Date, solicitudeUpdated.Date);
+            Assert.AreEqual(solicitudeToBeUpdate.Employee.UserName, solicitudeUpdated.EmployeeUserName);
+            Assert.AreEqual(solicitudeToBeUpdate.Items[0].DrugCode, solicitudeUpdated.SolicitudeItems[0].DrugCode);
+            Assert.AreEqual(solicitudeToBeUpdate.Items[0].DrugQuantity, solicitudeUpdated.SolicitudeItems[0].DrugQuantity);
+   
+            _solicitudeLogicMock.VerifyAll();
+        }
     }
 }
