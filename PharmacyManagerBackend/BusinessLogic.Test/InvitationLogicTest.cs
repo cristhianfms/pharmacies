@@ -110,7 +110,6 @@ namespace BusinessLogic.Test
             });
 
             Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
-
             Assert.AreEqual(invitationRepository.Id, createdInvitation.Id);
             Assert.AreEqual(invitationRepository.UserName, createdInvitation.UserName);
             Assert.AreEqual(invitationRepository.Role.Name, createdInvitation.Role.Name);
