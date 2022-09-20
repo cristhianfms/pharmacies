@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Domain;
 using Domain.Dtos;
+using System.Collections.Generic;
+using System.Linq;
 using WebApi.Models;
 
 namespace WebApi.Utils
@@ -87,6 +89,65 @@ namespace WebApi.Utils
                 Address = user.Address,
                 PharmacyName = user.Pharmacy.Name
             };
+        }
+
+        public static Solicitude ToEntity(SolicitudeRequestModel solicitudeRequestModel)
+        {
+            List<SolicitudeItem> solicitudeItems = solicitudeRequestModel.SolicitudeItems.Select(i => ToEntity(i)).ToList();
+            return new Solicitude()
+            {
+
+                Items = solicitudeItems,
+            };
+        }
+
+        private static SolicitudeItem ToEntity (SolicitudeItemModel solicitudeItemModel)
+        {
+            return new SolicitudeItem()
+            {
+                DrugQuantity = solicitudeItemModel.DrugQuantity,
+                DrugCode = solicitudeItemModel.DrugCode,
+            };
+        }
+        public static Solicitude ToEntity(SolicitudeResponseModel solicitudeResponseModel)
+        {
+            List<SolicitudeItem> solicitudeItems = solicitudeResponseModel.SolicitudeItems.Select(i => ToEntity(i)).ToList();
+            return new Solicitude()
+            {
+
+                Items = solicitudeItems,
+            };
+        }
+
+        public static SolicitudeResponseModel ToModel(Solicitude solicitude)
+        {
+            List<SolicitudeItemModel> solicitudeItems = solicitude.Items.Select(i => ToModel(i)).ToList();
+            return new SolicitudeResponseModel()
+            {
+                Id = solicitude.Id,
+                State = solicitude.State,
+                Date = solicitude.Date,
+                EmployeeUserName = solicitude.Employee.UserName,
+                SolicitudeItems = solicitudeItems
+            };
+        }
+
+        private static SolicitudeItemModel ToModel(SolicitudeItem solicitudeItem)
+        {
+            return new SolicitudeItemModel()
+            {
+                DrugQuantity = solicitudeItem.DrugQuantity,
+                DrugCode = solicitudeItem.DrugCode
+            };
+        }
+        public static List <SolicitudeResponseModel> ToModelList(List<Solicitude> solicitudes)
+        {
+            List <SolicitudeResponseModel> solicitudeResponseModels = new List <SolicitudeResponseModel>();
+            foreach (Solicitude _solicitude in solicitudes)
+            {
+               solicitudeResponseModels.Add(ToModel(_solicitude));
+            }
+            return solicitudeResponseModels;
         }
 
         public static Drug ToEntity(DrugModel drugModel)
