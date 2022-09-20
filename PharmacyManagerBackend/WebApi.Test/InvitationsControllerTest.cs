@@ -7,6 +7,7 @@ using WebApi.Controllers;
 using WebApi.Models;
 using WebApi.Test.Utils;
 using IBusinessLogic;
+using Domain.Dtos;
 
 namespace WebApi.Test
 {
@@ -42,7 +43,7 @@ namespace WebApi.Test
         [TestMethod]
         public void CreateInvitationOk()
         {
-            _invitationLogicMock.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(_invitation);
+            _invitationLogicMock.Setup(m => m.Create(It.IsAny<InvitationDto>())).Returns(_invitation);
             var invitationModel = new InvitationModel()
             {
                 Id = 1,

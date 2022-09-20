@@ -4,6 +4,7 @@ using IBusinessLogic;
 using Domain;
 using IDataAccess;
 using Exceptions;
+using Domain.Dtos;
 
 namespace BusinessLogic
 {
@@ -12,30 +13,71 @@ namespace BusinessLogic
         private IInvitationRepository _invitationRepository;
         private UserLogic _userLogic;
         private RoleLogic _roleLogic;
+        private PharmacyLogic _pharmacyLogic;
 
-        public InvitationLogic(){}
+        public InvitationLogic() { }
 
-        public InvitationLogic(IInvitationRepository invitationRepository, UserLogic userLogic, RoleLogic roleLogic)
+        public InvitationLogic(IInvitationRepository invitationRepository, UserLogic userLogic, RoleLogic roleLogic, PharmacyLogic pharmacyLogic)
         {
             this._invitationRepository = invitationRepository;
             this._userLogic = userLogic;
+            this._pharmacyLogic = pharmacyLogic;
+            this._roleLogic = roleLogic;
         }
 
-        public virtual Invitation Create(Invitation invitation)
+        public virtual Invitation Create(InvitationDto invitationDto)
         {
-            checkIfUserNameIsRepeated(invitation.UserName);
+            checkIfUserNameIsRepeated(invitationDto.UserName);
+            Pharmacy pharmacy = getExistantPharmacy(invitationDto.PharmacyName);
+            Role role = getExistantRole(invitationDto.RoleName);
+
+            Invitation invitationToCreate = new Invitation()
+            {
+                UserName = invitationDto.UserName,
+                Role = role,
+                Pharmacy = pharmacy
+            };
 
             string codeGenerated = generateNewInvitationCode();
-            invitation.Code = codeGenerated;
+            invitationToCreate.Code = codeGenerated;
 
-            Invitation createdInvitation = _invitationRepository.Create(invitation);
+            Invitation createdInvitation = _invitationRepository.Create(invitationToCreate);
 
             return createdInvitation;
         }
 
+        private Pharmacy getExistantPharmacy(string pharmacyName)
+        {
+            Pharmacy pharmacy;
+            try
+            {
+                pharmacy = _pharmacyLogic.GetPharmacyByName(pharmacyName);
+            }
+            catch (ResourceNotFoundException e)
+            {
+                throw new ValidationException("pharmacy doesn't exist");
+            }
+
+            return pharmacy;
+        }
+
+        private Role getExistantRole(string roleName)
+        {
+            Role role;
+            try
+            {
+                role = _roleLogic.GetRoleByName(roleName);
+            }
+            catch (ResourceNotFoundException e)
+            {
+                throw new ValidationException("role doesn't exist");
+            }
+            return role;
+        }
+
         public virtual Invitation GetInvitationByCode(string invitationCode)
         {
-            throw new NotImplementedException();
+            return _invitationRepository.GetFirst(i => i.Code == invitationCode);
         }
 
         public virtual void Delete(int id)

@@ -28,21 +28,13 @@ namespace WebApi.Utils
             };
         }
 
-        public static Invitation ToEntity(InvitationModel invitationModel)
+        public static InvitationDto ToEntity(InvitationModel invitationModel)
         {
-            return new Invitation
+            return new InvitationDto
             {
-                Id = invitationModel.Id,
                 UserName = invitationModel.UserName,
-                Role = new Role()
-                {
-                    Name = invitationModel.RoleName
-                },
-                Code = invitationModel.Code,
-                Pharmacy = new Pharmacy()
-                {
-                    Name = invitationModel.PharmacyName
-                }
+                RoleName = invitationModel.RoleName,
+                PharmacyName = invitationModel.PharmacyName
             };
         }
 
@@ -98,6 +90,7 @@ namespace WebApi.Utils
                 PharmacyName = user.Pharmacy.Name
             };
         }
+
         public static Solicitude ToEntity(SolicitudeRequestModel solicitudeRequestModel)
         {
             List<SolicitudeItem> solicitudeItems = solicitudeRequestModel.SolicitudeItems.Select(i => ToEntity(i)).ToList();
@@ -155,6 +148,30 @@ namespace WebApi.Utils
                solicitudeResponseModels.Add(ToModel(_solicitude));
             }
             return solicitudeResponseModels;
+        }
+
+        public static Drug ToEntity(DrugModel drugModel)
+        {
+            return new Drug
+            {
+                Id = drugModel.Id,
+                DrugCode = drugModel.DrugCode,
+                NeedsPrescription = drugModel.NeedsPrescription,
+                Price = drugModel.Price,
+                Stock = drugModel.Stock
+            };
+        }
+
+        public static DrugModel ToModel(Drug drug)
+        {
+            return new DrugModel
+            {
+                Id = drug.Id,
+                DrugCode = drug.DrugCode,
+                NeedsPrescription = drug.NeedsPrescription,
+                Price = drug.Price,
+                Stock = drug.Stock
+            };
         }
     }
 }
