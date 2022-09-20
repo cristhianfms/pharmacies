@@ -1,9 +1,7 @@
-namespace Domain
+namespace Domain;
+public class PurchaseItem
 {
-    public class PurchaseItem
-    {
-        public int Id { get; set; }
-        public int Quantity { get; set; }
-        public Drug Drug { get; set; }
-    }
+    public int Id { get; set; }
+    public int Quantity { get; set; }
+    public Drug Drug { get; set; }
 }

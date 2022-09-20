@@ -4,11 +4,11 @@ using System.Text;
 using Domain;
 using Domain.Dtos;
 
-namespace IBusinessLogic
+namespace IBusinessLogic;
+
+public interface IPurchaseLogic
 {
-    public interface IPurchaseLogic
-    {
-        PurchaseDto Create(PurchaseDto purchase);
-        PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto);
-    }
+    PurchaseDto Create(PurchaseDto purchase);
+    PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto);
 }
+

@@ -4,27 +4,26 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Utils;
 
-namespace WebApi.Controllers
+namespace WebApi.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class SessionsController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class SessionsController : ControllerBase 
+    private ISessionLogic _sessionLogic;
+
+    public SessionsController(ISessionLogic sessionLogic)
     {
-        private ISessionLogic _sessionLogic;
+        this._sessionLogic = sessionLogic;
+    }
 
-        public SessionsController(ISessionLogic sessionLogic)
-        {
-            this._sessionLogic = sessionLogic;
-        }
+    [HttpPost]
+    public IActionResult CreateSession([FromBody] CredentialsModel credentialsModel)
+    {
+        CredentialsDto credentials = ModelsMapper.ToEntity(credentialsModel);
+        TokenDto token = _sessionLogic.Create(credentials);
+        TokenModel tokenModel = ModelsMapper.ToModel(token);
 
-        [HttpPost]
-        public IActionResult CreateSession([FromBody] CredentialsModel credentialsModel)
-        {
-            CredentialsDto credentials = ModelsMapper.ToEntity(credentialsModel);
-            TokenDto token = _sessionLogic.Create(credentials);
-            TokenModel tokenModel = ModelsMapper.ToModel(token);
-            
-            return Ok(tokenModel);
-        }
+        return Ok(tokenModel);
     }
 }

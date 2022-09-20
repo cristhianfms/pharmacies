@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace IBusinessLogic
+namespace IBusinessLogic;
+
+public interface ISolicitudeLogic
 {
-    public interface ISolicitudeLogic
-    {
-        Solicitude Create(Solicitude solicitude);
-        List<Solicitude> GetSolicitudes(QuerySolicitudeDto querySolicitudeDto);
-        Solicitude Update(int solicitudId, Solicitude solicitude);
-    }
+    Solicitude Create(Solicitude solicitude);
+    List<Solicitude> GetSolicitudes(QuerySolicitudeDto querySolicitudeDto);
+    Solicitude Update(int solicitudId, Solicitude solicitude);
 }
+

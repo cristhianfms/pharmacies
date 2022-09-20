@@ -5,37 +5,37 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Utils;
 
-namespace WebApi.Controllers
+namespace WebApi.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+
+public class PurchasesController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    
-    public class PurchasesController : ControllerBase
+    private IPurchaseLogic _purchaseLogic;
+
+    public PurchasesController(IPurchaseLogic purchaseLogic)
     {
-        private IPurchaseLogic _purchaseLogic;
+        this._purchaseLogic = purchaseLogic;
+    }
 
-        public PurchasesController(IPurchaseLogic purchaseLogic)
-        {
-            this._purchaseLogic = purchaseLogic;
-        }
+    [HttpPost]
+    public IActionResult Create([FromBody] PurchaseRequestModel purchaseRequestModel)
+    {
+        PurchaseDto purchase = PurchaseModelsMapper.ToEntity(purchaseRequestModel);
+        PurchaseDto purhcaseCreated = _purchaseLogic.Create(purchase);
+        PurchaseResponseModel purchaseResponseModel = PurchaseModelsMapper.ToModel(purhcaseCreated);
 
-        [HttpPost]
-        public IActionResult Create([FromBody] PurchaseRequestModel purchaseRequestModel)
-        {
-            PurchaseDto purchase =  PurchaseModelsMapper.ToEntity(purchaseRequestModel);
-            PurchaseDto purhcaseCreated = _purchaseLogic.Create(purchase);
-            PurchaseResponseModel purchaseResponseModel = PurchaseModelsMapper.ToModel(purhcaseCreated);
-            
-            return Ok(purchaseResponseModel);
-        }
+        return Ok(purchaseResponseModel);
+    }
 
-        [HttpGet]
-        public IActionResult GetPurchasesReport([FromQuery] QueryPurchaseDto queryPurchaseDto)
-        {
-            PurchaseReportDto purchaseReport = _purchaseLogic.GetPurchasesReport(queryPurchaseDto);
-            PurchaseReportModel purchaseReportModel = PurchaseModelsMapper.ToModel(purchaseReport);
+    [HttpGet]
+    public IActionResult GetPurchasesReport([FromQuery] QueryPurchaseDto queryPurchaseDto)
+    {
+        PurchaseReportDto purchaseReport = _purchaseLogic.GetPurchasesReport(queryPurchaseDto);
+        PurchaseReportModel purchaseReportModel = PurchaseModelsMapper.ToModel(purchaseReport);
 
-            return Ok(purchaseReportModel);
-        }
+        return Ok(purchaseReportModel);
     }
 }
+

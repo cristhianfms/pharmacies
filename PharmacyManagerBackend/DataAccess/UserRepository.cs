@@ -3,12 +3,12 @@ using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess
+namespace DataAccess;
+
+public class UserRepository : BaseRepository<User>, IUserRepository
 {
-    public class UserRepository : BaseRepository<User>, IUserRepository
+    public UserRepository(DbContext dbContext) : base(dbContext)
     {
-        public UserRepository(DbContext dbContext) : base(dbContext)
-        {
-        }
     }
 }
+

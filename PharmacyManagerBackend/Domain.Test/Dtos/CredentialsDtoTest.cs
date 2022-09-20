@@ -2,47 +2,46 @@ using Domain.Dtos;
 using Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BusinessLogic.Test.Dtos
+namespace BusinessLogic.Test.Dtos;
+
+[TestClass]
+public class CredentialsDtoTest
 {
-    [TestClass]
-    public class CredentialsDtoTest
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void ValidateCredentialsWithNullPasswordThrowsException()
     {
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void ValidateCredentialsWithNullPasswordThrowsException()
+        CredentialsDto credentialsDto = new CredentialsDto()
         {
-            CredentialsDto credentialsDto = new CredentialsDto()
-            {
-                UserName = "ricardofort",
-                Password = null
-            };
+            UserName = "ricardofort",
+            Password = null
+        };
 
-            credentialsDto.ValidateNotNullCredentials();
-        }
+        credentialsDto.ValidateNotNullCredentials();
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
-        public void ValidateCredentialsWithNullUserNameThrowsException()
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void ValidateCredentialsWithNullUserNameThrowsException()
+    {
+        CredentialsDto credentialsDto = new CredentialsDto()
         {
-            CredentialsDto credentialsDto = new CredentialsDto()
-            {
-                UserName = null,
-                Password = "test"
-            };
+            UserName = null,
+            Password = "test"
+        };
 
-            credentialsDto.ValidateNotNullCredentials();
-        }
+        credentialsDto.ValidateNotNullCredentials();
+    }
 
-        [TestMethod]
-        public void ValidateCredentialsOK()
+    [TestMethod]
+    public void ValidateCredentialsOK()
+    {
+        CredentialsDto credentialsDto = new CredentialsDto()
         {
-            CredentialsDto credentialsDto = new CredentialsDto()
-            {
-                UserName = "ricardofort",
-                Password = "test"
-            };
+            UserName = "ricardofort",
+            Password = "test"
+        };
 
-            credentialsDto.ValidateNotNullCredentials();
-        }
+        credentialsDto.ValidateNotNullCredentials();
     }
 }
