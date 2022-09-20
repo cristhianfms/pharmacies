@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain
+namespace Domain;
+
+public enum State
 {
-    public enum State
-    {
-        ACCEPTED = 1,
-        PENDING = 0,
-        REJECTED = 2,
-    }
+    ACCEPTED = 1,
+    PENDING = 0,
+    REJECTED = 2,
 }
+

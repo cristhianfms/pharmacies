@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace WebApi.Models
+namespace WebApi.Models;
+
+public class SolicitudeRequestModel
 {
-    public class SolicitudeRequestModel
-    {
-        public List<SolicitudeItemModel> SolicitudeItems { get; set; }
-    }
+    public List<SolicitudeItemModel> SolicitudeItems { get; set; }
 }
+

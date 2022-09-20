@@ -1,9 +1,9 @@
 using System;
 
-namespace WebApi.Models
+namespace WebApi.Models;
+
+public class TokenModel
 {
-    public class TokenModel
-    {
-        public Guid Token { get; set; }
-    }
+    public Guid Token { get; set; }
 }
+

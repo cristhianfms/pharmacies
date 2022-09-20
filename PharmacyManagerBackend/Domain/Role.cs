@@ -1,25 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Exceptions;
 
-namespace Domain
+namespace Domain;
+public class Role
 {
-    public class Role
+    private string name;
+    public int Id { get; set; }
+    public string Name
     {
-        private string name;
-        public int Id { get; set; }
-        public string Name
+        get { return name; }
+        set
         {
-            get { return name; }
-            set
+            if (String.IsNullOrEmpty(value))
             {
-                if (String.IsNullOrEmpty(value))
-                {
-                    throw new ValidationException("Role name can't be empty");
-                }
-                name = value;
+                throw new ValidationException("Role name can't be empty");
             }
+            name = value;
         }
     }
 }

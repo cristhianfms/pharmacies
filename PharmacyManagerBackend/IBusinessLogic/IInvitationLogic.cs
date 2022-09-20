@@ -4,10 +4,10 @@ using System.Text;
 using Domain;
 using Domain.Dtos;
 
-namespace IBusinessLogic
+namespace IBusinessLogic;
+
+public interface IInvitationLogic
 {
-    public interface IInvitationLogic
-    {
-        Invitation Create(InvitationDto invitation);
-    }
+    Invitation Create(InvitationDto invitation);
 }
+

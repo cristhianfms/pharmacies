@@ -1,10 +1,10 @@
 ﻿using System;
 using Domain;
 
-namespace IBusinessLogic
+namespace IBusinessLogic;
+
+public interface IPharmacyLogic
 {
-    public interface IPharmacyLogic
-    {
-        Pharmacy Create(Pharmacy pharmacy);
-    }
+    Pharmacy Create(Pharmacy pharmacy);
 }
+

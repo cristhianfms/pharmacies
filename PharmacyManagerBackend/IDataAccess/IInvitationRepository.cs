@@ -1,9 +1,8 @@
 using Domain;
 
-namespace IDataAccess
+namespace IDataAccess;
+
+public interface IInvitationRepository : IBaseRepository<Invitation>
 {
-    public interface IInvitationRepository : IBaseRepository<Invitation>
-    {
-        Invitation GetInvitationByCode(string code);
-    }
+    Invitation GetInvitationByCode(string code);
 }
