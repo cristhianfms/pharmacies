@@ -272,4 +272,41 @@ public class UserRepositoryTest
             Assert.AreEqual(userInRepository, userInDB);
         }
     }
+
+    [TestMethod]
+    public void DeleteUserOK()
+    {
+        User userInRepository = new User()
+        {
+            UserName = "Cris",
+            Role = new Role()
+            {
+                Name = "ADMIN"
+            },
+            Email = "cris@gmail.com",
+            Address = "Address",
+            Password = "Password",
+            RegistrationDate = DateTime.Now,
+            OwnerPharmacy = new Pharmacy()
+            {
+                Name = "Pharmashop",
+                Address = "Address"
+            }
+        };
+        List<User> users = new List<User>() { userInRepository };
+        using (var context = new PharmacyManagerContext(this._contextOptions))
+        {
+            context.AddRange(users);
+            context.SaveChanges();
+        }
+        int userId = userInRepository.Id;
+
+        this._userRepository.Delete(userInRepository);
+
+        using (var context = new PharmacyManagerContext(this._contextOptions))
+        {
+            var concerts = context.Set<User>();
+            Assert.AreEqual(0, concerts.Count());
+        }
+    }
 }
