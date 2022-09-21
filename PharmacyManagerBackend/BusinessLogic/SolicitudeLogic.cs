@@ -13,7 +13,6 @@ namespace BusinessLogic
     public class SolicitudeLogic : ISolicitudeLogic
     {
         private IBaseRepository<Solicitude> _solicitudeRepository;
-
         public SolicitudeLogic(IBaseRepository<Solicitude> solicitudeRepository)
         {
             this._solicitudeRepository = solicitudeRepository;

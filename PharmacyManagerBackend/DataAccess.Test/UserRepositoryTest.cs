@@ -9,7 +9,6 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-/*
 namespace DataAccess.Test;
 [TestClass]
 public class UserRepositoryTest
@@ -217,6 +216,97 @@ public class UserRepositoryTest
         Func<User, bool> expresion = c => c.UserName == "Rick";
         User returnedUser = this._userRepository.GetFirst(expresion);
     }
-}
 
-*/
+
+    [TestMethod]
+    public void UpdateUserOK()
+    {
+        User userInRepository = new User()
+        {
+            UserName = "Cris",
+            Role = new Role()
+            {
+                Name = "ADMIN"
+            },
+            Email = "cris@gmail.com",
+            Address = "Address",
+            Password = "Password",
+            RegistrationDate = DateTime.Now,
+            OwnerPharmacy = new Pharmacy()
+            {
+                Name = "Pharmashop",
+                Address = "Address"
+            }
+        };
+        List<User> users = new List<User>() { userInRepository };
+        using (var context = new PharmacyManagerContext(this._contextOptions))
+        {
+            context.AddRange(users);
+            context.SaveChanges();
+        }
+
+        User userToUpdate = new User()
+        {
+            UserName = "Cris",
+            Role = new Role()
+            {
+                Name = "OWNER"
+            },
+            Email = "new_@gmail.com",
+            Address = "new_Address",
+            Password = "new_Password",
+            RegistrationDate = DateTime.Now,
+            OwnerPharmacy = new Pharmacy()
+            {
+                Name = "new_Pharmashop",
+                Address = "new_Address"
+            }
+        };
+
+        this._userRepository.Update(userToUpdate);
+
+        using (var context = new PharmacyManagerContext(this._contextOptions))
+        {
+            var usersDB = context.Set<User>();
+            User userInDB = usersDB.FirstOrDefault(u => u.Id == userInRepository.Id);
+            Assert.AreEqual(userInRepository, userInDB);
+        }
+    }
+
+    [TestMethod]
+    public void DeleteUserOK()
+    {
+        User userInRepository = new User()
+        {
+            UserName = "Cris",
+            Role = new Role()
+            {
+                Name = "ADMIN"
+            },
+            Email = "cris@gmail.com",
+            Address = "Address",
+            Password = "Password",
+            RegistrationDate = DateTime.Now,
+            OwnerPharmacy = new Pharmacy()
+            {
+                Name = "Pharmashop",
+                Address = "Address"
+            }
+        };
+        List<User> users = new List<User>() { userInRepository };
+        using (var context = new PharmacyManagerContext(this._contextOptions))
+        {
+            context.AddRange(users);
+            context.SaveChanges();
+        }
+        int userId = userInRepository.Id;
+
+        this._userRepository.Delete(userInRepository);
+
+        using (var context = new PharmacyManagerContext(this._contextOptions))
+        {
+            var usersDB = context.Set<User>();
+            Assert.AreEqual(0, usersDB.Count());
+        }
+    }
+}

@@ -62,6 +62,7 @@ namespace BusinessLogic.Test
                 State = State.PENDING,
                 Date = DateTime.Now,
                 Employee = _userForTest,
+                Pharmacy = _userForTest.Pharmacy,
                 Items = solicitudeItems3and4
             };
         }
@@ -83,15 +84,17 @@ namespace BusinessLogic.Test
                 Id = 1,
                 State = State.PENDING,
                 Date = DateTime.Now,
+                Employee = _userForTest,
+                Pharmacy = _userForTest.Pharmacy,
                 Items = solicitudeItems,
-                Employee = _userForTest
             };
             Solicitude solicitudeToCreate = new Solicitude()
             {
                 State = State.PENDING,
                 Date = DateTime.Now,
+                Employee = _userForTest,
+                Pharmacy = _userForTest.Pharmacy,
                 Items = solicitudeItems,
-                Employee = _userForTest
             };
 
 
@@ -105,6 +108,7 @@ namespace BusinessLogic.Test
             Assert.AreEqual(solicitudeRepository.Date, createdSolicitude.Date);
             Assert.AreEqual(solicitudeRepository.Items, createdSolicitude.Items);
             Assert.AreEqual(solicitudeRepository.Employee.UserName, createdSolicitude.Employee.UserName);
+            Assert.AreEqual(solicitudeRepository.Pharmacy, createdSolicitude.Pharmacy);
             CollectionAssert.AreEqual(solicitudeRepository.Items, createdSolicitude.Items);
             _solicitudeRepositoryMock.VerifyAll();
             
@@ -132,8 +136,9 @@ namespace BusinessLogic.Test
                 Id = 1,
                 State = State.PENDING,
                 Date = DateTime.Now,
-                Items = solicitudeItems,
-                Employee = _userForTest
+                Employee = _userForTest,
+                Pharmacy = _userForTest.Pharmacy,
+                Items = solicitudeItems
             };
 
             List<Solicitude> solicitudesRepository = new List<Solicitude>()
