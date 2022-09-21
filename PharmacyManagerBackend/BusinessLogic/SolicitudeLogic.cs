@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Domain.Dtos;
 using IBusinessLogic;
+using IDataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,18 @@ namespace BusinessLogic
 {
     public class SolicitudeLogic : ISolicitudeLogic
     {
-        public Solicitude Create(Solicitude solicitude)
+        private IBaseRepository<Solicitude> _solicitudeRepository;
+
+        public SolicitudeLogic(IBaseRepository<Solicitude> solicitudeRepository)
         {
-            throw new NotImplementedException();
+            this._solicitudeRepository = solicitudeRepository;
+        }
+
+        public virtual Solicitude Create(Solicitude solicitude)
+        {
+           Solicitude createdSolicitude = _solicitudeRepository.Create(solicitude);
+           
+            return createdSolicitude;
         }
 
         public List<Solicitude> GetSolicitudes(QuerySolicitudeDto querySolicitudeDto)

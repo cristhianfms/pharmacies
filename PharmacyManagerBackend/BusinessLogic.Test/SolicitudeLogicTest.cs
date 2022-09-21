@@ -20,7 +20,7 @@ namespace BusinessLogic.Test
         public void Initialize()
         {
             this._solicitudeRepositoryMock = new Mock<IBaseRepository<Solicitude>>(MockBehavior.Strict);
-            this._solicitudeLogic = new SolicitudeLogic();
+            this._solicitudeLogic = new SolicitudeLogic(this._solicitudeRepositoryMock.Object);
 
             _userForTest = new User()
             {
