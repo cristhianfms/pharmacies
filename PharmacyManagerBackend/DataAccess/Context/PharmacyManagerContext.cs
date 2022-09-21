@@ -37,14 +37,12 @@ namespace DataAccess.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*
             modelBuilder.Entity<Pharmacy>()
                 .HasMany(e => e.Employees)
-                .WithOne( e => e.EmployeePharmacy);
+                .WithOne(u => u.EmployeePharmacy);
             modelBuilder.Entity<Pharmacy>()
                 .HasOne(p => p.Owner)
-                .WithOne(b => b.OwnerPharmacy);
-            */
+                .WithOne(u => u.OwnerPharmacy);
 
             // Roles
             Role admin = new Role() { Id = 1, Name = "ADMIN" };
