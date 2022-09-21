@@ -57,5 +57,17 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
         return entityToReturn;
     }
+
+    public void Delete(T elem)
+    {
+        _table.Remove(elem);
+        _context.SaveChanges();
+    }
+
+    public void Update(T elem)
+    {
+        _table.Update(elem);
+        _context.SaveChanges();
+    }
 }
 
