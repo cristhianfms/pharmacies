@@ -9,57 +9,57 @@ using WebApi.Test.Utils;
 using IBusinessLogic;
 using Domain.Dtos;
 
-namespace WebApi.Test
+namespace WebApi.Test;
+
+[TestClass]
+public class InvitationsControllerTest
 {
-    [TestClass]
-    public class InvitationsControllerTest
+    private Mock<IInvitationLogic> _invitationLogicMock;
+    private InvitationController _invitationApiController;
+    private Invitation _invitation;
+
+    [TestInitialize]
+    public void InitTest()
     {
-        private Mock<IInvitationLogic> _invitationLogicMock;
-        private InvitationController _invitationApiController;
-        private Invitation _invitation;
-
-        [TestInitialize]
-        public void InitTest()
+        _invitationLogicMock = new Mock<IInvitationLogic>(MockBehavior.Strict);
+        _invitationApiController = new InvitationController(_invitationLogicMock.Object);
+        _invitation = new Invitation()
         {
-            _invitationLogicMock = new Mock<IInvitationLogic>(MockBehavior.Strict);
-            _invitationApiController = new InvitationController(_invitationLogicMock.Object);
-            _invitation = new Invitation()
+            Id = 1,
+            UserName = "JuanPerez",
+            Role = new Role()
             {
-                Id = 1,
-                UserName = "JuanPerez",
-                Role = new Role()
-                {
-                    Name = "Employee"
-                },
-                Pharmacy = new Pharmacy()
-                {
-                    Name = "FarmaciaB"
-                },
-                Code = "2A5678BX"
-            };
-        }
+                Name = "Employee"
+            },
+            Pharmacy = new Pharmacy()
+            {
+                Name = "FarmaciaB"
+            },
+            Code = "2A5678BX"
+        };
+    }
 
 
-        [TestMethod]
-        public void CreateInvitationOk()
+    [TestMethod]
+    public void CreateInvitationOk()
+    {
+        _invitationLogicMock.Setup(m => m.Create(It.IsAny<InvitationDto>())).Returns(_invitation);
+        var invitationModel = new InvitationModel()
         {
-            _invitationLogicMock.Setup(m => m.Create(It.IsAny<InvitationDto>())).Returns(_invitation);
-            var invitationModel = new InvitationModel()
-            {
-                Id = 1,
-                UserName = "JuanPerez",
-                RoleName = "Employee",
-                Code = "2A5678BX",
-                PharmacyName = "FarmaciaB"
-            };
+            Id = 1,
+            UserName = "JuanPerez",
+            RoleName = "Employee",
+            Code = "2A5678BX",
+            PharmacyName = "FarmaciaB"
+        };
 
 
-            var result = _invitationApiController.Create(invitationModel);
-            var okResult = result as OkObjectResult;
-            var createdInvitation = okResult.Value as InvitationModel;
+        var result = _invitationApiController.Create(invitationModel);
+        var okResult = result as OkObjectResult;
+        var createdInvitation = okResult.Value as InvitationModel;
 
-            Assert.IsTrue(ModelsComparer.InvitationCompare(invitationModel, createdInvitation));
-            _invitationLogicMock.VerifyAll();
-        }
+        Assert.IsTrue(ModelsComparer.InvitationCompare(invitationModel, createdInvitation));
+        _invitationLogicMock.VerifyAll();
     }
 }
+

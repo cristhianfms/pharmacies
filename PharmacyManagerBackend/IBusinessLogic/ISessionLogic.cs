@@ -1,10 +1,10 @@
 ﻿using System;
 using Domain.Dtos;
 
-namespace IBusinessLogic
+namespace IBusinessLogic;
+
+public interface ISessionLogic
 {
-    public interface ISessionLogic
-    {
-        TokenDto Create(CredentialsDto credentialsDto);
-    }
+    TokenDto Create(CredentialsDto credentialsDto);
 }
+

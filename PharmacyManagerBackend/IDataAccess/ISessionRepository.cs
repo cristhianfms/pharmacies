@@ -1,11 +1,11 @@
 ﻿using System;
 using Domain;
 
-namespace IDataAccess
+namespace IDataAccess;
+
+public interface ISessionRepository
 {
-    public interface ISessionRepository
-    {
-        Session Create(Session session);
-        Session FindSessionByUserId(int id);
-    }
+    Session Create(Session session);
+    Session FindSessionByUserId(int id);
 }
+

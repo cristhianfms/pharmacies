@@ -1,9 +1,8 @@
 ﻿using System;
 using Domain;
 
-namespace IDataAccess
+namespace IDataAccess;
+public interface IRoleRepository : IBaseRepository<Role>
 {
-    public interface IRoleRepository: IBaseRepository<Role>
-    {
-    }
 }
+

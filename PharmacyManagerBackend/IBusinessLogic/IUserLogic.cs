@@ -1,10 +1,10 @@
 ﻿using System;
 using Domain;
+using Domain.Dtos;
 
-namespace IBusinessLogic
+namespace IBusinessLogic;
+public interface IUserLogic
 {
-    public interface IUserLogic
-    {
-        User Create(UserDto userDto);
-    }
+    User Create(UserDto userDto);
 }
+

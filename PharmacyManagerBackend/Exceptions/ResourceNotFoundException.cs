@@ -1,16 +1,12 @@
-﻿using System;
-
-namespace Exceptions
+﻿namespace Exceptions;
+public class ResourceNotFoundException : Exception
 {
-    public class ResourceNotFoundException : Exception
+    public ResourceNotFoundException(string message)
+        : base(message)
     {
-        public ResourceNotFoundException(string message)
-            : base(message)
-        {
-        }
-        public ResourceNotFoundException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
+    }
+    public ResourceNotFoundException(string message, Exception inner)
+        : base(message, inner)
+    {
     }
 }
