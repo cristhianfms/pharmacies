@@ -49,7 +49,7 @@ public class InvitationsControllerTest
             Id = 1,
             UserName = "JuanPerez",
             RoleName = "Employee",
-            Code = "2A5678BX",
+            InvitationCode = "2A5678BX",
             PharmacyName = "FarmaciaB"
         };
 
