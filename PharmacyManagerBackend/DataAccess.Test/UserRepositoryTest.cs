@@ -267,8 +267,8 @@ public class UserRepositoryTest
 
         using (var context = new PharmacyManagerContext(this._contextOptions))
         {
-            var users = context.Set<User>();
-            User userInDB = users.FirstOrDefault(u => u.Id == userInRepository.Id);
+            var usersDB = context.Set<User>();
+            User userInDB = usersDB.FirstOrDefault(u => u.Id == userInRepository.Id);
             Assert.AreEqual(userInRepository, userInDB);
         }
     }
@@ -305,8 +305,8 @@ public class UserRepositoryTest
 
         using (var context = new PharmacyManagerContext(this._contextOptions))
         {
-            var users = context.Set<User>();
-            Assert.AreEqual(0, users.Count());
+            var usersDB = context.Set<User>();
+            Assert.AreEqual(0, usersDB.Count());
         }
     }
 }
