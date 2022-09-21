@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Dtos;
 using IDataAccess;
 using Moq;
 using System;
@@ -15,6 +16,7 @@ namespace BusinessLogic.Test
         private SolicitudeLogic _solicitudeLogic;
         private Mock<IBaseRepository<Solicitude>> _solicitudeRepositoryMock;
         private User _userForTest;
+        private Solicitude _solicitudeForTest;
 
         [TestInitialize]
         public void Initialize()
@@ -37,6 +39,30 @@ namespace BusinessLogic.Test
                 {
                     Name = "Employee"
                 }
+            };
+            SolicitudeItem solicitudeItem3 = new SolicitudeItem()
+            {
+                DrugQuantity = 20,
+                DrugCode = "XF324",
+            };
+            SolicitudeItem solicitudeItem4 = new SolicitudeItem()
+            {
+                DrugQuantity = 3,
+                DrugCode = "AG123",
+            };
+
+            List<SolicitudeItem> solicitudeItems3and4 = new List<SolicitudeItem>()
+            {
+                solicitudeItem3, solicitudeItem4,
+            };
+
+            _solicitudeForTest = new Solicitude()
+            {
+                Id = 2,
+                State = State.PENDING,
+                Date = DateTime.Now,
+                Employee = _userForTest,
+                Items = solicitudeItems3and4
             };
         }
 
@@ -82,6 +108,44 @@ namespace BusinessLogic.Test
             CollectionAssert.AreEqual(solicitudeRepository.Items, createdSolicitude.Items);
             _solicitudeRepositoryMock.VerifyAll();
             
+        }
+
+        [TestMethod]
+        public void TestGetSolicitudes()
+        {
+            QuerySolicitudeDto querysolicitudeDto = new QuerySolicitudeDto()
+            {
+
+            };
+
+            SolicitudeItem solicitudeItem = new SolicitudeItem()
+            {
+                DrugCode = "ABC123",
+                DrugQuantity = 6
+            };
+            List<SolicitudeItem> solicitudeItems = new List<SolicitudeItem>()
+            {
+                solicitudeItem
+            };
+            Solicitude solicitudeRepository = new Solicitude()
+            {
+                Id = 1,
+                State = State.PENDING,
+                Date = DateTime.Now,
+                Items = solicitudeItems,
+                Employee = _userForTest
+            };
+
+            List<Solicitude> solicitudesRepository = new List<Solicitude>()
+            {
+                solicitudeRepository, _solicitudeForTest
+            };
+
+            _solicitudeRepositoryMock.Setup(s => s.GetAll(It.IsAny<Func<Solicitude, bool>>())).Returns(solicitudesRepository);
+
+            List<Solicitude> solicitudesReturned = _solicitudeLogic.GetSolicitudes(querysolicitudeDto);
+
+            CollectionAssert.AreEqual(solicitudesRepository, solicitudesReturned);
         }
 
     }
