@@ -28,28 +28,6 @@ public static class ModelsMapper
         };
     }
 
-    public static InvitationDto ToEntity(InvitationModel invitationModel)
-    {
-        return new InvitationDto
-        {
-            UserName = invitationModel.UserName,
-            RoleName = invitationModel.RoleName,
-            PharmacyName = invitationModel.PharmacyName
-        };
-    }
-
-    public static InvitationModel ToModel(Invitation invitation)
-    {
-        return new InvitationModel
-        {
-            Id = invitation.Id,
-            UserName = invitation.UserName,
-            RoleName = invitation.Role.Name,
-            Code = invitation.Code,
-            PharmacyName = invitation.Pharmacy.Name
-        };
-    }
-
     public static CredentialsDto ToEntity(CredentialsModel credentialsModel)
     {
         return new CredentialsDto

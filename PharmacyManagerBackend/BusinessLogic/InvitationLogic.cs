@@ -46,6 +46,12 @@ public class InvitationLogic : IInvitationLogic
         return createdInvitation;
     }
 
+    public InvitationDto Update(int invitationId, InvitationDto invitationDto)
+    {
+        // TODO: implement!
+        throw new NotImplementedException();
+    }
+
     private Pharmacy getExistantPharmacy(string pharmacyName)
     {
         Pharmacy pharmacy;
