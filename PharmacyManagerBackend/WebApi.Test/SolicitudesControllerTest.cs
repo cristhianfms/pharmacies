@@ -62,6 +62,7 @@ public class SolicitudesControllerTest
             State = State.PENDING,
             Date = DateTime.Now,
             Employee = _userForTest,
+            Pharmacy = _userForTest.Pharmacy,
             Items = solicitudeItems3and4
         };
     }
@@ -87,8 +88,9 @@ public class SolicitudesControllerTest
             Id = 1,
             State = State.PENDING,
             Date = DateTime.Now,
-            Items = solicitudeItems,
-            Employee = _userForTest
+            Employee = _userForTest,
+            Pharmacy = _userForTest.Pharmacy,
+            Items = solicitudeItems
         };
 
         SolicitudeItemModel solicitudeItemModel = new SolicitudeItemModel()
@@ -148,6 +150,7 @@ public class SolicitudesControllerTest
             State = State.PENDING,
             Date = DateTime.Now,
             Employee = _userForTest,
+            Pharmacy = _userForTest.Pharmacy,
             Items = solicitudeItems1and2
 
         };
