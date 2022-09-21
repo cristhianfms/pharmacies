@@ -109,18 +109,17 @@ public class SolicitudesControllerTest
 
         _solicitudeLogicMock.Setup(m => m.Create(It.IsAny<Solicitude>())).Returns(solicitude);
 
-
+ 
         var result = _solicitudeApiController.Create(solicitudeRequestModel);
         var okResult = result as OkObjectResult;
         var createdSolicitude = okResult.Value as SolicitudeResponseModel;
-
+        var solicitudeToModel = ModelsMapper.ToModel(solicitude);
 
         Assert.AreEqual(solicitude.Id, createdSolicitude.Id);
         Assert.AreEqual(solicitude.State, createdSolicitude.State);
         Assert.AreEqual(solicitude.Date, createdSolicitude.Date);
         Assert.AreEqual(solicitude.Employee.UserName, createdSolicitude.EmployeeUserName);
-        Assert.AreEqual(solicitude.Items[0].DrugCode, createdSolicitude.SolicitudeItems[0].DrugCode);
-        Assert.AreEqual(solicitude.Items[0].DrugQuantity, createdSolicitude.SolicitudeItems[0].DrugQuantity);
+        CollectionAssert.AreEqual(solicitudeToModel.SolicitudeItems, createdSolicitude.SolicitudeItems);
         _solicitudeLogicMock.VerifyAll();
     }
 
@@ -199,12 +198,14 @@ public class SolicitudesControllerTest
         var okResult = result as OkObjectResult;
         var solicitudeUpdated = okResult.Value as SolicitudeResponseModel;
 
+
         Assert.AreEqual(solicitudeToBeUpdate.Id, solicitudeUpdated.Id);
         Assert.AreEqual(solicitudeToBeUpdate.State, solicitudeUpdated.State);
         Assert.AreEqual(solicitudeToBeUpdate.Date, solicitudeUpdated.Date);
         Assert.AreEqual(solicitudeToBeUpdate.EmployeeUserName, solicitudeUpdated.EmployeeUserName);
         Assert.AreEqual(solicitudeToBeUpdate.SolicitudeItems[0].DrugCode, solicitudeUpdated.SolicitudeItems[0].DrugCode);
         Assert.AreEqual(solicitudeToBeUpdate.SolicitudeItems[0].DrugQuantity, solicitudeUpdated.SolicitudeItems[0].DrugQuantity);
+        CollectionAssert.AreEqual(solicitudeToBeUpdate.SolicitudeItems, solicitudeUpdated.SolicitudeItems);
 
         _solicitudeLogicMock.VerifyAll();
     }
