@@ -46,6 +46,39 @@ public class InvitationLogic : IInvitationLogic
         return createdInvitation;
     }
 
+    public InvitationDto Update(int invitationId, InvitationDto invitationDto)
+    {
+        Invitation invitation = getCreatedInvitation(invitationDto.Code);
+        checkInvitationUserName(invitation, invitationDto.UserName);
+
+        User userToCreate = new User()
+        {
+            UserName = invitation.UserName,
+            Role = invitation.Role,
+            Email = invitationDto.Email,
+            Address = invitationDto.Address,
+            Password = invitationDto.Password,
+            RegistrationDate = DateTime.Now,
+            // TODO dependiento del tipo
+            //Pharmacy = invitation.Pharmacy
+        };
+
+        User createdUser = _userLogic.Create(userToCreate);
+        _invitationRepository.Delete(invitation);
+
+        InvitationDto invitationDtoToReturn = new InvitationDto()
+        {
+            UserName = userToCreate.UserName,
+            UserId = createdUser.Id,
+            RoleName = createdUser.Role.Name,
+            PharmacyName = createdUser.Pharmacy?.Name,
+            Email = createdUser.Email,
+            Address = createdUser.Password,
+        };
+
+        return invitationDtoToReturn;
+    }
+
     private Pharmacy getExistantPharmacy(string pharmacyName)
     {
         Pharmacy pharmacy;
@@ -78,11 +111,6 @@ public class InvitationLogic : IInvitationLogic
     public virtual Invitation GetInvitationByCode(string invitationCode)
     {
         return _invitationRepository.GetFirst(i => i.Code == invitationCode);
-    }
-
-    public virtual void Delete(int id)
-    {
-        throw new NotImplementedException();
     }
 
     private void checkIfUserNameIsRepeated(string userName)
@@ -128,6 +156,29 @@ public class InvitationLogic : IInvitationLogic
         }
 
         return invitationExists;
+    }
+
+    private Invitation getCreatedInvitation(string invitationCode)
+    {
+        Invitation invitation;
+        try
+        {
+            invitation = _invitationRepository.GetFirst(i => i.Code == invitationCode);
+        }
+        catch (ResourceNotFoundException e)
+        {
+            throw new ValidationException("invalid invitation code");
+        }
+
+        return invitation;
+    }
+
+    private void checkInvitationUserName(Invitation invitation, string userName)
+    {
+        if (invitation.UserName != userName)
+        {
+            throw new ValidationException("invalid invitation code");
+        }
     }
 }
 

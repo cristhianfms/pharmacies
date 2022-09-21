@@ -19,7 +19,7 @@ public class ServiceFactory
     {
         _services.AddScoped<IPharmacyLogic, PharmacyLogic>();
         _services.AddScoped<ISessionLogic, SessionLogic>();
-        _services.AddScoped<IUserLogic, UserLogic>();
+        _services.AddScoped<UserLogic, UserLogic>();
         _services.AddScoped<ISessionRepository, SessionRepository>();
         _services.AddScoped<IUserRepository, UserRepository>();
     }

@@ -9,5 +9,6 @@ namespace IBusinessLogic;
 public interface IInvitationLogic
 {
     Invitation Create(InvitationDto invitation);
+    InvitationDto Update(int invitationId, InvitationDto invitationDto);
 }
 
