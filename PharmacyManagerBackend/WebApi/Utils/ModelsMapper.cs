@@ -45,30 +45,6 @@ public static class ModelsMapper
         };
     }
 
-    public static UserDto ToEntity(UserRequestModel userRequestModel)
-    {
-        return new UserDto
-        {
-            UserName = userRequestModel.UserName,
-            InvitationCode = userRequestModel.InvitationCode,
-            Email = userRequestModel.Email,
-            Address = userRequestModel.Address,
-            Password = userRequestModel.Password
-        };
-    }
-    public static UserResponseModel ToModel(User user)
-    {
-        return new UserResponseModel
-        {
-            Id = user.Id,
-            UserName = user.UserName,
-            Role = user.Role.Name,
-            Email = user.Email,
-            Address = user.Address,
-            PharmacyName = user.Pharmacy.Name
-        };
-    }
-
     public static Solicitude ToEntity(SolicitudeRequestModel solicitudeRequestModel)
     {
         List<SolicitudeItem> solicitudeItems = solicitudeRequestModel.SolicitudeItems.Select(i => ToEntity(i)).ToList();
