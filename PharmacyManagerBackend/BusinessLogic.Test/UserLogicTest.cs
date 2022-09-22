@@ -20,8 +20,8 @@ public class UserLogicTest
     public void Initialize()
     {
         this._userRepository = new Mock<IUserRepository>(MockBehavior.Strict);
-        this._invitationLogic = new Mock<InvitationLogic>(MockBehavior.Strict);
-        _userLogic = new UserLogic(this._userRepository.Object, this._invitationLogic.Object);
+        this._invitationLogic = new Mock<InvitationLogic>(MockBehavior.Strict, null, null, null, null);
+        _userLogic = new UserLogic(this._userRepository.Object);
     }
 
     [TestMethod]
