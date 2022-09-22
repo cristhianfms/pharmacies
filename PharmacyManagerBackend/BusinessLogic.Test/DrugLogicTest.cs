@@ -1,6 +1,6 @@
 ﻿using System;
 using Domain;
-using BusinessLogic;
+using Exceptions;
 using IDataAccess;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -32,23 +32,30 @@ namespace BusinessLogic.Test
                 Stock = 15,
                 NeedsPrescription = false
             };
-            Drug drugToCreate = new Drug()
+
+            _drugRepository.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
+            
+            Drug createdDrug = _drugLogic.Create(drug);
+
+            _drugRepository.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void CreateRepetatedDrugFail()
+        {
+            Drug drug = new Drug()
             {
+                Id = 1,
                 DrugCode = "2a5678bx1",
                 Price = 25.99,
                 Stock = 15,
                 NeedsPrescription = false
             };
 
-            _drugRepository.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
-            
-            Drug createdDrug = _drugLogic.Create(drugToCreate);
+            _drugRepository.SetupSet(m=>m.GetFirst(It.IsAny<Func<Drug, bool>>())).Throws(new ValidationException(""));
+            Drug createdDrug = _drugLogic.Create(drug);
 
-            Assert.AreEqual(drug.Id, createdDrug.Id);
-            Assert.AreEqual(drug.DrugCode, createdDrug.DrugCode);
-            Assert.AreEqual(drug.Stock, createdDrug.Stock);
-            Assert.AreEqual(drug.Price, createdDrug.Price);
-            Assert.AreEqual(drug.NeedsPrescription, createdDrug.NeedsPrescription);
             _drugRepository.VerifyAll();
         }
 

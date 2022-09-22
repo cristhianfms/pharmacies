@@ -8,11 +8,6 @@ namespace DataAccess
     public class DrugRepository : BaseRepository<Drug>, IDrugRepository
     {
 
-        public void Update(Drug drug)
-        {
-
-        }
-
         public void Delete(int drugId)
         {
 
