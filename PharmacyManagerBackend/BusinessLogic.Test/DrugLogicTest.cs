@@ -1,10 +1,10 @@
 ﻿using System;
 using Domain;
 using BusinessLogic;
-using Exceptions;
 using IDataAccess;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
 
 namespace BusinessLogic.Test
 {
@@ -74,7 +74,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void GetAllDrugsOk()
         {
-            _drugRepository.Setup(m => m.GetAll(null));
+            _drugRepository.Setup(m => m.GetAll(null)).Returns(new List<Drug>());
 
             _drugLogic.GetAllDrugs();
 

@@ -27,7 +27,7 @@ namespace BusinessLogic
 
         public virtual IEnumerable<Drug> GetAllDrugs()
         {
-            return null;
+            return _drugRepository.GetAll();
         }
 
         public virtual Drug GetDrug(Drug drug)
