@@ -22,7 +22,7 @@ namespace BusinessLogic
 
         public virtual void Delete(int drugId)
         {
-
+            _drugRepository.Delete(drugId);
         }
 
         public virtual IEnumerable<Drug> GetAllDrugs()
