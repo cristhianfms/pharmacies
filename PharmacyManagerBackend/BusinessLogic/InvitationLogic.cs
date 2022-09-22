@@ -55,7 +55,7 @@ namespace BusinessLogic
             }
             catch (ResourceNotFoundException e) 
             {
-                throw new ValidationException("pharmacy doesn't exist");
+                throw new ValidationException("invitation doesn't exist");
             }
 
             return pharmacy;
