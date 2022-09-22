@@ -13,7 +13,7 @@ namespace DataAccess
 
         }
 
-        public void Delete(Drug drug)
+        public void Delete(int drugId)
         {
 
         }

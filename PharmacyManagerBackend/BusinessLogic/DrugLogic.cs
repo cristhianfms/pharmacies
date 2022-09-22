@@ -20,7 +20,7 @@ namespace BusinessLogic
             return _drugRepository.Create(drug);
         }
 
-        public virtual void Delete(Drug drug)
+        public virtual void Delete(int drugId)
         {
 
         }

@@ -13,9 +13,6 @@ namespace BusinessLogic.Test
     {
         private DrugLogic _drugLogic;
         private Mock<IDrugRepository> _drugRepository;
-        private Mock<UserLogic> _userLogic;
-        private Mock<RoleLogic> _roleLogic;
-        private Mock<PharmacyLogic> _pharmacyLogic;
 
         [TestInitialize]
         public void Initialize()
@@ -27,7 +24,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void CreateNewDrugOk()
         {
-            Drug drugRepository = new Drug()
+            Drug drug = new Drug()
             {
                 Id = 1,
                 DrugCode = "2a5678bx1",
@@ -43,15 +40,34 @@ namespace BusinessLogic.Test
                 NeedsPrescription = false
             };
 
-            _drugRepository.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drugRepository);
+            _drugRepository.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
             
             Drug createdDrug = _drugLogic.Create(drugToCreate);
 
-            Assert.AreEqual(drugRepository.Id, createdDrug.Id);
-            Assert.AreEqual(drugRepository.DrugCode, createdDrug.DrugCode);
-            Assert.AreEqual(drugRepository.Stock, createdDrug.Stock);
-            Assert.AreEqual(drugRepository.Price, createdDrug.Price);
-            Assert.AreEqual(drugRepository.NeedsPrescription, createdDrug.NeedsPrescription);
+            Assert.AreEqual(drug.Id, createdDrug.Id);
+            Assert.AreEqual(drug.DrugCode, createdDrug.DrugCode);
+            Assert.AreEqual(drug.Stock, createdDrug.Stock);
+            Assert.AreEqual(drug.Price, createdDrug.Price);
+            Assert.AreEqual(drug.NeedsPrescription, createdDrug.NeedsPrescription);
+            _drugRepository.VerifyAll();
+        }
+
+        [TestMethod]
+        public void DeleteDrugOk()
+        {
+            Drug drug = new Drug()
+            {
+                Id = 1,
+                DrugCode = "2a5678bx1",
+                Price = 25.99,
+                Stock = 15,
+                NeedsPrescription = false
+            };
+
+            _drugRepository.Setup(m => m.Delete(drug.Id));
+
+            _drugLogic.Delete(drug.Id);
+
             _drugRepository.VerifyAll();
         }
     }
