@@ -26,7 +26,7 @@ public class UserRepositoryTest
         this._connection = new SqliteConnection("Filename=:memory:");
         this._contextOptions = new DbContextOptionsBuilder<PharmacyManagerContext>().UseSqlite(this._connection).Options;
 
-        this._pharmacyManagerContext = new PharmacyManagerContext(this._contextOptions);
+        this._pharmacyManagerContext = new PharmacyManagerContext();
         this._userRepository = new BaseRepository<User>(this._pharmacyManagerContext);
         this._roleRepository = new BaseRepository<Role>(this._pharmacyManagerContext);
         this._pharmacyRepository = new BaseRepository<Pharmacy>(this._pharmacyManagerContext);
