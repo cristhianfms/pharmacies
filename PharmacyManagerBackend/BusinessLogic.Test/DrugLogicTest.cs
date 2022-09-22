@@ -20,7 +20,8 @@ namespace BusinessLogic.Test
         {
             this._drugRepository = new Mock<IDrugRepository>(MockBehavior.Strict);
             this._drugInfoRepository = new Mock<IDrugInfoRepository>(MockBehavior.Strict);
-            this._drugLogic = new DrugLogic(_drugRepository.Object);
+            this._drugLogic = new DrugLogic(_drugRepository.Object, _drugInfoRepository.Object);
+            this._drugLogic = new DrugLogic(_drugRepository.Object, _drugInfoRepository.Object);
         }
 
         [TestMethod]

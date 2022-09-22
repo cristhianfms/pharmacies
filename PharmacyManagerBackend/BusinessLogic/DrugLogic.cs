@@ -9,10 +9,12 @@ namespace BusinessLogic
     public class DrugLogic : IDrugLogic
     {
         private IDrugRepository _drugRepository;
+        private IDrugInfoRepository _drugInfoRepository;
 
-        public DrugLogic(IDrugRepository drugRepository)
+        public DrugLogic(IDrugRepository drugRepository, IDrugInfoRepository drugInfoRepository)
         {
             this._drugRepository = drugRepository;
+            this._drugInfoRepository = drugInfoRepository;
         }
 
         public virtual Drug Create(Drug drug)
@@ -23,9 +25,7 @@ namespace BusinessLogic
 
         public virtual DrugInfo Create(DrugInfo drugInfo)
         {
-            //ExistsDrugInfo(drugInfo);
-            //return _drugInfoRepository.Create(drugInfo);
-            return null;
+            return _drugInfoRepository.Create(drugInfo);
         }
 
         private void ExistsDrug(Drug drug)
@@ -47,38 +47,10 @@ namespace BusinessLogic
 
         }
 
-        private void ExistsDrugInfo(DrugInfo drug)
-        {
-            bool drugExist = true;
-            try
-            {
-                Drug drug1 = _drugRepository.GetFirst(d => d.Equals(drug));
-            }
-            catch (ResourceNotFoundException e)
-            {
-                drugExist = false;
-            }
-
-            if (drugExist)
-            {
-                throw new ValidationException("username already exists");
-            }
-
-        }
-
         public virtual void Delete(int drugId)
         {
             _drugRepository.Delete(drugId);
         }
 
-        public virtual IEnumerable<Drug> GetAllDrugs()
-        {
-            return _drugRepository.GetAll();
-        }
-
-        public virtual Drug GetDrug(Drug drug)
-        {
-            return _drugRepository.GetFirst(i => i.Id == drug.Id);
-        }
     }
 }
