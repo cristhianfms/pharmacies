@@ -17,7 +17,7 @@ namespace BusinessLogic
 
         public virtual Drug Create(Drug drug)
         {
-            //ExistsDrug(drug);
+            ExistsDrug(drug);
             return _drugRepository.Create(drug);
         }
 

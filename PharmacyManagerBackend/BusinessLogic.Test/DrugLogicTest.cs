@@ -34,7 +34,8 @@ namespace BusinessLogic.Test
             };
 
             _drugRepository.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
-            
+            _drugRepository.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Throws(new ResourceNotFoundException(""));
+
             Drug createdDrug = _drugLogic.Create(drug);
 
             _drugRepository.VerifyAll();
@@ -53,7 +54,8 @@ namespace BusinessLogic.Test
                 NeedsPrescription = false
             };
 
-            _drugRepository.SetupSet(m=>m.GetFirst(It.IsAny<Func<Drug, bool>>())).Throws(new ValidationException(""));
+            _drugRepository.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
+            _drugRepository.Setup(m=>m.GetFirst(It.IsAny<Func<Drug, bool>>())).Throws(new ValidationException(""));
             Drug createdDrug = _drugLogic.Create(drug);
 
             _drugRepository.VerifyAll();
