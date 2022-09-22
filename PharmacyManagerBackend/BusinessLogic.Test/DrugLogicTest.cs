@@ -93,34 +93,5 @@ namespace BusinessLogic.Test
 
             _drugRepository.VerifyAll();
         }
-
-        [TestMethod]
-        public void GetAllDrugsOk()
-        {
-            _drugRepository.Setup(m => m.GetAll(null)).Returns(new List<Drug>());
-
-            _drugLogic.GetAllDrugs();
-
-            _drugRepository.VerifyAll();
-        }
-
-        [TestMethod]
-        public void GetDrugOk()
-        {
-            Drug drug = new Drug()
-            {
-                Id = 1,
-                DrugCode = "2a5678bx",
-                Price = 25.99,
-                Stock = 15,
-                NeedsPrescription = false
-            };
-
-            _drugRepository.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
-
-            _drugLogic.GetDrug(drug);
-
-            _drugRepository.VerifyAll();
-        }
     }
 }
