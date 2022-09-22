@@ -95,7 +95,7 @@ namespace BusinessLogic.Test
 
             _drugRepository.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
 
-            _drugLogic.GetAllDrugs();
+            _drugLogic.GetDrug(drug);
 
             _drugRepository.VerifyAll();
         }

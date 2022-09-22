@@ -32,7 +32,7 @@ namespace BusinessLogic
 
         public virtual Drug GetDrug(Drug drug)
         {
-            return null;
+            return _drugRepository.GetFirst(i => i.Id == drug.Id);
         }
     }
 }
