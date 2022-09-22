@@ -15,14 +15,9 @@ namespace BusinessLogic
             this._drugRepository = drugRepository;
         }
 
-        public virtual void Add(Drug drug)
-        {
-            //_drugRepository.Create(drug);
-        }
-
         public virtual Drug Create(Drug drug)
         {
-            return null;
+            return _drugRepository.Create(drug);
         }
 
         public virtual void Delete(Drug drug)
