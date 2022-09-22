@@ -12,14 +12,10 @@ namespace BusinessLogic;
 public class UserLogic
 {
     private readonly IUserRepository _userRepository;
-    private readonly InvitationLogic _invitationLogic;
 
-    public UserLogic() { }
-
-    public UserLogic(IUserRepository userRepository, InvitationLogic invitationLogic)
+    public UserLogic(IUserRepository userRepository)
     {
         this._userRepository = userRepository;
-        this._invitationLogic = invitationLogic;
     }
 
     public virtual User Create(User user)

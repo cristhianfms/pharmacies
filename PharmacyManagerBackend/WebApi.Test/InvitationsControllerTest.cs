@@ -15,14 +15,14 @@ namespace WebApi.Test;
 public class InvitationsControllerTest
 {
     private Mock<IInvitationLogic> _invitationLogicMock;
-    private InvitationController _invitationApiController;
+    private InvitationsController _invitationApiController;
     private Invitation _invitation;
 
     [TestInitialize]
     public void InitTest()
     {
         _invitationLogicMock = new Mock<IInvitationLogic>(MockBehavior.Strict);
-        _invitationApiController = new InvitationController(_invitationLogicMock.Object);
+        _invitationApiController = new InvitationsController(_invitationLogicMock.Object);
         _invitation = new Invitation()
         {
             Id = 1,

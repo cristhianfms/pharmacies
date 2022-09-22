@@ -52,7 +52,7 @@ public class InvitationLogicTest
 
         _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Throws(new ResourceNotFoundException(""));
         _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
-        _invitationRepository.Setup(m => m.GetInvitationByCode(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
+        _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Throws(new ResourceNotFoundException(""));
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy()
         {
             Name = invitationToCreate.PharmacyName
@@ -96,7 +96,7 @@ public class InvitationLogicTest
 
         _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Throws(new ResourceNotFoundException(""));
         _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
-        _invitationRepository.SetupSequence(m => m.GetInvitationByCode(It.IsAny<string>()))
+        _invitationRepository.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
             .Returns(new Invitation() { })
             .Throws(new ResourceNotFoundException(""));
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy()

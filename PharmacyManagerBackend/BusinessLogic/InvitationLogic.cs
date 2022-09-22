@@ -14,9 +14,6 @@ public class InvitationLogic : IInvitationLogic
     private UserLogic _userLogic;
     private RoleLogic _roleLogic;
     private PharmacyLogic _pharmacyLogic;
-
-    public InvitationLogic() { }
-
     public InvitationLogic(IInvitationRepository invitationRepository, UserLogic userLogic, RoleLogic roleLogic, PharmacyLogic pharmacyLogic)
     {
         this._invitationRepository = invitationRepository;
@@ -148,7 +145,7 @@ public class InvitationLogic : IInvitationLogic
         bool invitationExists = true;
         try
         {
-            _invitationRepository.GetInvitationByCode(code);
+            _invitationRepository.GetFirst(i => i.Code == code);
         }
         catch (ResourceNotFoundException e)
         {
