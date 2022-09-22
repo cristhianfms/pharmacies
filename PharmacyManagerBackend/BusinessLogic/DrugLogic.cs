@@ -1,30 +1,56 @@
-﻿using System;
+﻿using Exceptions;
 using System.Collections.Generic;
 using Domain;
 using IBusinessLogic;
+using IDataAccess;
 
 namespace BusinessLogic
 {
     public class DrugLogic : IDrugLogic
     {
+        private IDrugRepository _drugRepository;
+        private IDrugInfoRepository _drugInfoRepository;
+
+        public DrugLogic(IDrugRepository drugRepository, IDrugInfoRepository drugInfoRepository)
+        {
+            this._drugRepository = drugRepository;
+            this._drugInfoRepository = drugInfoRepository;
+        }
+
         public virtual Drug Create(Drug drug)
         {
-            return null;
+            ExistsDrug(drug);
+            return _drugRepository.Create(drug);
         }
 
-        public virtual void Delete(Drug drug)
+        public virtual DrugInfo Create(DrugInfo drugInfo)
         {
-
+            return _drugInfoRepository.Create(drugInfo);
         }
 
-        public virtual IEnumerable<Drug> GetAllDrugs()
+        private void ExistsDrug(Drug drug)
         {
-            return null;
+            bool drugExist = true;
+            try
+            {
+                Drug drug1 = _drugRepository.GetFirst(d => d.Equals(drug));
+            }
+            catch (ResourceNotFoundException e)
+            {
+                drugExist = false;
+            }
+
+            if (drugExist)
+            {
+                throw new ValidationException("Drug already exists");
+            }
+
         }
 
-        public virtual Drug GetDrug(Drug drug)
+        public virtual void Delete(int drugId)
         {
-            return null;
+            _drugRepository.Delete(drugId);
         }
+
     }
 }

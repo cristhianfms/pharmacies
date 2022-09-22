@@ -53,9 +53,9 @@ namespace BusinessLogic
             {
                 pharmacy = _pharmacyLogic.GetPharmacyByName(pharmacyName);
             }
-            catch (ResourceNotFoundException e)
+            catch (ResourceNotFoundException e) 
             {
-                throw new ValidationException("pharmacy doesn't exist");
+                throw new ValidationException("invitation doesn't exist");
             }
 
             return pharmacy;
