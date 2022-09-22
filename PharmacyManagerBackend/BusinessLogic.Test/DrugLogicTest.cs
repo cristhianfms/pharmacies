@@ -58,7 +58,7 @@ namespace BusinessLogic.Test
             Drug drug = new Drug()
             {
                 Id = 1,
-                DrugCode = "2a5678bx1",
+                DrugCode = "2a5678bx",
                 Price = 25.99,
                 Stock = 15,
                 NeedsPrescription = false
@@ -67,6 +67,16 @@ namespace BusinessLogic.Test
             _drugRepository.Setup(m => m.Delete(drug.Id));
 
             _drugLogic.Delete(drug.Id);
+
+            _drugRepository.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetAllDrugsOk()
+        {
+            _drugRepository.Setup(m => m.GetAll(null));
+
+            _drugLogic.GetAllDrugs();
 
             _drugRepository.VerifyAll();
         }
