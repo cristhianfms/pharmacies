@@ -13,11 +13,13 @@ namespace BusinessLogic.Test
     {
         private DrugLogic _drugLogic;
         private Mock<IDrugRepository> _drugRepository;
+        private Mock<IDrugInfoRepository> _drugInfoRepository;
 
         [TestInitialize]
         public void Initialize()
         {
             this._drugRepository = new Mock<IDrugRepository>(MockBehavior.Strict);
+            this._drugInfoRepository = new Mock<IDrugInfoRepository>(MockBehavior.Strict);
             this._drugLogic = new DrugLogic(_drugRepository.Object);
         }
 
@@ -39,6 +41,18 @@ namespace BusinessLogic.Test
             Drug createdDrug = _drugLogic.Create(drug);
 
             _drugRepository.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CreateNewDrugInfoOk()
+        {
+            DrugInfo drugInfo = new DrugInfo();
+
+            _drugInfoRepository.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(drugInfo);
+            
+            DrugInfo createdDrugInfo = _drugLogic.Create(drugInfo);
+
+            _drugInfoRepository.VerifyAll();
         }
 
         [TestMethod]

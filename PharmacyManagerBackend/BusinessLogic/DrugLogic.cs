@@ -21,7 +21,33 @@ namespace BusinessLogic
             return _drugRepository.Create(drug);
         }
 
+        public virtual DrugInfo Create(DrugInfo drugInfo)
+        {
+            //ExistsDrugInfo(drugInfo);
+            //return _drugInfoRepository.Create(drugInfo);
+            return null;
+        }
+
         private void ExistsDrug(Drug drug)
+        {
+            bool drugExist = true;
+            try
+            {
+                Drug drug1 = _drugRepository.GetFirst(d => d.Equals(drug));
+            }
+            catch (ResourceNotFoundException e)
+            {
+                drugExist = false;
+            }
+
+            if (drugExist)
+            {
+                throw new ValidationException("Drug already exists");
+            }
+
+        }
+
+        private void ExistsDrugInfo(DrugInfo drug)
         {
             bool drugExist = true;
             try

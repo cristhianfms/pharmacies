@@ -1,4 +1,4 @@
-using BusinessLogic;
+using IBusinessLogic;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
@@ -11,18 +11,20 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     public class DrugController : ControllerBase
     {
-        private DrugLogic _drugLogic;
+        private IDrugLogic _drugLogic;
 
-        public DrugController(DrugLogic drugLogic)
+        public DrugController(IDrugLogic drugLogic)
         {
             this._drugLogic = drugLogic;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] DrugModel drugModel)
+        public IActionResult Create([FromBody] DrugResponseModel drugModel)
         {
             Drug drug = ModelsMapper.ToEntity(drugModel);
+            DrugInfo drugInfo = ModelsMapper.ToEntityAsociated(drugModel);
             Drug drugCreated = _drugLogic.Create(drug);
+            _drugLogic.Create(drugInfo);
             DrugModel drugCreatedModel = ModelsMapper.ToModel(drugCreated);
 
             return Ok(drugCreatedModel);
@@ -33,20 +35,6 @@ namespace WebApi.Controllers
         {
             _drugLogic.Delete(drugId);
             return Ok("Se elimino correctamente");
-        }
-
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            IEnumerable<Drug> allDrugs = _drugLogic.GetAllDrugs();
-            return Ok(allDrugs);
-        }
-
-        [HttpGet]
-        public IActionResult GetDrug(Drug drug)
-        {
-            Drug myDrug = _drugLogic.GetDrug(drug);
-            return Ok(myDrug);
         }
     }
 }

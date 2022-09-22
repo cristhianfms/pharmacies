@@ -89,7 +89,7 @@ namespace WebApi.Utils
             };
         }
 
-        public static Drug ToEntity(DrugModel drugModel)
+        public static Drug ToEntity(DrugResponseModel drugModel)
         {
             return new Drug
             {
@@ -98,6 +98,19 @@ namespace WebApi.Utils
                 NeedsPrescription = drugModel.NeedsPrescription,
                 Price = drugModel.Price,
                 Stock = drugModel.Stock
+            };
+        }
+
+        public static DrugInfo ToEntityAsociated(DrugResponseModel drugModel)
+        {
+            return new DrugInfo
+            {
+                Id = drugModel.Id,
+                Name = drugModel.Name,
+                Symptoms = drugModel.Symptoms,
+                Presentation = drugModel.Presentation,
+                QuantityPerPresentation = drugModel.QuantityPerPresentation,
+                UnitOfMeasurement = drugModel.UnitOfMeasurement
             };
         }
 
@@ -110,6 +123,19 @@ namespace WebApi.Utils
                 NeedsPrescription = drug.NeedsPrescription,
                 Price = drug.Price,
                 Stock = drug.Stock
+            };
+        }
+
+        public static DrugInfoModel ToModel(DrugInfo drugInfo)
+        {
+            return new DrugInfoModel
+            {
+                Id = drugInfo.Id,
+                Name = drugInfo.Name,
+                Symptoms = drugInfo.Symptoms,
+                Presentation = drugInfo.Presentation,
+                QuantityPerPresentation = drugInfo.QuantityPerPresentation,
+                UnitOfMeasurement = drugInfo.UnitOfMeasurement
             };
         }
     }
