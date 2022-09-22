@@ -14,17 +14,17 @@ namespace BusinessLogic.Test
     public class SolicitudeLogicTest
     {
         private SolicitudeLogic _solicitudeLogic;
-        private Mock<IBaseRepository<Solicitude>> _solicitudeRepositoryMock;
-        private User _userForTest;
+        private Mock<ISolicitudeRepository> _solicitudeRepositoryMock;
+        private User _userEmployeeForTest;
         private Solicitude _solicitudeForTest;
 
         [TestInitialize]
         public void Initialize()
         {
-            this._solicitudeRepositoryMock = new Mock<IBaseRepository<Solicitude>>(MockBehavior.Strict);
+            this._solicitudeRepositoryMock = new Mock<ISolicitudeRepository>(MockBehavior.Strict);
             this._solicitudeLogic = new SolicitudeLogic(this._solicitudeRepositoryMock.Object);
 
-            _userForTest = new User()
+            _userEmployeeForTest = new User()
             {
                 Id = 1,
                 UserName = "Usuario1",
@@ -61,10 +61,11 @@ namespace BusinessLogic.Test
                 Id = 2,
                 State = State.PENDING,
                 Date = DateTime.Now,
-                Employee = _userForTest,
-                Pharmacy = _userForTest.Pharmacy,
+                Employee = _userEmployeeForTest,
+                Pharmacy = _userEmployeeForTest.Pharmacy,
                 Items = solicitudeItems3and4
             };
+
         }
 
         [TestMethod]
@@ -84,16 +85,16 @@ namespace BusinessLogic.Test
                 Id = 1,
                 State = State.PENDING,
                 Date = DateTime.Now,
-                Employee = _userForTest,
-                Pharmacy = _userForTest.Pharmacy,
+                Employee = _userEmployeeForTest,
+                Pharmacy = _userEmployeeForTest.Pharmacy,
                 Items = solicitudeItems,
             };
             Solicitude solicitudeToCreate = new Solicitude()
             {
                 State = State.PENDING,
                 Date = DateTime.Now,
-                Employee = _userForTest,
-                Pharmacy = _userForTest.Pharmacy,
+                Employee = _userEmployeeForTest,
+                Pharmacy = _userEmployeeForTest.Pharmacy,
                 Items = solicitudeItems,
             };
 
@@ -115,8 +116,10 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
-        public void TestGetSolicitudes()
+        public void TestGetSolicitudesForEmployee()
         {
+            this._solicitudeLogic.SetContext(_userEmployeeForTest);
+
             QuerySolicitudeDto querysolicitudeDto = new QuerySolicitudeDto()
             {
 
@@ -136,8 +139,8 @@ namespace BusinessLogic.Test
                 Id = 1,
                 State = State.PENDING,
                 Date = DateTime.Now,
-                Employee = _userForTest,
-                Pharmacy = _userForTest.Pharmacy,
+                Employee = _userEmployeeForTest,
+                Pharmacy = _userEmployeeForTest.Pharmacy,
                 Items = solicitudeItems
             };
 
@@ -148,9 +151,69 @@ namespace BusinessLogic.Test
 
             _solicitudeRepositoryMock.Setup(s => s.GetAll(It.IsAny<Func<Solicitude, bool>>())).Returns(solicitudesRepository);
 
-            List<Solicitude> solicitudesReturned = _solicitudeLogic.GetSolicitudes(querysolicitudeDto);
+           List <Solicitude> solicitudesReturned = _solicitudeLogic.GetSolicitudes(querysolicitudeDto).ToList();
 
             CollectionAssert.AreEqual(solicitudesRepository, solicitudesReturned);
+            _solicitudeRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void TestGetSolicitudesForOwner()
+        {
+            User userOwnerForTest = new User()
+            {
+                Id = 1,
+                UserName = "Usuario1",
+                Email = "ususario@user.com",
+                Address = "Cuareim 123",
+                Password = "Usuario+1",
+                Pharmacy = new Pharmacy()
+                {
+                    Name = "Pharmashop"
+                },
+                Role = new Role()
+                {
+                    Name = "Owner"
+                }
+            };
+
+            this._solicitudeLogic.SetContext(userOwnerForTest);
+
+            QuerySolicitudeDto querysolicitudeDto = new QuerySolicitudeDto()
+            {
+
+            };
+
+            SolicitudeItem solicitudeItem = new SolicitudeItem()
+            {
+                DrugCode = "ABC123",
+                DrugQuantity = 6
+            };
+            List<SolicitudeItem> solicitudeItems = new List<SolicitudeItem>()
+            {
+                solicitudeItem
+            };
+            Solicitude solicitudeRepository = new Solicitude()
+            {
+                Id = 1,
+                State = State.PENDING,
+                Date = DateTime.Now,
+                Employee = _userEmployeeForTest,
+                Pharmacy = _userEmployeeForTest.Pharmacy,
+                Items = solicitudeItems
+            };
+
+            List<Solicitude> solicitudesRepository = new List<Solicitude>()
+            {
+                solicitudeRepository, _solicitudeForTest
+            };
+
+            _solicitudeRepositoryMock.Setup(s => s.GetAll(It.IsAny<Func<Solicitude, bool>>())).Returns(solicitudesRepository);
+
+            List<Solicitude> solicitudesReturned = _solicitudeLogic.GetSolicitudes(querysolicitudeDto).ToList();
+
+            CollectionAssert.AreEqual(solicitudesRepository, solicitudesReturned);
+            _solicitudeRepositoryMock.VerifyAll();
         }
 
     }

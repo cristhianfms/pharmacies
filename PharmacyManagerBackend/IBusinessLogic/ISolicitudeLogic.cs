@@ -9,7 +9,7 @@ namespace IBusinessLogic;
 public interface ISolicitudeLogic
 {
     Solicitude Create(Solicitude solicitude);
-    List<Solicitude> GetSolicitudes(QuerySolicitudeDto querySolicitudeDto);
+    IEnumerable<Solicitude> GetSolicitudes(QuerySolicitudeDto querySolicitudeDto);
     Solicitude Update(int solicitudId, Solicitude solicitude);
 }
 
