@@ -18,9 +18,9 @@ public class Solicitude
                 solicitude.Id == Id &&
                 solicitude.State == State &&
                 solicitude.Date == Date &&
-            solicitude.Employee.UserName == Employee.UserName &&
-            solicitude.Pharmacy.Id == Pharmacy.Id;
-
+                solicitude.Employee.UserName == Employee.UserName &&
+                solicitude.Pharmacy.Id == Pharmacy.Id &&
+                solicitude.Items.Equals(Items);
     }
 }
 
