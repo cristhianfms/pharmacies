@@ -339,6 +339,63 @@ namespace BusinessLogic.Test
             CollectionAssert.AreEqual(solicitudesRepository, solicitudesReturned);
             _solicitudeRepositoryMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void TestUpdateSolicitude()
+        {
+            User userOwnerForTest = new User()
+            {
+                Id = 3,
+                UserName = "Usuario1",
+                Email = "ususario@user.com",
+                Address = "Cuareim 123",
+                Password = "Usuario+1",
+                Pharmacy = _userEmployeeForTest.Pharmacy,
+                Role = new Role()
+                {
+                    Name = "Owner"
+                }
+            };
+
+            this._solicitudeLogic.SetContext(userOwnerForTest);
+
+            SolicitudeItem solicitudeItem = new SolicitudeItem()
+            {
+                DrugCode = "ABC123",
+                DrugQuantity = 6
+            };
+            List<SolicitudeItem> solicitudeItems = new List<SolicitudeItem>()
+            {
+                solicitudeItem
+            };
+            const int solicitudeId = 1;
+            Solicitude solicitudeRepository = new Solicitude()
+            {
+                Id = solicitudeId,
+                State = State.PENDING,
+                Date = DateTime.Now,
+                Employee = _userEmployeeForTest,
+                Pharmacy = _userEmployeeForTest.Pharmacy,
+                Items = solicitudeItems
+            };
+
+            List<Solicitude> solicitudesRepository = new List<Solicitude>()
+            {
+                solicitudeRepository, _solicitudeForTest
+            };
+            Solicitude solicitudeToUpdate = new Solicitude()
+            {
+                State = State.REJECTED
+            };
+
+            _solicitudeRepositoryMock.Setup(s=>s.GetFirst(It.IsAny<Func<Solicitude, bool>>())).Returns(solicitudeRepository);
+
+            Solicitude solicitudeReturned = _solicitudeLogic.Update(solicitudeId, solicitudeToUpdate);
+
+            Assert.AreEqual(solicitudeRepository, solicitudeReturned);
+            _solicitudeRepositoryMock.VerifyAll();
+
+        }
     }
 }
 
