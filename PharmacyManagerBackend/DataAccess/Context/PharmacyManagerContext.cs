@@ -13,8 +13,8 @@ public class PharmacyManagerContext : DbContext
     public DbSet<Pharmacy> PharmacieDB { get; set; }
     public DbSet<Drug> DrugDB { get; set; }
 
-    public PharmacyManagerContext(DbContextOptions options) : base(options) { }
     public PharmacyManagerContext() : base() { }
+    public PharmacyManagerContext(DbContextOptions options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
