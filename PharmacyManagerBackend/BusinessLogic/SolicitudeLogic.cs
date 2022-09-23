@@ -40,40 +40,45 @@ namespace BusinessLogic
         public IEnumerable<Solicitude> GetSolicitudes(QuerySolicitudeDto querySolicitudeDto)
         {
             List<Solicitude> solicitudesToReturn = new List<Solicitude>();
+            //List<Solicitude> solicitudes = new List<Solicitude>();
             if (_context.CurrentUser.Role.Name.Equals("Employee"))
             {
-                solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll(
+                //Ir aprovechando la lista y filtrando por cada cosa
+               solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll(
                      s => s.Employee.Id == _context.CurrentUser.Id);
 
                 if (querySolicitudeDto.State != null)
                 {
-                  solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll(
-                    s => s.Employee.Id == _context.CurrentUser.Id &&
-                    s.State.Equals(querySolicitudeDto.State));
+                    solicitudesToReturn.FindAll(s => s.State.Equals(querySolicitudeDto.State));
+                  //solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll(
+                  //  s => s.Employee.Id == _context.CurrentUser.Id &&
+                  //  s.State.Equals(querySolicitudeDto.State));
                 }
                 if (querySolicitudeDto.DrugCode != null)
                 {
-                    solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll(
-                   s => s.Employee.Id == _context.CurrentUser.Id &&
-                   s.Items.Any(x => x.DrugCode == querySolicitudeDto.DrugCode));
+                    solicitudesToReturn.FindAll(s => s.Items.Any(x => x.DrugCode == querySolicitudeDto.DrugCode));
+                   // solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll(
+                   //s => s.Employee.Id == _context.CurrentUser.Id &&
+                   //s.Items.Any(x => x.DrugCode == querySolicitudeDto.DrugCode));
                 }
                 if(querySolicitudeDto.DateFrom != null && querySolicitudeDto.DateTo != null)
                 {
                     DateTime dateFrom = toDateTime(querySolicitudeDto.DateFrom);
                     DateTime dateTo = toDateTime(querySolicitudeDto.DateTo);
                     validateDates(dateFrom, dateTo);
-                    solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll(
-                    s => s.Employee.Id == _context.CurrentUser.Id &&
-                    s.Date >= dateFrom &&
-                    s.Date <= dateTo);
+                    solicitudesToReturn.FindAll(s => s.Date >= dateFrom && s.Date <=dateTo);
+                    //solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll(
+                    //s => s.Employee.Id == _context.CurrentUser.Id &&
+                    //s.Date >= dateFrom &&
+                    //s.Date <= dateTo);
                 } 
+
             } 
             else if (_context.CurrentUser.Role.Name.Equals("Owner"))
             {
                solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll
                    (s => s.Pharmacy.Id == _context.CurrentUser.Pharmacy.Id);
             }
-
 
             return solicitudesToReturn;
         }
@@ -91,7 +96,41 @@ namespace BusinessLogic
 
         public Solicitude Update(int solicitudId, Solicitude solicitude)
         {
-            throw new NotImplementedException();
+           return null;
+            
+            //Solicitude solicitudeToUpdate = _solicitudeRepository.GetFirst(solicitude.Id);
+
+            /*
+             Invitation invitation = getCreatedInvitation(invitationDto.Code);
+        checkInvitationUserName(invitation, invitationDto.UserName);
+
+        User userToCreate = new User()
+        {
+            UserName = invitation.UserName,
+            Role = invitation.Role,
+            Email = invitationDto.Email,
+            Address = invitationDto.Address,
+            Password = invitationDto.Password,
+            RegistrationDate = DateTime.Now,
+            // TODO dependiento del tipo
+            //Pharmacy = invitation.Pharmacy
+        };
+
+        User createdUser = _userLogic.Create(userToCreate);
+        _invitationRepository.Delete(invitation);
+
+        InvitationDto invitationDtoToReturn = new InvitationDto()
+        {
+            UserName = userToCreate.UserName,
+            UserId = createdUser.Id,
+            RoleName = createdUser.Role.Name,
+            PharmacyName = createdUser.Pharmacy?.Name,
+            Email = createdUser.Email,
+            Address = createdUser.Password,
+        };
+
+        return invitationDtoToReturn;
+             */
         }
     }
 }
