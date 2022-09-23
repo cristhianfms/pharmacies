@@ -7,74 +7,74 @@ using WebApi.Controllers;
 using WebApi.Models;
 using WebApi.Test.Utils;
 using System.Collections.Generic;
+using IBusinessLogic;
 
+namespace WebApi.Test;
 
-namespace WebApi.Test
+[TestClass]
+public class DrugControllerTest
 {
-    [TestClass]
-    public class DrugControllerTest
+    private Mock<IDrugLogic> _drugLogicMock;
+    private DrugController _drugApiController;
+    private Drug _drug;
+
+    [TestInitialize]
+    public void InitTest()
     {
-        private Mock<IDrugLogic> _drugLogicMock;
-        private DrugController _drugApiController;
-        private Drug _drug;
-
-        [TestInitialize]
-        public void InitTest()
+        _drugLogicMock = new Mock<IDrugLogic>(MockBehavior.Strict);
+        _drugApiController = new DrugController(_drugLogicMock.Object);
+        _drug = new Drug()
         {
-            _drugLogicMock = new Mock<IDrugLogic>(MockBehavior.Strict);
-            _drugApiController = new DrugController(_drugLogicMock.Object);
-            _drug = new Drug()
-            {
-                Id = 1,
-                DrugCode = "2A5",
-                Price = 150,
-                NeedsPrescription = false,
-                Stock = 20
-            };
-        }
+            Id = 1,
+            DrugCode = "2A5",
+            Price = 150,
+            NeedsPrescription = false,
+            Stock = 20
+        };
+    }
 
 
-        [TestMethod]
-        public void CreateDrugOk()
+    [TestMethod]
+    public void CreateDrugOk()
+    {
+
+        _drugLogicMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(_drug);
+        _drugLogicMock.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(new DrugInfo());
+        var drugResponseModel = new DrugResponseModel()
         {
-            _drugLogicMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(_drug);
-            _drugLogicMock.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(new DrugInfo());
-            var drugResponseModel = new DrugResponseModel()
-            {
-                Id = 1,
-                DrugCode = "2A5",
-                Price = 150,
-                NeedsPrescription = false,
-                Stock = 20
-            };
+            Id = 1,
+            DrugCode = "2A5",
+            Price = 150,
+            NeedsPrescription = false,
+            Stock = 20
+        };
 
-            var drugModel = new DrugModel()
-            {
-                Id = 1,
-                DrugCode = "2A5",
-                Price = 150,
-                NeedsPrescription = false,
-                Stock = 20
-            };
-
-            var result = _drugApiController.Create(drugResponseModel);
-            var okResult = result as OkObjectResult;
-            var createdDrug = okResult.Value as DrugModel;
-
-            Assert.IsTrue(ModelsComparer.DrugCompare(drugModel, createdDrug));
-            _drugLogicMock.VerifyAll();
-        }
-
-        [TestMethod]
-        public void DeleteDrugOk()
+        var drugModel = new DrugModel()
         {
-            _drugLogicMock.Setup(m => m.Delete(_drug.Id)).Verifiable();
+            Id = 1,
+            DrugCode = "2A5",
+            Price = 150,
+            NeedsPrescription = false,
+            Stock = 20
+        };
 
-            var result = _drugApiController.Delete(_drug.Id);
+        var result = _drugApiController.Create(drugResponseModel);
+        var okResult = result as OkObjectResult;
+        var createdDrug = okResult.Value as DrugModel;
 
-            Assert.IsTrue(result is OkObjectResult);
+        Assert.IsTrue(ModelsComparer.DrugCompare(drugModel, createdDrug));
+        _drugLogicMock.VerifyAll();
+    }
 
-        }
+    [TestMethod]
+    public void DeleteDrugOk()
+    {
+        _drugLogicMock.Setup(m => m.Delete(_drug.Id)).Verifiable();
+
+        var result = _drugApiController.Delete(_drug.Id);
+
+        Assert.IsTrue(result is OkObjectResult);
 
     }
+
 }

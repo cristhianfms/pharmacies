@@ -7,11 +7,12 @@ namespace DataAccess.Context
 {
     public class PharmacyManagerContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<Session> Sessions { get; set; }
-        public DbSet<Invitation> Invitations { get; set; }
-        public DbSet<Pharmacy> Pharmacies { get; set; }
+        public DbSet<User> UserDB { get; set; }
+        public DbSet<Role> RoleDB { get; set; }
+        public DbSet<Session> SessionDB { get; set; }
+        public DbSet<Invitation> InvitationDB { get; set; }
+        public DbSet<Pharmacy> PharmacieDB { get; set; }
+        public DbSet<Drug> DrugDB { get; set; }
 
         public PharmacyManagerContext(DbContextOptions options) : base(options)
         {
@@ -36,10 +37,12 @@ namespace DataAccess.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //TODO: delete after tests
-            modelBuilder.Entity<Pharmacy>().HasData(
-                new Pharmacy() { Id = 1, Name = "pharmacy", Address = "address 1" }
-            );
+            modelBuilder.Entity<Pharmacy>()
+                .HasMany(e => e.Employees)
+                .WithOne(u => u.EmployeePharmacy);
+            modelBuilder.Entity<Pharmacy>()
+                .HasOne(p => p.Owner)
+                .WithOne(u => u.OwnerPharmacy);
 
             // Roles
             Role admin = new Role() { Id = 1, Name = "ADMIN" };
@@ -51,10 +54,15 @@ namespace DataAccess.Context
                 employee
             );
 
-            // Users
-            modelBuilder.Entity<User>().HasData(
-                new User() { Id = 1, UserName = "Admin", Email = "admin@admin", Password = "admin1234", RoleId = admin.Id }
+            //TODO: delete after tests
+            modelBuilder.Entity<Pharmacy>().HasData(
+                new Pharmacy() { Id = 1, Name = "pharmacy", Address = "address 1" }
             );
+
+            // Users
+            /*modelBuilder.Entity<User>().HasData(
+                new User() { Id = 1, UserName = "Admin", Email = "admin@admin", Password = "admin1234", RoleId = admin.Id}
+            );*/
         }
     }
 }

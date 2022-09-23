@@ -1,13 +1,8 @@
-using System;
-using Exceptions;
-
-namespace Domain
+namespace Domain;
+public class Session
 {
-    public class Session
-    {
-        public int Id { get; set; }
-        public Guid Token { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
-    }
+    public int Id { get; set; }
+    public Guid Token { get; set; }
+    public int UserId { get; set; }
+    public User User { get; set; }
 }

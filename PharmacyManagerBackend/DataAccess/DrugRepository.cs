@@ -1,5 +1,5 @@
 ﻿using System;
-using DataAccess;
+using Microsoft.EntityFrameworkCore;
 using IDataAccess;
 using Domain;
 
@@ -7,7 +7,9 @@ namespace DataAccess
 {
     public class DrugRepository : BaseRepository<Drug>, IDrugRepository
     {
+        public DrugRepository(DbContext dbContext) : base(dbContext){
 
+        }
         public void Delete(int drugId)
         {
 
