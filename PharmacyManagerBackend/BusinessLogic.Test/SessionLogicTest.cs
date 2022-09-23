@@ -19,7 +19,7 @@ public class SessionLogicTest
     public void Initialize()
     {
         this._sessionRepository = new Mock<ISessionRepository>(MockBehavior.Strict);
-        this._userLogic = new Mock<UserLogic>(MockBehavior.Strict);
+        this._userLogic = new Mock<UserLogic>(MockBehavior.Strict, null);
         _sessionLogic = new SessionLogic(this._sessionRepository.Object, this._userLogic.Object);
     }
 

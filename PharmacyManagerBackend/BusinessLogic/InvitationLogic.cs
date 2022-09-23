@@ -6,16 +6,15 @@ using IDataAccess;
 using Exceptions;
 using Domain.Dtos;
 
-namespace BusinessLogic {
+namespace BusinessLogic
+{
+
     public class InvitationLogic : IInvitationLogic
     {
         private IInvitationRepository _invitationRepository;
         private UserLogic _userLogic;
         private RoleLogic _roleLogic;
         private PharmacyLogic _pharmacyLogic;
-
-        public InvitationLogic() { }
-
         public InvitationLogic(IInvitationRepository invitationRepository, UserLogic userLogic, RoleLogic roleLogic, PharmacyLogic pharmacyLogic)
         {
             this._invitationRepository = invitationRepository;
@@ -129,6 +128,7 @@ namespace BusinessLogic {
                 throw new ValidationException("username already exists");
             }
         }
+
         private string generateNewInvitationCode()
         {
             Random generator = new Random();
@@ -146,7 +146,7 @@ namespace BusinessLogic {
             bool invitationExists = true;
             try
             {
-                _invitationRepository.GetInvitationByCode(code);
+                _invitationRepository.GetFirst(i => i.Code == code);
             }
             catch (ResourceNotFoundException e)
             {
@@ -180,4 +180,3 @@ namespace BusinessLogic {
         }
     }
 }
-
