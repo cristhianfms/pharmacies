@@ -5,6 +5,7 @@ namespace DataAccess.Context;
 
 public class PharmacyManagerContext : DbContext
 {
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
     }
