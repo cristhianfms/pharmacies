@@ -37,6 +37,7 @@ public class ServiceFactory
         _services.AddScoped<IDrugRepository, DrugRepository>();
         _services.AddScoped<IDrugInfoRepository, DrugInfoRepository>();
         _services.AddScoped<IPharmacyRepository, PharmacyRepository>();
+        _services.AddScoped<IRoleRepository, RoleRepository>();
     }
     public void AddDbContextService()
     {
