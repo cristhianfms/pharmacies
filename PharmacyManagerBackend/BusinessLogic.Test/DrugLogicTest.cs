@@ -2,7 +2,6 @@
 using Domain;
 using Exceptions;
 using IDataAccess;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 
@@ -87,8 +86,8 @@ namespace BusinessLogic.Test
                 Stock = 15,
                 NeedsPrescription = false
             };
-
-            _drugRepository.Setup(m => m.Delete(drug.Id));
+            _drugRepository.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
+            _drugRepository.Setup(m => m.Delete(drug));
 
             _drugLogic.Delete(drug.Id);
 
