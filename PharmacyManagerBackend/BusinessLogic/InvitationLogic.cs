@@ -52,7 +52,7 @@ namespace BusinessLogic
             User userToCreate = new User()
             {
                 UserName = invitation.UserName,
-                Role = invitation.Role,
+                RoleId = invitation.RoleId,
                 Email = invitationDto.Email,
                 Address = invitationDto.Address,
                 Password = invitationDto.Password,
@@ -67,8 +67,8 @@ namespace BusinessLogic
             InvitationDto invitationDtoToReturn = new InvitationDto()
             {
                 UserName = userToCreate.UserName,
-                RoleName = createdUser.Role.Name,
-                PharmacyName = createdUser.Pharmacy?.Name,
+                //RoleName = createdUser.Role.Name,
+                //PharmacyName = createdUser.Pharmacy?.Name,
                 Email = createdUser.Email,
                 Address = createdUser.Password,
             };

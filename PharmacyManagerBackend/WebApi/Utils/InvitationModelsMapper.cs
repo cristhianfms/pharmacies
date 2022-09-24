@@ -19,7 +19,6 @@ public class InvitationModelsMapper
     {
         return new InvitationModel
         {
-            Id = invitation.Id,
             UserName = invitation.UserName,
             RoleName = invitation.Role.Name,
             InvitationCode = invitation.Code,

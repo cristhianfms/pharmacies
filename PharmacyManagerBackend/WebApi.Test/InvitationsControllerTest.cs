@@ -46,7 +46,6 @@ public class InvitationsControllerTest
         _invitationLogicMock.Setup(m => m.Create(It.IsAny<InvitationDto>())).Returns(_invitation);
         var invitationModel = new InvitationModel()
         {
-            Id = 1,
             UserName = "JuanPerez",
             RoleName = "Employee",
             InvitationCode = "2A5678BX",
