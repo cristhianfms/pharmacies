@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Domain;
 using IBusinessLogic;
 using IDataAccess;
+using System;
 
 namespace BusinessLogic
 {
@@ -73,5 +74,14 @@ namespace BusinessLogic
 
         }
 
+        public void AddStock(List<SolicitudeItem> drugsToAddStock)
+        {
+            foreach (var drugSolicitude in drugsToAddStock)
+            {
+                Drug drugToUpdate = _drugRepository.GetFirst(d=> d.DrugCode == drugSolicitude.DrugCode);
+                drugToUpdate.Stock = drugToUpdate.Stock + drugSolicitude.DrugQuantity;
+                _drugRepository.Update(drugToUpdate);
+            }
+        }
     }
 }
