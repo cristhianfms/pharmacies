@@ -68,7 +68,6 @@ public class InvitationsControllerTest
     {
         InvitationDto invitationUpdated = new InvitationDto()
         {
-            UserId = 1,
             UserName = "JuanPerez",
             Code = "2A5678BX",
             Email = "Juan@email.com",
@@ -76,28 +75,25 @@ public class InvitationsControllerTest
             RoleName = "Empployee",
             PharmacyName = "PharmacyName"
         };
-        _invitationLogicMock.Setup(m => m.Update(It.IsAny<int>(), It.IsAny<InvitationDto>())).Returns(invitationUpdated);
+        _invitationLogicMock.Setup(m => m.Update(It.IsAny<string>(), It.IsAny<InvitationDto>())).Returns(invitationUpdated);
         var invitationPutModel = new InvitationPutModel()
         {
             UserName = "JuanPerez",
-            InvitationCode = "2A5678BX",
             Email = "Juan@email.com",
             Address = "Road A 1234",
             Password = "12345678"
         };
 
 
-        var result = _invitationApiController.Update(1, invitationPutModel);
+        var result = _invitationApiController.Update("code", invitationPutModel);
         var okResult = result as OkObjectResult;
         var confirmedInvitation = okResult.Value as InvitationConfirmedModel;
 
-        Assert.AreEqual(invitationUpdated.UserId, confirmedInvitation.UserId);
         Assert.AreEqual(invitationUpdated.UserName, confirmedInvitation.UserName);
         Assert.AreEqual(invitationUpdated.RoleName, confirmedInvitation.RoleName);
         Assert.AreEqual(invitationUpdated.PharmacyName, confirmedInvitation.PharmacyName);
         Assert.AreEqual(invitationUpdated.Email, confirmedInvitation.Email);
         Assert.AreEqual(invitationUpdated.Address, confirmedInvitation.Address);
-
 
         _invitationLogicMock.VerifyAll();
     }

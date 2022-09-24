@@ -32,7 +32,6 @@ public class InvitationModelsMapper
         return new InvitationDto
         {
             UserName = invitationPutModel.UserName,
-            Code = invitationPutModel.InvitationCode,
             Email = invitationPutModel.Email,
             Address = invitationPutModel.Address,
             Password = invitationPutModel.Password
@@ -43,7 +42,6 @@ public class InvitationModelsMapper
     {
         return new InvitationConfirmedModel
         {
-            UserId = invitationDto.UserId,
             UserName = invitationDto.UserName,
             RoleName = invitationDto.RoleName,
             PharmacyName = invitationDto.PharmacyName,
