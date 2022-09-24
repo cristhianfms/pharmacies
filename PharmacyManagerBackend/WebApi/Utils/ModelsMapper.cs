@@ -149,7 +149,13 @@ public static class ModelsMapper
         }
         return solicitudeResponseModels;
     }
-
+    public static Solicitude ToEntity(SolicitudePutModel solicitudePutModel)
+    {
+        return new Solicitude()
+        {
+            State = Enum.Parse<State>(solicitudePutModel.State)
+        };
+    }
     public static Drug ToEntity(DrugModel drugModel)
     {
         return new Drug
