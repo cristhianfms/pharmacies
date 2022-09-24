@@ -25,6 +25,22 @@ public class PharmacyManagerContext : DbContext
         modelBuilder.Entity<Pharmacy>()
             .HasOne(p => p.Owner)
             .WithOne(u => u.OwnerPharmacy);
+
+        // Data seed
+        // Roles
+        Role admin = new Role() { Id = 1, Name = "Admin" };
+        Role owner = new Role() { Id = 2, Name = "Owner" };
+        Role employee = new Role() { Id = 3, Name = "Employee" };
+        modelBuilder.Entity<Role>().HasData(
+            admin,
+            owner,
+            employee
+        );
+
+        // Default admin
+        modelBuilder.Entity<User>().HasData(
+            new User() { Id = 1, UserName = "Admin", Email = "admin@admin", Address = "", Password = "admin1234", RoleId = admin.Id, RegistrationDate = DateTime.Parse("2022-09-01") }
+        );
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
