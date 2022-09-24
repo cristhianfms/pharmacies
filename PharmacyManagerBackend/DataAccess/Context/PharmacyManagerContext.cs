@@ -12,6 +12,7 @@ public class PharmacyManagerContext : DbContext
     public DbSet<Invitation> InvitationDB { get; set; }
     public DbSet<Pharmacy> PharmacieDB { get; set; }
     public DbSet<Drug> DrugDB { get; set; }
+    public DbSet<DrugInfo> DrugInfoDB { get; set; }
 
     public PharmacyManagerContext() : base() { }
     public PharmacyManagerContext(DbContextOptions options) : base(options) { }
