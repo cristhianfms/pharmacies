@@ -104,6 +104,13 @@ public static class ModelsMapper
         return solicitudeResponseModels;
     }
 
+    public static Solicitude ToEntity(SolicitudePutModel solicitudePutModel)
+    {
+        return new Solicitude()
+        {
+            State = Enum.Parse<State>(solicitudePutModel.State)
+        };
+    }
     public static Drug ToEntity(DrugResponseModel drugModel)
     {
         return new Drug
