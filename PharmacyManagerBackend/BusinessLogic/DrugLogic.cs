@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Domain;
 using IBusinessLogic;
 using IDataAccess;
+using System;
 
 namespace BusinessLogic
 {
@@ -47,10 +48,40 @@ namespace BusinessLogic
 
         }
 
-        public virtual void Delete(int drugId)
+        private Drug FindDrug(int drugId)
         {
-            _drugRepository.Delete(drugId);
+            try
+            {
+                Drug drug1 = _drugRepository.GetFirst(d => d.Id == drugId);
+                return drug1;
+            }
+            catch (InvalidOperationException e)
+            {
+                return null;
+            }            
+
         }
 
+        public virtual void Delete(int drugId)
+        {
+
+            Drug drug = FindDrug(drugId);
+
+            if (drug == null)
+                throw new NullReferenceException("No existe la medicina");
+            
+            _drugRepository.Delete(drug);
+
+        }
+
+        public void AddStock(List<SolicitudeItem> drugsToAddStock)
+        {
+            foreach (var drugSolicitude in drugsToAddStock)
+            {
+                Drug drugToUpdate = _drugRepository.GetFirst(d=> d.DrugCode == drugSolicitude.DrugCode);
+                drugToUpdate.Stock = drugToUpdate.Stock + drugSolicitude.DrugQuantity;
+                _drugRepository.Update(drugToUpdate);
+            }
+        }
     }
 }

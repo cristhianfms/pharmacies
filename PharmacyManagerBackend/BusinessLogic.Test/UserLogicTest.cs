@@ -4,7 +4,6 @@ using Domain;
 using Domain.Dtos;
 using Exceptions;
 using IDataAccess;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace BusinessLogic.Test;

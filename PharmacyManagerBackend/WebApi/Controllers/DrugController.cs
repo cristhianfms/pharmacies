@@ -7,8 +7,6 @@ using IBusinessLogic;
 
 namespace WebApi.Controllers
 {
-
-
     [ApiController]
     [Route("api/[controller]")]
     public class DrugController : ControllerBase
