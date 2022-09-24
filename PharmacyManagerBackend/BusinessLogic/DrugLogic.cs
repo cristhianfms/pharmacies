@@ -59,6 +59,7 @@ namespace BusinessLogic
             {
                 Drug drugToUpdate = _drugRepository.GetFirst(d=> d.DrugCode == drugSolicitude.DrugCode);
                 drugToUpdate.Stock = drugToUpdate.Stock + drugSolicitude.DrugQuantity;
+                _drugRepository.Update(drugToUpdate);
             }
         }
     }
