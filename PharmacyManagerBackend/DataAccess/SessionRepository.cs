@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
 
-public class Sessionrepository : BaseRepository<Session>, ISessionRepository
+public class SessionRepository : BaseRepository<Session>, ISessionRepository
 {
-    public Sessionrepository(DbContext dbContext) : base(dbContext)
+    public SessionRepository(DbContext dbContext) : base(dbContext)
     {
     }
 }
