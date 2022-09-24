@@ -27,11 +27,11 @@ public class InvitationsController : ControllerBase
         return Ok(invitationCreatedModel);
     }
 
-    [HttpPut("{id}")]
-    public IActionResult Update(int invitationId, [FromBody] InvitationPutModel invitationPutModel)
+    [HttpPut("{invitationCode}")]
+    public IActionResult Update(string invitationCode, [FromBody] InvitationPutModel invitationPutModel)
     {
         InvitationDto invitationToUpdate = InvitationModelsMapper.ToEntity(invitationPutModel);
-        InvitationDto invitationCreated = _invitationLogic.Update(invitationId, invitationToUpdate);
+        InvitationDto invitationCreated = _invitationLogic.Update(invitationCode, invitationToUpdate);
         InvitationConfirmedModel invitationCreatedModel = InvitationModelsMapper.ToModel(invitationCreated);
 
         return Ok(invitationCreatedModel);

@@ -3,9 +3,8 @@ using Domain;
 
 namespace IDataAccess;
 
-public interface ISessionRepository
+public interface ISessionRepository : IBaseRepository<Session>
 {
-    Session Create(Session session);
-    Session FindSessionByUserId(int id);
 }
+
 

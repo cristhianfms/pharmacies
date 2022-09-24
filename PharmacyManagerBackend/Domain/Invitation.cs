@@ -4,7 +4,6 @@ namespace Domain;
 public class Invitation
 {
     private string userName;
-    private Role role;
     public int Id { get; set; }
     public string UserName
     {

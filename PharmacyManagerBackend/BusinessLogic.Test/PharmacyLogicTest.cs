@@ -23,6 +23,28 @@ public class PharmacyLogicTest
     }
 
     [TestMethod]
+    public void CreateNewPharmacyOk()
+    {
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = "Pharmashop",
+            Address = "Calle A 1234"
+        };
+        Pharmacy pharmacyToCreate = new Pharmacy()
+        {
+            Name = "Pharmashop",
+            Address = "Calle A 1234"
+        };
+        _pharmacyRepository.Setup(m => m.Create(It.IsAny<Pharmacy>())).Returns(pharmacyRepository);
+
+        Pharmacy pharmacyCreated = _pharmacyLogic.Create(pharmacyToCreate);
+
+        Assert.AreEqual(pharmacyRepository, pharmacyCreated);
+        _pharmacyRepository.VerifyAll();
+    }
+
+    [TestMethod]
     public void GetPharmacyByrNameOk()
     {
         DateTime registrationDate = DateTime.Now;

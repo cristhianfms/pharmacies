@@ -1,19 +1,13 @@
 ﻿using System;
 using Domain;
 using IDataAccess;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
 
-public class SessionRepository : ISessionRepository
+public class SessionRepository : BaseRepository<Session>, ISessionRepository
 {
-    public Session Create(Session session)
+    public SessionRepository(DbContext dbContext) : base(dbContext)
     {
-        throw new NotImplementedException();
-    }
-
-    public Session FindSessionByUserId(int id)
-    {
-        throw new NotImplementedException();
     }
 }
-

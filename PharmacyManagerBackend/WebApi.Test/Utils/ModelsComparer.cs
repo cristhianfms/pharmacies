@@ -11,7 +11,7 @@ public static class ModelsComparer
 
     public static bool InvitationCompare(InvitationModel invitation1, InvitationModel invitation2)
     {
-        return invitation1.Id == invitation2.Id && invitation1.UserName.Equals(invitation2.UserName);
+        return invitation1.UserName.Equals(invitation2.UserName);
     }
 
     public static bool UserCompare(UserRequestModel user1, UserResponseModel user2)

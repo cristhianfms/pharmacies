@@ -14,10 +14,9 @@ public class PharmacyLogic : IPharmacyLogic
         this._pharmacyRepository = pharmacyRepository;
     }
 
-    //TODO:
     public Pharmacy Create(Pharmacy pharmacy)
     {
-        throw new NotImplementedException();
+        return _pharmacyRepository.Create(pharmacy);
     }
 
     public virtual Pharmacy GetPharmacyByName(string pharmacyName)
