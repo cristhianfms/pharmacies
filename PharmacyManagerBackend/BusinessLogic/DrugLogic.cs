@@ -47,9 +47,30 @@ namespace BusinessLogic
 
         }
 
+        private Drug FindDrug(int drugId)
+        {
+            try
+            {
+                Drug drug1 = _drugRepository.GetFirst(d => d.Id == drugId);
+                return drug1;
+            }
+            catch (InvalidOperationException e)
+            {
+                return null;
+            }            
+
+        }
+
         public virtual void Delete(int drugId)
         {
-            _drugRepository.Delete(drugId);
+
+            Drug drug = FindDrug(drugId);
+
+            if (drug == null)
+                throw new NullReferenceException("No existe la medicina");
+            
+            _drugRepository.Delete(drug);
+
         }
 
     }
