@@ -1,20 +1,27 @@
 ﻿using System;
 using Domain;
 using IBusinessLogic;
+using IDataAccess;
 
 namespace BusinessLogic;
 
 public class PharmacyLogic : IPharmacyLogic
 {
-    //TODO:
+    private IPharmacyRepository _pharmacyRepository;
+
+    public PharmacyLogic(IPharmacyRepository pharmacyRepository)
+    {
+        this._pharmacyRepository = pharmacyRepository;
+    }
+
     public Pharmacy Create(Pharmacy pharmacy)
     {
-        throw new NotImplementedException();
+        return _pharmacyRepository.Create(pharmacy);
     }
-    //TODO:
+
     public virtual Pharmacy GetPharmacyByName(string pharmacyName)
     {
-        throw new NotImplementedException();
+        return _pharmacyRepository.GetFirst(f => pharmacyName.Equals(pharmacyName));
     }
 }
 
