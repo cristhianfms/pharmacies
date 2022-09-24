@@ -294,8 +294,10 @@ public class UserRepositoryTest
             }
         };
         List<User> users = new List<User>() { userInRepository };
+        int userCountBeforeAdd;
         using (var context = new PharmacyManagerContext(this._contextOptions))
         {
+            userCountBeforeAdd = context.Set<User>().Count();
             context.AddRange(users);
             context.SaveChanges();
         }
@@ -306,7 +308,7 @@ public class UserRepositoryTest
         using (var context = new PharmacyManagerContext(this._contextOptions))
         {
             var usersDB = context.Set<User>();
-            Assert.AreEqual(0, usersDB.Count());
+            Assert.AreEqual(userCountBeforeAdd, usersDB.Count());
         }
     }
 }
