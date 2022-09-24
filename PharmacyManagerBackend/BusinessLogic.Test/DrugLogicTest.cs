@@ -86,8 +86,8 @@ namespace BusinessLogic.Test
                 Stock = 15,
                 NeedsPrescription = false
             };
-            _drugRepository.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
-            _drugRepository.Setup(m => m.Delete(drug));
+            _drugRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
+            _drugRepositoryMock.Setup(m => m.Delete(drug));
 
             _drugLogic.Delete(drug.Id);
 
