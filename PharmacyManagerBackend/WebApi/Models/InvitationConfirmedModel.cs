@@ -1,12 +1,13 @@
 using Domain;
 namespace WebApi.Models;
 
-public class InvitationModel
+public class InvitationConfirmedModel
 {
-    public int Id { get; set; }
+    public int UserId { get; set; }
     public string UserName { get; set; }
     public string RoleName { get; set; }
-    public string? InvitationCode { get; set; }
     public string PharmacyName { get; set; }
+    public string Email { get; set; }
+    public string Address { get; set; }
 }
 

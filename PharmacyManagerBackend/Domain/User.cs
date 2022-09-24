@@ -9,9 +9,13 @@ public class User
     public string Email { get; set; }
     public string Address { get; set; }
     public string Password { get; set; }
-    public int? PharmacyId { get; set; }
-    public Pharmacy Pharmacy { get; set; }
+    public int? OwnerPharmacyId { get; set; }
+    public Pharmacy? OwnerPharmacy { get; set; }
+    public int? EmployeePharmacyId { get; set; }
+    public Pharmacy? EmployeePharmacy { get; set; }
     public DateTime RegistrationDate { get; set; }
+    //TODO: usar pharmacy para setear la employee pharmacy o owner pharmacy
+    public Pharmacy? Pharmacy {get; set;}
 
     public override bool Equals(object obj)
     {
@@ -22,7 +26,8 @@ public class User
                 Email == user.Email &&
                 Address == user.Address &&
                 Password == user.Password &&
-                PharmacyId == user.PharmacyId &&
+                OwnerPharmacyId == user.OwnerPharmacyId &&
+                EmployeePharmacyId == user.EmployeePharmacyId &&
                 RegistrationDate == user.RegistrationDate;
     }
 }
