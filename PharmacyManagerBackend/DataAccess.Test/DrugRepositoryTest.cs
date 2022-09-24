@@ -62,5 +62,24 @@ namespace DataAccess.Test
             }
         }
 
-    } 
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void DeleteDrugFail()
+        {
+            Drug drugToDelete = new Drug()
+            {
+                DrugCode = "2a5678bx1",
+                Price = 25.99,
+                Stock = 15,
+                NeedsPrescription = false
+            };
+
+            using (var context = new PharmacyManagerContext(this._contextOptions))
+            {
+                var drugs = context.Set<Drug>();
+                _drugRepository.Delete(drugToDelete);                
+            }
+        }
+
+    }
 }
