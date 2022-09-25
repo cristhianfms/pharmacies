@@ -53,13 +53,12 @@ namespace AuthLogic
             User userToCreate = new User()
             {
                 UserName = invitation.UserName,
-                RoleId = invitation.RoleId,
+                Role = invitation.Role,
                 Email = invitationDto.Email,
                 Address = invitationDto.Address,
                 Password = invitationDto.Password,
                 RegistrationDate = DateTime.Now,
-                // TODO dependiento del tipo
-                //Pharmacy = invitation.Pharmacy
+                Pharmacy = invitation.Pharmacy
             };
 
             User createdUser = _userLogic.Create(userToCreate);
@@ -68,8 +67,8 @@ namespace AuthLogic
             InvitationDto invitationDtoToReturn = new InvitationDto()
             {
                 UserName = userToCreate.UserName,
-                //RoleName = createdUser.Role.Name,
-                //PharmacyName = createdUser.Pharmacy?.Name,
+                RoleName = invitation.Role.Name,
+                PharmacyName = invitation.Pharmacy?.Name,
                 Email = createdUser.Email,
                 Address = createdUser.Password,
             };

@@ -4,6 +4,10 @@ using Exceptions;
 namespace Domain;
 public class Role
 {
+    public static string ADMIN = "Admin";
+    public static string EMPLOYEE = "Employee";
+    public static string OWNER = "Owner";
+    
     private string name;
     public int Id { get; set; }
     public virtual ICollection<PermissionRole> PermissionRoles { get; set; }
