@@ -36,9 +36,11 @@ public class SessionLogic : ISessionLogic
         return userToken;
     }
 
-    public Session Get(string token)
+    public Session Get(Guid token)
     {
-        throw new NotImplementedException();
+        Session session = _sessionRepository.GetFirst(s => token.Equals(s.Token));
+
+        return session;
     }
 
     private Session createNewSession(User registeredUser)

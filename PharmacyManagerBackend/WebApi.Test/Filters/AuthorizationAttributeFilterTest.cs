@@ -47,7 +47,7 @@ public class AuthorizationAttributeFilterTest
             new ActionContext(httpContextMock.Object, new RouteData(), new ActionDescriptor());
         AuthorizationFilterContext authFilterContext =
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
-        _sessionLogic.Setup(m => m.Get("token")).Returns(sessionRepository);
+        _sessionLogic.Setup(m => m.Get(token)).Returns(sessionRepository);
         _permissionLogic.Setup(m => m.HasPermission(It.IsAny<string>(), "Admin")).Returns(true);
 
         _authFilter.OnAuthorization(authFilterContext);
@@ -77,7 +77,7 @@ public class AuthorizationAttributeFilterTest
             new ActionContext(httpContextMock.Object, new RouteData(), new ActionDescriptor());
         AuthorizationFilterContext authFilterContext =
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
-        _sessionLogic.Setup(m => m.Get("token")).Throws(new ResourceNotFoundException(""));
+        _sessionLogic.Setup(m => m.Get(token)).Throws(new ResourceNotFoundException(""));
 
         _authFilter.OnAuthorization(authFilterContext);
 
@@ -106,7 +106,7 @@ public class AuthorizationAttributeFilterTest
             new ActionContext(httpContextMock.Object, new RouteData(), new ActionDescriptor());
         AuthorizationFilterContext authFilterContext =
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
-        _sessionLogic.Setup(m => m.Get("token")).Returns(sessionRepository);
+        _sessionLogic.Setup(m => m.Get(token)).Returns(sessionRepository);
         _permissionLogic.Setup(m => m.HasPermission(It.IsAny<string>(), "Admin")).Returns(false);
 
         _authFilter.OnAuthorization(authFilterContext);

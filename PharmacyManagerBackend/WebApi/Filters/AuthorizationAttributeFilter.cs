@@ -20,9 +20,9 @@ public class AuthorizationAttributeFilter
 
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        var token = context.HttpContext.Request.Headers["Authorization"];
+        var tokenRow = context.HttpContext.Request.Headers["Authorization"];
         var endpoint = context.HttpContext.Request.Method + context.HttpContext.Request.Path;
-        if (String.IsNullOrEmpty(token))
+        if (String.IsNullOrEmpty(tokenRow))
         {
             context.Result = new ForbidResult("Missing Authorization token");
             return;
@@ -30,7 +30,7 @@ public class AuthorizationAttributeFilter
         else
         {
             Session session;
-
+            Guid token = Guid.Parse(tokenRow);
             try
             {
                 session = _sessionLogic.Get(token);

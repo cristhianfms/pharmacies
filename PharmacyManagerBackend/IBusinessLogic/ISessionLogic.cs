@@ -7,6 +7,6 @@ namespace IBusinessLogic;
 public interface ISessionLogic
 {
     TokenDto Create(CredentialsDto credentialsDto);
-    Session Get(string token);
+    Session Get(Guid token);
 }
 
