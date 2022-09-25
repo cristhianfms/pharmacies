@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace WebApi.Filters;
 
-public class AuthorizationAttributeFilter
+public class AuthorizationAttributeFilter : Attribute, IAuthorizationFilter
 {
     private readonly ISessionLogic _sessionLogic;
     private readonly IPermissionLogic _permissionLogic;

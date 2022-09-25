@@ -2,6 +2,7 @@ using Domain;
 using Domain.Dtos;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Filters;
 using WebApi.Models;
 using WebApi.Utils;
 
@@ -18,6 +19,7 @@ public class InvitationsController : ControllerBase
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult Create([FromBody] InvitationModel invitationModel)
     {
         InvitationDto invitationToCreate = InvitationModelsMapper.ToEntity(invitationModel);
