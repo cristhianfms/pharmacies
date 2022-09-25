@@ -1,4 +1,5 @@
 ﻿using System;
+using BusinessLogic;
 using Domain;
 using Domain.AuthDomain;
 using Domain.Dtos;
@@ -6,8 +7,7 @@ using Exceptions;
 using IBusinessLogic;
 using IDataAccess;
 
-namespace BusinessLogic;
-
+namespace AuthLogic;
 public class SessionLogic : ISessionLogic
 {
     private readonly ISessionRepository _sessionRepository;
@@ -34,6 +34,11 @@ public class SessionLogic : ISessionLogic
         };
 
         return userToken;
+    }
+
+    public Session Get(string token)
+    {
+        throw new NotImplementedException();
     }
 
     private Session createNewSession(User registeredUser)

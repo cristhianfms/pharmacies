@@ -1,4 +1,5 @@
 ﻿using System;
+using AuthLogic;
 using BusinessLogic;
 using DataAccess;
 using DataAccess.Context;

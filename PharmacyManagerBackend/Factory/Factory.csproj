@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\AuthLogic\AuthLogic.csproj" />
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
     <ProjectReference Include="..\IBusinessLogic\IBusinessLogic.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />

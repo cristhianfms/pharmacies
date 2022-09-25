@@ -1,10 +1,13 @@
 using System;
+using AuthLogic;
 using Domain;
 using Domain.AuthDomain;
 using Domain.Dtos;
 using Exceptions;
 using IDataAccess;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Assert = NUnit.Framework.Assert;
 
 namespace BusinessLogic.Test;
 

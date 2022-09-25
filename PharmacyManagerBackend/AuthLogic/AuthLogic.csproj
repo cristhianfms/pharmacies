@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\IBusinessLogic\IBusinessLogic.csproj" />
+      <ProjectReference Include="..\IDataAccess\IDataAccess.csproj" />
+    </ItemGroup>
+
+</Project>
