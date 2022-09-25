@@ -37,17 +37,23 @@ public class SessionLogic : ISessionLogic
 
     private Session createNewSession(User registeredUser)
     {
-        Session userSession = _sessionRepository.FindSessionByUserId(registeredUser.Id);
-        if (userSession == null)
+        Session userSession;
+        try
         {
-            Session session = new Session
-            {
-                UserId = registeredUser.Id,
-                Token = Guid.NewGuid()
-            };
-            userSession = _sessionRepository.Create(session);
+            userSession = _sessionRepository.GetFirst(u => u.Id == registeredUser.Id);
         }
-
+        catch (ResourceNotFoundException)
+        {
+            {
+                Session session = new Session
+                {
+                    UserId = registeredUser.Id,
+                    Token = Guid.NewGuid()
+                };
+                userSession = _sessionRepository.Create(session);
+            }
+        }
+        
         return userSession;
     }
 

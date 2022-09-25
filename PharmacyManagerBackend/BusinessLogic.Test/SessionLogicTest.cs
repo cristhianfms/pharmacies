@@ -3,7 +3,6 @@ using Domain;
 using Domain.Dtos;
 using Exceptions;
 using IDataAccess;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace BusinessLogic.Test;
@@ -48,7 +47,7 @@ public class SessionLogicTest
             Password = user.Password
         };
 
-        _sessionRepository.Setup(m => m.FindSessionByUserId(It.IsAny<int>())).Returns((Session)null);
+        _sessionRepository.Setup(m => m.GetFirst(It.IsAny<Func<Session, bool>>())).Throws(new ResourceNotFoundException(""));
         _sessionRepository.Setup(m => m.Create(It.IsAny<Session>())).Returns(session);
         _userLogic.Setup(m => m.GetUserByUserName(It.IsAny<string>())).Returns(user);
 
@@ -84,7 +83,7 @@ public class SessionLogicTest
             Password = user.Password
         };
 
-        _sessionRepository.Setup(m => m.FindSessionByUserId(It.IsAny<int>())).Returns(session);
+        _sessionRepository.Setup(m => m.GetFirst(It.IsAny<Func<Session, bool>>())).Returns(session);
         _userLogic.Setup(m => m.GetUserByUserName(It.IsAny<string>())).Returns(user);
 
         TokenDto tokenReturned = _sessionLogic.Create(credentialsDto);
@@ -159,7 +158,7 @@ public class SessionLogicTest
             UserName = user.UserName,
             Password = "1234"
         };
-        _sessionRepository.Setup(m => m.FindSessionByUserId(It.IsAny<int>())).Returns(session);
+        _sessionRepository.Setup(m => m.GetFirst(It.IsAny<Func<Session, bool>>())).Returns(session);
         _userLogic.Setup(m => m.GetUserByUserName(It.IsAny<string>())).Returns(user);
 
         _sessionLogic.Create(credentialsDto);

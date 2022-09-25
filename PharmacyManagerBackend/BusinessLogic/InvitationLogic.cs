@@ -44,15 +44,15 @@ namespace BusinessLogic
             return createdInvitation;
         }
 
-        public InvitationDto Update(int invitationId, InvitationDto invitationDto)
+        public InvitationDto Update(string invitationCode, InvitationDto invitationDto)
         {
-            Invitation invitation = getCreatedInvitation(invitationDto.Code);
+            Invitation invitation = getCreatedInvitation(invitationCode);
             checkInvitationUserName(invitation, invitationDto.UserName);
 
             User userToCreate = new User()
             {
                 UserName = invitation.UserName,
-                Role = invitation.Role,
+                RoleId = invitation.RoleId,
                 Email = invitationDto.Email,
                 Address = invitationDto.Address,
                 Password = invitationDto.Password,
@@ -67,9 +67,8 @@ namespace BusinessLogic
             InvitationDto invitationDtoToReturn = new InvitationDto()
             {
                 UserName = userToCreate.UserName,
-                UserId = createdUser.Id,
-                RoleName = createdUser.Role.Name,
-                PharmacyName = createdUser.Pharmacy?.Name,
+                //RoleName = createdUser.Role.Name,
+                //PharmacyName = createdUser.Pharmacy?.Name,
                 Email = createdUser.Email,
                 Address = createdUser.Password,
             };

@@ -6,6 +6,6 @@ namespace IDataAccess
 {
     public interface IDrugRepository : IBaseRepository<Drug>
     {
-        void Delete(int drugId);
+       
     }
 }

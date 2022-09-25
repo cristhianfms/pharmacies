@@ -3,7 +3,6 @@ using Domain;
 using Domain.Dtos;
 using Exceptions;
 using IDataAccess;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace BusinessLogic.Test 
@@ -218,10 +217,9 @@ namespace BusinessLogic.Test
     [TestMethod]
     public void UpdateInvitationOk()
     {
-        int invitationId = 1;
+        string invitationCode = "code";
         InvitationDto invitationToUpdate= new InvitationDto()
         {
-            UserId = 1,
             UserName = "JuanPerez",
             Code = "2A5678BX",
             Email = "Juan@email.com",
@@ -256,7 +254,7 @@ namespace BusinessLogic.Test
         _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
         _invitationRepository.Setup(m => m.Delete(It.IsAny<Invitation>())).Callback(() => { });
         
-        InvitationDto invitationDtoUpdated = _invitationLogic.Update(invitationId, invitationToUpdate);
+        InvitationDto invitationDtoUpdated = _invitationLogic.Update(invitationCode, invitationToUpdate);
 
         Assert.AreEqual(invitationDtoUpdated, invitationToUpdate);
         _userLogic.VerifyAll();
@@ -268,10 +266,9 @@ namespace BusinessLogic.Test
     [ExpectedException(typeof(ValidationException))]
     public void UpdateNotExistantInvitationShouldFail()
     {
-        int invitationId = 1;
+        string invitationCode = "code";
         InvitationDto invitationToUpdate= new InvitationDto()
         {
-            UserId = 1,
             UserName = "JuanPerez",
             Code = "2A5678BX",
             Email = "Juan@email.com",
@@ -291,17 +288,16 @@ namespace BusinessLogic.Test
         };
         _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Throws(new ResourceNotFoundException(""));
 
-        _invitationLogic.Update(invitationId, invitationToUpdate);
+        _invitationLogic.Update(invitationCode, invitationToUpdate);
     }
 
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
     public void UpdateInvitationCodeForDiferentUserShouldFail()
     {
-        int invitationId = 1;
+        string invitationCode = "code";
         InvitationDto invitationToUpdate= new InvitationDto()
         {
-            UserId = 1,
             UserName = "JuanPerez",
             Code = "2A5678BX",
             Email = "Juan@email.com",
@@ -335,7 +331,7 @@ namespace BusinessLogic.Test
         _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
         _invitationRepository.Setup(m => m.Delete(It.IsAny<Invitation>())).Callback(() => { });
         
-        _invitationLogic.Update(invitationId, invitationToUpdate);
+        _invitationLogic.Update(invitationCode, invitationToUpdate);
     }
 
 }

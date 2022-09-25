@@ -26,18 +26,22 @@ public class ServiceFactory
         _services.AddScoped<RoleLogic, RoleLogic>();
         _services.AddScoped<PharmacyLogic, PharmacyLogic>();
         _services.AddScoped<InvitationLogic, InvitationLogic>();
-
         _services.AddScoped<IInvitationLogic, InvitationLogic>();
+        _services.AddScoped<IDrugLogic, DrugLogic>();
+        _services.AddScoped<IPharmacyLogic, PharmacyLogic>();
+
         _services.AddScoped<ISessionRepository, SessionRepository>();
         _services.AddScoped<IInvitationRepository, InvitationRepository>();
         _services.AddScoped<IUserRepository, UserRepository>();
         _services.AddScoped<IDrugLogic, DrugLogic>();
         _services.AddScoped<IDrugRepository, DrugRepository>();
         _services.AddScoped<IDrugInfoRepository, DrugInfoRepository>();
+        _services.AddScoped<IPharmacyRepository, PharmacyRepository>();
+        _services.AddScoped<IRoleRepository, RoleRepository>();
     }
     public void AddDbContextService()
     {
-        _services.AddDbContext<PharmacyManagerContext>();
+        _services.AddDbContext<DbContext, PharmacyManagerContext>();
     }
 }
 

@@ -10,10 +10,6 @@ namespace DataAccess
         public DrugRepository(DbContext dbContext) : base(dbContext){
 
         }
-        public void Delete(int drugId)
-        {
-
-        }
-
+        
     }
 }
