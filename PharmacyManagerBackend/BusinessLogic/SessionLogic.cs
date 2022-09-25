@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain;
+using Domain.AuthDomain;
 using Domain.Dtos;
 using Exceptions;
 using IBusinessLogic;

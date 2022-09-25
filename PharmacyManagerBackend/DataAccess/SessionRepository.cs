@@ -1,5 +1,5 @@
 ﻿using System;
-using Domain;
+using Domain.AuthDomain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 
