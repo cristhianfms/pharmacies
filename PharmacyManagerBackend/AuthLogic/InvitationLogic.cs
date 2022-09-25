@@ -70,7 +70,7 @@ namespace AuthLogic
                 RoleName = invitation.Role.Name,
                 PharmacyName = invitation.Pharmacy?.Name,
                 Email = createdUser.Email,
-                Address = createdUser.Password,
+                Address = createdUser.Address,
             };
 
             return invitationDtoToReturn;
