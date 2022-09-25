@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using BusinessLogic;
 using IBusinessLogic;
 using Domain;
 using IDataAccess;
 using Exceptions;
 using Domain.Dtos;
 
-namespace BusinessLogic
+namespace AuthLogic
 {
 
     public class InvitationLogic : IInvitationLogic
