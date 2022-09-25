@@ -1,4 +1,4 @@
-namespace Domain;
+namespace Domain.AuthDomain;
 public class Session
 {
     public int Id { get; set; }

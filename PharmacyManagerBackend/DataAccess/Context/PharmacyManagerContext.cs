@@ -1,4 +1,5 @@
 using Domain;
+using Domain.AuthDomain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -10,15 +11,24 @@ public class PharmacyManagerContext : DbContext
     public DbSet<Role> RoleDB { get; set; }
     public DbSet<Session> SessionDB { get; set; }
     public DbSet<Invitation> InvitationDB { get; set; }
-    public DbSet<Pharmacy> PharmacieDB { get; set; }
+    public DbSet<Pharmacy> PharmacyDB { get; set; }
     public DbSet<Drug> DrugDB { get; set; }
     public DbSet<DrugInfo> DrugInfoDB { get; set; }
+    public DbSet<Permission> PermissionDB { get; set; }
 
     public PharmacyManagerContext() : base() { }
     public PharmacyManagerContext(DbContextOptions options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<PermissionRole>()
+            .HasOne(bc => bc.Role)
+            .WithMany(b => b.PermissionRoles)
+            .HasForeignKey(bc => bc.RoleId);
+        modelBuilder.Entity<PermissionRole>()
+            .HasOne(bc => bc.Permission)
+            .WithMany(c => c.PermissionRoles)
+            .HasForeignKey(bc => bc.PermissionId);
         modelBuilder.Entity<Pharmacy>()
             .HasMany(e => e.Employees)
             .WithOne(u => u.EmployeePharmacy);

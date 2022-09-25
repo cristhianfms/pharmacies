@@ -42,7 +42,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return entities;
     }
 
-    public T GetFirst(Func<T, bool> expresion)
+    public virtual T GetFirst(Func<T, bool> expresion)
     {
         IEnumerable<T> entities = _table.Where(expresion);
         T entityToReturn;

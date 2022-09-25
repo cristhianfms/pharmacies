@@ -14,20 +14,37 @@ public class User
     public int? EmployeePharmacyId { get; set; }
     public Pharmacy? EmployeePharmacy { get; set; }
     public DateTime RegistrationDate { get; set; }
-    //TODO: usar pharmacy para setear la employee pharmacy o owner pharmacy
-    public Pharmacy? Pharmacy {get; set;}
+
+    public Pharmacy? Pharmacy
+    {
+        get
+        {
+            return OwnerPharmacy != null ? OwnerPharmacy : EmployeePharmacy;
+        }
+        set
+        {
+            if (Role.OWNER.Equals(Role.Name))
+            {
+                OwnerPharmacy = value;
+            }
+            else if (Role.EMPLOYEE.Equals(Role.Name))
+            {
+                EmployeePharmacy = value;
+            }
+        }
+    }
 
     public override bool Equals(object obj)
     {
         return obj is User user &&
-                Id == user.Id &&
-                UserName == user.UserName &&
-                RoleId == user.RoleId &&
-                Email == user.Email &&
-                Address == user.Address &&
-                Password == user.Password &&
-                OwnerPharmacyId == user.OwnerPharmacyId &&
-                EmployeePharmacyId == user.EmployeePharmacyId &&
-                RegistrationDate == user.RegistrationDate;
+               Id == user.Id &&
+               UserName == user.UserName &&
+               RoleId == user.RoleId &&
+               Email == user.Email &&
+               Address == user.Address &&
+               Password == user.Password &&
+               OwnerPharmacyId == user.OwnerPharmacyId &&
+               EmployeePharmacyId == user.EmployeePharmacyId &&
+               RegistrationDate == user.RegistrationDate;
     }
 }
