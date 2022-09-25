@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Domain;
 using IBusinessLogic;
 using IDataAccess;
+using System;
 
 namespace BusinessLogic
 {
@@ -17,40 +18,60 @@ namespace BusinessLogic
             this._drugInfoRepository = drugInfoRepository;
         }
 
-        public virtual Drug Create(Drug drug)
+        public Drug Create(Drug drug)
         {
-            ExistsDrug(drug);
+            _drugInfoRepository.Create(drug.DrugInfo);
             return _drugRepository.Create(drug);
         }
 
-        public virtual DrugInfo Create(DrugInfo drugInfo)
+        public Drug Get(int drugId)
         {
-            return _drugInfoRepository.Create(drugInfo);
-        }
-
-        private void ExistsDrug(Drug drug)
-        {
-            bool drugExist = true;
             try
             {
-                Drug drug1 = _drugRepository.GetFirst(d => d.Equals(drug));
+                Drug myDrug = _drugRepository.GetFirst(d => d.Id == drugId);
+                return myDrug;
             }
-            catch (ResourceNotFoundException e)
+            catch (Exception e)
             {
-                drugExist = false;
-            }
-
-            if (drugExist)
-            {
-                throw new ValidationException("Drug already exists");
+                return null;
             }
 
         }
 
-        public virtual void Delete(int drugId)
+        private Drug FindDrug(int drugId)
         {
-            _drugRepository.Delete(drugId);
+            try
+            {
+                Drug drug1 = _drugRepository.GetFirst(d => d.Id == drugId);
+                return drug1;
+            }
+            catch (InvalidOperationException e)
+            {
+                return null;
+            }
+
         }
 
+        public void Delete(int drugId)
+        {
+
+            Drug drug = FindDrug(drugId);
+
+            if (drug == null)
+                throw new NullReferenceException("No existe la medicina");
+
+            _drugRepository.Delete(drug);
+
+        }
+
+        public void AddStock(List<SolicitudeItem> drugsToAddStock)
+        {
+            foreach (var drugSolicitude in drugsToAddStock)
+            {
+                Drug drugToUpdate = _drugRepository.GetFirst(d => d.DrugCode == drugSolicitude.DrugCode);
+                drugToUpdate.Stock = drugToUpdate.Stock + drugSolicitude.DrugQuantity;
+                _drugRepository.Update(drugToUpdate);
+            }
+        }
     }
 }
