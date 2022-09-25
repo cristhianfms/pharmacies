@@ -42,7 +42,7 @@ public class AuthorizationAttributeFilter
             }
 
             User loggedUser = session.User;
-            bool userHasPermission = _permissionLogic.HasPermission(loggedUser, endpoint);
+            bool userHasPermission = _permissionLogic.HasPermission(loggedUser.Role.Name, endpoint);
 
             if (!userHasPermission)
             {

@@ -4,5 +4,5 @@ namespace IBusinessLogic;
 
 public interface IPermissionLogic
 {
-    bool HasPermission(User user, string endpoint);
+    bool HasPermission(string userRole, string endpoint);
 }

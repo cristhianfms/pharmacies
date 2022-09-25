@@ -48,7 +48,7 @@ public class AuthorizationAttributeFilterTest
         AuthorizationFilterContext authFilterContext =
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
         _sessionLogic.Setup(m => m.Get("token")).Returns(sessionRepository);
-        _permissionLogic.Setup(m => m.HasPermission(It.IsAny<User>(), "Admin")).Returns(true);
+        _permissionLogic.Setup(m => m.HasPermission(It.IsAny<string>(), "Admin")).Returns(true);
 
         _authFilter.OnAuthorization(authFilterContext);
 
@@ -107,7 +107,7 @@ public class AuthorizationAttributeFilterTest
         AuthorizationFilterContext authFilterContext =
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
         _sessionLogic.Setup(m => m.Get("token")).Returns(sessionRepository);
-        _permissionLogic.Setup(m => m.HasPermission(It.IsAny<User>(), "Admin")).Returns(false);
+        _permissionLogic.Setup(m => m.HasPermission(It.IsAny<string>(), "Admin")).Returns(false);
 
         _authFilter.OnAuthorization(authFilterContext);
 
