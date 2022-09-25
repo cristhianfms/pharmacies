@@ -21,6 +21,14 @@ public class PharmacyManagerContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<PermissionRole>()
+            .HasOne(bc => bc.Role)
+            .WithMany(b => b.PermissionRoles)
+            .HasForeignKey(bc => bc.RoleId);
+        modelBuilder.Entity<PermissionRole>()
+            .HasOne(bc => bc.Permission)
+            .WithMany(c => c.PermissionRoles)
+            .HasForeignKey(bc => bc.PermissionId);
         modelBuilder.Entity<Pharmacy>()
             .HasMany(e => e.Employees)
             .WithOne(u => u.EmployeePharmacy);

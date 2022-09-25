@@ -7,6 +7,7 @@ using IBusinessLogic;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using WebApi.Filters;
 
 namespace Factory;
 
@@ -31,6 +32,7 @@ public class ServiceFactory
         _services.AddScoped<IDrugLogic, DrugLogic>();
         _services.AddScoped<IPharmacyLogic, PharmacyLogic>();
         _services.AddScoped<IPermissionLogic, PermissionLogic>();
+        _services.AddScoped<AuthorizationAttributeFilter>();
         
         _services.AddScoped<ISessionRepository, SessionRepository>();
         _services.AddScoped<IInvitationRepository, InvitationRepository>();
