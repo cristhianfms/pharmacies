@@ -11,9 +11,10 @@ public class PharmacyManagerContext : DbContext
     public DbSet<Role> RoleDB { get; set; }
     public DbSet<Session> SessionDB { get; set; }
     public DbSet<Invitation> InvitationDB { get; set; }
-    public DbSet<Pharmacy> PharmacieDB { get; set; }
+    public DbSet<Pharmacy> PharmacyDB { get; set; }
     public DbSet<Drug> DrugDB { get; set; }
     public DbSet<DrugInfo> DrugInfoDB { get; set; }
+    public DbSet<Permission> PermissionDB { get; set; }
 
     public PharmacyManagerContext() : base() { }
     public PharmacyManagerContext(DbContextOptions options) : base(options) { }

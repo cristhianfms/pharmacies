@@ -30,7 +30,8 @@ public class ServiceFactory
         _services.AddScoped<IInvitationLogic, InvitationLogic>();
         _services.AddScoped<IDrugLogic, DrugLogic>();
         _services.AddScoped<IPharmacyLogic, PharmacyLogic>();
-
+        _services.AddScoped<IPermissionLogic, PermissionLogic>();
+        
         _services.AddScoped<ISessionRepository, SessionRepository>();
         _services.AddScoped<IInvitationRepository, InvitationRepository>();
         _services.AddScoped<IUserRepository, UserRepository>();
@@ -39,6 +40,7 @@ public class ServiceFactory
         _services.AddScoped<IDrugInfoRepository, DrugInfoRepository>();
         _services.AddScoped<IPharmacyRepository, PharmacyRepository>();
         _services.AddScoped<IRoleRepository, RoleRepository>();
+        _services.AddScoped<IPermissionRepository, PermissionRepository>();
     }
     public void AddDbContextService()
     {
