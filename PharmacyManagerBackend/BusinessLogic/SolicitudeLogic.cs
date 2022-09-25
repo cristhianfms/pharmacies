@@ -14,12 +14,14 @@ namespace BusinessLogic
     public class SolicitudeLogic : ISolicitudeLogic
     {
         private readonly ISolicitudeRepository _solicitudeRepository;
-        
+        private readonly IDrugLogic _drugLogic;
+        private readonly PharmacyLogic _pharmacyLogic;
         private Context _context;
 
-        public SolicitudeLogic(ISolicitudeRepository solicitudeRepository)
+        public SolicitudeLogic(ISolicitudeRepository solicitudeRepository, IDrugLogic drugLogic)
         {
             this._solicitudeRepository = solicitudeRepository;
+            this._drugLogic = drugLogic;
         }
 
         public void SetContext(User currentUser)
@@ -80,17 +82,35 @@ namespace BusinessLogic
             }
         }
 
-        public Solicitude Update(int solicitudeId, Solicitude solicitude)
-        { 
-            Solicitude solicitudeToUpdate = _solicitudeRepository.GetFirst(s => s.Id == solicitudeId);
+        public Solicitude Update(int solicitudeId, Solicitude newSolicitude)
+        {
+            Solicitude solicitudeToUpdate = getSolicitude(solicitudeId);
 
-            solicitudeToUpdate.State = solicitude.State;
+            if (newSolicitude.State.Equals(State.ACCEPTED) && !solicitudeToUpdate.Equals(State.ACCEPTED)){
 
-
+                _drugLogic.AddStock(solicitudeToUpdate.Items);
+            }
+            solicitudeToUpdate.State = newSolicitude.State; 
 
             return solicitudeToUpdate;
 
                         
         }
+
+        private Solicitude getSolicitude(int solicitudeId)
+        {
+            Solicitude solicitude;
+            try
+            {
+                solicitude = _solicitudeRepository.GetFirst(s => s.Id == solicitudeId);
+            }
+            catch (ResourceNotFoundException e)
+            {
+                throw new ResourceNotFoundException("solicitude doesn't exist");
+            }
+
+            return solicitude;
+        }
+
     }
 }

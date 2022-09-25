@@ -8,11 +8,11 @@ using WebApi.Utils;
 namespace WebApi.Controllers;
 [ApiController]
 [Route("api/[controller]")]
-public class InvitationController : ControllerBase
+public class InvitationsController : ControllerBase
 {
     private IInvitationLogic _invitationLogic;
 
-    public InvitationController(IInvitationLogic invitationLogic)
+    public InvitationsController(IInvitationLogic invitationLogic)
     {
         this._invitationLogic = invitationLogic;
     }

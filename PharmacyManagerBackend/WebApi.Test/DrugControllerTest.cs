@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using IBusinessLogic;
+using Domain;
 using Moq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -36,7 +37,18 @@ public class DrugControllerTest
     [TestMethod]
     public void CreateDrugOk()
     {
+
         _drugLogicMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(_drug);
+        _drugLogicMock.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(new DrugInfo());
+        var drugResponseModel = new DrugResponseModel()
+        {
+            Id = 1,
+            DrugCode = "2A5",
+            Price = 150,
+            NeedsPrescription = false,
+            Stock = 20
+        };
+
         var drugModel = new DrugModel()
         {
             Id = 1,
@@ -46,7 +58,7 @@ public class DrugControllerTest
             Stock = 20
         };
 
-        var result = _drugApiController.Create(drugModel);
+        var result = _drugApiController.Create(drugResponseModel);
         var okResult = result as OkObjectResult;
         var createdDrug = okResult.Value as DrugModel;
 
@@ -57,34 +69,12 @@ public class DrugControllerTest
     [TestMethod]
     public void DeleteDrugOk()
     {
-        _drugLogicMock.Setup(m => m.Delete(_drug)).Verifiable();
+        _drugLogicMock.Setup(m => m.Delete(_drug.Id)).Verifiable();
 
-        var result = _drugApiController.Delete(_drug);
-
-        Assert.IsTrue(result is OkObjectResult);
-
-    }
-
-    [TestMethod]
-    public void GetAllDrugsOk()
-    {
-        _drugLogicMock.Setup(m => m.GetAllDrugs()).Returns(It.IsAny<IEnumerable<Drug>>);
-
-        var result = _drugApiController.GetAll();
+        var result = _drugApiController.Delete(_drug.Id);
 
         Assert.IsTrue(result is OkObjectResult);
 
-    }
-
-    [TestMethod]
-    public void GetDrugOk()
-    {
-        _drugLogicMock.Setup(m => m.GetDrug(_drug)).Returns(It.IsAny<Drug>);
-
-        var result = _drugApiController.GetDrug(_drug);
-
-        Assert.IsTrue(result is OkObjectResult);
     }
 
 }
-

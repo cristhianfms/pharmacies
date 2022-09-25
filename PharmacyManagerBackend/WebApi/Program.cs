@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 //Dependency Injection
 ServiceFactory factory = new ServiceFactory(builder.Services);
 factory.AddCustomServices();
+factory.AddDbContextService();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

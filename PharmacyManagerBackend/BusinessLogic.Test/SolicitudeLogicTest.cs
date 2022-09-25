@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Dtos;
+using IBusinessLogic;
 using IDataAccess;
 using Moq;
 using System;
@@ -13,8 +14,9 @@ namespace BusinessLogic.Test
         [TestClass]
     public class SolicitudeLogicTest
     {
-        private SolicitudeLogic _solicitudeLogic;
         private Mock<ISolicitudeRepository> _solicitudeRepositoryMock;
+        private Mock<IDrugLogic> _drugLogicMock;
+        private SolicitudeLogic _solicitudeLogic;
         private User _userEmployeeForTest;
         private Solicitude _solicitudeForTest;
 
@@ -22,7 +24,8 @@ namespace BusinessLogic.Test
         public void Initialize()
         {
             this._solicitudeRepositoryMock = new Mock<ISolicitudeRepository>(MockBehavior.Strict);
-            this._solicitudeLogic = new SolicitudeLogic(this._solicitudeRepositoryMock.Object);
+            this._drugLogicMock = new Mock<IDrugLogic>(MockBehavior.Strict);
+            this._solicitudeLogic = new SolicitudeLogic(this._solicitudeRepositoryMock.Object, this._drugLogicMock.Object);
 
             _userEmployeeForTest = new User()
             {
@@ -381,19 +384,21 @@ namespace BusinessLogic.Test
 
             List<Solicitude> solicitudesRepository = new List<Solicitude>()
             {
-                solicitudeRepository, _solicitudeForTest
+                solicitudeRepository
             };
             Solicitude solicitudeToUpdate = new Solicitude()
             {
-                State = State.REJECTED
+                State = State.ACCEPTED
             };
 
             _solicitudeRepositoryMock.Setup(s=>s.GetFirst(It.IsAny<Func<Solicitude, bool>>())).Returns(solicitudeRepository);
-
+            _drugLogicMock.Setup(s => s.AddStock(It.IsAny<List<SolicitudeItem>>()));
             Solicitude solicitudeReturned = _solicitudeLogic.Update(solicitudeId, solicitudeToUpdate);
 
             Assert.AreEqual(solicitudeRepository, solicitudeReturned);
+            Assert.AreEqual(solicitudeRepository.State, solicitudeReturned.State);
             _solicitudeRepositoryMock.VerifyAll();
+            _drugLogicMock.VerifyAll();
 
         }
     }

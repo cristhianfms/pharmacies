@@ -104,7 +104,14 @@ public static class ModelsMapper
         return solicitudeResponseModels;
     }
 
-    public static Drug ToEntity(DrugModel drugModel)
+    public static Solicitude ToEntity(SolicitudePutModel solicitudePutModel)
+    {
+        return new Solicitude()
+        {
+            State = Enum.Parse<State>(solicitudePutModel.State)
+        };
+    }
+    public static Drug ToEntity(DrugResponseModel drugModel)
     {
         return new Drug
         {
@@ -113,6 +120,19 @@ public static class ModelsMapper
             NeedsPrescription = drugModel.NeedsPrescription,
             Price = drugModel.Price,
             Stock = drugModel.Stock
+        };
+    }
+
+    public static DrugInfo ToEntityAsociated(DrugResponseModel drugModel)
+    {
+        return new DrugInfo
+        {
+            Id = drugModel.Id,
+            Name = drugModel.Name,
+            Symptoms = drugModel.Symptoms,
+            Presentation = drugModel.Presentation,
+            QuantityPerPresentation = drugModel.QuantityPerPresentation,
+            UnitOfMeasurement = drugModel.UnitOfMeasurement
         };
     }
 
@@ -127,5 +147,17 @@ public static class ModelsMapper
             Stock = drug.Stock
         };
     }
-}
 
+    public static DrugInfoModel ToModel(DrugInfo drugInfo)
+    {
+        return new DrugInfoModel
+        {
+            Id = drugInfo.Id,
+            Name = drugInfo.Name,
+            Symptoms = drugInfo.Symptoms,
+            Presentation = drugInfo.Presentation,
+            QuantityPerPresentation = drugInfo.QuantityPerPresentation,
+            UnitOfMeasurement = drugInfo.UnitOfMeasurement
+        };
+    }
+}

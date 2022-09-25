@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using Domain;
 
-namespace IBusinessLogic;
-public interface IDrugLogic
+namespace IBusinessLogic
 {
-    Drug Create(Drug drug);
-    void Delete(Drug drug);
-    IEnumerable<Drug> GetAllDrugs();
-    Drug GetDrug(Drug drug);
+    public interface IDrugLogic
+    {
+        Drug Create(Drug drug);
+        DrugInfo Create(DrugInfo drugInfo);
+        void Delete(int drugId);
+        void AddStock(IEnumerable<SolicitudeItem> items);
+            
+    }
 }
 
