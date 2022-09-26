@@ -18,10 +18,11 @@ namespace BusinessLogic
         private readonly PharmacyLogic _pharmacyLogic;
         private Context _context;
 
-        public SolicitudeLogic(ISolicitudeRepository solicitudeRepository, DrugLogic drugLogic)
+        public SolicitudeLogic(ISolicitudeRepository solicitudeRepository, DrugLogic drugLogic, PharmacyLogic pharmacyLogic)
         {
             this._solicitudeRepository = solicitudeRepository;
             this._drugLogic = drugLogic;
+            this._pharmacyLogic = pharmacyLogic;
         }
 
         public void SetContext(User currentUser)

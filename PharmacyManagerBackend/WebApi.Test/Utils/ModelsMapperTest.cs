@@ -128,10 +128,6 @@ public class ModelsMapperTest
             Email = "ususario@user.com",
             Address = "Cuareim 123",
             Password = "Usuario+1",
-            Pharmacy = new Pharmacy()
-            {
-                Name = "Pharmashop"
-            },
             Role = new Role()
             {
                 Name = "Employee"
@@ -174,10 +170,6 @@ public class ModelsMapperTest
             Email = "ususario@user.com",
             Address = "Cuareim 123",
             Password = "Usuario+1",
-            Pharmacy = new Pharmacy()
-            {
-                Name = "Pharmashop"
-            },
             Role = new Role()
             {
                 Name = "Employee"

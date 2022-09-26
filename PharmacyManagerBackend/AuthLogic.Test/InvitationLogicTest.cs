@@ -1,12 +1,17 @@
 using System;
+using AuthLogic;
+using BusinessLogic;
 using Domain;
 using Domain.Dtos;
 using Exceptions;
 using IDataAccess;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Assert = NUnit.Framework.Assert;
 
-namespace BusinessLogic.Test 
-{
+
+namespace AuthLogic.Test;
+
     [TestClass]
     public class InvitationLogicTest
     {
@@ -336,4 +341,4 @@ namespace BusinessLogic.Test
 
 }
 
-}
+

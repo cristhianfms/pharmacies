@@ -24,6 +24,7 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\IBusinessLogic\IBusinessLogic.csproj" />
     <ProjectReference Include="..\Factory\Factory.csproj" />
+    <ProjectReference Include="..\WebApi.Filter\WebApi.Filter.csproj" />
   </ItemGroup>
 
 </Project>

@@ -18,6 +18,7 @@ namespace BusinessLogic.Test
         private Mock<ISolicitudeRepository> _solicitudeRepositoryMock;
         private Mock<DrugLogic> _drugLogicMock;
         private Mock<UserLogic> _userLogicMock;
+        private Mock<PharmacyLogic> _pharmacyLogicMock;
         private SolicitudeLogic _solicitudeLogic;
         private User _userEmployeeForTest;
         private Solicitude _solicitudeForTest;
@@ -27,8 +28,9 @@ namespace BusinessLogic.Test
         {
             this._solicitudeRepositoryMock = new Mock<ISolicitudeRepository>(MockBehavior.Strict);
             this._drugLogicMock = new Mock<DrugLogic>(MockBehavior.Strict, null, null);
+            this._pharmacyLogicMock = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
             this._userLogicMock = new Mock<UserLogic>(MockBehavior.Strict, null);
-            this._solicitudeLogic = new SolicitudeLogic(this._solicitudeRepositoryMock.Object, this._drugLogicMock.Object);
+            this._solicitudeLogic = new SolicitudeLogic(this._solicitudeRepositoryMock.Object, this._drugLogicMock.Object, this._pharmacyLogicMock.Object);
 
             _userEmployeeForTest = new User()
             {
@@ -37,7 +39,7 @@ namespace BusinessLogic.Test
                 Email = "ususario@user.com",
                 Address = "Cuareim 123",
                 Password = "Usuario+1",
-                Pharmacy = new Pharmacy()
+                EmployeePharmacy = new Pharmacy()
                 {
                     Id = 1,
                     Name = "Pharmashop"
@@ -142,7 +144,7 @@ namespace BusinessLogic.Test
         }
 
         
-      /* [TestMethod]
+       [TestMethod]
        [ExpectedException(typeof(ValidationException))]
        public void CreateSolicitudeWithWrongDrugCodeThrowsException()
        {
@@ -163,11 +165,10 @@ namespace BusinessLogic.Test
                Pharmacy = _userEmployeeForTest.Pharmacy,
                Items = solicitudeItems
            };
-            //_pharmacyLogic.ExistDrug(DrugCode, Pharmacy.Id)
-           _solicitudeRepositoryMock.Setup(s => s.Create(solicitudeToCreate)).Throws(new ValidationException(""));
+            _pharmacyLogicMock.Setup(s => s.ExistsDrug(solicitudeItem.DrugCode, solicitudeToCreate.Pharmacy.Id)).Throws(new ValidationException(""));
+            _solicitudeRepositoryMock.Setup(s => s.Create(solicitudeToCreate)).Throws(new ValidationException(""));
            Solicitude createdSolicitude = _solicitudeLogic.Create(solicitudeToCreate);
-
-       }*/
+       }
 
         [TestMethod]
         public void TestGetSolicitudesForEmployee()
@@ -223,7 +224,7 @@ namespace BusinessLogic.Test
                 Email = "ususario@user.com",
                 Address = "Cuareim 123",
                 Password = "Usuario+1",
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                OwnerPharmacy = _userEmployeeForTest.Pharmacy,
                 Role = new Role()
                 {
                     Name = "Owner"
@@ -403,7 +404,7 @@ namespace BusinessLogic.Test
                 Email = "ususario@user.com",
                 Address = "Cuareim 123",
                 Password = "Usuario+1",
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                OwnerPharmacy = _userEmployeeForTest.Pharmacy,
                 Role = new Role()
                 {
                     Name = "Owner"
@@ -464,7 +465,7 @@ namespace BusinessLogic.Test
                 Email = "ususario@user.com",
                 Address = "Cuareim 123",
                 Password = "Usuario+1",
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                OwnerPharmacy = _userEmployeeForTest.Pharmacy,
                 Role = new Role()
                 {
                     Name = "Owner"
