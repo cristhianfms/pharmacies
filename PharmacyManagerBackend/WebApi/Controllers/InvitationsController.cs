@@ -2,7 +2,7 @@ using Domain;
 using Domain.Dtos;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Filters;
+using WebApi.Filter;
 using WebApi.Models;
 using WebApi.Utils;
 

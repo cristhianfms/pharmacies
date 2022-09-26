@@ -7,7 +7,7 @@ using IBusinessLogic;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using WebApi.Filters;
+using WebApi.Filter;
 
 namespace Factory;
 

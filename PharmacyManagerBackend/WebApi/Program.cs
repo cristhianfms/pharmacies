@@ -1,10 +1,14 @@
 using Factory;
+using WebApi.Filter;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+//Filters 
+builder.Services.AddControllers(options => options.Filters.Add(typeof(ExceptionFilter)));
 
 //Dependency Injection
 ServiceFactory factory = new ServiceFactory(builder.Services);
