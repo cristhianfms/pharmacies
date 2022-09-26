@@ -44,12 +44,22 @@ namespace DataAccess.Test
         [TestMethod]
         public void DeleteDrugOk()
         {
+            DrugInfo di = new DrugInfo()
+            {
+                Name = "Perifar Flex",
+                Symptoms = "Dolor de cabeza",
+                Presentation = "Blister",
+                QuantityPerPresentation = 8,
+                UnitOfMeasurement = "Gramos"
+            };
+
             Drug drugToDelete = new Drug()
             {
                 DrugCode = "2a5678bx1",
                 Price = 25.99,
                 Stock = 15,
-                NeedsPrescription = false
+                NeedsPrescription = false,
+                DrugInfo = di
             };
 
             using (var context = new PharmacyManagerContext(this._contextOptions))
