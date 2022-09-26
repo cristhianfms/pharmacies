@@ -37,17 +37,7 @@ public class DrugControllerTest
     [TestMethod]
     public void CreateDrugOk()
     {
-
         _drugLogicMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(_drug);
-        _drugLogicMock.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(new DrugInfo());
-        var drugResponseModel = new DrugResponseModel()
-        {
-            Id = 1,
-            DrugCode = "2A5",
-            Price = 150,
-            NeedsPrescription = false,
-            Stock = 20
-        };
 
         var drugModel = new DrugModel()
         {
@@ -58,7 +48,7 @@ public class DrugControllerTest
             Stock = 20
         };
 
-        var result = _drugApiController.Create(drugResponseModel);
+        var result = _drugApiController.Create(drugModel);
         var okResult = result as OkObjectResult;
         var createdDrug = okResult.Value as DrugModel;
 
