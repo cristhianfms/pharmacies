@@ -19,7 +19,7 @@ public class PharmacyLogic : IPharmacyLogic
         return this._pharmacyRepository.Create(pharmacy);
     }
 
-    public Pharmacy GetPharmacyByName(string pharmacyName)
+    public virtual Pharmacy GetPharmacyByName(string pharmacyName)
     {
         return this._pharmacyRepository.GetFirst(f => pharmacyName.Equals(pharmacyName));
     }

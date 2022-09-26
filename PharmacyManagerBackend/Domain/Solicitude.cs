@@ -28,5 +28,9 @@ public class Solicitude
                 solicitude.Pharmacy.Id == Pharmacy.Id &&
                 solicitude.Items.Equals(Items);
     }
+    public override string ToString()
+    {
+        return Date.ToString("yyyy-MM-dd");
+    }
 }
 

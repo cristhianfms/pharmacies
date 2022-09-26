@@ -7,7 +7,7 @@ using Exceptions;
 using IDataAccess;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Assert = NUnit.Framework.Assert;
+
 
 
 namespace AuthLogic.Test;
@@ -222,11 +222,11 @@ namespace AuthLogic.Test;
     [TestMethod]
     public void UpdateInvitationOk()
     {
-        string invitationCode = "code";
+        string invitationCode = "111111";
         InvitationDto invitationToUpdate= new InvitationDto()
         {
-            UserName = "JuanPerez",
-            Code = "2A5678BX",
+            UserName = "Cris01",
+            Code = invitationCode,
             Email = "Juan@email.com",
             Address = "Road A 1234",
             RoleName = "Empployee",
@@ -261,7 +261,7 @@ namespace AuthLogic.Test;
         
         InvitationDto invitationDtoUpdated = _invitationLogic.Update(invitationCode, invitationToUpdate);
 
-        Assert.AreEqual(invitationDtoUpdated, invitationToUpdate);
+        Assert.AreEqual(invitationToUpdate, invitationDtoUpdated);
         _userLogic.VerifyAll();
         _invitationRepository.VerifyAll();
     }
