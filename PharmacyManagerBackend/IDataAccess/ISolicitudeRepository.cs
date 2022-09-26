@@ -9,5 +9,6 @@ namespace IDataAccess
 {
     public interface ISolicitudeRepository : IBaseRepository<Solicitude>
     {
+        void Update(int solicitudId);
     }
 }

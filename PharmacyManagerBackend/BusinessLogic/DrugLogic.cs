@@ -74,7 +74,7 @@ namespace BusinessLogic
 
         }
 
-        public void AddStock(IEnumerable<SolicitudeItem> drugsToAddStock)
+        public virtual void AddStock(List<SolicitudeItem> drugsToAddStock)
         {
             foreach (var drugSolicitude in drugsToAddStock)
             {

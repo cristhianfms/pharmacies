@@ -14,11 +14,11 @@ namespace BusinessLogic
     public class SolicitudeLogic : ISolicitudeLogic
     {
         private readonly ISolicitudeRepository _solicitudeRepository;
-        private readonly IDrugLogic _drugLogic;
+        private readonly DrugLogic _drugLogic;
         private readonly PharmacyLogic _pharmacyLogic;
         private Context _context;
 
-        public SolicitudeLogic(ISolicitudeRepository solicitudeRepository, IDrugLogic drugLogic)
+        public SolicitudeLogic(ISolicitudeRepository solicitudeRepository, DrugLogic drugLogic)
         {
             this._solicitudeRepository = solicitudeRepository;
             this._drugLogic = drugLogic;
@@ -86,15 +86,21 @@ namespace BusinessLogic
         {
             Solicitude solicitudeToUpdate = getSolicitude(solicitudeId);
 
-            if (newSolicitude.State.Equals(State.ACCEPTED) && !solicitudeToUpdate.Equals(State.ACCEPTED)){
+            if (solicitudeToUpdate.State.Equals(State.PENDING))
+            {
+                if (newSolicitude.State.Equals(State.ACCEPTED))
+                {
 
-                _drugLogic.AddStock(solicitudeToUpdate.Items);
+                    _drugLogic.AddStock(solicitudeToUpdate.Items);
+                }
+
+                solicitudeToUpdate.State = newSolicitude.State;
+                _solicitudeRepository.Update(solicitudeToUpdate.Id);
             }
-            solicitudeToUpdate.State = newSolicitude.State; 
 
             return solicitudeToUpdate;
 
-                        
+
         }
 
         private Solicitude getSolicitude(int solicitudeId)

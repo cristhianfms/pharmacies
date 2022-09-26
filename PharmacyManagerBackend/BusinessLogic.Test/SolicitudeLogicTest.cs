@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Dtos;
+using Exceptions;
 using IBusinessLogic;
 using IDataAccess;
 using Moq;
@@ -15,7 +16,8 @@ namespace BusinessLogic.Test
     public class SolicitudeLogicTest
     {
         private Mock<ISolicitudeRepository> _solicitudeRepositoryMock;
-        private Mock<IDrugLogic> _drugLogicMock;
+        private Mock<DrugLogic> _drugLogicMock;
+        private Mock<UserLogic> _userLogicMock;
         private SolicitudeLogic _solicitudeLogic;
         private User _userEmployeeForTest;
         private Solicitude _solicitudeForTest;
@@ -24,7 +26,8 @@ namespace BusinessLogic.Test
         public void Initialize()
         {
             this._solicitudeRepositoryMock = new Mock<ISolicitudeRepository>(MockBehavior.Strict);
-            this._drugLogicMock = new Mock<IDrugLogic>(MockBehavior.Strict);
+            this._drugLogicMock = new Mock<DrugLogic>(MockBehavior.Strict, null, null);
+            this._userLogicMock = new Mock<UserLogic>(MockBehavior.Strict, null);
             this._solicitudeLogic = new SolicitudeLogic(this._solicitudeRepositoryMock.Object, this._drugLogicMock.Object);
 
             _userEmployeeForTest = new User()
@@ -104,6 +107,7 @@ namespace BusinessLogic.Test
 
 
             _solicitudeRepositoryMock.Setup(s => s.Create(solicitudeToCreate)).Returns(solicitudeRepository);
+            _userLogicMock.Setup(u => u.GetUserByUserName(_userEmployeeForTest.UserName)).Returns(_userEmployeeForTest);
 
             Solicitude createdSolicitude = _solicitudeLogic.Create(solicitudeToCreate);
 
@@ -118,6 +122,52 @@ namespace BusinessLogic.Test
             _solicitudeRepositoryMock.VerifyAll();
             
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void CreateSolicitudeWithNullItemsThrowsException()
+        {
+
+            Solicitude solicitudeToCreate = new Solicitude()
+            {
+                State = State.PENDING,
+                Date = DateTime.Now,
+                Employee = _userEmployeeForTest,
+                Pharmacy = _userEmployeeForTest.Pharmacy,
+            };
+
+            _solicitudeRepositoryMock.Setup(s => s.Create(solicitudeToCreate)).Throws(new ValidationException(""));
+            Solicitude createdSolicitude = _solicitudeLogic.Create(solicitudeToCreate);
+
+        }
+
+        
+      /* [TestMethod]
+       [ExpectedException(typeof(ValidationException))]
+       public void CreateSolicitudeWithWrongDrugCodeThrowsException()
+       {
+           SolicitudeItem solicitudeItem = new SolicitudeItem()
+           {
+               DrugCode = "NonExistentCode",
+               DrugQuantity = 6
+           };
+           List<SolicitudeItem> solicitudeItems = new List<SolicitudeItem>()
+           {
+               solicitudeItem
+           };
+           Solicitude solicitudeToCreate = new Solicitude()
+           {
+               State = State.PENDING,
+               Date = DateTime.Now,
+               Employee = _userEmployeeForTest,
+               Pharmacy = _userEmployeeForTest.Pharmacy,
+               Items = solicitudeItems
+           };
+            //_pharmacyLogic.ExistDrug(DrugCode, Pharmacy.Id)
+           _solicitudeRepositoryMock.Setup(s => s.Create(solicitudeToCreate)).Throws(new ValidationException(""));
+           Solicitude createdSolicitude = _solicitudeLogic.Create(solicitudeToCreate);
+
+       }*/
 
         [TestMethod]
         public void TestGetSolicitudesForEmployee()
@@ -344,7 +394,7 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
-        public void TestUpdateSolicitude()
+        public void TestUpdateSolicitudeToAccepted()
         {
             User userOwnerForTest = new User()
             {
@@ -391,12 +441,75 @@ namespace BusinessLogic.Test
                 State = State.ACCEPTED
             };
 
-            _solicitudeRepositoryMock.Setup(s=>s.GetFirst(It.IsAny<Func<Solicitude, bool>>())).Returns(solicitudeRepository);
-            _drugLogicMock.Setup(s => s.AddStock(It.IsAny<List<SolicitudeItem>>()));
+            _solicitudeRepositoryMock.Setup(s => s.GetFirst(It.IsAny<Func<Solicitude, bool>>())).Returns(solicitudeRepository);
+            _drugLogicMock.Setup(d => d.AddStock(solicitudeItems));
+            _solicitudeRepositoryMock.Setup(s => s.Update(solicitudeId));
             Solicitude solicitudeReturned = _solicitudeLogic.Update(solicitudeId, solicitudeToUpdate);
 
             Assert.AreEqual(solicitudeRepository, solicitudeReturned);
             Assert.AreEqual(solicitudeRepository.State, solicitudeReturned.State);
+            CollectionAssert.AreEqual(solicitudeRepository.Items, solicitudeReturned.Items);
+
+            _solicitudeRepositoryMock.VerifyAll();
+            _drugLogicMock.VerifyAll();
+
+        }
+        [TestMethod]
+        public void TestUpdateSolicitudeToRejected()
+        {
+            User userOwnerForTest = new User()
+            {
+                Id = 3,
+                UserName = "Usuario1",
+                Email = "ususario@user.com",
+                Address = "Cuareim 123",
+                Password = "Usuario+1",
+                Pharmacy = _userEmployeeForTest.Pharmacy,
+                Role = new Role()
+                {
+                    Name = "Owner"
+                }
+            };
+
+            this._solicitudeLogic.SetContext(userOwnerForTest);
+
+            SolicitudeItem solicitudeItem = new SolicitudeItem()
+            {
+                DrugCode = "ABC123",
+                DrugQuantity = 6
+            };
+            List<SolicitudeItem> solicitudeItems = new List<SolicitudeItem>()
+            {
+                solicitudeItem
+            };
+            const int solicitudeId = 1;
+            Solicitude solicitudeRepository = new Solicitude()
+            {
+                Id = solicitudeId,
+                State = State.PENDING,
+                Date = DateTime.Now,
+                Employee = _userEmployeeForTest,
+                Pharmacy = _userEmployeeForTest.Pharmacy,
+                Items = solicitudeItems
+            };
+
+            List<Solicitude> solicitudesRepository = new List<Solicitude>()
+            {
+                solicitudeRepository
+            };
+            Solicitude solicitudeToUpdate = new Solicitude()
+            {
+                State = State.REJECTED
+            };
+
+            _solicitudeRepositoryMock.Setup(s => s.GetFirst(It.IsAny<Func<Solicitude, bool>>())).Returns(solicitudeRepository);
+            _solicitudeRepositoryMock.Setup(s => s.Update(solicitudeId));
+            Solicitude solicitudeReturned = _solicitudeLogic.Update(solicitudeId, solicitudeToUpdate);
+
+            Assert.AreEqual(solicitudeRepository, solicitudeReturned);
+            Assert.AreEqual(solicitudeRepository.State, solicitudeReturned.State);
+            CollectionAssert.AreEqual(solicitudeRepository.Items, solicitudeReturned.Items);
+
             _solicitudeRepositoryMock.VerifyAll();
             _drugLogicMock.VerifyAll();
 

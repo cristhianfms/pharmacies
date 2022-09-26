@@ -23,5 +23,11 @@ public class PharmacyLogic : IPharmacyLogic
     {
         return _pharmacyRepository.GetFirst(f => pharmacyName.Equals(pharmacyName));
     }
+
+    public bool ExistsDrug(string drugCode, int pharmacyId)
+    {
+        Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Id == pharmacyId);
+        return pharmacy.Drugs.Exists(d => d.DrugCode == drugCode);
+    }
 }
 

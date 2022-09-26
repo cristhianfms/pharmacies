@@ -9,7 +9,7 @@ namespace IBusinessLogic
         Drug Create(Drug drug);
         DrugInfo Create(DrugInfo drugInfo);
         void Delete(int drugId);
-        void AddStock(IEnumerable<SolicitudeItem> items);
+        void AddStock(List<SolicitudeItem> items);
             
     }
 }
