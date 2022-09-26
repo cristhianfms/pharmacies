@@ -14,7 +14,7 @@ namespace Domain
                     throw new ValidationException("Drug code can't be empty");
 
                 drugCode = value;
-                
+
             }
         }
         public double Price { get; set; }

@@ -63,7 +63,6 @@ namespace BusinessLogic
             _drugRepository.Delete(drug);
 
         }
-
         public void AddStock(List<SolicitudeItem> drugsToAddStock)
         {
             foreach (var drugSolicitude in drugsToAddStock)
@@ -75,3 +74,4 @@ namespace BusinessLogic
         }
     }
 }
+

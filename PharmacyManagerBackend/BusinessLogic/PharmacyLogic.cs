@@ -16,12 +16,18 @@ public class PharmacyLogic : IPharmacyLogic
 
     public Pharmacy Create(Pharmacy pharmacy)
     {
-        return _pharmacyRepository.Create(pharmacy);
+        return this._pharmacyRepository.Create(pharmacy);
     }
 
-    public virtual Pharmacy GetPharmacyByName(string pharmacyName)
+    public Pharmacy GetPharmacyByName(string pharmacyName)
     {
-        return _pharmacyRepository.GetFirst(f => pharmacyName.Equals(pharmacyName));
+        return this._pharmacyRepository.GetFirst(f => pharmacyName.Equals(pharmacyName));
+    }
+
+    public bool ExistsDrug(string drugCode, int pharmacyId)
+    {
+        Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Id == pharmacyId);
+        return  pharmacy.Drugs.Exists(d => d.DrugCode == drugCode);
     }
 
     public bool ExistsDrug(string drugCode)
