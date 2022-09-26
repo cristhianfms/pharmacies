@@ -5,6 +5,7 @@ using Domain.Dtos;
 using System.Collections.Generic;
 using System.Linq;
 using WebApi.Models;
+using System.Xml.Linq;
 
 namespace WebApi.Utils;
 
@@ -111,21 +112,10 @@ public static class ModelsMapper
             State = Enum.Parse<State>(solicitudePutModel.State)
         };
     }
-    public static Drug ToEntity(DrugResponseModel drugModel)
-    {
-        return new Drug
-        {
-            Id = drugModel.Id,
-            DrugCode = drugModel.DrugCode,
-            NeedsPrescription = drugModel.NeedsPrescription,
-            Price = drugModel.Price,
-            Stock = drugModel.Stock
-        };
-    }
 
-    public static DrugInfo ToEntityAsociated(DrugResponseModel drugModel)
+    public static Drug ToEntity(DrugModel drugModel)
     {
-        return new DrugInfo
+        DrugInfo drugInfo  = new DrugInfo
         {
             Id = drugModel.Id,
             Name = drugModel.Name,
@@ -133,6 +123,16 @@ public static class ModelsMapper
             Presentation = drugModel.Presentation,
             QuantityPerPresentation = drugModel.QuantityPerPresentation,
             UnitOfMeasurement = drugModel.UnitOfMeasurement
+        };
+
+        return new Drug
+        {
+            Id = drugModel.Id,
+            DrugCode = drugModel.DrugCode,
+            NeedsPrescription = drugModel.NeedsPrescription,
+            Price = drugModel.Price,
+            Stock = drugModel.Stock,
+            DrugInfo = drugInfo
         };
     }
 
@@ -144,20 +144,13 @@ public static class ModelsMapper
             DrugCode = drug.DrugCode,
             NeedsPrescription = drug.NeedsPrescription,
             Price = drug.Price,
-            Stock = drug.Stock
+            Stock = drug.Stock,
+            Name = drug.DrugInfo.Name,
+            Symptoms = drug.DrugInfo.Symptoms,
+            Presentation = drug.DrugInfo.Presentation,
+            QuantityPerPresentation = drug.DrugInfo.QuantityPerPresentation,
+            UnitOfMeasurement= drug.DrugInfo.UnitOfMeasurement
         };
     }
 
-    public static DrugInfoModel ToModel(DrugInfo drugInfo)
-    {
-        return new DrugInfoModel
-        {
-            Id = drugInfo.Id,
-            Name = drugInfo.Name,
-            Symptoms = drugInfo.Symptoms,
-            Presentation = drugInfo.Presentation,
-            QuantityPerPresentation = drugInfo.QuantityPerPresentation,
-            UnitOfMeasurement = drugInfo.UnitOfMeasurement
-        };
-    }
 }

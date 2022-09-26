@@ -19,12 +19,10 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] DrugResponseModel drugModel)
+        public IActionResult Create([FromBody] DrugModel drugModel)
         {
             Drug drug = ModelsMapper.ToEntity(drugModel);
-            DrugInfo drugInfo = ModelsMapper.ToEntityAsociated(drugModel);
             Drug drugCreated = _drugLogic.Create(drug);
-            _drugLogic.Create(drugInfo);
             DrugModel drugCreatedModel = ModelsMapper.ToModel(drugCreated);
             return Ok(drugCreatedModel);
         }
@@ -36,6 +34,14 @@ namespace WebApi.Controllers
             return Ok("Se elimino correctamente");
         }
 
+        [HttpGet]
+        public IActionResult Get(int drugId)
+        {
+            Drug drug = _drugLogic.Get(drugId);
+
+            DrugModel drugModel = ModelsMapper.ToModel(drug);
+            return Ok(drugModel);
+        }
     }
 
 }
