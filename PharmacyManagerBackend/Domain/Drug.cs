@@ -1,6 +1,7 @@
-﻿namespace Domain;
-public class Drug
+﻿namespace Domain
 {
+ public class Drug{
+
     public int Id { get; set; }
     public string DrugCode { get; set; }
     public double Price { get; set; }
@@ -8,8 +9,9 @@ public class Drug
     public bool NeedsPrescription { get; set; }
     public DrugInfo DrugInfo { get; set; }
 
-    public override bool Equals (object obj)
+    public override bool Equals(object obj)
     {
-        return this.DrugCode.Equals(((Drug)obj).DrugCode);
+     return this.DrugCode.Equals(((Drug)obj).DrugCode);
     }
+  }
 }

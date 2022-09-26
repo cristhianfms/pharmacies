@@ -22,6 +22,67 @@ namespace DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Domain.AuthDomain.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Endpoint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PermissionDB");
+                });
+
+            modelBuilder.Entity("Domain.AuthDomain.PermissionRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("PermissionRole");
+                });
+
+            modelBuilder.Entity("Domain.AuthDomain.Session", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<Guid>("Token")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SessionDB");
+                });
+
             modelBuilder.Entity("Domain.Drug", b =>
                 {
                     b.Property<int>("Id")
@@ -133,7 +194,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PharmacieDB");
+                    b.ToTable("PharmacyDB");
                 });
 
             modelBuilder.Entity("Domain.Role", b =>
@@ -168,27 +229,6 @@ namespace DataAccess.Migrations
                             Id = 3,
                             Name = "Employee"
                         });
-                });
-
-            modelBuilder.Entity("Domain.Session", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<Guid>("Token")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SessionDB");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -257,6 +297,36 @@ namespace DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.AuthDomain.PermissionRole", b =>
+                {
+                    b.HasOne("Domain.AuthDomain.Permission", "Permission")
+                        .WithMany("PermissionRoles")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Role", "Role")
+                        .WithMany("PermissionRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Domain.AuthDomain.Session", b =>
+                {
+                    b.HasOne("Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Drug", b =>
                 {
                     b.HasOne("Domain.Pharmacy", null)
@@ -281,17 +351,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Pharmacy");
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("Domain.Session", b =>
-                {
-                    b.HasOne("Domain.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -323,6 +382,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("Domain.AuthDomain.Permission", b =>
+                {
+                    b.Navigation("PermissionRoles");
+                });
+
             modelBuilder.Entity("Domain.Pharmacy", b =>
                 {
                     b.Navigation("Drugs");
@@ -331,6 +395,11 @@ namespace DataAccess.Migrations
 
                     b.Navigation("Owner")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Role", b =>
+                {
+                    b.Navigation("PermissionRoles");
                 });
 #pragma warning restore 612, 618
         }

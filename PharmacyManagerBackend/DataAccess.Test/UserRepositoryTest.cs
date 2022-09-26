@@ -15,8 +15,6 @@ public class UserRepositoryTest
 {
     private DbConnection _connection;
     private BaseRepository<User> _userRepository;
-    private BaseRepository<Role> _roleRepository;
-    private BaseRepository<Pharmacy> _pharmacyRepository;
 
     private PharmacyManagerContext _pharmacyManagerContext;
     private DbContextOptions<PharmacyManagerContext> _contextOptions;
@@ -28,8 +26,6 @@ public class UserRepositoryTest
 
         this._pharmacyManagerContext = new PharmacyManagerContext(this._contextOptions);
         this._userRepository = new BaseRepository<User>(this._pharmacyManagerContext);
-        this._roleRepository = new BaseRepository<Role>(this._pharmacyManagerContext);
-        this._pharmacyRepository = new BaseRepository<Pharmacy>(this._pharmacyManagerContext);
     }
 
     [TestInitialize]

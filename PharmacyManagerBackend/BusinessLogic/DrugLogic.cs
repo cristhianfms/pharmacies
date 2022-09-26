@@ -52,16 +52,15 @@ namespace BusinessLogic
 
         }
 
-        public void Delete(int drugId)
+        public  void Delete(int drugId)
         {
 
             Drug drug = FindDrug(drugId);
 
-            if (drug == null)
+            if (drug == null){
                 throw new NullReferenceException("No existe la medicina");
-
+             }
             _drugRepository.Delete(drug);
-
         }
 
         public void AddStock(List<SolicitudeItem> drugsToAddStock)
@@ -69,6 +68,7 @@ namespace BusinessLogic
             foreach (var drugSolicitude in drugsToAddStock)
             {
                 Drug drugToUpdate = _drugRepository.GetFirst(d => d.DrugCode == drugSolicitude.DrugCode);
+
                 drugToUpdate.Stock = drugToUpdate.Stock + drugSolicitude.DrugQuantity;
                 _drugRepository.Update(drugToUpdate);
             }

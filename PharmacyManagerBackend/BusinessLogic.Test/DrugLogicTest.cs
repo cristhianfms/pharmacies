@@ -20,7 +20,6 @@ namespace BusinessLogic.Test
             this._drugRepositoryMock = new Mock<IDrugRepository>(MockBehavior.Strict);
             this._drugInfoRepositoryMock = new Mock<IDrugInfoRepository>(MockBehavior.Strict);
             this._drugLogic = new DrugLogic(_drugRepositoryMock.Object, _drugInfoRepositoryMock.Object);
-
         }
 
         [TestMethod]
@@ -37,7 +36,6 @@ namespace BusinessLogic.Test
             };
 
             _drugRepositoryMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
-            _drugInfoRepositoryMock.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(new DrugInfo());
 
             Drug createdDrug = _drugLogic.Create(drug);
 
@@ -45,24 +43,25 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+
         public void DeleteDrugOk()
         {
-            Drug drug = new Drug()
-            {
-                Id = 1,
-                DrugCode = "2a5678bx",
-                Price = 25.99,
-                Stock = 15,
-                NeedsPrescription = false
-            };
-            _drugRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
-            _drugRepositoryMock.Setup(m => m.Delete(drug));
-
-            _drugLogic.Delete(drug.Id);
-
-            _drugRepositoryMock.VerifyAll();
+          Drug drug = new Drug()
+              {
+                  Id = 1,
+                  DrugCode = "2a5678bx",
+                  Price = 25.99,
+                  Stock = 15,
+                  NeedsPrescription = false
+              };
+              _drugRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
+              _drugRepositoryMock.Setup(m => m.Delete(drug));
+              
+              _drugLogic.Delete(drug.Id);
+              
+              _drugRepositoryMock.VerifyAll();
         }
-
+        
         [TestMethod]
         public void AddStockOk()
         {
@@ -72,9 +71,9 @@ namespace BusinessLogic.Test
                 DrugCode = "RS546",
                 DrugQuantity = 10
             };
-            List<SolicitudeItem> solicitudeItems = new List<SolicitudeItem>()
+            List <SolicitudeItem> solicitudeItems = new List<SolicitudeItem>() 
             {
-                solicitudeItem1,
+                solicitudeItem1, 
             };
             Drug drug = new Drug()
             {
@@ -89,8 +88,7 @@ namespace BusinessLogic.Test
             _drugRepositoryMock.Setup(s => s.Update(It.IsAny<Drug>()));
 
             _drugLogic.AddStock(solicitudeItems);
-
-
+            
             Assert.AreEqual(drug.Stock, 25);
             Assert.AreEqual(drug.DrugCode, solicitudeItem1.DrugCode);
             _drugRepositoryMock.VerifyAll();

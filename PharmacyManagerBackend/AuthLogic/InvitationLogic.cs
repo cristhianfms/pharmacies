@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using BusinessLogic;
 using IBusinessLogic;
 using Domain;
 using IDataAccess;
 using Exceptions;
 using Domain.Dtos;
 
-namespace BusinessLogic
+namespace AuthLogic
 {
 
     public class InvitationLogic : IInvitationLogic
@@ -52,13 +53,12 @@ namespace BusinessLogic
             User userToCreate = new User()
             {
                 UserName = invitation.UserName,
-                RoleId = invitation.RoleId,
+                Role = invitation.Role,
                 Email = invitationDto.Email,
                 Address = invitationDto.Address,
                 Password = invitationDto.Password,
                 RegistrationDate = DateTime.Now,
-                // TODO dependiento del tipo
-                //Pharmacy = invitation.Pharmacy
+                Pharmacy = invitation.Pharmacy
             };
 
             User createdUser = _userLogic.Create(userToCreate);
@@ -67,10 +67,10 @@ namespace BusinessLogic
             InvitationDto invitationDtoToReturn = new InvitationDto()
             {
                 UserName = userToCreate.UserName,
-                //RoleName = createdUser.Role.Name,
-                //PharmacyName = createdUser.Pharmacy?.Name,
+                RoleName = invitation.Role.Name,
+                PharmacyName = invitation.Pharmacy?.Name,
                 Email = createdUser.Email,
-                Address = createdUser.Password,
+                Address = createdUser.Address,
             };
 
             return invitationDtoToReturn;

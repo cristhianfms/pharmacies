@@ -31,13 +31,13 @@ public class SolicitudesControllerTest
             Email = "ususario@user.com",
             Address = "Cuareim 123",
             Password = "Usuario+1",
-            Pharmacy = new Pharmacy()
-            {
-                Name = "Pharmashop"
-            },
             Role = new Role()
             {
-                Name = "Employee"
+                Name = Role.EMPLOYEE
+            },
+            Pharmacy = new Pharmacy()
+            {
+            Name = "Pharmashop"
             }
         };
         SolicitudeItem solicitudeItem3 = new SolicitudeItem()
@@ -183,32 +183,35 @@ public class SolicitudesControllerTest
     [TestMethod]
     public void UpdateSolicitudeStateOk()
     {
-
-        SolicitudeResponseModel solicitudeToBeUpdate = ModelsMapper.ToModel(_solicitudeForTest);
-
-        SolicitudeResponseModel solicitudeModelUpdated = new SolicitudeResponseModel()
+        int solicitudeId = _solicitudeForTest.Id;
+        SolicitudePutModel solicitudeModelToUpdate = new SolicitudePutModel()
         {
-            Id = solicitudeToBeUpdate.Id,
-            State = State.ACCEPTED,
-            Date = solicitudeToBeUpdate.Date,
-            SolicitudeItems = solicitudeToBeUpdate.SolicitudeItems,
-            EmployeeUserName = solicitudeToBeUpdate.EmployeeUserName
+            State = "ACCEPTED"
         };
+        Solicitude solicitudeToReturn = new Solicitude()
+        {
+            Id = solicitudeId,
+            State = State.ACCEPTED,
+            Date = _solicitudeForTest.Date,
+            Items = _solicitudeForTest.Items,
+            Employee = _solicitudeForTest.Employee,
+        };
+        SolicitudeResponseModel solicitudeModelUpdated = ModelsMapper.ToModel(solicitudeToReturn);
 
-        _solicitudeLogicMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<Solicitude>())).Returns(_solicitudeForTest);
+        _solicitudeLogicMock.Setup(s => s.Update(solicitudeId, It.IsAny<Solicitude>())).Returns(solicitudeToReturn);
 
-        var result = _solicitudeApiController.Update(_solicitudeForTest.Id, solicitudeModelUpdated);
+        var result = _solicitudeApiController.Update(solicitudeId, solicitudeModelToUpdate);
         var okResult = result as OkObjectResult;
         var solicitudeUpdated = okResult.Value as SolicitudeResponseModel;
 
 
-        Assert.AreEqual(solicitudeToBeUpdate.Id, solicitudeUpdated.Id);
-        Assert.AreEqual(solicitudeToBeUpdate.State, solicitudeUpdated.State);
-        Assert.AreEqual(solicitudeToBeUpdate.Date, solicitudeUpdated.Date);
-        Assert.AreEqual(solicitudeToBeUpdate.EmployeeUserName, solicitudeUpdated.EmployeeUserName);
-        Assert.AreEqual(solicitudeToBeUpdate.SolicitudeItems[0].DrugCode, solicitudeUpdated.SolicitudeItems[0].DrugCode);
-        Assert.AreEqual(solicitudeToBeUpdate.SolicitudeItems[0].DrugQuantity, solicitudeUpdated.SolicitudeItems[0].DrugQuantity);
-        CollectionAssert.AreEqual(solicitudeToBeUpdate.SolicitudeItems, solicitudeUpdated.SolicitudeItems);
+        Assert.AreEqual(solicitudeModelUpdated.Id, solicitudeUpdated.Id);
+        Assert.AreEqual(solicitudeModelUpdated.State, solicitudeUpdated.State);
+        Assert.AreEqual(solicitudeModelUpdated.Date, solicitudeUpdated.Date);
+        Assert.AreEqual(solicitudeModelUpdated.EmployeeUserName, solicitudeUpdated.EmployeeUserName);
+        Assert.AreEqual(solicitudeModelUpdated.SolicitudeItems[0].DrugCode, solicitudeUpdated.SolicitudeItems[0].DrugCode);
+        Assert.AreEqual(solicitudeModelUpdated.SolicitudeItems[0].DrugQuantity, solicitudeUpdated.SolicitudeItems[0].DrugQuantity);
+        CollectionAssert.AreEqual(solicitudeModelUpdated.SolicitudeItems, solicitudeUpdated.SolicitudeItems);
 
         _solicitudeLogicMock.VerifyAll();
     }

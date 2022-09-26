@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
+using AuthLogic;
 using Domain;
-using Domain.Dtos;
-using Exceptions;
 using IDataAccess;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace BusinessLogic.Test;

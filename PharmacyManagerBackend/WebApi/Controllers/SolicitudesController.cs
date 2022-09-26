@@ -39,10 +39,10 @@ public class SolicitudesController : ControllerBase
         return Ok(solicitudeModels);
     }
 
-    [HttpPut]
-    public IActionResult Update(int id, SolicitudeResponseModel solicitudeResponseModel)
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, [FromBody] SolicitudePutModel solicitudePutModel)
     {
-        Solicitude solicitudeToUpdate = ModelsMapper.ToEntity(solicitudeResponseModel);
+        Solicitude solicitudeToUpdate = ModelsMapper.ToEntity(solicitudePutModel);
         Solicitude solicitudeUpdated = _solicitudeLogic.Update(id, solicitudeToUpdate);
         SolicitudeResponseModel solicitudeUpdatedModel = ModelsMapper.ToModel(solicitudeUpdated);
 
