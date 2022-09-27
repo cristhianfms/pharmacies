@@ -4,6 +4,7 @@ using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    partial class PharmacyManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20220927172208_DrugMigration")]
+    partial class DrugMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,8 +114,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DrugInfoId")
-                        .IsUnique();
+                    b.HasIndex("DrugInfoId");
 
                     b.HasIndex("PharmacyId");
 
@@ -336,8 +337,8 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Drug", b =>
                 {
                     b.HasOne("Domain.DrugInfo", "DrugInfo")
-                        .WithOne("Drug")
-                        .HasForeignKey("Domain.Drug", "DrugInfoId")
+                        .WithMany()
+                        .HasForeignKey("DrugInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -399,12 +400,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.AuthDomain.Permission", b =>
                 {
                     b.Navigation("PermissionRoles");
-                });
-
-            modelBuilder.Entity("Domain.DrugInfo", b =>
-                {
-                    b.Navigation("Drug")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Pharmacy", b =>

@@ -27,14 +27,14 @@ namespace WebApi.Controllers
             return Ok(drugCreatedModel);
         }
 
-        [HttpDelete]
+        [HttpDelete("{drugId}")]
         public IActionResult Delete(int drugId)
         {
             _drugLogic.Delete(drugId);
             return Ok("Se elimino correctamente");
         }
 
-        [HttpGet]
+        [HttpGet("{drugId}")]
         public IActionResult Get(int drugId)
         {
             Drug drug = _drugLogic.Get(drugId);

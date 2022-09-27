@@ -58,7 +58,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return entityToReturn;
     }
 
-    public void Delete(T elem)
+    public virtual void Delete(T elem)
     {
         _table.Remove(elem);
         _context.SaveChanges();
