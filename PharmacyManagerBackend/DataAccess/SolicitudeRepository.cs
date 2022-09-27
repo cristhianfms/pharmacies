@@ -14,10 +14,5 @@ namespace DataAccess
         public SolicitudeRepository(DbContext dbContext) : base(dbContext)
         {
         }
-
-        public void Update(int solicitudId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -15,7 +15,7 @@ public class PharmacyManagerContext : DbContext
     public DbSet<Drug> DrugDB { get; set; }
     public DbSet<DrugInfo> DrugInfoDB { get; set; }
     public DbSet<Permission> PermissionDB { get; set; }
-
+    public DbSet<Solicitude> SolicitudeDB { get; set; }
     public PharmacyManagerContext() : base() { }
     public PharmacyManagerContext(DbContextOptions options) : base(options) { }
 
@@ -35,6 +35,7 @@ public class PharmacyManagerContext : DbContext
         modelBuilder.Entity<Pharmacy>()
             .HasOne(p => p.Owner)
             .WithOne(u => u.OwnerPharmacy);
+            
 
         // Data seed
         // Roles

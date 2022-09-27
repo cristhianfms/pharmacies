@@ -444,7 +444,7 @@ namespace BusinessLogic.Test
 
             _solicitudeRepositoryMock.Setup(s => s.GetFirst(It.IsAny<Func<Solicitude, bool>>())).Returns(solicitudeRepository);
             _drugLogicMock.Setup(d => d.AddStock(solicitudeItems));
-            _solicitudeRepositoryMock.Setup(s => s.Update(solicitudeId));
+            _solicitudeRepositoryMock.Setup(s => s.Update(solicitudeRepository));
             Solicitude solicitudeReturned = _solicitudeLogic.Update(solicitudeId, solicitudeToUpdate);
 
             Assert.AreEqual(solicitudeRepository, solicitudeReturned);
@@ -504,7 +504,7 @@ namespace BusinessLogic.Test
             };
 
             _solicitudeRepositoryMock.Setup(s => s.GetFirst(It.IsAny<Func<Solicitude, bool>>())).Returns(solicitudeRepository);
-            _solicitudeRepositoryMock.Setup(s => s.Update(solicitudeId));
+            _solicitudeRepositoryMock.Setup(s => s.Update(solicitudeRepository));
             Solicitude solicitudeReturned = _solicitudeLogic.Update(solicitudeId, solicitudeToUpdate);
 
             Assert.AreEqual(solicitudeRepository, solicitudeReturned);
