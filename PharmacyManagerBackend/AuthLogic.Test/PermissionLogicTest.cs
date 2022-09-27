@@ -4,7 +4,7 @@ using Domain.AuthDomain;
 using IDataAccess;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Assert = NUnit.Framework.Assert;
+
 
 namespace BusinessLogic.Test;
 

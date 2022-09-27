@@ -1,3 +1,4 @@
+
 using Domain;
 using Domain.AuthDomain;
 using Exceptions;
@@ -7,13 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using WebApi.Filters;
-using Assert = NUnit.Framework.Assert;
 
-namespace WebApi.Test.Filters;
+namespace WebApi.Filter.Test;
 
+[TestClass]
 public class AuthorizationAttributeFilterTest
 {
     private AuthorizationAttributeFilter _authFilter;
@@ -44,18 +43,19 @@ public class AuthorizationAttributeFilterTest
             User = user
         };
         var httpContextMock = new Mock<HttpContext>();
-        httpContextMock.Setup(a => a.Request.Headers["Authorization"]).Returns("token");
+        httpContextMock.Setup(a => a.Request.Headers["Authorization"]).Returns(token.ToString());
         ActionContext actionContext =
             new ActionContext(httpContextMock.Object, new RouteData(), new ActionDescriptor());
         AuthorizationFilterContext authFilterContext =
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
         _sessionLogic.Setup(m => m.Get(token)).Returns(sessionRepository);
-        _permissionLogic.Setup(m => m.HasPermission(It.IsAny<string>(), "Admin")).Returns(true);
+        _permissionLogic.Setup(m => m.HasPermission(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
 
         _authFilter.OnAuthorization(authFilterContext);
 
         Assert.IsNull(authFilterContext.Result);
         _sessionLogic.VerifyAll();
+        _permissionLogic.VerifyAll();
     }
 
     [TestMethod]
@@ -74,7 +74,7 @@ public class AuthorizationAttributeFilterTest
             User = user
         };
         var httpContextMock = new Mock<HttpContext>();
-        httpContextMock.Setup(a => a.Request.Headers["Authorization"]).Returns("token");
+        httpContextMock.Setup(a => a.Request.Headers["Authorization"]).Returns(token.ToString());
         ActionContext actionContext =
             new ActionContext(httpContextMock.Object, new RouteData(), new ActionDescriptor());
         AuthorizationFilterContext authFilterContext =
@@ -103,13 +103,13 @@ public class AuthorizationAttributeFilterTest
             User = user
         };
         var httpContextMock = new Mock<HttpContext>();
-        httpContextMock.Setup(a => a.Request.Headers["Authorization"]).Returns("token");
+        httpContextMock.Setup(a => a.Request.Headers["Authorization"]).Returns(token.ToString());
         ActionContext actionContext =
             new ActionContext(httpContextMock.Object, new RouteData(), new ActionDescriptor());
         AuthorizationFilterContext authFilterContext =
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
         _sessionLogic.Setup(m => m.Get(token)).Returns(sessionRepository);
-        _permissionLogic.Setup(m => m.HasPermission(It.IsAny<string>(), "Admin")).Returns(false);
+        _permissionLogic.Setup(m => m.HasPermission(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
 
         _authFilter.OnAuthorization(authFilterContext);
 

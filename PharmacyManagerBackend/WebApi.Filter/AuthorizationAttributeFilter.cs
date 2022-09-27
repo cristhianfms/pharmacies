@@ -5,7 +5,7 @@ using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace WebApi.Filters;
+namespace WebApi.Filter;
 
 public class AuthorizationAttributeFilter : Attribute, IAuthorizationFilter
 {

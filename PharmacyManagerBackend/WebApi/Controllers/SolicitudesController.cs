@@ -33,7 +33,7 @@ public class SolicitudesController : ControllerBase
     [HttpGet]
     public IActionResult GetSolicitudes([FromQuery] QuerySolicitudeDto querySolicitudeDto)
     {
-        List<Solicitude> solicitudes = _solicitudeLogic.GetSolicitudes(querySolicitudeDto);
+        List<Solicitude> solicitudes = _solicitudeLogic.GetSolicitudes(querySolicitudeDto).ToList();
         List<SolicitudeResponseModel> solicitudeModels = ModelsMapper.ToModelList(solicitudes);
 
         return Ok(solicitudeModels);
