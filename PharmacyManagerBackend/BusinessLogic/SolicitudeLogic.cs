@@ -96,7 +96,7 @@ namespace BusinessLogic
                 }
 
                 solicitudeToUpdate.State = newSolicitude.State;
-                _solicitudeRepository.Update(solicitudeToUpdate.Id);
+                _solicitudeRepository.Update(solicitudeToUpdate);
             }
 
             return solicitudeToUpdate;
