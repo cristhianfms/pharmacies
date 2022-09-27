@@ -227,7 +227,15 @@ namespace AuthLogic.Test;
         {
             UserName = "Cris01",
             Code = invitationCode,
-            Email = "Juan@email.com",
+            Email = "cris@gmail.com",
+            Address = "Road A 1234",
+            RoleName = "Empployee",
+            PharmacyName = "PharmacyName"
+        };
+        InvitationDto invitationExpected = new InvitationDto()
+        {
+            UserName = "Cris01",
+            Email = "cris@gmail.com",
             Address = "Road A 1234",
             RoleName = "Empployee",
             PharmacyName = "PharmacyName"
@@ -241,7 +249,7 @@ namespace AuthLogic.Test;
                 Name = "Employee"
             },
             Email = "cris@gmail.com",
-            Address = "calle a 123",
+            Address = "Road A 1234",
             Password = "pass.1234",
             RegistrationDate = DateTime.Now
         };
@@ -253,7 +261,11 @@ namespace AuthLogic.Test;
             {
                 Name = "Employee"
             },
-            Code = invitationToUpdate.Code
+            Code = invitationToUpdate.Code,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "PharmacyName"
+            }
         };
         _userLogic.Setup(m => m.Create(It.IsAny<User>())).Returns(userRepository);
         _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
@@ -261,7 +273,7 @@ namespace AuthLogic.Test;
         
         InvitationDto invitationDtoUpdated = _invitationLogic.Update(invitationCode, invitationToUpdate);
 
-        Assert.AreEqual(invitationToUpdate, invitationDtoUpdated);
+        Assert.AreEqual(invitationExpected, invitationDtoUpdated);
         _userLogic.VerifyAll();
         _invitationRepository.VerifyAll();
     }
