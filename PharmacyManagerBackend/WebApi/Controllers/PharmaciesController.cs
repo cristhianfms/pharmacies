@@ -18,7 +18,7 @@ public class PharmaciesController : ControllerBase
     }
 
     [HttpPost]
-    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
+
     public IActionResult Create([FromBody] PharmacyModel pharmacyModel)
     {
         Pharmacy pharmacy = ModelsMapper.ToEntity(pharmacyModel);
