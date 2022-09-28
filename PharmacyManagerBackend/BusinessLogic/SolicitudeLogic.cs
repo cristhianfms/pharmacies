@@ -35,6 +35,9 @@ namespace BusinessLogic
 
         public virtual Solicitude Create(Solicitude solicitude)
         {
+            solicitude.Employee = _context.CurrentUser;
+            solicitude.PharmacyId = _context.CurrentUser.Pharmacy.Id;
+            solicitude.Pharmacy = _context.CurrentUser.Pharmacy;
            Solicitude createdSolicitude = _solicitudeRepository.Create(solicitude);
            
             return createdSolicitude;
@@ -43,7 +46,7 @@ namespace BusinessLogic
         public IEnumerable<Solicitude> GetSolicitudes(QuerySolicitudeDto querySolicitudeDto)
         {
             List<Solicitude> solicitudesToReturn = new List<Solicitude>();
-            if (_context.CurrentUser.Role.Name.Equals("Employee"))
+            if (_context.CurrentUser.Role.Name.Equals(Role.EMPLOYEE))
             {
                solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll(
                      s => s.Employee.Id == _context.CurrentUser.Id);
@@ -63,10 +66,10 @@ namespace BusinessLogic
                     solicitudesToReturn.FindAll(s => s.Date >= dateFrom && s.Date <=dateTo);
                 } 
             } 
-            else if (_context.CurrentUser.Role.Name.Equals("Owner"))
+            else if (_context.CurrentUser.Role.Name.Equals(Role.OWNER))
             {
                solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll
-                   (s => s.Pharmacy.Id == _context.CurrentUser.Pharmacy.Id);
+                   (s => s.PharmacyId == _context.CurrentUser.OwnerPharmacyId);
             }
 
             return solicitudesToReturn;
