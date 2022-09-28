@@ -12,4 +12,15 @@ public class InvitationDto
     public string Email { get; set; }
     public string Address { get; set; }
     public string Password { get; set; }
+    
+    protected bool Equals(InvitationDto other)
+    {
+        return UserName == other.UserName && 
+               Code == other.Code && 
+               RoleName == other.RoleName && 
+               PharmacyName == other.PharmacyName && 
+               Email == other.Email && 
+               Address == other.Address && 
+               Password == other.Password;
+    }
 }

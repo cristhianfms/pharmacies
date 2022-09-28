@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20220927142328_DrugMigration")]
-    partial class DrugMigration
+    [Migration("20220927234754_InvitationPermisionSeed")]
+    partial class InvitationPermisionSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,29 +39,35 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PermissionDB");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Endpoint = "POST/api/invitations"
+                        });
                 });
 
             modelBuilder.Entity("Domain.AuthDomain.PermissionRole", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("PermissionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("RoleId", "PermissionId");
 
                     b.HasIndex("PermissionId");
 
-                    b.HasIndex("RoleId");
-
                     b.ToTable("PermissionRole");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 1
+                        });
                 });
 
             modelBuilder.Entity("Domain.AuthDomain.Session", b =>
@@ -238,6 +244,60 @@ namespace DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Solicitude", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PharmacyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PharmacyId");
+
+                    b.ToTable("SolicitudeDB");
+                });
+
+            modelBuilder.Entity("Domain.SolicitudeItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("DrugCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DrugQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SolicitudeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SolicitudeId");
+
+                    b.ToTable("SolicitudeItem");
+                });
+
             modelBuilder.Entity("Domain.User", b =>
                 {
                     b.Property<int>("Id")
@@ -368,6 +428,32 @@ namespace DataAccess.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("Domain.Solicitude", b =>
+                {
+                    b.HasOne("Domain.User", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Pharmacy", "Pharmacy")
+                        .WithMany()
+                        .HasForeignKey("PharmacyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Pharmacy");
+                });
+
+            modelBuilder.Entity("Domain.SolicitudeItem", b =>
+                {
+                    b.HasOne("Domain.Solicitude", null)
+                        .WithMany("Items")
+                        .HasForeignKey("SolicitudeId");
+                });
+
             modelBuilder.Entity("Domain.User", b =>
                 {
                     b.HasOne("Domain.Pharmacy", "EmployeePharmacy")
@@ -415,6 +501,11 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Role", b =>
                 {
                     b.Navigation("PermissionRoles");
+                });
+
+            modelBuilder.Entity("Domain.Solicitude", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

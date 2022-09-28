@@ -37,29 +37,35 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PermissionDB");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Endpoint = "POST/api/invitations"
+                        });
                 });
 
             modelBuilder.Entity("Domain.AuthDomain.PermissionRole", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("PermissionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("RoleId", "PermissionId");
 
                     b.HasIndex("PermissionId");
 
-                    b.HasIndex("RoleId");
-
                     b.ToTable("PermissionRole");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 1
+                        });
                 });
 
             modelBuilder.Entity("Domain.AuthDomain.Session", b =>

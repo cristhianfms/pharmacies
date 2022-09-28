@@ -12,8 +12,8 @@ public class PharmacyManagerContext : DbContext
     public DbSet<Session> SessionDB { get; set; }
     public DbSet<Invitation> InvitationDB { get; set; }
     public DbSet<Pharmacy> PharmacyDB { get; set; }
-    public DbSet<Drug> DrugDB { get; set; }
     public DbSet<DrugInfo> DrugInfoDB { get; set; }
+    public DbSet<Drug> DrugDB { get; set; }
     public DbSet<Permission> PermissionDB { get; set; }
     public DbSet<Solicitude> SolicitudeDB { get; set; }
     public PharmacyManagerContext() : base() { }
@@ -21,6 +21,8 @@ public class PharmacyManagerContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<PermissionRole>()
+            .HasKey(p => new { p.RoleId, p.PermissionId });
         modelBuilder.Entity<PermissionRole>()
             .HasOne(bc => bc.Role)
             .WithMany(b => b.PermissionRoles)
@@ -35,7 +37,6 @@ public class PharmacyManagerContext : DbContext
         modelBuilder.Entity<Pharmacy>()
             .HasOne(p => p.Owner)
             .WithOne(u => u.OwnerPharmacy);
-            
 
         // Data seed
         // Roles
@@ -47,6 +48,16 @@ public class PharmacyManagerContext : DbContext
             owner,
             employee
         );
+        
+        // Permissions
+        Permission putInvitation = new Permission() { Id = 1, Endpoint = "POST/api/invitations" };
+        modelBuilder.Entity<Permission>().HasData(
+            putInvitation);
+        
+        // Permission - Role
+        modelBuilder.Entity<PermissionRole>().HasData(
+            new PermissionRole(){ PermissionId = putInvitation.Id, RoleId = admin.Id});
+        
 
         // Default admin
         modelBuilder.Entity<User>().HasData(
