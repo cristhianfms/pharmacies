@@ -65,7 +65,7 @@ public class PermissionRepositoryTest
             context.SaveChanges();
         }
 
-        Permission permissionReturned = this._premissionRepository.GetFirst(u => true);
+        Permission permissionReturned = this._premissionRepository.GetFirst(u => u.Endpoint == endpoint);
 
         Assert.AreEqual(premissionRepository.Endpoint, permissionReturned.Endpoint);
         Assert.AreEqual(premissionRepository.PermissionRoles.ToList()[0].Role.Name, 
@@ -76,6 +76,6 @@ public class PermissionRepositoryTest
     [ExpectedException(typeof(ResourceNotFoundException))]
     public void GetFirstShoudlThrowExcptionWhenUserNotExists()
     {
-        this._premissionRepository.GetFirst(u => true);
+        this._premissionRepository.GetFirst(u => u.Endpoint == "NotExistantEndpoint");
     }
 }

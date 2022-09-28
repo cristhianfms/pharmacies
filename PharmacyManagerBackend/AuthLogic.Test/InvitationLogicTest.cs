@@ -229,7 +229,7 @@ namespace AuthLogic.Test;
             Code = invitationCode,
             Email = "cris@gmail.com",
             Address = "Road A 1234",
-            RoleName = "Empployee",
+            RoleName = "Employee",
             PharmacyName = "PharmacyName"
         };
         InvitationDto invitationExpected = new InvitationDto()
@@ -237,7 +237,7 @@ namespace AuthLogic.Test;
             UserName = "Cris01",
             Email = "cris@gmail.com",
             Address = "Road A 1234",
-            RoleName = "Empployee",
+            RoleName = "Employee",
             PharmacyName = "PharmacyName"
         };
         User userRepository = new User()
