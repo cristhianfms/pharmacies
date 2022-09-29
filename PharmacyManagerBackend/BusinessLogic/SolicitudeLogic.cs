@@ -35,9 +35,13 @@ namespace BusinessLogic
 
         public virtual Solicitude Create(Solicitude solicitude)
         {
-            solicitude.Employee = _context.CurrentUser;
             solicitude.PharmacyId = _context.CurrentUser.Pharmacy.Id;
-            solicitude.Pharmacy = _context.CurrentUser.Pharmacy;
+            solicitude.Employee = _context.CurrentUser;
+
+            foreach( SolicitudeItem itemToCheck in solicitude.Items)
+            {
+                _pharmacyLogic.ExistsDrug(itemToCheck.DrugCode, solicitude.PharmacyId);
+            }
            Solicitude createdSolicitude = _solicitudeRepository.Create(solicitude);
            
             return createdSolicitude;
