@@ -58,7 +58,8 @@ namespace BusinessLogic
 
                 if (querySolicitudeDto.State != null)
                 {
-                    solicitudesToReturn = solicitudesToReturn.Where(s => s.State.Equals(querySolicitudeDto.State));
+                    State queryState = Enum.Parse<State>(querySolicitudeDto.State, true);
+                    solicitudesToReturn = solicitudesToReturn.Where(s => s.State.Equals(queryState));
                 }
                 if (querySolicitudeDto.DrugCode != null)
                 {
