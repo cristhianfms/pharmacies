@@ -58,13 +58,11 @@ namespace BusinessLogic
 
                 if (querySolicitudeDto.State != null)
                 {
-                    //solicitudesToReturn.FindAll(s => s.State.Equals(querySolicitudeDto.State));
-                solicitudesToReturn.Where(s => s.State.Equals(querySolicitudeDto.State));
+                    solicitudesToReturn = solicitudesToReturn.Where(s => s.State.Equals(querySolicitudeDto.State));
                 }
                 if (querySolicitudeDto.DrugCode != null)
                 {
-                    // solicitudesToReturn.FindAll(s => s.Items.Any(x => x.DrugCode == querySolicitudeDto.DrugCode));
-                    solicitudesToReturn.Where(s => s.Items.Any(x => x.DrugCode == querySolicitudeDto.DrugCode));
+                    solicitudesToReturn = solicitudesToReturn.Where(s => s.Items.Any(x => x.DrugCode == querySolicitudeDto.DrugCode));
                 }
                 if(querySolicitudeDto.DateFrom != null && querySolicitudeDto.DateTo != null)
                 {
@@ -72,7 +70,7 @@ namespace BusinessLogic
                     DateTime dateTo = toDateTime(querySolicitudeDto.DateTo);
                     validateDates(dateFrom, dateTo);
                     // solicitudesToReturn.FindAll(s => s.Date >= dateFrom && s.Date <=dateTo);
-                    solicitudesToReturn.Where(s => s.Date >= dateFrom && s.Date <= dateTo);
+                    solicitudesToReturn = solicitudesToReturn.Where(s => s.Date >= dateFrom && s.Date <= dateTo);
                 } 
             } 
             else if (_context.CurrentUser.Role.Name.Equals(Role.OWNER))
