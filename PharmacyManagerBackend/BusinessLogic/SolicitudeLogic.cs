@@ -49,30 +49,34 @@ namespace BusinessLogic
 
         public IEnumerable<Solicitude> GetSolicitudes(QuerySolicitudeDto querySolicitudeDto)
         {
-            List<Solicitude> solicitudesToReturn = new List<Solicitude>();
+            IEnumerable<Solicitude> solicitudesToReturn = new List<Solicitude>();
             if (_context.CurrentUser.Role.Name.Equals(Role.EMPLOYEE))
             {
-               solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll(
+               solicitudesToReturn = _solicitudeRepository.GetAll(
                      s => s.Employee.Id == _context.CurrentUser.Id);
+
+
                 if (querySolicitudeDto.State != null)
                 {
-                    solicitudesToReturn.FindAll(s => s.State.Equals(querySolicitudeDto.State));
+                    State queryState = Enum.Parse<State>(querySolicitudeDto.State, true);
+                    solicitudesToReturn = solicitudesToReturn.Where(s => s.State.Equals(queryState));
                 }
                 if (querySolicitudeDto.DrugCode != null)
                 {
-                    solicitudesToReturn.FindAll(s => s.Items.Any(x => x.DrugCode == querySolicitudeDto.DrugCode));
+                    solicitudesToReturn = solicitudesToReturn.Where(s => s.Items.Any(x => x.DrugCode == querySolicitudeDto.DrugCode));
                 }
                 if(querySolicitudeDto.DateFrom != null && querySolicitudeDto.DateTo != null)
                 {
                     DateTime dateFrom = toDateTime(querySolicitudeDto.DateFrom);
                     DateTime dateTo = toDateTime(querySolicitudeDto.DateTo);
                     validateDates(dateFrom, dateTo);
-                    solicitudesToReturn.FindAll(s => s.Date >= dateFrom && s.Date <=dateTo);
+                    // solicitudesToReturn.FindAll(s => s.Date >= dateFrom && s.Date <=dateTo);
+                    solicitudesToReturn = solicitudesToReturn.Where(s => s.Date >= dateFrom && s.Date <= dateTo);
                 } 
             } 
             else if (_context.CurrentUser.Role.Name.Equals(Role.OWNER))
             {
-               solicitudesToReturn = (List<Solicitude>)_solicitudeRepository.GetAll
+               solicitudesToReturn = _solicitudeRepository.GetAll
                    (s => s.PharmacyId == _context.CurrentUser.OwnerPharmacyId);
             }
 
