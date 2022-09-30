@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20220927184146_DrugMigration2")]
-    partial class DrugMigration2
+    [Migration("20220928121652_DrugMigration")]
+    partial class DrugMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -114,8 +114,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DrugInfoId")
-                        .IsUnique();
+                    b.HasIndex("DrugInfoId");
 
                     b.HasIndex("PharmacyId");
 
@@ -338,8 +337,8 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Drug", b =>
                 {
                     b.HasOne("Domain.DrugInfo", "DrugInfo")
-                        .WithOne("Drug")
-                        .HasForeignKey("Domain.Drug", "DrugInfoId")
+                        .WithMany()
+                        .HasForeignKey("DrugInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -401,12 +400,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.AuthDomain.Permission", b =>
                 {
                     b.Navigation("PermissionRoles");
-                });
-
-            modelBuilder.Entity("Domain.DrugInfo", b =>
-                {
-                    b.Navigation("Drug")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Pharmacy", b =>

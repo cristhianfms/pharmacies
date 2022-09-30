@@ -13,6 +13,5 @@ namespace Domain
         public float QuantityPerPresentation { get; set; }
         public string UnitOfMeasurement { get; set; }
         
-        public Drug Drug { get; set; }
     }
 }

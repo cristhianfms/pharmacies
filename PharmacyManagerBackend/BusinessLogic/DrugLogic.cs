@@ -26,17 +26,10 @@ namespace BusinessLogic
 
         public Drug Get(int drugId)
         {
-            try
-
-            {
-                Console.WriteLine(_drugRepository.GetAll().Count());
-                Drug myDrug = _drugRepository.GetFirst(d => d.Id == drugId);
-                return myDrug;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+            Drug drug = FindDrug(drugId);
+            if(drug != null)
+                return drug;
+            return new Drug();
 
         }
 
