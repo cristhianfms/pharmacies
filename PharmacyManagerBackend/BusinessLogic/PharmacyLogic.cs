@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain;
+using Exceptions;
 using IBusinessLogic;
 using IDataAccess;
 
@@ -24,10 +25,11 @@ public class PharmacyLogic : IPharmacyLogic
         return this._pharmacyRepository.GetFirst(f => pharmacyName.Equals(pharmacyName));
     }
 
-    public virtual bool ExistsDrug(string drugCode, int pharmacyId)
+    public virtual void ExistsDrug(string drugCode, int pharmacyId)
     {
-        Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Id == pharmacyId);
-        return  pharmacy.Drugs.Exists(d => d.DrugCode == drugCode);
+        Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Id == pharmacyId && p.Drugs.Exists(d=>d.DrugCode == drugCode));
+
+
     }
 
 }

@@ -62,7 +62,7 @@ public class SolicitudesControllerTest
             State = State.PENDING,
             Date = DateTime.Now,
             Employee = _userForTest,
-            Pharmacy = _userForTest.Pharmacy,
+            PharmacyId = _userForTest.Pharmacy.Id,
             Items = solicitudeItems3and4
         };
     }
@@ -89,7 +89,7 @@ public class SolicitudesControllerTest
             State = State.PENDING,
             Date = DateTime.Now,
             Employee = _userForTest,
-            Pharmacy = _userForTest.Pharmacy,
+            PharmacyId = _userForTest.Pharmacy.Id,
             Items = solicitudeItems
         };
 
@@ -150,7 +150,7 @@ public class SolicitudesControllerTest
             State = State.PENDING,
             Date = DateTime.Now,
             Employee = _userForTest,
-            Pharmacy = _userForTest.Pharmacy,
+            PharmacyId = _userForTest.Pharmacy.Id,
             Items = solicitudeItems1and2
 
         };

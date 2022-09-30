@@ -3,6 +3,7 @@ using Domain.Dtos;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using WebApi.Filter;
 using WebApi.Models;
 using WebApi.Utils;
 
@@ -20,6 +21,7 @@ public class SolicitudesController : ControllerBase
 
 
     [HttpPost]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult Create([FromBody] SolicitudeRequestModel solicitudeRequestModel)
     {
         Solicitude solicitude = ModelsMapper.ToEntity(solicitudeRequestModel);
@@ -31,6 +33,7 @@ public class SolicitudesController : ControllerBase
 
 
     [HttpGet]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult GetSolicitudes([FromQuery] QuerySolicitudeDto querySolicitudeDto)
     {
         List<Solicitude> solicitudes = _solicitudeLogic.GetSolicitudes(querySolicitudeDto).ToList();
@@ -40,6 +43,7 @@ public class SolicitudesController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult Update(int id, [FromBody] SolicitudePutModel solicitudePutModel)
     {
         Solicitude solicitudeToUpdate = ModelsMapper.ToEntity(solicitudePutModel);

@@ -11,6 +11,7 @@ public class Solicitude
     public State State { get; set; }
     public DateTime Date { get; set; }
     public User Employee { get; set; }
+    public int PharmacyId { get; set; }
     public Pharmacy Pharmacy { get; set; }
     public List<SolicitudeItem> Items { get; set; }
     public Solicitude()
@@ -25,7 +26,7 @@ public class Solicitude
                 solicitude.State == State &&
                 solicitude.Date == Date &&
                 solicitude.Employee.UserName == Employee.UserName &&
-                solicitude.Pharmacy.Id == Pharmacy.Id &&
+                solicitude.PharmacyId == PharmacyId &&
                 solicitude.Items.Equals(Items);
     }
     public override string ToString()

@@ -49,6 +49,7 @@ namespace BusinessLogic.Test
                     Name = "Employee"
                 }
             };
+            _solicitudeLogic.SetContext(_userEmployeeForTest);
             SolicitudeItem solicitudeItem3 = new SolicitudeItem()
             {
                 DrugQuantity = 20,
@@ -71,7 +72,7 @@ namespace BusinessLogic.Test
                 State = State.PENDING,
                 Date = DateTime.Now,
                 Employee = _userEmployeeForTest,
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                PharmacyId = _userEmployeeForTest.Pharmacy.Id,
                 Items = solicitudeItems3and4
             };
 
@@ -95,7 +96,7 @@ namespace BusinessLogic.Test
                 State = State.PENDING,
                 Date = DateTime.Now,
                 Employee = _userEmployeeForTest,
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                PharmacyId = _userEmployeeForTest.Pharmacy.Id,
                 Items = solicitudeItems,
             };
             Solicitude solicitudeToCreate = new Solicitude()
@@ -103,7 +104,7 @@ namespace BusinessLogic.Test
                 State = State.PENDING,
                 Date = DateTime.Now,
                 Employee = _userEmployeeForTest,
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                PharmacyId = _userEmployeeForTest.Pharmacy.Id,
                 Items = solicitudeItems,
             };
 
@@ -119,7 +120,7 @@ namespace BusinessLogic.Test
             Assert.AreEqual(solicitudeRepository.Date, createdSolicitude.Date);
             Assert.AreEqual(solicitudeRepository.Items, createdSolicitude.Items);
             Assert.AreEqual(solicitudeRepository.Employee.UserName, createdSolicitude.Employee.UserName);
-            Assert.AreEqual(solicitudeRepository.Pharmacy, createdSolicitude.Pharmacy);
+            Assert.AreEqual(solicitudeRepository.PharmacyId, createdSolicitude.PharmacyId);
             CollectionAssert.AreEqual(solicitudeRepository.Items, createdSolicitude.Items);
             _solicitudeRepositoryMock.VerifyAll();
             
@@ -135,7 +136,7 @@ namespace BusinessLogic.Test
                 State = State.PENDING,
                 Date = DateTime.Now,
                 Employee = _userEmployeeForTest,
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                PharmacyId = _userEmployeeForTest.Pharmacy.Id,
             };
 
             _solicitudeRepositoryMock.Setup(s => s.Create(solicitudeToCreate)).Throws(new ValidationException(""));
@@ -162,10 +163,10 @@ namespace BusinessLogic.Test
                State = State.PENDING,
                Date = DateTime.Now,
                Employee = _userEmployeeForTest,
-               Pharmacy = _userEmployeeForTest.Pharmacy,
+               PharmacyId = _userEmployeeForTest.Pharmacy.Id,
                Items = solicitudeItems
            };
-            _pharmacyLogicMock.Setup(s => s.ExistsDrug(solicitudeItem.DrugCode, solicitudeToCreate.Pharmacy.Id)).Throws(new ValidationException(""));
+            _pharmacyLogicMock.Setup(s => s.ExistsDrug(solicitudeItem.DrugCode, solicitudeToCreate.PharmacyId)).Throws(new ValidationException(""));
             _solicitudeRepositoryMock.Setup(s => s.Create(solicitudeToCreate)).Throws(new ValidationException(""));
            Solicitude createdSolicitude = _solicitudeLogic.Create(solicitudeToCreate);
        }
@@ -195,7 +196,7 @@ namespace BusinessLogic.Test
                 State = State.PENDING,
                 Date = DateTime.Now,
                 Employee = _userEmployeeForTest,
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                PharmacyId = _userEmployeeForTest.Pharmacy.Id,
                 Items = solicitudeItems
             };
 
@@ -253,7 +254,7 @@ namespace BusinessLogic.Test
                 State = State.PENDING,
                 Date = DateTime.Now,
                 Employee = _userEmployeeForTest,
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                PharmacyId = _userEmployeeForTest.Pharmacy.Id,
                 Items = solicitudeItems
             };
 
@@ -294,7 +295,7 @@ namespace BusinessLogic.Test
                 State = State.PENDING,
                 Date = DateTime.Now,
                 Employee = _userEmployeeForTest,
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                PharmacyId = _userEmployeeForTest.Pharmacy.Id,
                 Items = solicitudeItems
             };
 
@@ -336,7 +337,7 @@ namespace BusinessLogic.Test
                 State = State.PENDING,
                 Date = DateTime.Now,
                 Employee = _userEmployeeForTest,
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                PharmacyId = _userEmployeeForTest.Pharmacy.Id,
                 Items = solicitudeItems
             };
 
@@ -378,7 +379,7 @@ namespace BusinessLogic.Test
                 State = State.PENDING,
                 Date = DateTime.Now,
                 Employee = _userEmployeeForTest,
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                PharmacyId = _userEmployeeForTest.Pharmacy.Id,
                 Items = solicitudeItems
             };
 
@@ -429,7 +430,7 @@ namespace BusinessLogic.Test
                 State = State.PENDING,
                 Date = DateTime.Now,
                 Employee = _userEmployeeForTest,
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                PharmacyId = _userEmployeeForTest.Pharmacy.Id,
                 Items = solicitudeItems
             };
 
@@ -490,7 +491,7 @@ namespace BusinessLogic.Test
                 State = State.PENDING,
                 Date = DateTime.Now,
                 Employee = _userEmployeeForTest,
-                Pharmacy = _userEmployeeForTest.Pharmacy,
+                PharmacyId = _userEmployeeForTest.Pharmacy.Id,
                 Items = solicitudeItems
             };
 
