@@ -131,7 +131,7 @@ public static class ModelsMapper
             DrugCode = drugModel.DrugCode,
             NeedsPrescription = drugModel.NeedsPrescription,
             Price = drugModel.Price,
-            Stock = drugModel.Stock,
+            Stock = 0,
             DrugInfo = drugInfo
         };
     }

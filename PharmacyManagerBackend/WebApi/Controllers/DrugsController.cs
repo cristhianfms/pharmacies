@@ -9,12 +9,12 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class DrugController : ControllerBase
+    public class DrugsController : ControllerBase
     {
         private IDrugLogic _drugLogic;
         private IPharmacyLogic _pharmacyLogic;
 
-        public DrugController(IDrugLogic drugLogic, IPharmacyLogic pharmacyLogic)
+        public DrugsController(IDrugLogic drugLogic, IPharmacyLogic pharmacyLogic)
         {
             this._drugLogic = drugLogic;
             _pharmacyLogic = pharmacyLogic;
