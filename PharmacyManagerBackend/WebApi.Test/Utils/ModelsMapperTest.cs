@@ -215,4 +215,68 @@ public class ModelsMapperTest
         Assert.AreEqual(solicitudesToConvert[0].Employee.UserName, solicitudeResponseModels[0].EmployeeUserName);
 
     }
+
+    [TestMethod]
+    public void DrugToModelOK()
+    {
+        DrugInfo drugInfo = new DrugInfo
+        {
+            Id = 1,
+            Name = "Perifar Flex",
+            Symptoms = "Dolor de cabeza",
+            Presentation = "Blister",
+            QuantityPerPresentation = 8,
+            UnitOfMeasurement = "Gramos"
+        };
+
+        Drug drug = new Drug
+        {
+            Id = 1,
+            DrugCode = "2A5678BX",
+            DrugInfo = drugInfo,
+            NeedsPrescription = false,
+            Price = 25.5
+        };
+
+        DrugModel drugModel = ModelsMapper.ToModel(drug);
+
+        Assert.AreEqual(drugModel.Id, drug.Id);
+        Assert.AreEqual(drugModel.DrugCode, drug.DrugCode);
+        Assert.AreEqual(drugModel.Name, drugInfo.Name);
+        Assert.AreEqual(drugModel.Price, drug.Price);
+        Assert.AreEqual(drugModel.NeedsPrescription, drug.NeedsPrescription);
+        Assert.AreEqual(drugModel.Presentation, drugInfo.Presentation);
+        Assert.AreEqual(drugModel.QuantityPerPresentation, drugInfo.QuantityPerPresentation);
+        Assert.AreEqual(drugModel.UnitOfMeasurement, drugInfo.UnitOfMeasurement);
+        Assert.AreEqual(drugModel.Symptoms, drugInfo.Symptoms);
+    }
+
+    [TestMethod]
+    public void DrugModelToEntityOK()
+    {
+        DrugModel drugModel = new DrugModel
+        {
+            Id = 1,
+            Name = "Perifar Flex",
+            Symptoms = "Dolor de cabeza",
+            Presentation = "Blister",
+            QuantityPerPresentation = 8,
+            UnitOfMeasurement = "Gramos",        
+            DrugCode = "2A5678BX",
+            NeedsPrescription = false,
+            Price = 25.5
+        };
+
+        Drug drug = ModelsMapper.ToEntity(drugModel);
+
+        Assert.AreEqual(drugModel.Id, drug.Id);
+        Assert.AreEqual(drugModel.DrugCode, drug.DrugCode);
+        Assert.AreEqual(drugModel.Name, drug.DrugInfo.Name);
+        Assert.AreEqual(drugModel.Price, drug.Price);
+        Assert.AreEqual(drugModel.NeedsPrescription, drug.NeedsPrescription);
+        Assert.AreEqual(drugModel.Presentation, drug.DrugInfo.Presentation);
+        Assert.AreEqual(drugModel.QuantityPerPresentation, drug.DrugInfo.QuantityPerPresentation);
+        Assert.AreEqual(drugModel.UnitOfMeasurement, drug.DrugInfo.UnitOfMeasurement);
+        Assert.AreEqual(drugModel.Symptoms, drug.DrugInfo.Symptoms);
+    }
 }
