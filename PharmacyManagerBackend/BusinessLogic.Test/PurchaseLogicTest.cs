@@ -268,8 +268,7 @@ public class PurchaseLogicTest
         
         _purchaseLogic.SetContext(context);
         PurchaseReportDto purchasesReport = _purchaseLogic.GetPurchasesReport(queryPurchaseDto);
-
-        Assert.AreEqual(totalPrice, purchasesReport.TotalPrice);
+        
         Assert.AreEqual(totalPrice, purchasesReport.TotalPrice);
         CollectionAssert.AreEqual(purchasesRepository, purchasesReport.Purchases.ToList());
     }

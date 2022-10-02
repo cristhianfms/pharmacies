@@ -42,8 +42,11 @@ public class PurchaseLogic : IPurchaseLogic
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
     { 
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
-
-        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p => p.PharmacyId == pharmacyOfCurrentUser.Id);
+        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p => 
+            p.PharmacyId == pharmacyOfCurrentUser.Id &&
+            p.Date >= queryPurchaseDto.GetParsedDateFrom() &&
+            p.Date <= queryPurchaseDto.GetParsedDateTo());
+        
         double totalPrice = 0;
         foreach (var purchase in purchases)
         {
