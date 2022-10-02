@@ -38,11 +38,19 @@ namespace BusinessLogic
             solicitude.PharmacyId = _context.CurrentUser.Pharmacy.Id;
             solicitude.Employee = _context.CurrentUser;
 
-            foreach( SolicitudeItem itemToCheck in solicitude.Items)
+            try
             {
-                _pharmacyLogic.ExistsDrug(itemToCheck.DrugCode, solicitude.PharmacyId);
-            }
-           Solicitude createdSolicitude = _solicitudeRepository.Create(solicitude);
+                foreach ( SolicitudeItem itemToCheck in solicitude.Items)
+                {
+                    _pharmacyLogic.ExistsDrug(itemToCheck.DrugCode, solicitude.PharmacyId);
+                }
+        }
+            catch (NullReferenceException)
+            {
+                throw new ValidationException("Items list cannot be null");
+    }
+
+    Solicitude createdSolicitude = _solicitudeRepository.Create(solicitude);
            
             return createdSolicitude;
         }
@@ -70,7 +78,6 @@ namespace BusinessLogic
                     DateTime dateFrom = toDateTime(querySolicitudeDto.DateFrom);
                     DateTime dateTo = toDateTime(querySolicitudeDto.DateTo);
                     validateDates(dateFrom, dateTo);
-                    // solicitudesToReturn.FindAll(s => s.Date >= dateFrom && s.Date <=dateTo);
                     solicitudesToReturn = solicitudesToReturn.Where(s => s.Date >= dateFrom && s.Date <= dateTo);
                 } 
             } 

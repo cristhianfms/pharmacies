@@ -7,15 +7,15 @@ namespace DataAccess.Context;
 
 public class PharmacyManagerContext : DbContext
 {
-    public DbSet<User> UserDB { get; set; }
-    public DbSet<Role> RoleDB { get; set; }
-    public DbSet<Session> SessionDB { get; set; }
-    public DbSet<Invitation> InvitationDB { get; set; }
-    public DbSet<Pharmacy> PharmacyDB { get; set; }
-    public DbSet<DrugInfo> DrugInfoDB { get; set; }
-    public DbSet<Drug> DrugDB { get; set; }
-    public DbSet<Permission> PermissionDB { get; set; }
-    public DbSet<Solicitude> SolicitudeDB { get; set; }
+    public DbSet<User> UserSet { get; set; }
+    public DbSet<Role> RoleSet { get; set; }
+    public DbSet<Session> SessionSet { get; set; }
+    public DbSet<Invitation> InvitationSet { get; set; }
+    public DbSet<Pharmacy> PharmacySet { get; set; }
+    public DbSet<DrugInfo> DrugInfoSet { get; set; }
+    public DbSet<Drug> DrugSet { get; set; }
+    public DbSet<Permission> PermissionSet { get; set; }
+    public DbSet<Solicitude> SolicitudeSet { get; set; }
     public PharmacyManagerContext() : base() { }
     public PharmacyManagerContext(DbContextOptions options) : base(options) { }
 
@@ -73,7 +73,6 @@ public class PharmacyManagerContext : DbContext
         Permission createSolicitude = new Permission() { Id = 2, Endpoint = "POST/api/solicitudes" };
         Permission getSolicitudes = new Permission() { Id = 3, Endpoint = "GET/api/solicitudes" };
         Permission updateSolicitude = new Permission() { Id = 4, Endpoint = "PUT/api/solicitudes/.*" };
-        //TODO: getSolicitudes de owner?
 
         //Drug Permissions
         Permission createDrug = new Permission() { Id = 5, Endpoint = "POST/api/drugs" };

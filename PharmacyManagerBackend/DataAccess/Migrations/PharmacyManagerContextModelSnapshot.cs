@@ -36,7 +36,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PermissionDB");
+                    b.ToTable("PermissionSet");
 
                     b.HasData(
                         new
@@ -151,7 +151,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SessionDB");
+                    b.ToTable("SessionSet");
                 });
 
             modelBuilder.Entity("Domain.Drug", b =>
@@ -187,7 +187,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("PharmacyId");
 
-                    b.ToTable("DrugDB");
+                    b.ToTable("DrugSet");
                 });
 
             modelBuilder.Entity("Domain.DrugInfo", b =>
@@ -219,7 +219,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DrugInfoDB");
+                    b.ToTable("DrugInfoSet");
                 });
 
             modelBuilder.Entity("Domain.Invitation", b =>
@@ -250,7 +250,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("InvitationDB");
+                    b.ToTable("InvitationSet");
                 });
 
             modelBuilder.Entity("Domain.Pharmacy", b =>
@@ -270,7 +270,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PharmacyDB");
+                    b.ToTable("PharmacySet");
                 });
 
             modelBuilder.Entity("Domain.Role", b =>
@@ -287,7 +287,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleDB");
+                    b.ToTable("RoleSet");
 
                     b.HasData(
                         new
@@ -333,7 +333,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("PharmacyId");
 
-                    b.ToTable("SolicitudeDB");
+                    b.ToTable("SolicitudeSet");
                 });
 
             modelBuilder.Entity("Domain.SolicitudeItem", b =>
@@ -412,7 +412,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserDB");
+                    b.ToTable("UserSet");
 
                     b.HasData(
                         new
