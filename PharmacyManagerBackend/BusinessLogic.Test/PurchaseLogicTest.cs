@@ -13,13 +13,15 @@ public class PurchaseLogicTest
     private PurchaseLogic _purchaseLogic;
     private Mock<IPurchaseRepository> _purchaseRepository;
     private Mock<PharmacyLogic> _pharmacyLogic;
+    private Mock<DrugLogic> _drugLogic;
 
     [TestInitialize]
     public void Initialize()
     {
         this._purchaseRepository = new Mock<IPurchaseRepository>(MockBehavior.Strict);
         this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
-        this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object, this._pharmacyLogic.Object);
+        this._drugLogic = new Mock<DrugLogic>(MockBehavior.Strict, null);
+        this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object, this._pharmacyLogic.Object, this._drugLogic.Object));
     }
 
     [TestMethod]
@@ -80,12 +82,14 @@ public class PurchaseLogicTest
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
         _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseRepository);
         _pharmacyLogic.Setup(m => m.GetDrug(It.IsAny<int>(), It.IsAny<string>())).Returns(drug);
+        _drugLogic.Setup(m => m.Update(It.IsAny<int>())).Returns(drug);
 
         Purchase purchaseCreated = _purchaseLogic.Create(purchaseToCreate);
         
         Assert.AreEqual(purchaseRepository, purchaseCreated);
         _pharmacyLogic.VerifyAll();
         _purchaseRepository.VerifyAll();
+        _drugLogic.VerifyAll();
     }
 
     [TestMethod]
