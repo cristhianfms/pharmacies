@@ -39,14 +39,14 @@ public class PurchasesControllerTest
         List<PurchaseItemModel> purchaseItemModels = new List<PurchaseItemModel>(){
                 new PurchaseItemModel(){
                     DrugCode = purchaseItemDto.DrugCode,
-                    Quantity = purchaseItemDto.Quantity,
-                    PharmacyName = purchaseItemDto.PharmacyName,
+                    Quantity = purchaseItemDto.Quantity
                 }
             };
         PurchaseRequestModel purchaseRequestModel = new PurchaseRequestModel()
         {
             UserEmail = purchaseDto.UserEmail,
-            Items = purchaseItemModels
+            Items = purchaseItemModels,
+            PharmacyName = purchaseItemDto.PharmacyName
         };
 
         _purchaseLogicMock.Setup(m => m.Create(It.IsAny<PurchaseDto>())).Returns(purchaseDto);
@@ -57,10 +57,10 @@ public class PurchasesControllerTest
 
         Assert.AreEqual(purchaseDto.Id, createdPurchase.Id);
         Assert.AreEqual(purchaseDto.UserEmail, createdPurchase.UserEmail);
+        Assert.AreEqual(purchaseDto.PharmacyName, createdPurchase.PharmacyName);
         Assert.AreEqual(purchaseDto.CreatedDate, createdPurchase.CreatedDate);
         Assert.AreEqual(purchaseDto.Items[0].DrugCode, createdPurchase.Items[0].DrugCode);
         Assert.AreEqual(purchaseDto.Items[0].Quantity, createdPurchase.Items[0].Quantity);
-        Assert.AreEqual(purchaseDto.Items[0].PharmacyName, createdPurchase.Items[0].PharmacyName);
         _purchaseLogicMock.VerifyAll();
     }
 
@@ -106,7 +106,6 @@ public class PurchasesControllerTest
         Assert.AreEqual(purchaseDto.CreatedDate, responsePurchaseReports.Purchases[0].CreatedDate);
         Assert.AreEqual(purchaseDto.Items[0].DrugCode, responsePurchaseReports.Purchases[0].Items[0].DrugCode);
         Assert.AreEqual(purchaseDto.Items[0].Quantity, responsePurchaseReports.Purchases[0].Items[0].Quantity);
-        Assert.AreEqual(purchaseDto.Items[0].PharmacyName, responsePurchaseReports.Purchases[0].Items[0].PharmacyName);
         _purchaseLogicMock.VerifyAll();
     }
 

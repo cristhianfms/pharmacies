@@ -22,8 +22,7 @@ public static class PurchaseModelsMapper
         return new PurchaseItemDto
         {
             Quantity = purchaseItemModel.Quantity,
-            DrugCode = purchaseItemModel.DrugCode,
-            PharmacyName = purchaseItemModel.PharmacyName
+            DrugCode = purchaseItemModel.DrugCode
         };
     }
 

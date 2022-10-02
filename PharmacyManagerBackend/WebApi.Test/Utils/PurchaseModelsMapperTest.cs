@@ -17,22 +17,22 @@ public class PurchaseModelsMapperTest
         List<PurchaseItemModel> purchaseItemModels = new List<PurchaseItemModel>(){
                 new PurchaseItemModel(){
                     DrugCode = "A01",
-                    Quantity = 1,
-                    PharmacyName = "Pharamacy Name"
+                    Quantity = 1
                 }
             };
         PurchaseRequestModel purchaseRequestModel = new PurchaseRequestModel()
         {
             UserEmail = "email@email.com",
-            Items = purchaseItemModels
+            Items = purchaseItemModels,
+            PharmacyName = "Pharamacy Name"
         };
 
         PurchaseDto purchaseDto = PurchaseModelsMapper.ToEntity(purchaseRequestModel);
 
         Assert.AreEqual(purchaseRequestModel.UserEmail, purchaseDto.UserEmail);
+        Assert.AreEqual(purchaseRequestModel.PharmacyName, purchaseDto.PharmacyName);
         Assert.AreEqual(purchaseRequestModel.Items[0].DrugCode, purchaseDto.Items[0].DrugCode);
         Assert.AreEqual(purchaseRequestModel.Items[0].Quantity, purchaseDto.Items[0].Quantity);
-        Assert.AreEqual(purchaseRequestModel.Items[0].PharmacyName, purchaseDto.Items[0].PharmacyName);
     }
 
 
@@ -58,10 +58,10 @@ public class PurchaseModelsMapperTest
 
         Assert.AreEqual(purchaseDto.Id, purchaseResponse.Id);
         Assert.AreEqual(purchaseDto.UserEmail, purchaseResponse.UserEmail);
+        Assert.AreEqual(purchaseDto.PharmacyName, purchaseResponse.PharmacyName);
         Assert.AreEqual(purchaseDto.CreatedDate, purchaseResponse.CreatedDate);
         Assert.AreEqual(purchaseDto.Items[0].DrugCode, purchaseResponse.Items[0].DrugCode);
         Assert.AreEqual(purchaseDto.Items[0].Quantity, purchaseResponse.Items[0].Quantity);
-        Assert.AreEqual(purchaseDto.Items[0].PharmacyName, purchaseResponse.Items[0].PharmacyName);
     }
 
     [TestMethod]
@@ -98,6 +98,5 @@ public class PurchaseModelsMapperTest
         Assert.AreEqual(purchaseDto.CreatedDate, purchaseReportModel.Purchases[0].CreatedDate);
         Assert.AreEqual(purchaseDto.Items[0].DrugCode, purchaseReportModel.Purchases[0].Items[0].DrugCode);
         Assert.AreEqual(purchaseDto.Items[0].Quantity, purchaseReportModel.Purchases[0].Items[0].Quantity);
-        Assert.AreEqual(purchaseDto.Items[0].PharmacyName, purchaseReportModel.Purchases[0].Items[0].PharmacyName);
     }
 }
