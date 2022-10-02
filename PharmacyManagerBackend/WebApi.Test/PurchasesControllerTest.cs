@@ -25,8 +25,7 @@ public class PurchasesControllerTest
         PurchaseItemDto purchaseItemDto = new PurchaseItemDto
         {
             DrugCode = "A01",
-            Quantity = 1,
-            PharmacyName = "Pharamacy Name"
+            Quantity = 1
         };
         List<PurchaseItemDto> purchaseItems = new List<PurchaseItemDto>() { purchaseItemDto };
         PurchaseDto purchaseDto = new PurchaseDto()
@@ -34,7 +33,8 @@ public class PurchasesControllerTest
             Id = 1,
             UserEmail = "email@email.com",
             CreatedDate = DateTime.Now,
-            Items = purchaseItems
+            Items = purchaseItems,
+            PharmacyName = "Pharamacy Name"
         };
         List<PurchaseItemModel> purchaseItemModels = new List<PurchaseItemModel>(){
                 new PurchaseItemModel(){
@@ -45,8 +45,7 @@ public class PurchasesControllerTest
         PurchaseRequestModel purchaseRequestModel = new PurchaseRequestModel()
         {
             UserEmail = purchaseDto.UserEmail,
-            Items = purchaseItemModels,
-            PharmacyName = purchaseItemDto.PharmacyName
+            Items = purchaseItemModels
         };
 
         _purchaseLogicMock.Setup(m => m.Create(It.IsAny<PurchaseDto>())).Returns(purchaseDto);
@@ -70,8 +69,7 @@ public class PurchasesControllerTest
         PurchaseItemDto purchaseItemDto = new PurchaseItemDto
         {
             DrugCode = "A01",
-            Quantity = 1,
-            PharmacyName = "Pharamacy Name"
+            Quantity = 1
         };
         List<PurchaseItemDto> purchaseItems = new List<PurchaseItemDto>() { purchaseItemDto };
         PurchaseDto purchaseDto = new PurchaseDto()
@@ -80,7 +78,8 @@ public class PurchasesControllerTest
             UserEmail = "email@email.com",
             CreatedDate = DateTime.Now,
             Price = 100.99,
-            Items = purchaseItems
+            Items = purchaseItems,
+            PharmacyName = "Pharamacy Name"
         };
         List<PurchaseDto> purchases = new List<PurchaseDto>() { purchaseDto };
         PurchaseReportDto purchaseReportDto = new PurchaseReportDto

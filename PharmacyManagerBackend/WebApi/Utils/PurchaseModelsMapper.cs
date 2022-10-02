@@ -12,6 +12,7 @@ public static class PurchaseModelsMapper
         List<PurchaseItemDto> purchaseItems = purchaseRequestModel.Items.Select(i => ToEntity(i)).ToList();
         return new PurchaseDto
         {
+            PharmacyName = purchaseRequestModel.PharmacyName,
             UserEmail = purchaseRequestModel.UserEmail,
             Items = purchaseItems
         };
@@ -36,7 +37,8 @@ public static class PurchaseModelsMapper
             UserEmail = purchaseDto.UserEmail,
             Items = purchaseItems,
             CreatedDate = purchaseDto.CreatedDate,
-            Price = purchaseDto.Price
+            Price = purchaseDto.Price,
+            PharmacyName = purchaseDto.PharmacyName
         };
     }
 
@@ -45,8 +47,7 @@ public static class PurchaseModelsMapper
         return new PurchaseItemModel
         {
             Quantity = purchaseItem.Quantity,
-            DrugCode = purchaseItem.DrugCode,
-            PharmacyName = purchaseItem.PharmacyName
+            DrugCode = purchaseItem.DrugCode
         };
     }
 

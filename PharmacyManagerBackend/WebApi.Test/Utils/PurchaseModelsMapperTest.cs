@@ -42,8 +42,7 @@ public class PurchaseModelsMapperTest
         PurchaseItemDto purchaseItemDto = new PurchaseItemDto
         {
             DrugCode = "A01",
-            Quantity = 1,
-            PharmacyName = "Pharamacy Name"
+            Quantity = 1
         };
         List<PurchaseItemDto> purchaseItems = new List<PurchaseItemDto>() { purchaseItemDto };
         PurchaseDto purchaseDto = new PurchaseDto()
@@ -51,7 +50,8 @@ public class PurchaseModelsMapperTest
             Id = 1,
             UserEmail = "email@email.com",
             CreatedDate = DateTime.Now,
-            Items = purchaseItems
+            Items = purchaseItems,
+            PharmacyName = "Pharamacy Name"
         };
 
         PurchaseResponseModel purchaseResponse = PurchaseModelsMapper.ToModel(purchaseDto);
@@ -70,8 +70,7 @@ public class PurchaseModelsMapperTest
         PurchaseItemDto purchaseItemDto = new PurchaseItemDto
         {
             DrugCode = "A01",
-            Quantity = 1,
-            PharmacyName = "Pharamacy Name"
+            Quantity = 1
         };
         List<PurchaseItemDto> purchaseItems = new List<PurchaseItemDto>() { purchaseItemDto };
         PurchaseDto purchaseDto = new PurchaseDto()
@@ -80,7 +79,8 @@ public class PurchaseModelsMapperTest
             UserEmail = "email@email.com",
             CreatedDate = DateTime.Now,
             Price = 100.99,
-            Items = purchaseItems
+            Items = purchaseItems,
+            PharmacyName = "Pharamacy Name"
         };
         List<PurchaseDto> purchases = new List<PurchaseDto>() { purchaseDto };
         PurchaseReportDto purchaseReportDto = new PurchaseReportDto
