@@ -25,36 +25,65 @@ public class PurchaseLogicTest
     [TestMethod]
     public void CreatePurchaseOk()
     {
-        Drug drug = new Drug()
-        {
-            DrugCode = "A01"
-        };
-        Pharmacy pharmacy = new Pharmacy()
+        string drugCode = "A01";
+        string pharmacyName = "PharmacyName";
+        Pharmacy pharmacyRepository = new Pharmacy()
         {
             Id = 1,
-            Name = "PharmacyName"
+            Name = pharmacyName
         };
-        List<PurchaseItem> items = new List<PurchaseItem>()
+        Drug drug = new Drug()
         {
-            new PurchaseItem()
-            {
-                Quantity = 1,
-                DrugId = 1,
-                Drug = drug
-            }
+            DrugCode = drugCode,
+            Stock = 2
         };
-        Purchase purchase = new Purchase()
+        Purchase purchaseToCreate = new Purchase()
         {
             UserEmail = "email@email.com",
-            Items = items,
-            Pharmacy = pharmacy
+            Pharmacy = new Pharmacy()
+            {
+                Name = pharmacyName
+            },
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = new Drug()
+                    {
+                        DrugCode = drugCode
+                    }
+                }
+            }
         };
-        _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacy);
-        _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
+        Purchase purchaseRepository = new Purchase()
+        {
+            Id = 1,
+            TotalPrice = 100.50,
+            UserEmail = "email@email.com",
+            Pharmacy = new Pharmacy()
+            {
+                Name = pharmacyName
+            },
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = new Drug()
+                    {
+                        DrugCode = drugCode
+                    }
+                }
+            }
+        };
+        _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
+        _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseRepository);
         _pharmacyLogic.Setup(m => m.GetDrug(It.IsAny<int>(), It.IsAny<string>())).Returns(drug);
 
-        _purchaseLogic.Create(purchase);
-
+        Purchase purchaseCreated = _purchaseLogic.Create(purchaseToCreate);
+        
+        Assert.AreEqual(purchaseRepository, purchaseCreated);
         _pharmacyLogic.VerifyAll();
         _purchaseRepository.VerifyAll();
     }

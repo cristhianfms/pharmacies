@@ -26,6 +26,7 @@ public class PurchaseLogic : IPurchaseLogic
         foreach (var purchaseItem in purchase.Items)
         {
             Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
+            CheckStock(drug, purchaseItem.Quantity);
         }
 
         return _purchaseRepository.Create(purchase);
@@ -64,5 +65,13 @@ public class PurchaseLogic : IPurchaseLogic
         }
 
         return drug;
+    }
+    
+    private void CheckStock(Drug drug, int purchaseItemQuantity)
+    {
+        if (drug.Stock < purchaseItemQuantity)
+        {
+            throw new ValidationException($"not enough stock for drug {drug.DrugCode}");
+        }
     }
 }
