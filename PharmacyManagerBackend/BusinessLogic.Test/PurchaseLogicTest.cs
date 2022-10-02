@@ -58,6 +58,10 @@ public class PurchaseLogicTest
                 }
             }
         };
+        Drug drugRepository = new Drug()
+        {
+            DrugCode = drugCode
+        };
         Purchase purchaseRepository = new Purchase()
         {
             Id = 1,
@@ -65,23 +69,20 @@ public class PurchaseLogicTest
             UserEmail = "email@email.com",
             Pharmacy = new Pharmacy()
             {
-                Name = pharmacyName
+                Name = pharmacyName,
+                Drugs = new List<Drug>(){drugRepository}
             },
             Items = new List<PurchaseItem>()
             {
                 new PurchaseItem()
                 {
                     Quantity = 2,
-                    Drug = new Drug()
-                    {
-                        DrugCode = drugCode
-                    }
+                    Drug = drug
                 }
             }
         };
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
         _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseRepository);
-        _pharmacyLogic.Setup(m => m.GetDrug(It.IsAny<int>(), It.IsAny<string>())).Returns(drug);
         _drugLogic.Setup(m => m.Update(It.IsAny<int>(), It.IsAny<Drug>())).Returns(drug);
 
         Purchase purchaseCreated = _purchaseLogic.Create(purchaseToCreate);
@@ -127,7 +128,8 @@ public class PurchaseLogicTest
         Pharmacy pharmacy = new Pharmacy()
         {
             Id = 1,
-            Name = "PharmacyName"
+            Name = "PharmacyName",
+            Drugs = new List<Drug>()
         };
         Drug drug = new Drug()
         {
@@ -149,8 +151,6 @@ public class PurchaseLogicTest
             Pharmacy = pharmacy
         };
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacy);
-        _pharmacyLogic.Setup(m => m.GetDrug(It.IsAny<int>(), It.IsAny<string>()))
-            .Throws(new ResourceNotFoundException(""));
         _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
 
         _purchaseLogic.Create(purchase);
@@ -162,15 +162,16 @@ public class PurchaseLogicTest
     {
         string drugCode = "A01";
         string pharmacyName = "PharmacyName";
-        Pharmacy pharmacyRepository = new Pharmacy()
-        {
-            Id = 1,
-            Name = pharmacyName
-        };
         Drug drug = new Drug()
         {
             DrugCode = drugCode,
             Stock = 2
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>(){drug}
         };
         Purchase purchaseToCreate = new Purchase()
         {
@@ -193,7 +194,6 @@ public class PurchaseLogicTest
         };
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
         _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseToCreate);
-        _pharmacyLogic.Setup(m => m.GetDrug(It.IsAny<int>(), It.IsAny<string>())).Returns(drug);
 
         _purchaseLogic.Create(purchaseToCreate);
     }
