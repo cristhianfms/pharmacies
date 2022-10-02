@@ -13,18 +13,25 @@ namespace BusinessLogic.Test
         private DrugLogic _drugLogic;
         private Mock<IDrugRepository> _drugRepositoryMock;
         private Mock<IDrugInfoRepository> _drugInfoRepositoryMock;
+        private Mock<IPharmacyRepository> _pharmacyRepositoryMock;
 
         [TestInitialize]
         public void Initialize()
         {
             this._drugRepositoryMock = new Mock<IDrugRepository>(MockBehavior.Strict);
             this._drugInfoRepositoryMock = new Mock<IDrugInfoRepository>(MockBehavior.Strict);
-            this._drugLogic = new DrugLogic(_drugRepositoryMock.Object, _drugInfoRepositoryMock.Object);
+            this._pharmacyRepositoryMock = new Mock<IPharmacyRepository>(MockBehavior.Strict);
+            this._drugLogic = new DrugLogic(_drugRepositoryMock.Object, _drugInfoRepositoryMock.Object, _pharmacyRepositoryMock.Object);
         }
 
         [TestMethod]
         public void CreateNewDrugOk()
         {
+            Pharmacy pharmacy = new Pharmacy
+            {
+                Id = 1
+            };
+
             Drug drug = new Drug()
             {
                 Id = 1,
@@ -35,10 +42,11 @@ namespace BusinessLogic.Test
                 DrugInfo = new DrugInfo()
             };
 
+            _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Returns(pharmacy);
             _drugRepositoryMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
             _drugInfoRepositoryMock.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(new DrugInfo());
 
-            Drug createdDrug = _drugLogic.Create(drug);
+            Drug createdDrug = _drugLogic.Create(drug, 1);
 
             _drugRepositoryMock.VerifyAll();
         }

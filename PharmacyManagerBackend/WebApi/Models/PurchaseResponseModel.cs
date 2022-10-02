@@ -9,5 +9,6 @@ public class PurchaseResponseModel
     public string UserEmail { get; set; }
     public DateTime CreatedDate { get; set; }
     public double Price { get; set; }
+    public string PharmacyName { get; set; }
     public List<PurchaseItemModel> Items { get; set; }
 }

@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class Permissions : Migration
+    public partial class SolicitudesSeed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "DrugInfoDB",
+                name: "DrugInfoSet",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -23,11 +23,11 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DrugInfoDB", x => x.Id);
+                    table.PrimaryKey("PK_DrugInfoSet", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PermissionDB",
+                name: "PermissionSet",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -36,11 +36,11 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PermissionDB", x => x.Id);
+                    table.PrimaryKey("PK_PermissionSet", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PharmacyDB",
+                name: "PharmacySet",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -50,11 +50,11 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PharmacyDB", x => x.Id);
+                    table.PrimaryKey("PK_PharmacySet", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleDB",
+                name: "RoleSet",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -63,11 +63,11 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleDB", x => x.Id);
+                    table.PrimaryKey("PK_RoleSet", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "DrugDB",
+                name: "DrugSet",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -81,22 +81,22 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DrugDB", x => x.Id);
+                    table.PrimaryKey("PK_DrugSet", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DrugDB_DrugInfoDB_DrugInfoId",
+                        name: "FK_DrugSet_DrugInfoSet_DrugInfoId",
                         column: x => x.DrugInfoId,
-                        principalTable: "DrugInfoDB",
+                        principalTable: "DrugInfoSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DrugDB_PharmacyDB_PharmacyId",
+                        name: "FK_DrugSet_PharmacySet_PharmacyId",
                         column: x => x.PharmacyId,
-                        principalTable: "PharmacyDB",
+                        principalTable: "PharmacySet",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "InvitationDB",
+                name: "InvitationSet",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -108,17 +108,17 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InvitationDB", x => x.Id);
+                    table.PrimaryKey("PK_InvitationSet", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_InvitationDB_PharmacyDB_PharmacyId",
+                        name: "FK_InvitationSet_PharmacySet_PharmacyId",
                         column: x => x.PharmacyId,
-                        principalTable: "PharmacyDB",
+                        principalTable: "PharmacySet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_InvitationDB_RoleDB_RoleId",
+                        name: "FK_InvitationSet_RoleSet_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "RoleDB",
+                        principalTable: "RoleSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -134,21 +134,21 @@ namespace DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_PermissionRole", x => new { x.RoleId, x.PermissionId });
                     table.ForeignKey(
-                        name: "FK_PermissionRole_PermissionDB_PermissionId",
+                        name: "FK_PermissionRole_PermissionSet_PermissionId",
                         column: x => x.PermissionId,
-                        principalTable: "PermissionDB",
+                        principalTable: "PermissionSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PermissionRole_RoleDB_RoleId",
+                        name: "FK_PermissionRole_RoleSet_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "RoleDB",
+                        principalTable: "RoleSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserDB",
+                name: "UserSet",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -165,32 +165,32 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserDB", x => x.Id);
+                    table.PrimaryKey("PK_UserSet", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserDB_PharmacyDB_EmployeePharmacyId",
+                        name: "FK_UserSet_PharmacySet_EmployeePharmacyId",
                         column: x => x.EmployeePharmacyId,
-                        principalTable: "PharmacyDB",
+                        principalTable: "PharmacySet",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UserDB_PharmacyDB_OwnerPharmacyId",
+                        name: "FK_UserSet_PharmacySet_OwnerPharmacyId",
                         column: x => x.OwnerPharmacyId,
-                        principalTable: "PharmacyDB",
+                        principalTable: "PharmacySet",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UserDB_PharmacyDB_PharmacyId",
+                        name: "FK_UserSet_PharmacySet_PharmacyId",
                         column: x => x.PharmacyId,
-                        principalTable: "PharmacyDB",
+                        principalTable: "PharmacySet",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UserDB_RoleDB_RoleId",
+                        name: "FK_UserSet_RoleSet_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "RoleDB",
+                        principalTable: "RoleSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SessionDB",
+                name: "SessionSet",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -200,17 +200,17 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SessionDB", x => x.Id);
+                    table.PrimaryKey("PK_SessionSet", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SessionDB_UserDB_UserId",
+                        name: "FK_SessionSet_UserSet_UserId",
                         column: x => x.UserId,
-                        principalTable: "UserDB",
+                        principalTable: "UserSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SolicitudeDB",
+                name: "SolicitudeSet",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -222,17 +222,17 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SolicitudeDB", x => x.Id);
+                    table.PrimaryKey("PK_SolicitudeSet", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SolicitudeDB_PharmacyDB_PharmacyId",
+                        name: "FK_SolicitudeSet_PharmacySet_PharmacyId",
                         column: x => x.PharmacyId,
-                        principalTable: "PharmacyDB",
+                        principalTable: "PharmacySet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SolicitudeDB_UserDB_EmployeeId",
+                        name: "FK_SolicitudeSet_UserSet_EmployeeId",
                         column: x => x.EmployeeId,
-                        principalTable: "UserDB",
+                        principalTable: "UserSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -251,14 +251,14 @@ namespace DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_SolicitudeItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SolicitudeItem_SolicitudeDB_SolicitudeId",
+                        name: "FK_SolicitudeItem_SolicitudeSet_SolicitudeId",
                         column: x => x.SolicitudeId,
-                        principalTable: "SolicitudeDB",
+                        principalTable: "SolicitudeSet",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
-                table: "PermissionDB",
+                table: "PermissionSet",
                 columns: new[] { "Id", "Endpoint" },
                 values: new object[,]
                 {
@@ -272,7 +272,7 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "RoleDB",
+                table: "RoleSet",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
@@ -288,36 +288,37 @@ namespace DataAccess.Migrations
                 {
                     { 1, 1 },
                     { 8, 1 },
+                    { 3, 2 },
+                    { 4, 2 },
                     { 2, 3 },
                     { 3, 3 },
-                    { 4, 3 },
                     { 5, 3 },
                     { 6, 3 }
                 });
 
             migrationBuilder.InsertData(
-                table: "UserDB",
+                table: "UserSet",
                 columns: new[] { "Id", "Address", "Email", "EmployeePharmacyId", "OwnerPharmacyId", "Password", "PharmacyId", "RegistrationDate", "RoleId", "UserName" },
                 values: new object[] { 1, "", "admin@admin", null, null, "admin1234", null, new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Admin" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DrugDB_DrugInfoId",
-                table: "DrugDB",
+                name: "IX_DrugSet_DrugInfoId",
+                table: "DrugSet",
                 column: "DrugInfoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DrugDB_PharmacyId",
-                table: "DrugDB",
+                name: "IX_DrugSet_PharmacyId",
+                table: "DrugSet",
                 column: "PharmacyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InvitationDB_PharmacyId",
-                table: "InvitationDB",
+                name: "IX_InvitationSet_PharmacyId",
+                table: "InvitationSet",
                 column: "PharmacyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InvitationDB_RoleId",
-                table: "InvitationDB",
+                name: "IX_InvitationSet_RoleId",
+                table: "InvitationSet",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
@@ -326,19 +327,9 @@ namespace DataAccess.Migrations
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SessionDB_UserId",
-                table: "SessionDB",
+                name: "IX_SessionSet_UserId",
+                table: "SessionSet",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SolicitudeDB_EmployeeId",
-                table: "SolicitudeDB",
-                column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SolicitudeDB_PharmacyId",
-                table: "SolicitudeDB",
-                column: "PharmacyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SolicitudeItem_SolicitudeId",
@@ -346,62 +337,72 @@ namespace DataAccess.Migrations
                 column: "SolicitudeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserDB_EmployeePharmacyId",
-                table: "UserDB",
+                name: "IX_SolicitudeSet_EmployeeId",
+                table: "SolicitudeSet",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SolicitudeSet_PharmacyId",
+                table: "SolicitudeSet",
+                column: "PharmacyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserSet_EmployeePharmacyId",
+                table: "UserSet",
                 column: "EmployeePharmacyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserDB_OwnerPharmacyId",
-                table: "UserDB",
+                name: "IX_UserSet_OwnerPharmacyId",
+                table: "UserSet",
                 column: "OwnerPharmacyId",
                 unique: true,
                 filter: "[OwnerPharmacyId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserDB_PharmacyId",
-                table: "UserDB",
+                name: "IX_UserSet_PharmacyId",
+                table: "UserSet",
                 column: "PharmacyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserDB_RoleId",
-                table: "UserDB",
+                name: "IX_UserSet_RoleId",
+                table: "UserSet",
                 column: "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DrugDB");
+                name: "DrugSet");
 
             migrationBuilder.DropTable(
-                name: "InvitationDB");
+                name: "InvitationSet");
 
             migrationBuilder.DropTable(
                 name: "PermissionRole");
 
             migrationBuilder.DropTable(
-                name: "SessionDB");
+                name: "SessionSet");
 
             migrationBuilder.DropTable(
                 name: "SolicitudeItem");
 
             migrationBuilder.DropTable(
-                name: "DrugInfoDB");
+                name: "DrugInfoSet");
 
             migrationBuilder.DropTable(
-                name: "PermissionDB");
+                name: "PermissionSet");
 
             migrationBuilder.DropTable(
-                name: "SolicitudeDB");
+                name: "SolicitudeSet");
 
             migrationBuilder.DropTable(
-                name: "UserDB");
+                name: "UserSet");
 
             migrationBuilder.DropTable(
-                name: "PharmacyDB");
+                name: "PharmacySet");
 
             migrationBuilder.DropTable(
-                name: "RoleDB");
+                name: "RoleSet");
         }
     }
 }

@@ -24,6 +24,7 @@ namespace DataAccess
         {
             IEnumerable<Solicitude> entities = this._table.
             Include(s => s.Items).
+            Include(s => s.Employee).
             Where(expresion);
             List <Solicitude> entitiesToReturn;
             try

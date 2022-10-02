@@ -17,72 +17,84 @@ public class PurchaseModelsMapperTest
         List<PurchaseItemModel> purchaseItemModels = new List<PurchaseItemModel>(){
                 new PurchaseItemModel(){
                     DrugCode = "A01",
-                    Quantity = 1,
-                    PharmacyName = "Pharamacy Name"
+                    Quantity = 1
                 }
             };
         PurchaseRequestModel purchaseRequestModel = new PurchaseRequestModel()
         {
             UserEmail = "email@email.com",
-            Items = purchaseItemModels
+            Items = purchaseItemModels,
+            PharmacyName = "Pharamacy Name"
         };
 
-        PurchaseDto purchaseDto = PurchaseModelsMapper.ToEntity(purchaseRequestModel);
+        Purchase purchase = PurchaseModelsMapper.ToEntity(purchaseRequestModel);
 
-        Assert.AreEqual(purchaseRequestModel.UserEmail, purchaseDto.UserEmail);
-        Assert.AreEqual(purchaseRequestModel.Items[0].DrugCode, purchaseDto.Items[0].DrugCode);
-        Assert.AreEqual(purchaseRequestModel.Items[0].Quantity, purchaseDto.Items[0].Quantity);
-        Assert.AreEqual(purchaseRequestModel.Items[0].PharmacyName, purchaseDto.Items[0].PharmacyName);
+        Assert.AreEqual(purchaseRequestModel.UserEmail, purchase.UserEmail);
+        Assert.AreEqual(purchaseRequestModel.PharmacyName, purchase.Pharmacy.Name);
+        Assert.AreEqual(purchaseRequestModel.Items[0].DrugCode, purchase.Items[0].Drug.DrugCode);
+        Assert.AreEqual(purchaseRequestModel.Items[0].Quantity, purchase.Items[0].Quantity);
     }
 
 
     [TestMethod]
     public void PurchaseDtoToModelOK()
     {
-        PurchaseItemDto purchaseItemDto = new PurchaseItemDto
+        PurchaseItem purchaseItem = new PurchaseItem
         {
-            DrugCode = "A01",
-            Quantity = 1,
-            PharmacyName = "Pharamacy Name"
+            Drug = new Drug()
+            {
+                DrugCode = "A01",
+            },
+            Quantity = 1
         };
-        List<PurchaseItemDto> purchaseItems = new List<PurchaseItemDto>() { purchaseItemDto };
-        PurchaseDto purchaseDto = new PurchaseDto()
+        List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
+        Purchase purchaseDto = new Purchase()
         {
             Id = 1,
             UserEmail = "email@email.com",
-            CreatedDate = DateTime.Now,
-            Items = purchaseItems
+            Date = DateTime.Now,
+            Items = purchaseItems,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "Pharamacy Name",
+            }
         };
 
         PurchaseResponseModel purchaseResponse = PurchaseModelsMapper.ToModel(purchaseDto);
 
         Assert.AreEqual(purchaseDto.Id, purchaseResponse.Id);
         Assert.AreEqual(purchaseDto.UserEmail, purchaseResponse.UserEmail);
-        Assert.AreEqual(purchaseDto.CreatedDate, purchaseResponse.CreatedDate);
-        Assert.AreEqual(purchaseDto.Items[0].DrugCode, purchaseResponse.Items[0].DrugCode);
+        Assert.AreEqual(purchaseDto.Pharmacy.Name, purchaseResponse.PharmacyName);
+        Assert.AreEqual(purchaseDto.Date, purchaseResponse.CreatedDate);
+        Assert.AreEqual(purchaseDto.Items[0].Drug.DrugCode, purchaseResponse.Items[0].DrugCode);
         Assert.AreEqual(purchaseDto.Items[0].Quantity, purchaseResponse.Items[0].Quantity);
-        Assert.AreEqual(purchaseDto.Items[0].PharmacyName, purchaseResponse.Items[0].PharmacyName);
     }
 
     [TestMethod]
     public void PurchaseReportDtoToModelOK()
     {
-        PurchaseItemDto purchaseItemDto = new PurchaseItemDto
+        PurchaseItem purchaseItem = new PurchaseItem
         {
-            DrugCode = "A01",
-            Quantity = 1,
-            PharmacyName = "Pharamacy Name"
+            Drug = new Drug()
+            {
+                DrugCode = "A01"
+            },
+            Quantity = 1
         };
-        List<PurchaseItemDto> purchaseItems = new List<PurchaseItemDto>() { purchaseItemDto };
-        PurchaseDto purchaseDto = new PurchaseDto()
+        List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
+        Purchase purchaseDto = new Purchase()
         {
             Id = 1,
             UserEmail = "email@email.com",
-            CreatedDate = DateTime.Now,
-            Price = 100.99,
-            Items = purchaseItems
+            Date = DateTime.Now,
+            TotalPrice = 100.99,
+            Items = purchaseItems,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "Pharamacy Name"
+            }
         };
-        List<PurchaseDto> purchases = new List<PurchaseDto>() { purchaseDto };
+        List<Purchase> purchases = new List<Purchase>() { purchaseDto };
         PurchaseReportDto purchaseReportDto = new PurchaseReportDto
         {
             TotalPrice = 100.99,
@@ -94,10 +106,9 @@ public class PurchaseModelsMapperTest
         Assert.AreEqual(purchaseReportDto.TotalPrice, purchaseReportModel.TotalPrice);
         Assert.AreEqual(purchaseDto.Id, purchaseReportModel.Purchases[0].Id);
         Assert.AreEqual(purchaseDto.UserEmail, purchaseReportModel.Purchases[0].UserEmail);
-        Assert.AreEqual(purchaseDto.Price, purchaseReportModel.Purchases[0].Price);
-        Assert.AreEqual(purchaseDto.CreatedDate, purchaseReportModel.Purchases[0].CreatedDate);
-        Assert.AreEqual(purchaseDto.Items[0].DrugCode, purchaseReportModel.Purchases[0].Items[0].DrugCode);
+        Assert.AreEqual(purchaseDto.TotalPrice, purchaseReportModel.Purchases[0].Price);
+        Assert.AreEqual(purchaseDto.Date, purchaseReportModel.Purchases[0].CreatedDate);
+        Assert.AreEqual(purchaseDto.Items[0].Drug.DrugCode, purchaseReportModel.Purchases[0].Items[0].DrugCode);
         Assert.AreEqual(purchaseDto.Items[0].Quantity, purchaseReportModel.Purchases[0].Items[0].Quantity);
-        Assert.AreEqual(purchaseDto.Items[0].PharmacyName, purchaseReportModel.Purchases[0].Items[0].PharmacyName);
     }
 }

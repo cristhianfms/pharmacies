@@ -22,15 +22,23 @@ public class PharmacyLogic : IPharmacyLogic
 
     public virtual Pharmacy GetPharmacyByName(string pharmacyName)
     {
-        return this._pharmacyRepository.GetFirst(f => pharmacyName.Equals(pharmacyName));
+        return this._pharmacyRepository.GetFirst(f => f.Name.Equals(pharmacyName));
     }
 
     public virtual void ExistsDrug(string drugCode, int pharmacyId)
     {
-        Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Id == pharmacyId && p.Drugs.Exists(d=>d.DrugCode == drugCode));
-
+        Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Id == pharmacyId);
+        
+        if (pharmacy == null || !pharmacy.Drugs.Exists(d => d.DrugCode == drugCode))
+        {
+            throw new ResourceNotFoundException("resource does not exist");
+        }
 
     }
 
+    public virtual Drug GetDrug(int pharmacyId, string drugDrugCode)
+    {
+        throw new NotImplementedException();
+    }
 }
 
