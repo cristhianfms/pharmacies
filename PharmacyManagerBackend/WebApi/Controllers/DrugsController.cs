@@ -12,23 +12,17 @@ namespace WebApi.Controllers
     public class DrugsController : ControllerBase
     {
         private IDrugLogic _drugLogic;
-        private IPharmacyLogic _pharmacyLogic;
 
-        public DrugsController(IDrugLogic drugLogic, IPharmacyLogic pharmacyLogic)
+        public DrugsController(IDrugLogic drugLogic)
         {
             this._drugLogic = drugLogic;
-            _pharmacyLogic = pharmacyLogic;
         }
 
         [HttpPost]
         public IActionResult Create([FromBody] DrugModel drugModel)
         {
-            if (_pharmacyLogic.ExistsDrug(drugModel.DrugCode, drugModel.PharmacyId))
-            {
-                return BadRequest("DrugCode already exists in the pharmacy");
-            }
             Drug drug = ModelsMapper.ToEntity(drugModel);
-            Drug drugCreated = _drugLogic.Create(drug);
+            Drug drugCreated = _drugLogic.Create(drug, drugModel.PharmacyId);
             DrugModel drugCreatedModel = ModelsMapper.ToModel(drugCreated);
             return Ok(drugCreatedModel);
         }
