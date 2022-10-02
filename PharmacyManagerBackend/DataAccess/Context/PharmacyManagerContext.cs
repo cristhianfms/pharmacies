@@ -53,6 +53,7 @@ public class PharmacyManagerContext : DbContext
             .HasOne(p => p.Owner)
             .WithOne(u => u.OwnerPharmacy);
 
+
         // Data seed
         // Roles
         Role admin = new Role() { Id = 1, Name = "Admin" };

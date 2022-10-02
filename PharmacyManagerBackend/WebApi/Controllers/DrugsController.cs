@@ -29,7 +29,7 @@ namespace WebApi.Controllers
             return Ok(drugCreatedModel);
         }
 
-        [HttpDelete]
+        [HttpDelete("{drugId}")]
         [ServiceFilter(typeof(AuthorizationAttributeFilter))]
         public IActionResult Delete(int drugId)
         {
@@ -37,7 +37,7 @@ namespace WebApi.Controllers
             return Ok("Se elimino correctamente");
         }
 
-        [HttpGet("{Id}")]
+        [HttpGet("{drugId}")]
         [ServiceFilter(typeof(AuthorizationAttributeFilter))]
         public IActionResult Get(int drugId)
         {
