@@ -20,4 +20,15 @@ public class QueryPurchaseDtoTest
         Assert.AreEqual(DateTime.Parse(dateFrom), queryPurchaseDto.GetParsedDateFrom());
         Assert.AreEqual(DateTime.Parse(dateTo), queryPurchaseDto.GetParsedDateTo());
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void DateToInvalidFormatShouldFail()
+    {
+        string dateTo = "date-bad-format";
+        QueryPurchaseDto queryPurchaseDto = new QueryPurchaseDto()
+        {
+            DateTo = dateTo
+        };
+    }
 }
