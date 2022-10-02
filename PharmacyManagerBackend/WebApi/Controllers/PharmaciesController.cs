@@ -1,6 +1,7 @@
 using Domain;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Filter;
 using WebApi.Models;
 using WebApi.Utils;
 
@@ -17,6 +18,7 @@ public class PharmaciesController : ControllerBase
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult Create([FromBody] PharmacyModel pharmacyModel)
     {
         Pharmacy pharmacy = ModelsMapper.ToEntity(pharmacyModel);

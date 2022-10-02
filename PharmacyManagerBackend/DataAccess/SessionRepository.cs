@@ -21,6 +21,7 @@ public class SessionRepository : BaseRepository<Session>, ISessionRepository
         IEnumerable<Session> entities = this._table
             .Include(i => i.User)
             .ThenInclude(u => u.Role)
+            .Include(u => u.User.Pharmacy)
             .Where(expresion);
         Session entityToReturn;
         try

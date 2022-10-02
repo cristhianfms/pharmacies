@@ -25,7 +25,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return entity;
     }
 
-    public IEnumerable<T> GetAll(Func<T, bool> expresion = null)
+    public virtual IEnumerable<T> GetAll(Func<T, bool> expresion = null)
     {
         IEnumerable<T> entities;
 

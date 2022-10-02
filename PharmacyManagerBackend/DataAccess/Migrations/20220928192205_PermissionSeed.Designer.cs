@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20220927234754_InvitationPermisionSeed")]
-    partial class InvitationPermisionSeed
+    [Migration("20220928192205_PermissionSeed")]
+    partial class PermissionSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,8 +43,13 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 5,
                             Endpoint = "POST/api/invitations"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Endpoint = "POST/api/solicitudes"
                         });
                 });
 
@@ -66,7 +71,12 @@ namespace DataAccess.Migrations
                         new
                         {
                             RoleId = 1,
-                            PermissionId = 1
+                            PermissionId = 5
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 2
                         });
                 });
 

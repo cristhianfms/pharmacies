@@ -43,7 +43,7 @@ public class PermissionRepositoryTest
     [TestMethod]
     public void GetFirstOk()
     {
-        string endpoint = "put/api/pharmacies";
+        string endpoint = "POST/api/invitations";
         Role role = new Role
         {
             Name = Role.ADMIN
