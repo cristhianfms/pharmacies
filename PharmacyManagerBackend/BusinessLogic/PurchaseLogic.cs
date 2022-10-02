@@ -21,31 +21,23 @@ public class PurchaseLogic : IPurchaseLogic
         this._pharmacyLogic = pharmacyLogic;
         this._drugLogic = drugLogic;
     }
-    
+
     public Purchase Create(Purchase purchase)
     {
         Pharmacy pharmacy = GetPharmacyByName(purchase.Pharmacy.Name);
-        foreach (var purchaseItem in purchase.Items)
-        {
-            Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
-            CheckStock(drug, purchaseItem.Quantity);
-        }
-        
-        foreach (var purchaseItem in purchase.Items)
-        {
-            Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
-            drug.Stock -= purchaseItem.Quantity;
-            _drugLogic.Update(drug.Id, drug);
-        }
+        CheckPurchaseStock(pharmacy, purchase.Items);
+        UpdateDrugStock(pharmacy, purchase.Items);
+        double totalPrice = CalculateTotalPrice(pharmacy, purchase.Items);
+
+        purchase.TotalPrice = totalPrice;
 
         return _purchaseRepository.Create(purchase);
     }
-
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
     {
         throw new NotImplementedException();
     }
-    
+
     private Pharmacy GetPharmacyByName(string pharmacyName)
     {
         Pharmacy pharmacy;
@@ -57,10 +49,10 @@ public class PurchaseLogic : IPurchaseLogic
         {
             throw new ValidationException("not existent pharmacy");
         }
-        
+
         return pharmacy;
     }
-    
+
     private Drug GetDrug(Pharmacy pharmacy, string drugDrugCode)
     {
         Drug drug;
@@ -68,19 +60,50 @@ public class PurchaseLogic : IPurchaseLogic
         {
             drug = _pharmacyLogic.GetDrug(pharmacy.Id, drugDrugCode);
         }
-        catch(ResourceNotFoundException)
+        catch (ResourceNotFoundException)
         {
             throw new ValidationException($"{drugDrugCode} not exist in pharmacy {pharmacy.Name}");
         }
 
         return drug;
     }
-    
+
     private void CheckStock(Drug drug, int purchaseItemQuantity)
     {
         if (drug.Stock < purchaseItemQuantity)
         {
             throw new ValidationException($"not enough stock for drug {drug.DrugCode}");
         }
+    }
+
+    private void UpdateDrugStock(Pharmacy pharmacy, List<PurchaseItem> purchaseItems)
+    {
+        foreach (var purchaseItem in purchaseItems)
+        {
+            Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
+            drug.Stock -= purchaseItem.Quantity;
+            _drugLogic.Update(drug.Id, drug);
+        }
+    }
+
+    private void CheckPurchaseStock(Pharmacy pharmacy, List<PurchaseItem> purchaseItems)
+    {
+        foreach (var purchaseItem in purchaseItems)
+        {
+            Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
+            CheckStock(drug, purchaseItem.Quantity);
+        }
+    }
+    
+    private double CalculateTotalPrice(Pharmacy pharmacy, List<PurchaseItem> purchaseItems)
+    {
+        double totalPrice = 0;
+        foreach (var purchaseItem in purchaseItems)
+        {
+            Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
+            totalPrice += drug.Price;
+        }
+
+        return totalPrice;
     }
 }
