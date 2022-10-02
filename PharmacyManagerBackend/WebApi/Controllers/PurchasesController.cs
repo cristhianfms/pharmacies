@@ -22,8 +22,8 @@ public class PurchasesController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] PurchaseRequestModel purchaseRequestModel)
     {
-        PurchaseDto purchase = PurchaseModelsMapper.ToEntity(purchaseRequestModel);
-        PurchaseDto purhcaseCreated = _purchaseLogic.Create(purchase);
+        Purchase purchase = PurchaseModelsMapper.ToEntity(purchaseRequestModel);
+        Purchase purhcaseCreated = _purchaseLogic.Create(purchase);
         PurchaseResponseModel purchaseResponseModel = PurchaseModelsMapper.ToModel(purhcaseCreated);
 
         return Ok(purchaseResponseModel);

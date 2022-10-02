@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Domain;
 using Domain.Dtos;
 using WebApi.Models;
 
@@ -7,28 +8,8 @@ namespace WebApi.Utils;
 
 public static class PurchaseModelsMapper
 {
-    public static PurchaseDto ToEntity(PurchaseRequestModel purchaseRequestModel)
-    {
-        List<PurchaseItemDto> purchaseItems = purchaseRequestModel.Items.Select(i => ToEntity(i)).ToList();
-        return new PurchaseDto
-        {
-            PharmacyName = purchaseRequestModel.PharmacyName,
-            UserEmail = purchaseRequestModel.UserEmail,
-            Items = purchaseItems
-        };
-    }
-
-    private static PurchaseItemDto ToEntity(PurchaseItemModel purchaseItemModel)
-    {
-        return new PurchaseItemDto
-        {
-            Quantity = purchaseItemModel.Quantity,
-            DrugCode = purchaseItemModel.DrugCode
-        };
-    }
-
-
-    public static PurchaseResponseModel ToModel(PurchaseDto purchaseDto)
+    
+    public static PurchaseResponseModel ToModel(Purchase purchaseDto)
     {
         List<PurchaseItemModel> purchaseItems = purchaseDto.Items.Select(i => ToModel(i)).ToList();
         return new PurchaseResponseModel
@@ -36,18 +17,18 @@ public static class PurchaseModelsMapper
             Id = purchaseDto.Id,
             UserEmail = purchaseDto.UserEmail,
             Items = purchaseItems,
-            CreatedDate = purchaseDto.CreatedDate,
-            Price = purchaseDto.Price,
-            PharmacyName = purchaseDto.PharmacyName
+            CreatedDate = purchaseDto.Date,
+            Price = purchaseDto.TotalPrice,
+            PharmacyName = purchaseDto.Pharmacy.Name
         };
     }
 
-    private static PurchaseItemModel ToModel(PurchaseItemDto purchaseItem)
+    private static PurchaseItemModel ToModel(PurchaseItem purchaseItem)
     {
         return new PurchaseItemModel
         {
             Quantity = purchaseItem.Quantity,
-            DrugCode = purchaseItem.DrugCode
+            DrugCode = purchaseItem.Drug.DrugCode
         };
     }
 
@@ -58,6 +39,32 @@ public static class PurchaseModelsMapper
         {
             TotalPrice = purchaseReport.TotalPrice,
             Purchases = purchaseModels
+        };
+    }
+    
+    public static Purchase ToEntity(PurchaseRequestModel purchaseRequestModel)
+    {
+        List<PurchaseItem> purchaseItems = purchaseRequestModel.Items.Select(i => ToEntity(i)).ToList();
+        return new Purchase()
+        {
+            Pharmacy = new Pharmacy()
+            {
+                Name = purchaseRequestModel.PharmacyName
+            },
+            UserEmail = purchaseRequestModel.UserEmail,
+            Items = purchaseItems
+        };
+    }
+    
+    private static PurchaseItem ToEntity(PurchaseItemModel purchaseItemModel)
+    {
+        return new PurchaseItem
+        {
+            Quantity = purchaseItemModel.Quantity,
+            Drug = new Drug()
+            {
+                DrugCode = purchaseItemModel.DrugCode
+            }
         };
     }
 }

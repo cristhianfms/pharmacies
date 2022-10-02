@@ -8,6 +8,8 @@ public class Purchase
     public int Id { get; set; }
     public double TotalPrice { get; set; }
     public DateTime Date { get; set; }
+    public int PharmacyId { get; set; }
+    public Pharmacy Pharmacy { get; set; }
     public string UserEmail
     {
         get
