@@ -197,4 +197,78 @@ public class PurchaseLogicTest
 
         _purchaseLogic.Create(purchaseToCreate);
     }
+
+    [TestMethod]
+    public void GetPurchaseReportOk()
+    {
+        string drugCode = "A01";
+        string pharmacyName = "PharmacyName";
+        Drug drugRepository = new Drug()
+        {
+            DrugCode = drugCode,
+            Stock = 2
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>(){drugRepository}
+        };
+
+        Purchase purchaseRepository1 = new Purchase()
+        {
+            Id = 1,
+            TotalPrice = 100.50,
+            UserEmail = "email@email.com",
+            Pharmacy = pharmacyRepository,
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = drugRepository
+                }
+            }
+        };
+        Purchase purchaseRepository2 = new Purchase()
+        {
+            Id = 2,
+            TotalPrice = 200.99,
+            UserEmail = "email2@email.com",
+            Pharmacy = pharmacyRepository,
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = drugRepository
+                }
+            }
+        };
+        List<Purchase> purchasesRepository = new List<Purchase>() { purchaseRepository1, purchaseRepository2 };
+        double totalPrice = purchaseRepository1.TotalPrice + purchaseRepository2.TotalPrice;
+
+        Context context = new Context()
+        {
+            CurrentUser = new User()
+            {
+                Role = new Role()
+                {
+                    Name = Role.EMPLOYEE
+                }
+            }
+        };
+        QueryPurchaseDto queryPurchaseDto = new QueryPurchaseDto()
+        {
+            DateFrom = "2022-09-01",
+            DateTo = "2022-09-30"
+        };
+        
+        _purchaseLogic.SetContext(context);
+        PurchaseReportDto purchasesReport = _purchaseLogic.GetPurchasesReport(queryPurchaseDto);
+
+        Assert.AreEqual(totalPrice, purchasesReport.TotalPrice);
+        Assert.AreEqual(totalPrice, purchasesReport.TotalPrice);
+        CollectionAssert.AreEqual(purchasesRepository, purchasesReport.Purchases);
+    }
 }
