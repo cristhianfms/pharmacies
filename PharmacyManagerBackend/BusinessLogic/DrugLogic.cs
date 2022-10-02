@@ -85,7 +85,12 @@ namespace BusinessLogic
 
         public virtual Drug Update(int drugId, Drug drug)
         {
-            throw new NotImplementedException();
+            Drug drugToUpdate = _drugRepository.GetFirst(d => d.Id == drugId);
+            drugToUpdate.Stock = drug.Stock;
+            
+            _drugRepository.Update(drugToUpdate);
+            
+            return drugToUpdate;
         }
     }
 }
