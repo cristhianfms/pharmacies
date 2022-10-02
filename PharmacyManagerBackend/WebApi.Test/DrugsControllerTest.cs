@@ -12,11 +12,11 @@ using IBusinessLogic;
 namespace WebApi.Test;
 
 [TestClass]
-public class DrugControllerTest
+public class DrugsControllerTest
 {
     private Mock<IDrugLogic> _drugLogicMock;
     private Mock<IPharmacyLogic> _pharmacyLogicMock;
-    private DrugController _drugApiController;
+    private DrugsController _drugApiController;
     private Drug _drug;
 
     [TestInitialize]
@@ -24,7 +24,7 @@ public class DrugControllerTest
     {
         _drugLogicMock = new Mock<IDrugLogic>(MockBehavior.Strict);
         _pharmacyLogicMock = new Mock <IPharmacyLogic>(MockBehavior.Strict);
-        _drugApiController = new DrugController(_drugLogicMock.Object, _pharmacyLogicMock.Object);
+        _drugApiController = new DrugsController(_drugLogicMock.Object);
         _drug = new Drug()
         {
             Id = 1,
@@ -41,8 +41,7 @@ public class DrugControllerTest
     public void CreateDrugOk()
     {
         const int pharmacyId = 3;
-      //  _pharmacyLogicMock.Setup(p => p.ExistsDrug(_drug.DrugCode, pharmacyId)).Returns(false);
-        _drugLogicMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(_drug);
+        _drugLogicMock.Setup(m => m.Create(It.IsAny<Drug>(), pharmacyId)).Returns(_drug);
         
         var drugModel = new DrugModel()
         {
