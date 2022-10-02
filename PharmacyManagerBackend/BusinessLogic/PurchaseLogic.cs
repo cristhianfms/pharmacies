@@ -14,12 +14,18 @@ public class PurchaseLogic : IPurchaseLogic
     private IPurchaseRepository _purchaseRepository;
     private PharmacyLogic _pharmacyLogic;
     private DrugLogic _drugLogic;
+    private Context _context;
 
     public PurchaseLogic(IPurchaseRepository purchaseRepository, PharmacyLogic pharmacyLogic, DrugLogic drugLogic)
     {
         this._purchaseRepository = purchaseRepository;
         this._pharmacyLogic = pharmacyLogic;
         this._drugLogic = drugLogic;
+    }
+
+    public void SetContext(Context context)
+    {
+        _context = context;
     }
 
     public Purchase Create(Purchase purchase)
@@ -34,8 +40,26 @@ public class PurchaseLogic : IPurchaseLogic
         return _purchaseRepository.Create(purchase);
     }
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
-    {
-        throw new NotImplementedException();
+    { 
+        Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
+        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p => 
+            p.PharmacyId == pharmacyOfCurrentUser.Id &&
+            p.Date >= queryPurchaseDto.GetParsedDateFrom() &&
+            p.Date <= queryPurchaseDto.GetParsedDateTo());
+        
+        double totalPrice = 0;
+        foreach (var purchase in purchases)
+        {
+            totalPrice += purchase.TotalPrice;
+        }
+
+        PurchaseReportDto purchaseReport = new PurchaseReportDto()
+        {
+            Purchases =  purchases,
+            TotalPrice = totalPrice
+        };
+
+        return purchaseReport;
     }
 
     private Pharmacy GetPharmacyByName(string pharmacyName)
@@ -53,18 +77,15 @@ public class PurchaseLogic : IPurchaseLogic
         return pharmacy;
     }
 
-    private Drug GetDrug(Pharmacy pharmacy, string drugDrugCode)
+    private Drug GetDrug(Pharmacy pharmacy, string drugCode)
     {
-        Drug drug;
-        try
-        {
-            drug = _pharmacyLogic.GetDrug(pharmacy.Id, drugDrugCode);
-        }
-        catch (ResourceNotFoundException)
-        {
-            throw new ValidationException($"{drugDrugCode} not exist in pharmacy {pharmacy.Name}");
-        }
+        Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode);
 
+        if (drug == null)
+        {
+            throw new ValidationException($"{drugCode} not exist in pharmacy {pharmacy.Name}");
+        }
+        
         return drug;
     }
 

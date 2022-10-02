@@ -35,10 +35,5 @@ public class PharmacyLogic : IPharmacyLogic
         }
 
     }
-
-    public virtual Drug GetDrug(int pharmacyId, string drugDrugCode)
-    {
-        throw new NotImplementedException();
-    }
 }
 

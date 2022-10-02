@@ -20,7 +20,7 @@ public class PurchaseLogicTest
     {
         this._purchaseRepository = new Mock<IPurchaseRepository>(MockBehavior.Strict);
         this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
-        this._drugLogic = new Mock<DrugLogic>(MockBehavior.Strict, null, null);
+        this._drugLogic = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null);
         this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object, this._pharmacyLogic.Object, this._drugLogic.Object);
     }
 
@@ -29,15 +29,16 @@ public class PurchaseLogicTest
     {
         string drugCode = "A01";
         string pharmacyName = "PharmacyName";
-        Pharmacy pharmacyRepository = new Pharmacy()
-        {
-            Id = 1,
-            Name = pharmacyName
-        };
         Drug drug = new Drug()
         {
             DrugCode = drugCode,
             Stock = 2
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>(){drug}
         };
         Purchase purchaseToCreate = new Purchase()
         {
@@ -58,6 +59,10 @@ public class PurchaseLogicTest
                 }
             }
         };
+        Drug drugRepository = new Drug()
+        {
+            DrugCode = drugCode
+        };
         Purchase purchaseRepository = new Purchase()
         {
             Id = 1,
@@ -65,23 +70,20 @@ public class PurchaseLogicTest
             UserEmail = "email@email.com",
             Pharmacy = new Pharmacy()
             {
-                Name = pharmacyName
+                Name = pharmacyName,
+                Drugs = new List<Drug>(){drugRepository}
             },
             Items = new List<PurchaseItem>()
             {
                 new PurchaseItem()
                 {
                     Quantity = 2,
-                    Drug = new Drug()
-                    {
-                        DrugCode = drugCode
-                    }
+                    Drug = drug
                 }
             }
         };
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
         _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseRepository);
-        _pharmacyLogic.Setup(m => m.GetDrug(It.IsAny<int>(), It.IsAny<string>())).Returns(drug);
         _drugLogic.Setup(m => m.Update(It.IsAny<int>(), It.IsAny<Drug>())).Returns(drug);
 
         Purchase purchaseCreated = _purchaseLogic.Create(purchaseToCreate);
@@ -127,7 +129,8 @@ public class PurchaseLogicTest
         Pharmacy pharmacy = new Pharmacy()
         {
             Id = 1,
-            Name = "PharmacyName"
+            Name = "PharmacyName",
+            Drugs = new List<Drug>()
         };
         Drug drug = new Drug()
         {
@@ -149,8 +152,6 @@ public class PurchaseLogicTest
             Pharmacy = pharmacy
         };
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacy);
-        _pharmacyLogic.Setup(m => m.GetDrug(It.IsAny<int>(), It.IsAny<string>()))
-            .Throws(new ResourceNotFoundException(""));
         _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
 
         _purchaseLogic.Create(purchase);
@@ -162,15 +163,16 @@ public class PurchaseLogicTest
     {
         string drugCode = "A01";
         string pharmacyName = "PharmacyName";
-        Pharmacy pharmacyRepository = new Pharmacy()
-        {
-            Id = 1,
-            Name = pharmacyName
-        };
         Drug drug = new Drug()
         {
             DrugCode = drugCode,
             Stock = 2
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>(){drug}
         };
         Purchase purchaseToCreate = new Purchase()
         {
@@ -193,8 +195,81 @@ public class PurchaseLogicTest
         };
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
         _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseToCreate);
-        _pharmacyLogic.Setup(m => m.GetDrug(It.IsAny<int>(), It.IsAny<string>())).Returns(drug);
 
         _purchaseLogic.Create(purchaseToCreate);
+    }
+
+    [TestMethod]
+    public void GetPurchaseReportOk()
+    {
+        string drugCode = "A01";
+        string pharmacyName = "PharmacyName";
+        Drug drugRepository = new Drug()
+        {
+            DrugCode = drugCode,
+            Stock = 2
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>(){drugRepository}
+        };
+
+        Purchase purchaseRepository1 = new Purchase()
+        {
+            Id = 1,
+            TotalPrice = 100.50,
+            UserEmail = "email@email.com",
+            Pharmacy = pharmacyRepository,
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = drugRepository
+                }
+            }
+        };
+        Purchase purchaseRepository2 = new Purchase()
+        {
+            Id = 2,
+            TotalPrice = 200.99,
+            UserEmail = "email2@email.com",
+            Pharmacy = pharmacyRepository,
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = drugRepository
+                }
+            }
+        };
+        List<Purchase> purchasesRepository = new List<Purchase>() { purchaseRepository1, purchaseRepository2 };
+        double totalPrice = purchaseRepository1.TotalPrice + purchaseRepository2.TotalPrice;
+
+        Context context = new Context()
+        {
+            CurrentUser = new User()
+            {
+                Role = new Role()
+                {
+                    Name = Role.EMPLOYEE
+                }
+            }
+        };
+        QueryPurchaseDto queryPurchaseDto = new QueryPurchaseDto()
+        {
+            DateFrom = "2022-09-01",
+            DateTo = "2022-09-30"
+        };
+        _purchaseRepository.Setup(m => m.GetAll(It.IsAny<Func<Purchase, bool>>())).Returns(purchasesRepository);
+        
+        _purchaseLogic.SetContext(context);
+        PurchaseReportDto purchasesReport = _purchaseLogic.GetPurchasesReport(queryPurchaseDto);
+        
+        Assert.AreEqual(totalPrice, purchasesReport.TotalPrice);
+        CollectionAssert.AreEqual(purchasesRepository, purchasesReport.Purchases.ToList());
     }
 }

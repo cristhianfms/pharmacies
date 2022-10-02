@@ -42,4 +42,15 @@ public class Purchase
             _items = value;
         }
     }
+    
+    public override bool Equals(object? obj)
+    {
+        return obj is Purchase purchase &&
+               Id == purchase.Id &&
+               TotalPrice == purchase.TotalPrice &&
+               Date == purchase.Date &&
+               Pharmacy == purchase.Pharmacy &&
+               UserEmail == purchase.UserEmail &&
+               EqualityComparer<List<PurchaseItem>>.Default.Equals(Items, purchase.Items);
+    }
 }
