@@ -109,7 +109,7 @@ public static class ModelsMapper
     {
         return new Solicitude()
         {
-            State = Enum.Parse<State>(solicitudePutModel.State)
+            State = Enum.Parse<State>(solicitudePutModel.State, true)
         };
     }
 

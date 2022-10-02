@@ -5,17 +5,19 @@ using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace WebApi.Filters;
+namespace WebApi.Filter;
 
 public class AuthorizationAttributeFilter : Attribute, IAuthorizationFilter
 {
     private readonly ISessionLogic _sessionLogic;
     private readonly IPermissionLogic _permissionLogic;
+    private readonly ISolicitudeLogic _solicitudeLogic;
 
-    public AuthorizationAttributeFilter(ISessionLogic sessionsLogic, IPermissionLogic permissionLogic)
+    public AuthorizationAttributeFilter(ISessionLogic sessionsLogic, IPermissionLogic permissionLogic, ISolicitudeLogic solicitudeLogic)
     {
         this._sessionLogic = sessionsLogic;
         this._permissionLogic = permissionLogic;
+        this._solicitudeLogic = solicitudeLogic;
     }
 
     public void OnAuthorization(AuthorizationFilterContext context)
@@ -48,6 +50,9 @@ public class AuthorizationAttributeFilter : Attribute, IAuthorizationFilter
             {
                 context.Result = new UnauthorizedResult();
             }
+            _solicitudeLogic.SetContext(loggedUser);
+
         }
+
     }
 }

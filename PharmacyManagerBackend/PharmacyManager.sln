@@ -35,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthLogic.Test", "AuthLogic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Filter", "WebApi.Filter\WebApi.Filter.csproj", "{073BDEA2-D77D-42DC-B7AC-E36BC309A4BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Filter.Test", "WebApi.Filter.Test\WebApi.Filter.Test.csproj", "{B8701B0B-7600-4A80-9045-181AB01C7E03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Filter.Test", "WebApi.Filter.Test\WebApi.Filter.Test.csproj", "{F367CF7B-CD78-48E6-BF2A-A81FDF337620}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,10 +107,10 @@ Global
 		{073BDEA2-D77D-42DC-B7AC-E36BC309A4BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{073BDEA2-D77D-42DC-B7AC-E36BC309A4BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{073BDEA2-D77D-42DC-B7AC-E36BC309A4BB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8701B0B-7600-4A80-9045-181AB01C7E03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8701B0B-7600-4A80-9045-181AB01C7E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8701B0B-7600-4A80-9045-181AB01C7E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8701B0B-7600-4A80-9045-181AB01C7E03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F367CF7B-CD78-48E6-BF2A-A81FDF337620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F367CF7B-CD78-48E6-BF2A-A81FDF337620}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F367CF7B-CD78-48E6-BF2A-A81FDF337620}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F367CF7B-CD78-48E6-BF2A-A81FDF337620}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

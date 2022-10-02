@@ -4,6 +4,7 @@ using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    partial class PharmacyManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20220928192205_PermissionSeed")]
+    partial class PermissionSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,38 +43,13 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 5,
                             Endpoint = "POST/api/invitations"
                         },
                         new
                         {
                             Id = 2,
                             Endpoint = "POST/api/solicitudes"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Endpoint = "GET/api/solicitudes"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Endpoint = "PUT/api/solicitudes/.*"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Endpoint = "POST/api/drugs"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Endpoint = "DELETE/api/drugs/"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Endpoint = "POST/api/pharmacies"
                         });
                 });
 
@@ -94,42 +71,12 @@ namespace DataAccess.Migrations
                         new
                         {
                             RoleId = 1,
-                            PermissionId = 1
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 3
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 3
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 4
-                        },
-                        new
-                        {
-                            RoleId = 3,
                             PermissionId = 5
                         },
                         new
                         {
                             RoleId = 3,
-                            PermissionId = 6
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 8
+                            PermissionId = 2
                         });
                 });
 

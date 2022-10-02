@@ -3,12 +3,14 @@ using Domain.AuthDomain;
 using IBusinessLogic;
 using IDataAccess;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AuthLogic;
 
 public class PermissionLogic : IPermissionLogic
 {
     private readonly IPermissionRepository _permissionRepository;
+
     public PermissionLogic(IPermissionRepository permissionRepository)
     {
         this._permissionRepository = permissionRepository;
@@ -17,7 +19,7 @@ public class PermissionLogic : IPermissionLogic
     public bool HasPermission(string userRole, string endpoint)
     {
         Permission permission = _permissionRepository.GetFirst(p =>
-            endpoint.Equals(p.Endpoint));
+            IsEndpointMatch(p.Endpoint, endpoint));
 
         bool hasPermission;
         PermissionRole permissionRole;
@@ -32,5 +34,12 @@ public class PermissionLogic : IPermissionLogic
         }
 
         return hasPermission;
+    }
+
+    private bool IsEndpointMatch(string endpointRegex, string endpoint)
+    {
+        Regex regex = new Regex(endpointRegex);
+
+        return regex.IsMatch(endpoint);
     }
 }

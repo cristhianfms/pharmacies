@@ -87,11 +87,11 @@ namespace BusinessLogic.Test
 
             _drugRepositoryMock.Setup(s => s.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
             _drugRepositoryMock.Setup(s => s.Update(It.IsAny<Drug>()));
-
             _drugLogic.AddStock(solicitudeItems);
 
             Assert.AreEqual(drug.Stock, 25);
             Assert.AreEqual(drug.DrugCode, solicitudeItem1.DrugCode);
+            
             _drugRepositoryMock.VerifyAll();
         }
     }

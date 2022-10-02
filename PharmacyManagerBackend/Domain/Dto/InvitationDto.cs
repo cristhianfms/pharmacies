@@ -12,4 +12,16 @@ public class InvitationDto
     public string Email { get; set; }
     public string Address { get; set; }
     public string Password { get; set; }
+    
+    public override bool Equals(object? obj)
+    {
+        return obj is InvitationDto invitationDto&&
+               UserName == invitationDto.UserName && 
+               Code == invitationDto.Code && 
+               RoleName == invitationDto.RoleName && 
+               PharmacyName == invitationDto.PharmacyName && 
+               Email == invitationDto.Email && 
+               Address == invitationDto.Address && 
+               Password == invitationDto.Password;
+    }
 }
