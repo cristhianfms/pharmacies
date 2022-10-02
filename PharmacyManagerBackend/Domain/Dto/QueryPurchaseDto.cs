@@ -21,7 +21,14 @@ public class QueryPurchaseDto
         get { return _dateTo.ToString(); }
         set
         {
-            _dateTo = DateTime.Parse(value);
+            try
+            {
+                _dateTo = DateTime.Parse(value);
+            }
+            catch (FormatException)
+            {
+                throw new ValidationException("DateTo: invalid format");
+            }
         }
         
     }
