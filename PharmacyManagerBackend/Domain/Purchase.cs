@@ -4,6 +4,7 @@ namespace Domain;
 public class Purchase
 {
     private string _userEmail;
+    private List<PurchaseItem> _items;
     public int Id { get; set; }
     public double TotalPrice { get; set; }
     public DateTime Date { get; set; }
@@ -21,6 +22,20 @@ public class Purchase
             }
         }
     }
-    
-    public List<PurchaseItem> Items { get; set; }
+
+    public List<PurchaseItem> Items
+    {
+        get
+        {
+            return _items;
+        }
+        set
+        {
+            if (value.Count < 1)
+            {
+                throw new ValidationException("purchase must contain at least one item");
+            }
+            _items = value;
+        }
+    }
 }
