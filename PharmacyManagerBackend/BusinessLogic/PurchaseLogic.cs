@@ -4,6 +4,7 @@ using Domain.Dtos;
 using Exceptions;
 using IBusinessLogic;
 using IDataAccess;
+using System.Linq;
 using ValidationException = Exceptions.ValidationException;
 
 namespace BusinessLogic;
@@ -22,9 +23,14 @@ public class PurchaseLogic : IPurchaseLogic
     public Purchase Create(Purchase purchase)
     {
         Pharmacy pharmacy = GetPharmacyByName(purchase.Pharmacy.Name);
-        
+        foreach (var purchaseItem in purchase.Items)
+        {
+            Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
+        }
+
         return _purchaseRepository.Create(purchase);
     }
+
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
     {
         throw new NotImplementedException();
@@ -43,5 +49,20 @@ public class PurchaseLogic : IPurchaseLogic
         }
         
         return pharmacy;
+    }
+    
+    private Drug GetDrug(Pharmacy pharmacy, string drugDrugCode)
+    {
+        Drug drug;
+        try
+        {
+            drug = _pharmacyLogic.GetDrug(pharmacy.Id, drugDrugCode);
+        }
+        catch(ResourceNotFoundException)
+        {
+            throw new ValidationException($"{drugDrugCode} not exist in pharmacy {pharmacy.Name}");
+        }
+
+        return drug;
     }
 }

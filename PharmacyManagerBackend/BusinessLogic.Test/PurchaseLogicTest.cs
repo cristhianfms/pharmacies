@@ -25,8 +25,13 @@ public class PurchaseLogicTest
   [TestMethod]
   public void CreatePurchaseOk()
   {
+    Drug drug = new Drug()
+    {
+      DrugCode = "A01"
+    };
     Pharmacy pharmacy = new Pharmacy()
     {
+      Id = 1,
       Name = "PharmacyName"
     };
     List<PurchaseItem> items = new List<PurchaseItem>()
@@ -34,7 +39,8 @@ public class PurchaseLogicTest
       new PurchaseItem()
       {
         Quantity = 1,
-        DrugId = 1
+        DrugId = 1,
+        Drug = drug
       }
     };
     Purchase purchase = new Purchase()
@@ -45,8 +51,12 @@ public class PurchaseLogicTest
     };
     _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacy);
     _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
+    _pharmacyLogic.Setup(m => m.GetDrug(It.IsAny<int>(), It.IsAny<string>())).Returns(drug);
     
     _purchaseLogic.Create(purchase);
+    
+    _pharmacyLogic.VerifyAll();
+    _purchaseRepository.VerifyAll();
   }
   
   [TestMethod]
@@ -75,22 +85,28 @@ public class PurchaseLogicTest
     
     _purchaseLogic.Create(purchase);
   }
-  
-  
+
+
   [TestMethod]
   [ExpectedException(typeof(ValidationException))]
   public void CreatePurchaseWithNotExistentDrugShouldFail()
   {
     Pharmacy pharmacy = new Pharmacy()
     {
+      Id = 1,
       Name = "PharmacyName"
+    };
+    Drug drug = new Drug()
+    {
+      DrugCode = "A01"
     };
     List<PurchaseItem> items = new List<PurchaseItem>()
     {
       new PurchaseItem()
       {
         Quantity = 1,
-        DrugId = 1
+        DrugId = 1,
+        Drug = drug
       }
     };
     Purchase purchase = new Purchase()
@@ -100,6 +116,7 @@ public class PurchaseLogicTest
       Pharmacy = pharmacy
     };
     _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacy);
+    _pharmacyLogic.Setup(m => m.GetDrug(It.IsAny<int>(), It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
     _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
     
     _purchaseLogic.Create(purchase);
