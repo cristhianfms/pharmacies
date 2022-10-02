@@ -13,11 +13,13 @@ public class PurchaseLogic : IPurchaseLogic
 {
     private IPurchaseRepository _purchaseRepository;
     private PharmacyLogic _pharmacyLogic;
+    private DrugLogic _drugLogic;
 
-    public PurchaseLogic(IPurchaseRepository purchaseRepository, PharmacyLogic pharmacyLogic)
+    public PurchaseLogic(IPurchaseRepository purchaseRepository, PharmacyLogic pharmacyLogic, DrugLogic drugLogic)
     {
         this._purchaseRepository = purchaseRepository;
         this._pharmacyLogic = pharmacyLogic;
+        this._drugLogic = drugLogic;
     }
     
     public Purchase Create(Purchase purchase)
@@ -27,6 +29,13 @@ public class PurchaseLogic : IPurchaseLogic
         {
             Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
             CheckStock(drug, purchaseItem.Quantity);
+        }
+        
+        foreach (var purchaseItem in purchase.Items)
+        {
+            Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
+            drug.Stock -= purchaseItem.Quantity;
+            _drugLogic.Update(drug.Id, drug);
         }
 
         return _purchaseRepository.Create(purchase);

@@ -20,8 +20,8 @@ public class PurchaseLogicTest
     {
         this._purchaseRepository = new Mock<IPurchaseRepository>(MockBehavior.Strict);
         this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
-        this._drugLogic = new Mock<DrugLogic>(MockBehavior.Strict, null);
-        this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object, this._pharmacyLogic.Object, this._drugLogic.Object));
+        this._drugLogic = new Mock<DrugLogic>(MockBehavior.Strict, null, null);
+        this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object, this._pharmacyLogic.Object, this._drugLogic.Object);
     }
 
     [TestMethod]
@@ -82,7 +82,7 @@ public class PurchaseLogicTest
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
         _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseRepository);
         _pharmacyLogic.Setup(m => m.GetDrug(It.IsAny<int>(), It.IsAny<string>())).Returns(drug);
-        _drugLogic.Setup(m => m.Update(It.IsAny<int>())).Returns(drug);
+        _drugLogic.Setup(m => m.Update(It.IsAny<int>(), It.IsAny<Drug>())).Returns(drug);
 
         Purchase purchaseCreated = _purchaseLogic.Create(purchaseToCreate);
         

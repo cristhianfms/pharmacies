@@ -73,6 +73,11 @@ namespace BusinessLogic
                 _drugRepository.Update(drugToUpdate);
             }
         }
+
+        public virtual Drug Update(int drugId, Drug drug)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
