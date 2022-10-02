@@ -42,4 +42,21 @@ public class QueryPurchaseDtoTest
             DateFrom = dateFrom
         };
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void DateToAfterDateFromShouldFail()
+    {
+        string dateTo = "2022-09-01T00:00:00";
+        string dateFrom = "2022-09-30T00:00:00";
+        QueryPurchaseDto queryPurchaseDto = new QueryPurchaseDto()
+        {
+            DateTo = dateTo,
+            DateFrom = dateFrom
+        };
+        
+        Assert.AreEqual(DateTime.Parse(dateFrom), queryPurchaseDto.GetParsedDateFrom());
+        Assert.AreEqual(DateTime.Parse(dateTo), queryPurchaseDto.GetParsedDateTo());
+    }
+
 }
