@@ -31,4 +31,15 @@ public class QueryPurchaseDtoTest
             DateTo = dateTo
         };
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void DateFromInvalidFormatShouldFail()
+    {
+        string dateFrom = "date-bad-format";
+        QueryPurchaseDto queryPurchaseDto = new QueryPurchaseDto()
+        {
+            DateFrom = dateFrom
+        };
+    }
 }
