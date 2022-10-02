@@ -14,4 +14,15 @@ public class PurchaseTest
             UserEmail = ""
         };
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void EmptyItemsListShouldFail()
+    {
+        Purchase purchase = new Purchase()
+        {
+            UserEmail = "mail@mail.com",
+            Items = new List<PurchaseItem>()
+        };
+    }
 }
