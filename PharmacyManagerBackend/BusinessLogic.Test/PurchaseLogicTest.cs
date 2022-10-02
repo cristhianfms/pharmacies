@@ -1,3 +1,4 @@
+using Castle.Core.Resource;
 using Domain;
 using Domain.Dtos;
 using Exceptions;
@@ -11,17 +12,23 @@ public class PurchaseLogicTest
 {
   private PurchaseLogic _purchaseLogic;
   private Mock<IPurchaseRepository> _purchaseRepository;
+  private Mock<PharmacyLogic> _pharmacyLogic;
   
   [TestInitialize]
   public void Initialize()
   {
     this._purchaseRepository = new Mock<IPurchaseRepository>(MockBehavior.Strict);
-    this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object);
+    this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
+    this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object, this._pharmacyLogic.Object);
   }
   
   [TestMethod]
   public void CreatePurchaseOk()
   {
+    Pharmacy pharmacy = new Pharmacy()
+    {
+      Name = "PharmacyName"
+    };
     List<PurchaseItem> items = new List<PurchaseItem>()
     {
       new PurchaseItem()
@@ -33,8 +40,10 @@ public class PurchaseLogicTest
     Purchase purchase = new Purchase()
     {
       UserEmail = "email@email.com",
-      Items = items
+      Items = items,
+      Pharmacy = pharmacy
     };
+    _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacy);
     _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
     
     _purchaseLogic.Create(purchase);
@@ -62,6 +71,7 @@ public class PurchaseLogicTest
       }
     };
     _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
+    _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
     
     _purchaseLogic.Create(purchase);
   }
