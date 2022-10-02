@@ -15,6 +15,7 @@ public class QueryPurchaseDto
             try
             {
                 _dateFrom = DateTime.Parse(value);
+                checkTimeLine();
             }
             catch (FormatException)
             {
@@ -31,6 +32,7 @@ public class QueryPurchaseDto
             try
             {
                 _dateTo = DateTime.Parse(value);
+                checkTimeLine();
             }
             catch (FormatException)
             {
@@ -48,5 +50,14 @@ public class QueryPurchaseDto
     public DateTime? GetParsedDateTo()
     {
         return _dateTo;
+    }
+    
+    
+    private void checkTimeLine()
+    {
+        if (_dateFrom != null && _dateTo != null && _dateFrom > _dateTo)
+        {
+            throw new ValidationException("DateTo must be after DateFrom");
+        }
     }
 }
