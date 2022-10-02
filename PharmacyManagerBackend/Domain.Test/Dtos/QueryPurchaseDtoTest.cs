@@ -22,6 +22,15 @@ public class QueryPurchaseDtoTest
     }
     
     [TestMethod]
+    public void DatesMinAndMaxValueOk()
+    {
+        QueryPurchaseDto queryPurchaseDto = new QueryPurchaseDto(){ };
+        
+        Assert.AreEqual(DateTime.MinValue, queryPurchaseDto.GetParsedDateFrom());
+        Assert.AreEqual(DateTime.MaxValue, queryPurchaseDto.GetParsedDateTo());
+    }
+    
+    [TestMethod]
     [ExpectedException(typeof(ValidationException))]
     public void DateToInvalidFormatShouldFail()
     {
