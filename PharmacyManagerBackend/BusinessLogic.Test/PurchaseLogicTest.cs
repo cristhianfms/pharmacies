@@ -1,5 +1,6 @@
 using Domain;
 using Domain.Dtos;
+using IDataAccess;
 using Moq;
 
 namespace BusinessLogic.Test;
@@ -9,6 +10,13 @@ public class PurchaseLogicTest
 {
   private PurchaseLogic _purchaseLogic;
   private Mock<IPurchaseRepository> _purchaseRepository;
+  
+  [TestInitialize]
+  public void Initialize()
+  {
+    this._purchaseRepository = new Mock<IPurchaseRepository>(MockBehavior.Strict);
+    this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object);
+  }
   
   [TestMethod]
   public void CreatePurchaseOk()
@@ -26,12 +34,8 @@ public class PurchaseLogicTest
       UserEmail = "email@email.com",
       Items = items
     };
-
-    PurchaseDto purchaseDto = new PurchaseDto()
-    {
-
-    };
-
+    _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
+    
     _purchaseLogic.Create(purchase);
   }
 }

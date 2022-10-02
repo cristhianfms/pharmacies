@@ -1,13 +1,22 @@
+using Domain;
 using Domain.Dtos;
 using IBusinessLogic;
+using IDataAccess;
 
 namespace BusinessLogic;
 
 public class PurchaseLogic : IPurchaseLogic
 {
-    public PurchaseDto Create(PurchaseDto purchase)
+    private IPurchaseRepository _purchaseRepository;
+
+    public PurchaseLogic(IPurchaseRepository purchaseRepository)
     {
-        throw new NotImplementedException();
+        this._purchaseRepository = purchaseRepository;
+    }
+    
+    public Purchase Create(Purchase purchase)
+    {
+        return _purchaseRepository.Create(purchase);
     }
 
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
