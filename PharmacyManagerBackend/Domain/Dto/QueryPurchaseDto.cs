@@ -44,12 +44,12 @@ public class QueryPurchaseDto
     
     public DateTime? GetParsedDateFrom()
     {
-        return _dateFrom;
+        return _dateFrom != null ? _dateFrom : DateTime.MinValue;
     }
     
     public DateTime? GetParsedDateTo()
     {
-        return _dateTo;
+        return _dateTo != null ? _dateFrom : DateTime.MaxValue;
     }
     
     
