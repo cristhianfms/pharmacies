@@ -12,7 +12,14 @@ public class QueryPurchaseDto
         get { return _dateFrom.ToString(); }
         set
         {
-            _dateFrom = DateTime.Parse(value);
+            try
+            {
+                _dateFrom = DateTime.Parse(value);
+            }
+            catch (FormatException)
+            {
+                throw new ValidationException("DateFrom: invalid format");
+            }
         }
     }
 
