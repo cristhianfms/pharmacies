@@ -102,5 +102,34 @@ namespace BusinessLogic.Test
             
             _drugRepositoryMock.VerifyAll();
         }
+
+
+        [TestMethod]
+        public void UpdateDrugOk()
+        {
+            int drugId = 1;
+            Drug drugToUpdate = new Drug()
+            {
+                DrugCode = "RS546",
+                Price = 25.99,
+                Stock = 15,
+                NeedsPrescription = false
+            };
+            Drug drugInRepository = new Drug()
+            {
+                Id = drugId,
+                DrugCode = "RS546",
+                Price = 25.99,
+                Stock = 20,
+                NeedsPrescription = false
+            };
+            _drugRepositoryMock.Setup(s => s.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drugInRepository);
+            _drugRepositoryMock.Setup(m => m.Update(It.IsAny<Drug>()));;
+
+            Drug drugUpdated = _drugLogic.Update(drugId, drugToUpdate);
+
+            Assert.AreEqual(drugToUpdate.Stock, drugUpdated.Stock);
+            _drugRepositoryMock.VerifyAll();
+        }
     }
 }
