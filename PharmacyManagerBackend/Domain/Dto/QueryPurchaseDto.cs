@@ -49,7 +49,7 @@ public class QueryPurchaseDto
     
     public DateTime? GetParsedDateTo()
     {
-        return _dateTo != null ? _dateFrom : DateTime.MaxValue;
+        return _dateTo != null ? _dateTo : DateTime.MaxValue;
     }
     
     
