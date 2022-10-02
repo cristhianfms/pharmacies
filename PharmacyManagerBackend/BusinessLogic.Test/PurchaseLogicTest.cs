@@ -20,7 +20,7 @@ public class PurchaseLogicTest
     {
         this._purchaseRepository = new Mock<IPurchaseRepository>(MockBehavior.Strict);
         this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
-        this._drugLogic = new Mock<DrugLogic>(MockBehavior.Strict, null, null);
+        this._drugLogic = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null);
         this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object, this._pharmacyLogic.Object, this._drugLogic.Object);
     }
 
@@ -29,15 +29,16 @@ public class PurchaseLogicTest
     {
         string drugCode = "A01";
         string pharmacyName = "PharmacyName";
-        Pharmacy pharmacyRepository = new Pharmacy()
-        {
-            Id = 1,
-            Name = pharmacyName
-        };
         Drug drug = new Drug()
         {
             DrugCode = drugCode,
             Stock = 2
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>(){drug}
         };
         Purchase purchaseToCreate = new Purchase()
         {
@@ -263,12 +264,13 @@ public class PurchaseLogicTest
             DateFrom = "2022-09-01",
             DateTo = "2022-09-30"
         };
+        _purchaseRepository.Setup(m => m.GetAll(It.IsAny<Func<Purchase, bool>>())).Returns(purchasesRepository);
         
         _purchaseLogic.SetContext(context);
         PurchaseReportDto purchasesReport = _purchaseLogic.GetPurchasesReport(queryPurchaseDto);
 
         Assert.AreEqual(totalPrice, purchasesReport.TotalPrice);
         Assert.AreEqual(totalPrice, purchasesReport.TotalPrice);
-        CollectionAssert.AreEqual(purchasesRepository, purchasesReport.Purchases);
+        CollectionAssert.AreEqual(purchasesRepository, purchasesReport.Purchases.ToList());
     }
 }

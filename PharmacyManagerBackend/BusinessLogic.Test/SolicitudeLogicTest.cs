@@ -27,7 +27,7 @@ namespace BusinessLogic.Test
         public void Initialize()
         {
             this._solicitudeRepositoryMock = new Mock<ISolicitudeRepository>(MockBehavior.Strict);
-            this._drugLogicMock = new Mock<DrugLogic>(MockBehavior.Strict, null, null);
+            this._drugLogicMock = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null);
             this._pharmacyLogicMock = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
             this._userLogicMock = new Mock<UserLogic>(MockBehavior.Strict, null);
             this._solicitudeLogic = new SolicitudeLogic(this._solicitudeRepositoryMock.Object, this._drugLogicMock.Object, this._pharmacyLogicMock.Object);
