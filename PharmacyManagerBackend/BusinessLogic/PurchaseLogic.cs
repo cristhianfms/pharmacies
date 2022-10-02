@@ -53,18 +53,15 @@ public class PurchaseLogic : IPurchaseLogic
         return pharmacy;
     }
 
-    private Drug GetDrug(Pharmacy pharmacy, string drugDrugCode)
+    private Drug GetDrug(Pharmacy pharmacy, string drugCode)
     {
-        Drug drug;
-        try
-        {
-            drug = _pharmacyLogic.GetDrug(pharmacy.Id, drugDrugCode);
-        }
-        catch (ResourceNotFoundException)
-        {
-            throw new ValidationException($"{drugDrugCode} not exist in pharmacy {pharmacy.Name}");
-        }
+        Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode);
 
+        if (drug == null)
+        {
+            throw new ValidationException($"{drugCode} not exist in pharmacy {pharmacy.Name}");
+        }
+        
         return drug;
     }
 
