@@ -22,6 +22,8 @@ public class Purchase
             {
                 throw new ValidationException("user email can not be null");
             }
+
+            _userEmail = value;
         }
     }
 

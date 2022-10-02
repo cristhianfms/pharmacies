@@ -1,4 +1,5 @@
-﻿using Domain.Dtos;
+﻿using Domain;
+using Domain.Dtos;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -22,66 +23,78 @@ public class PurchasesControllerTest
     [TestMethod]
     public void CreatePurchaseOk()
     {
-        PurchaseItemDto purchaseItemDto = new PurchaseItemDto
+        PurchaseItem purchaseItem = new PurchaseItem
         {
-            DrugCode = "A01",
+            Drug = new Drug()
+            {
+                DrugCode = "A01"
+            },
             Quantity = 1
         };
-        List<PurchaseItemDto> purchaseItems = new List<PurchaseItemDto>() { purchaseItemDto };
-        PurchaseDto purchaseDto = new PurchaseDto()
+        List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
+        Purchase purchase = new Purchase()
         {
             Id = 1,
             UserEmail = "email@email.com",
-            CreatedDate = DateTime.Now,
+            Date = DateTime.Now,
             Items = purchaseItems,
-            PharmacyName = "Pharamacy Name"
+            Pharmacy = new Pharmacy()
+            {
+                Name = "Pharamacy Name"   
+            }
         };
         List<PurchaseItemModel> purchaseItemModels = new List<PurchaseItemModel>(){
                 new PurchaseItemModel(){
-                    DrugCode = purchaseItemDto.DrugCode,
-                    Quantity = purchaseItemDto.Quantity
+                    DrugCode = purchaseItem.Drug.DrugCode,
+                    Quantity = purchaseItem.Quantity
                 }
             };
         PurchaseRequestModel purchaseRequestModel = new PurchaseRequestModel()
         {
-            UserEmail = purchaseDto.UserEmail,
+            UserEmail = purchase.UserEmail,
             Items = purchaseItemModels
         };
 
-        _purchaseLogicMock.Setup(m => m.Create(It.IsAny<PurchaseDto>())).Returns(purchaseDto);
+        _purchaseLogicMock.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
 
         var result = _purchasesApiController.Create(purchaseRequestModel);
         var okResult = result as OkObjectResult;
         var createdPurchase = okResult.Value as PurchaseResponseModel;
 
-        Assert.AreEqual(purchaseDto.Id, createdPurchase.Id);
-        Assert.AreEqual(purchaseDto.UserEmail, createdPurchase.UserEmail);
-        Assert.AreEqual(purchaseDto.PharmacyName, createdPurchase.PharmacyName);
-        Assert.AreEqual(purchaseDto.CreatedDate, createdPurchase.CreatedDate);
-        Assert.AreEqual(purchaseDto.Items[0].DrugCode, createdPurchase.Items[0].DrugCode);
-        Assert.AreEqual(purchaseDto.Items[0].Quantity, createdPurchase.Items[0].Quantity);
+        Assert.AreEqual(purchase.Id, createdPurchase.Id);
+        Assert.AreEqual(purchase.UserEmail, createdPurchase.UserEmail);
+        Assert.AreEqual(purchase.Pharmacy.Name, createdPurchase.PharmacyName);
+        Assert.AreEqual(purchase.Date, createdPurchase.CreatedDate);
+        Assert.AreEqual(purchase.Items[0].Drug.DrugCode, createdPurchase.Items[0].DrugCode);
+        Assert.AreEqual(purchase.Items[0].Quantity, createdPurchase.Items[0].Quantity);
         _purchaseLogicMock.VerifyAll();
     }
 
     [TestMethod]
     public void TestGetPurchaseReportByDate()
     {
-        PurchaseItemDto purchaseItemDto = new PurchaseItemDto
+        PurchaseItem purchaseItem = new PurchaseItem
         {
-            DrugCode = "A01",
+            Drug = new Drug()
+            {
+                DrugCode = "A01"
+            },
             Quantity = 1
         };
-        List<PurchaseItemDto> purchaseItems = new List<PurchaseItemDto>() { purchaseItemDto };
-        PurchaseDto purchaseDto = new PurchaseDto()
+        List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
+        Purchase purchase = new Purchase()
         {
             Id = 1,
             UserEmail = "email@email.com",
-            CreatedDate = DateTime.Now,
-            Price = 100.99,
+            Date = DateTime.Now,
+            TotalPrice = 100.99,
             Items = purchaseItems,
-            PharmacyName = "Pharamacy Name"
+            Pharmacy = new Pharmacy()
+            {
+                Name = "Pharamacy Name"
+            }
         };
-        List<PurchaseDto> purchases = new List<PurchaseDto>() { purchaseDto };
+        List<Purchase> purchases = new List<Purchase>() { purchase };
         PurchaseReportDto purchaseReportDto = new PurchaseReportDto
         {
             TotalPrice = 100.99,
@@ -99,12 +112,12 @@ public class PurchasesControllerTest
         var responsePurchaseReports = okResult.Value as PurchaseReportModel;
 
         Assert.AreEqual(purchaseReportDto.TotalPrice, responsePurchaseReports.TotalPrice);
-        Assert.AreEqual(purchaseDto.Id, responsePurchaseReports.Purchases[0].Id);
-        Assert.AreEqual(purchaseDto.UserEmail, responsePurchaseReports.Purchases[0].UserEmail);
-        Assert.AreEqual(purchaseDto.Price, responsePurchaseReports.Purchases[0].Price);
-        Assert.AreEqual(purchaseDto.CreatedDate, responsePurchaseReports.Purchases[0].CreatedDate);
-        Assert.AreEqual(purchaseDto.Items[0].DrugCode, responsePurchaseReports.Purchases[0].Items[0].DrugCode);
-        Assert.AreEqual(purchaseDto.Items[0].Quantity, responsePurchaseReports.Purchases[0].Items[0].Quantity);
+        Assert.AreEqual(purchase.Id, responsePurchaseReports.Purchases[0].Id);
+        Assert.AreEqual(purchase.UserEmail, responsePurchaseReports.Purchases[0].UserEmail);
+        Assert.AreEqual(purchase.TotalPrice, responsePurchaseReports.Purchases[0].Price);
+        Assert.AreEqual(purchase.Date, responsePurchaseReports.Purchases[0].CreatedDate);
+        Assert.AreEqual(purchase.Items[0].Drug.DrugCode, responsePurchaseReports.Purchases[0].Items[0].DrugCode);
+        Assert.AreEqual(purchase.Items[0].Quantity, responsePurchaseReports.Purchases[0].Items[0].Quantity);
         _purchaseLogicMock.VerifyAll();
     }
 
