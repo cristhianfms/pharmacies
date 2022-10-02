@@ -50,7 +50,7 @@ public class AuthorizationAttributeFilter : Attribute, IAuthorizationFilter
             {
                 context.Result = new UnauthorizedResult();
             }
-            _solicitudeLogic.SetContext(loggedUser);
+            _solicitudeLogic.SetContext(loggedUser); 
 
         }
 
