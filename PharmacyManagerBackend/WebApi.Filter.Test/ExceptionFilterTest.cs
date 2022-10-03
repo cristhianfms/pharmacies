@@ -84,48 +84,4 @@ public class ExceptionFilterTest
         Assert.AreEqual(500, result.StatusCode);
         Assert.AreEqual("Internal server error", resultModel.Message);
     }
-    
-    [TestMethod]
-    public void AuthenticationExceptionTest()
-    {
-        var actionContext = new ActionContext()
-        {
-            HttpContext = new DefaultHttpContext(),
-            RouteData = new RouteData(),
-            ActionDescriptor = new ActionDescriptor()
-        };
-        ExceptionContext exceptionContext = new ExceptionContext(actionContext, new List<IFilterMetadata> { })
-        {
-            Exception = new AuthenticationException("forbidden")
-        };
-
-        _exceptionFilter.OnException(exceptionContext);
-        var result = exceptionContext.Result as ObjectResult;
-        var resultModel = result.Value as ExceptionModel;
-
-        Assert.AreEqual(401, result.StatusCode);
-        Assert.AreEqual("forbidden", resultModel.Message);
-    }
-    
-    [TestMethod]
-    public void AuthorizationExceptionTest()
-    {
-        var actionContext = new ActionContext()
-        {
-            HttpContext = new DefaultHttpContext(),
-            RouteData = new RouteData(),
-            ActionDescriptor = new ActionDescriptor()
-        };
-        ExceptionContext exceptionContext = new ExceptionContext(actionContext, new List<IFilterMetadata> { })
-        {
-            Exception = new AuthorizationException("unauthorized")
-        };
-
-        _exceptionFilter.OnException(exceptionContext);
-        var result = exceptionContext.Result as ObjectResult;
-        var resultModel = result.Value as ExceptionModel;
-
-        Assert.AreEqual(403, result.StatusCode);
-        Assert.AreEqual("unauthorized", resultModel.Message);
-    }
 }

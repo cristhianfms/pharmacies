@@ -1,19 +1,28 @@
+using System.Security.Authentication;
 using Domain;
 using Domain.AuthDomain;
 using Exceptions;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Primitives;
+using WebApi.Filter.Models;
 
 namespace WebApi.Filter;
 
 public class AuthorizationAttributeFilter : Attribute, IAuthorizationFilter
 {
+    private const string UnauthorizedError = "permissionError";
+    private const int UnauthorizedCode = 401;
+    private const string ForbiddenError = "forbidenError";
+    private const int ForbiddenCode = 403;
+
     private readonly ISessionLogic _sessionLogic;
     private readonly IPermissionLogic _permissionLogic;
     private readonly ISolicitudeLogic _solicitudeLogic;
 
-    public AuthorizationAttributeFilter(ISessionLogic sessionsLogic, IPermissionLogic permissionLogic, ISolicitudeLogic solicitudeLogic)
+    public AuthorizationAttributeFilter(ISessionLogic sessionsLogic, IPermissionLogic permissionLogic,
+        ISolicitudeLogic solicitudeLogic)
     {
         this._sessionLogic = sessionsLogic;
         this._permissionLogic = permissionLogic;
@@ -26,20 +35,50 @@ public class AuthorizationAttributeFilter : Attribute, IAuthorizationFilter
         var endpoint = context.HttpContext.Request.Method + context.HttpContext.Request.Path;
         if (String.IsNullOrEmpty(tokenRow))
         {
-            context.Result = new ForbidResult("Missing Authorization token");
+            ExceptionModel exceptionModel = new ExceptionModel()
+            {
+                Error = UnauthorizedError,
+                Message = "Missing Authorization token"
+            };
+            context.Result = new ObjectResult(exceptionModel)
+            {
+                StatusCode = UnauthorizedCode
+            };
             return;
         }
         else
         {
             Session session;
-            Guid token = Guid.Parse(tokenRow);
+            
+            if (!Guid.TryParse(tokenRow, out var newGuid))
+            {
+                ExceptionModel exceptionModel = new ExceptionModel()
+                {
+                    Error = UnauthorizedError,
+                    Message = "Invalid token"
+                };
+                context.Result = new ObjectResult(exceptionModel)
+                {
+                    StatusCode = UnauthorizedCode
+                };
+                return;
+            }
+            
             try
             {
-                session = _sessionLogic.Get(token);
+                session = _sessionLogic.Get(newGuid);
             }
             catch (ResourceNotFoundException)
             {
-                context.Result = new ForbidResult("Invalid token");
+                ExceptionModel exceptionModel = new ExceptionModel()
+                {
+                    Error = UnauthorizedError,
+                    Message = "Invalid token"
+                };
+                context.Result = new ObjectResult(exceptionModel)
+                {
+                    StatusCode = UnauthorizedCode
+                };
                 return;
             }
 
@@ -48,11 +87,18 @@ public class AuthorizationAttributeFilter : Attribute, IAuthorizationFilter
 
             if (!userHasPermission)
             {
-                context.Result = new UnauthorizedResult();
+                ExceptionModel exceptionModel = new ExceptionModel()
+                {
+                    Error = ForbiddenError,
+                    Message = "session doesn't have permission"
+                };
+                context.Result = new ObjectResult(exceptionModel)
+                {
+                    StatusCode = ForbiddenCode
+                };
             }
             _solicitudeLogic.SetContext(loggedUser); 
 
         }
-
     }
 }

@@ -5,15 +5,40 @@ namespace Domain.Dtos;
 
 public class CredentialsDto
 {
-    public string UserName { get; set; }
-    public string Password { get; set; }
+    private string _userName;
+    private string _password;
 
-    public void ValidateNotNullCredentials()
+    public string UserName
     {
-        if (String.IsNullOrEmpty(this.UserName) || String.IsNullOrEmpty(this.Password))
+        get
         {
-            throw new ValidationException("username and password can't be null or empty");
+            return _userName;
+        }
+        set
+        {
+            if (String.IsNullOrEmpty(value))
+            {
+                throw new ValidationException("username can't be empty");
+            }
+            
+            _userName = value;
         }
     }
 
+    public string Password
+    {
+        get
+        {
+            return _password;
+        }
+        set
+        {
+            if (String.IsNullOrEmpty(value))
+            {
+                throw new ValidationException("password can't be empty");
+            }
+            
+            _password = value;
+        }
+    }
 }
