@@ -17,7 +17,28 @@ public class PharmacyLogic : IPharmacyLogic
 
     public Pharmacy Create(Pharmacy pharmacy)
     {
-        return this._pharmacyRepository.Create(pharmacy);
+        if (ExistsPharmacy(pharmacy.Name))
+        {
+            throw new ValidationException("Pharmacy name already exists");
+        }
+        else
+        {
+            return this._pharmacyRepository.Create(pharmacy);
+        }
+    }
+
+    private bool ExistsPharmacy(string name)
+    {        
+        try
+        {
+            Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Name == name);
+
+            return true;
+        }
+        catch (ResourceNotFoundException)
+        {
+            return false;
+        }
     }
 
     public virtual Pharmacy GetPharmacyByName(string pharmacyName)
