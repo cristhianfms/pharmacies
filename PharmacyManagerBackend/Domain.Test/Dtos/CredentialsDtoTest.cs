@@ -14,10 +14,8 @@ public class CredentialsDtoTest
         CredentialsDto credentialsDto = new CredentialsDto()
         {
             UserName = "ricardofort",
-            Password = null
+            Password = ""
         };
-
-        credentialsDto.ValidateNotNullCredentials();
     }
 
     [TestMethod]
@@ -26,11 +24,9 @@ public class CredentialsDtoTest
     {
         CredentialsDto credentialsDto = new CredentialsDto()
         {
-            UserName = null,
+            UserName = "",
             Password = "test"
         };
-
-        credentialsDto.ValidateNotNullCredentials();
     }
 
     [TestMethod]
@@ -41,7 +37,5 @@ public class CredentialsDtoTest
             UserName = "ricardofort",
             Password = "test"
         };
-
-        credentialsDto.ValidateNotNullCredentials();
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Moq;
+using WebApi.Filter.Models;
 
 namespace WebApi.Filter.Test;
 
@@ -86,8 +87,9 @@ public class AuthorizationAttributeFilterTest
 
         _authFilter.OnAuthorization(authFilterContext);
 
-        var result = authFilterContext.Result as ForbidResult;
-        Assert.IsNotNull(result);
+        var result = authFilterContext.Result as ObjectResult;
+
+        Assert.AreEqual(401, result.StatusCode);
     }
 
     [TestMethod]
@@ -117,8 +119,9 @@ public class AuthorizationAttributeFilterTest
 
         _authFilter.OnAuthorization(authFilterContext);
 
-        var result = authFilterContext.Result as UnauthorizedResult;
-        Assert.IsNotNull(result);
+        var result = authFilterContext.Result as ObjectResult;
+
+        Assert.AreEqual(403, result.StatusCode);
     }
 
     [TestMethod]
@@ -133,7 +136,26 @@ public class AuthorizationAttributeFilterTest
 
         _authFilter.OnAuthorization(authFilterContext);
 
-        var result = authFilterContext.Result as ForbidResult;
-        Assert.IsNotNull(result);
+        var result = authFilterContext.Result as ObjectResult;
+
+        Assert.AreEqual(401, result.StatusCode);
+    }
+    
+    [TestMethod]
+    public void BadFormatoOfTokenTest()
+    {
+        string token = "asdf";
+        var httpContextMock = new Mock<HttpContext>();
+        httpContextMock.Setup(a => a.Request.Headers["Authorization"]).Returns(token);
+        ActionContext actionContext =
+            new ActionContext(httpContextMock.Object, new RouteData(), new ActionDescriptor());
+        AuthorizationFilterContext authFilterContext =
+            new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
+
+        _authFilter.OnAuthorization(authFilterContext);
+
+        var result = authFilterContext.Result as ObjectResult;
+
+        Assert.AreEqual(401, result.StatusCode);
     }
 }
