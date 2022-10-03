@@ -6,9 +6,11 @@ namespace IBusinessLogic
 {
     public interface IDrugLogic
     {
-        Drug Create(Drug drug);
+        Drug Create(Drug drug, int pharmacyId);
         Drug Get(int drugId);
         void Delete(int drugId);
+        void AddStock(List<SolicitudeItem> items);
+            
     }
 }
 

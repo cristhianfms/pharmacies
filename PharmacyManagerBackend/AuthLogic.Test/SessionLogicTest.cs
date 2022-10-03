@@ -1,9 +1,13 @@
 using System;
+using AuthLogic;
 using Domain;
+using Domain.AuthDomain;
 using Domain.Dtos;
 using Exceptions;
 using IDataAccess;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+
 
 namespace BusinessLogic.Test;
 
@@ -164,5 +168,32 @@ public class SessionLogicTest
         _sessionLogic.Create(credentialsDto);
     }
 
+    [TestMethod]
+    public void GetSessionOk()
+    {
+        Guid token = Guid.NewGuid();
+        User userRepository = new User()
+        {
+            Id = 1,
+            UserName = "username",
+            Role = new Role()
+            {
+                Name = "Admin"
+            }
+        };
+        Session sessionRepository = new Session()
+        {
+            Id = 1,
+            Token = token,
+            User = userRepository
+        };
+        
+        _sessionRepository.Setup(m => m.GetFirst(It.IsAny<Func<Session, bool>>())).Returns(sessionRepository);
+
+        Session sessionReturned = _sessionLogic.Get(token);
+
+        Assert.AreEqual(sessionRepository, sessionReturned);
+        _sessionRepository.VerifyAll();
+    }
 }
 

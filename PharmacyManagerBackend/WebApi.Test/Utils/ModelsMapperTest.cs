@@ -41,59 +41,6 @@ public class ModelsMapperTest
     }
 
     [TestMethod]
-    public void PurchaseRequestModelToEntityOK()
-    {
-        List<PurchaseItemModel> purchaseItemModels = new List<PurchaseItemModel>(){
-                new PurchaseItemModel(){
-                    DrugCode = "A01",
-                    Quantity = 1,
-                    PharmacyName = "Pharamacy Name"
-                }
-            };
-        PurchaseRequestModel purchaseRequestModel = new PurchaseRequestModel()
-        {
-            UserEmail = "email@email.com",
-            Items = purchaseItemModels
-        };
-
-        PurchaseDto purchaseDto = PurchaseModelsMapper.ToEntity(purchaseRequestModel);
-
-        Assert.AreEqual(purchaseRequestModel.UserEmail, purchaseDto.UserEmail);
-        Assert.AreEqual(purchaseRequestModel.Items[0].DrugCode, purchaseDto.Items[0].DrugCode);
-        Assert.AreEqual(purchaseRequestModel.Items[0].Quantity, purchaseDto.Items[0].Quantity);
-        Assert.AreEqual(purchaseRequestModel.Items[0].PharmacyName, purchaseDto.Items[0].PharmacyName);
-    }
-
-
-    [TestMethod]
-    public void PurchaseDtoToModelOK()
-    {
-        PurchaseItemDto purchaseItemDto = new PurchaseItemDto
-        {
-            DrugCode = "A01",
-            Quantity = 1,
-            PharmacyName = "Pharamacy Name"
-        };
-        List<PurchaseItemDto> purchaseItems = new List<PurchaseItemDto>() { purchaseItemDto };
-        PurchaseDto purchaseDto = new PurchaseDto()
-        {
-            Id = 1,
-            UserEmail = "email@email.com",
-            CreatedDate = DateTime.Now,
-            Items = purchaseItems
-        };
-
-        PurchaseResponseModel purchaseResponse = PurchaseModelsMapper.ToModel(purchaseDto);
-
-        Assert.AreEqual(purchaseDto.Id, purchaseResponse.Id);
-        Assert.AreEqual(purchaseDto.UserEmail, purchaseResponse.UserEmail);
-        Assert.AreEqual(purchaseDto.CreatedDate, purchaseResponse.CreatedDate);
-        Assert.AreEqual(purchaseDto.Items[0].DrugCode, purchaseResponse.Items[0].DrugCode);
-        Assert.AreEqual(purchaseDto.Items[0].Quantity, purchaseResponse.Items[0].Quantity);
-        Assert.AreEqual(purchaseDto.Items[0].PharmacyName, purchaseResponse.Items[0].PharmacyName);
-    }
-
-    [TestMethod]
     public void SolicitudeRequestModelToEntityOK()
     {
 
@@ -128,10 +75,6 @@ public class ModelsMapperTest
             Email = "ususario@user.com",
             Address = "Cuareim 123",
             Password = "Usuario+1",
-            Pharmacy = new Pharmacy()
-            {
-                Name = "Pharmashop"
-            },
             Role = new Role()
             {
                 Name = "Employee"
@@ -174,10 +117,6 @@ public class ModelsMapperTest
             Email = "ususario@user.com",
             Address = "Cuareim 123",
             Password = "Usuario+1",
-            Pharmacy = new Pharmacy()
-            {
-                Name = "Pharmashop"
-            },
             Role = new Role()
             {
                 Name = "Employee"
@@ -222,5 +161,69 @@ public class ModelsMapperTest
         Assert.AreEqual(solicitudesToConvert[0].Date, solicitudeResponseModels[0].Date);
         Assert.AreEqual(solicitudesToConvert[0].Employee.UserName, solicitudeResponseModels[0].EmployeeUserName);
 
+    }
+
+    [TestMethod]
+    public void DrugToModelOK()
+    {
+        DrugInfo drugInfo = new DrugInfo
+        {
+            Id = 1,
+            Name = "Perifar Flex",
+            Symptoms = "Dolor de cabeza",
+            Presentation = "Blister",
+            QuantityPerPresentation = 8,
+            UnitOfMeasurement = "Gramos"
+        };
+
+        Drug drug = new Drug
+        {
+            Id = 1,
+            DrugCode = "2A5678BX",
+            DrugInfo = drugInfo,
+            NeedsPrescription = false,
+            Price = 25.5
+        };
+
+        DrugModel drugModel = ModelsMapper.ToModel(drug);
+
+        Assert.AreEqual(drugModel.Id, drug.Id);
+        Assert.AreEqual(drugModel.DrugCode, drug.DrugCode);
+        Assert.AreEqual(drugModel.Name, drugInfo.Name);
+        Assert.AreEqual(drugModel.Price, drug.Price);
+        Assert.AreEqual(drugModel.NeedsPrescription, drug.NeedsPrescription);
+        Assert.AreEqual(drugModel.Presentation, drugInfo.Presentation);
+        Assert.AreEqual(drugModel.QuantityPerPresentation, drugInfo.QuantityPerPresentation);
+        Assert.AreEqual(drugModel.UnitOfMeasurement, drugInfo.UnitOfMeasurement);
+        Assert.AreEqual(drugModel.Symptoms, drugInfo.Symptoms);
+    }
+
+    [TestMethod]
+    public void DrugModelToEntityOK()
+    {
+        DrugModel drugModel = new DrugModel
+        {
+            Id = 1,
+            Name = "Perifar Flex",
+            Symptoms = "Dolor de cabeza",
+            Presentation = "Blister",
+            QuantityPerPresentation = 8,
+            UnitOfMeasurement = "Gramos",        
+            DrugCode = "2A5678BX",
+            NeedsPrescription = false,
+            Price = 25.5
+        };
+
+        Drug drug = ModelsMapper.ToEntity(drugModel);
+
+        Assert.AreEqual(drugModel.Id, drug.Id);
+        Assert.AreEqual(drugModel.DrugCode, drug.DrugCode);
+        Assert.AreEqual(drugModel.Name, drug.DrugInfo.Name);
+        Assert.AreEqual(drugModel.Price, drug.Price);
+        Assert.AreEqual(drugModel.NeedsPrescription, drug.NeedsPrescription);
+        Assert.AreEqual(drugModel.Presentation, drug.DrugInfo.Presentation);
+        Assert.AreEqual(drugModel.QuantityPerPresentation, drug.DrugInfo.QuantityPerPresentation);
+        Assert.AreEqual(drugModel.UnitOfMeasurement, drug.DrugInfo.UnitOfMeasurement);
+        Assert.AreEqual(drugModel.Symptoms, drug.DrugInfo.Symptoms);
     }
 }

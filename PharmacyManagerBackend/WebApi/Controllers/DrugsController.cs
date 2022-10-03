@@ -4,37 +4,41 @@ using WebApi.Models;
 using WebApi.Utils;
 using System.Collections.Generic;
 using IBusinessLogic;
+using WebApi.Filter;
 
 namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class DrugController : ControllerBase
+    public class DrugsController : ControllerBase
     {
         private IDrugLogic _drugLogic;
 
-        public DrugController(IDrugLogic drugLogic)
+        public DrugsController(IDrugLogic drugLogic)
         {
             this._drugLogic = drugLogic;
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(AuthorizationAttributeFilter))]
         public IActionResult Create([FromBody] DrugModel drugModel)
         {
             Drug drug = ModelsMapper.ToEntity(drugModel);
-            Drug drugCreated = _drugLogic.Create(drug);
+            Drug drugCreated = _drugLogic.Create(drug, drugModel.PharmacyId);
             DrugModel drugCreatedModel = ModelsMapper.ToModel(drugCreated);
             return Ok(drugCreatedModel);
         }
 
-        [HttpDelete]
+        [HttpDelete("{drugId}")]
+        [ServiceFilter(typeof(AuthorizationAttributeFilter))]
         public IActionResult Delete(int drugId)
         {
             _drugLogic.Delete(drugId);
             return Ok("Se elimino correctamente");
         }
 
-        [HttpGet]
+        [HttpGet("{drugId}")]
+        [ServiceFilter(typeof(AuthorizationAttributeFilter))]
         public IActionResult Get(int drugId)
         {
             Drug drug = _drugLogic.Get(drugId);
@@ -45,3 +49,4 @@ namespace WebApi.Controllers
     }
 
 }
+

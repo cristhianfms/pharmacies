@@ -25,7 +25,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return entity;
     }
 
-    public IEnumerable<T> GetAll(Func<T, bool> expresion = null)
+    public virtual IEnumerable<T> GetAll(Func<T, bool> expresion = null)
     {
         IEnumerable<T> entities;
 
@@ -42,7 +42,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return entities;
     }
 
-    public T GetFirst(Func<T, bool> expresion)
+    public virtual T GetFirst(Func<T, bool> expresion)
     {
         IEnumerable<T> entities = _table.Where(expresion);
         T entityToReturn;
@@ -58,7 +58,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return entityToReturn;
     }
 
-    public void Delete(T elem)
+    public virtual void Delete(T elem)
     {
         _table.Remove(elem);
         _context.SaveChanges();

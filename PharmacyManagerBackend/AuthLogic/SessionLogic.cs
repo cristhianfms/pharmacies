@@ -1,12 +1,13 @@
 ﻿using System;
+using BusinessLogic;
 using Domain;
+using Domain.AuthDomain;
 using Domain.Dtos;
 using Exceptions;
 using IBusinessLogic;
 using IDataAccess;
 
-namespace BusinessLogic;
-
+namespace AuthLogic;
 public class SessionLogic : ISessionLogic
 {
     private readonly ISessionRepository _sessionRepository;
@@ -33,6 +34,13 @@ public class SessionLogic : ISessionLogic
         };
 
         return userToken;
+    }
+
+    public Session Get(Guid token)
+    {
+        Session session = _sessionRepository.GetFirst(s => token.Equals(s.Token));
+
+        return session;
     }
 
     private Session createNewSession(User registeredUser)

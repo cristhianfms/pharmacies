@@ -109,7 +109,7 @@ public static class ModelsMapper
     {
         return new Solicitude()
         {
-            State = Enum.Parse<State>(solicitudePutModel.State)
+            State = Enum.Parse<State>(solicitudePutModel.State, true)
         };
     }
 
@@ -131,7 +131,7 @@ public static class ModelsMapper
             DrugCode = drugModel.DrugCode,
             NeedsPrescription = drugModel.NeedsPrescription,
             Price = drugModel.Price,
-            Stock = drugModel.Stock,
+            Stock = 0,
             DrugInfo = drugInfo
         };
     }

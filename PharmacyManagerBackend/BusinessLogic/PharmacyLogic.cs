@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain;
+using Exceptions;
 using IBusinessLogic;
 using IDataAccess;
 
@@ -16,17 +17,23 @@ public class PharmacyLogic : IPharmacyLogic
 
     public Pharmacy Create(Pharmacy pharmacy)
     {
-        return _pharmacyRepository.Create(pharmacy);
+        return this._pharmacyRepository.Create(pharmacy);
     }
 
     public virtual Pharmacy GetPharmacyByName(string pharmacyName)
     {
-        return _pharmacyRepository.GetFirst(f => pharmacyName.Equals(pharmacyName));
+        return this._pharmacyRepository.GetFirst(f => f.Name.Equals(pharmacyName));
     }
 
-    public bool ExistsDrug(string drugCode)
+    public virtual void ExistsDrug(string drugCode, int pharmacyId)
     {
-        return false;
+        Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Id == pharmacyId);
+        
+        if (pharmacy == null || !pharmacy.Drugs.Exists(d => d.DrugCode == drugCode))
+        {
+            throw new ResourceNotFoundException("resource does not exist");
+        }
+
     }
 }
 
