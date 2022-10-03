@@ -1,13 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
+
 using Domain;
 using Domain.Dtos;
-using System.Collections.Generic;
-using System.Linq;
-using WebApi.Models;
-using System.Xml.Linq;
 
-namespace WebApi.Utils;
+
+namespace WebApi.Models.Utils;
 
 public static class ModelsMapper
 {

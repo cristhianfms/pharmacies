@@ -1,8 +1,8 @@
 using Domain;
 using Domain.Dtos;
-using WebApi.Models;
 
-namespace WebApi.Utils;
+
+namespace WebApi.Models.Utils;
 public class InvitationModelsMapper
 {
     public static InvitationDto ToEntity(InvitationModel invitationModel)

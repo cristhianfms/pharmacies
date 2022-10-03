@@ -4,9 +4,9 @@ using Domain;
 using Domain.Dtos;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebApi.Models;
-using WebApi.Utils;
+using WebApi.Models.Utils;
 
-namespace WebApi.Test.Utils;
+namespace WebApi.Models.Test.Utils;
 
 [TestClass]
 public class ModelsMapperTest

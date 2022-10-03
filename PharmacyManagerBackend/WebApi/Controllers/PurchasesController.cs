@@ -3,7 +3,7 @@ using Domain.Dtos;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
-using WebApi.Utils;
+using WebApi.Models.Utils;
 
 namespace WebApi.Controllers;
 

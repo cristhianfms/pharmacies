@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using WebApi.Filter;
 using WebApi.Models;
-using WebApi.Utils;
+using WebApi.Models.Utils;
 
 namespace WebApi.Controllers;
 
