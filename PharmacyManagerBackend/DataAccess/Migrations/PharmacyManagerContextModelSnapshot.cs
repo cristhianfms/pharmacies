@@ -22,6 +22,148 @@ namespace DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Domain.AuthDomain.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Endpoint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PermissionSet");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Endpoint = "POST/api/invitations"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Endpoint = "POST/api/solicitudes"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Endpoint = "GET/api/solicitudes"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Endpoint = "PUT/api/solicitudes/.*"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Endpoint = "POST/api/drugs"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Endpoint = "DELETE/api/drugs/"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Endpoint = "GET/api/drugs/*"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Endpoint = "POST/api/pharmacies"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.AuthDomain.PermissionRole", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("PermissionRoleSet");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 1
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 2
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 4
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 5
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 6
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 7
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 8
+                        });
+                });
+
+            modelBuilder.Entity("Domain.AuthDomain.Session", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<Guid>("Token")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SessionSet");
+                });
+
             modelBuilder.Entity("Domain.Drug", b =>
                 {
                     b.Property<int>("Id")

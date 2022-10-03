@@ -38,8 +38,68 @@ namespace BusinessLogic.Test
 
             _drugRepositoryMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
             _drugInfoRepositoryMock.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(new DrugInfo());
+            _pharmacyRepositoryMock.Setup(m => m.Update(It.IsAny<Pharmacy>()));
 
             Drug createdDrug = _drugLogic.Create(drug);
+
+            _drugRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void CreateNewDrugPharmacyDoesNotExist()
+        {
+            Pharmacy pharmacy = null;
+
+            Drug drug = new Drug()
+            {
+                Id = 1,
+                DrugCode = "2a5678bx1",
+                Price = 25.99,
+                Stock = 15,
+                NeedsPrescription = false,
+                DrugInfo = new DrugInfo()
+            };
+
+
+            _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Returns(pharmacy);
+
+            Drug createdDrug = _drugLogic.Create(drug, 1);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void CreateNewDrugRepeatedPharmacy()
+        {
+            List<Drug> drugs = new List<Drug>();
+
+
+            Pharmacy pharmacy = new Pharmacy
+            {
+                Id = 1,
+                Drugs = drugs
+            };
+
+            Drug drug = new Drug()
+            {
+                Id = 1,
+                DrugCode = "2a5678bx1",
+                Price = 25.99,
+                Stock = 15,
+                NeedsPrescription = false,
+                DrugInfo = new DrugInfo()
+            };
+
+
+            _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Returns(pharmacy);
+            _drugRepositoryMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
+            _drugInfoRepositoryMock.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(new DrugInfo());
+            _pharmacyRepositoryMock.Setup(m => m.Update(It.IsAny<Pharmacy>()));
+
+            Drug createdDrug = _drugLogic.Create(drug, 1);
+            _drugLogic.Create(drug, 1);
+            _drugLogic.Create(drug, 1);
 
             _drugRepositoryMock.VerifyAll();
         }

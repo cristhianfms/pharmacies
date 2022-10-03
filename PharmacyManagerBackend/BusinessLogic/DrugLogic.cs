@@ -20,8 +20,20 @@ namespace BusinessLogic
 
         public Drug Create(Drug drug)
         {
+            Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Id == pharmacyId);
+            PharmacyExists(pharmacy);
+            DrugCodeNotRepeatedInPharmacy(drug.DrugCode, pharmacy);
             _drugInfoRepository.Create(drug.DrugInfo);
-            return _drugRepository.Create(drug);
+            Drug drugCreated = _drugRepository.Create(drug);
+            pharmacy.Drugs.Add(drugCreated);
+            _pharmacyRepository.Update(pharmacy);
+            return _drugRepository.Create(drugCreated);
+        }
+
+        private void PharmacyExists(Pharmacy pharmacy)
+        {
+            if (pharmacy == null)
+                throw new ValidationException("The pharmacy does not exist.");
         }
 
         public Drug Get(int drugId)
@@ -52,6 +64,12 @@ namespace BusinessLogic
 
         }
 
+        private void DrugCodeNotRepeatedInPharmacy(string drugCode, Pharmacy pharmacy)
+        {
+            if (pharmacy.Drugs.Exists(d => d.DrugCode.Equals(drugCode)))
+                throw new ValidationException("The drug code already exists in this pharmacy");
+        }
+
         public void Delete(int drugId)
         {
 
@@ -72,6 +90,16 @@ namespace BusinessLogic
                 drugToUpdate.Stock = drugToUpdate.Stock + drugSolicitude.DrugQuantity;
                 _drugRepository.Update(drugToUpdate);
             }
+        }
+
+        public virtual Drug Update(int drugId, Drug drug)
+        {
+            Drug drugToUpdate = _drugRepository.GetFirst(d => d.Id == drugId);
+            drugToUpdate.Stock = drug.Stock;
+
+            _drugRepository.Update(drugToUpdate);
+
+            return drugToUpdate;
         }
     }
 }

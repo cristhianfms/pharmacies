@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20220924022242_AddRoles")]
-    partial class AddRoles
+    [Migration("20221003194948_PharmacyManagerMigration")]
+    partial class PharmacyManagerMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,148 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("Domain.AuthDomain.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Endpoint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PermissionSet");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Endpoint = "POST/api/invitations"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Endpoint = "POST/api/solicitudes"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Endpoint = "GET/api/solicitudes"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Endpoint = "PUT/api/solicitudes/.*"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Endpoint = "POST/api/drugs"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Endpoint = "DELETE/api/drugs/"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Endpoint = "GET/api/drugs/*"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Endpoint = "POST/api/pharmacies"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.AuthDomain.PermissionRole", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("PermissionRoleSet");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 1
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 2
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 4
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 5
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 6
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 7
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 8
+                        });
+                });
+
+            modelBuilder.Entity("Domain.AuthDomain.Session", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<Guid>("Token")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SessionSet");
+                });
 
             modelBuilder.Entity("Domain.Drug", b =>
                 {
@@ -35,6 +177,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("DrugCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DrugInfoId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("NeedsPrescription")
                         .HasColumnType("bit");
@@ -50,9 +195,11 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DrugInfoId");
+
                     b.HasIndex("PharmacyId");
 
-                    b.ToTable("DrugDB");
+                    b.ToTable("DrugSet");
                 });
 
             modelBuilder.Entity("Domain.DrugInfo", b =>
@@ -84,7 +231,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DrugInfoDB");
+                    b.ToTable("DrugInfoSet");
                 });
 
             modelBuilder.Entity("Domain.Invitation", b =>
@@ -115,7 +262,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("InvitationDB");
+                    b.ToTable("InvitationSet");
                 });
 
             modelBuilder.Entity("Domain.Pharmacy", b =>
@@ -135,7 +282,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PharmacieDB");
+                    b.ToTable("PharmacySet");
                 });
 
             modelBuilder.Entity("Domain.Role", b =>
@@ -152,7 +299,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleDB");
+                    b.ToTable("RoleSet");
 
                     b.HasData(
                         new
@@ -172,7 +319,7 @@ namespace DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Session", b =>
+            modelBuilder.Entity("Domain.Solicitude", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -180,17 +327,50 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<Guid>("Token")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PharmacyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("State")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("EmployeeId");
 
-                    b.ToTable("SessionDB");
+                    b.HasIndex("PharmacyId");
+
+                    b.ToTable("SolicitudeSet");
+                });
+
+            modelBuilder.Entity("Domain.SolicitudeItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("DrugCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DrugQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SolicitudeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SolicitudeId");
+
+                    b.ToTable("SolicitudeItem");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -244,7 +424,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserDB");
+                    b.ToTable("UserSet");
 
                     b.HasData(
                         new
@@ -259,11 +439,49 @@ namespace DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.AuthDomain.PermissionRole", b =>
+                {
+                    b.HasOne("Domain.AuthDomain.Permission", "Permission")
+                        .WithMany("PermissionRoles")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Role", "Role")
+                        .WithMany("PermissionRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Domain.AuthDomain.Session", b =>
+                {
+                    b.HasOne("Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Drug", b =>
                 {
+                    b.HasOne("Domain.DrugInfo", "DrugInfo")
+                        .WithMany()
+                        .HasForeignKey("DrugInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Pharmacy", null)
                         .WithMany("Drugs")
                         .HasForeignKey("PharmacyId");
+
+                    b.Navigation("DrugInfo");
                 });
 
             modelBuilder.Entity("Domain.Invitation", b =>
@@ -285,15 +503,30 @@ namespace DataAccess.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Domain.Session", b =>
+            modelBuilder.Entity("Domain.Solicitude", b =>
                 {
-                    b.HasOne("Domain.User", "User")
+                    b.HasOne("Domain.User", "Employee")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.HasOne("Domain.Pharmacy", "Pharmacy")
+                        .WithMany()
+                        .HasForeignKey("PharmacyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Pharmacy");
+                });
+
+            modelBuilder.Entity("Domain.SolicitudeItem", b =>
+                {
+                    b.HasOne("Domain.Solicitude", null)
+                        .WithMany("Items")
+                        .HasForeignKey("SolicitudeId");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -325,6 +558,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("Domain.AuthDomain.Permission", b =>
+                {
+                    b.Navigation("PermissionRoles");
+                });
+
             modelBuilder.Entity("Domain.Pharmacy", b =>
                 {
                     b.Navigation("Drugs");
@@ -333,6 +571,16 @@ namespace DataAccess.Migrations
 
                     b.Navigation("Owner")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Role", b =>
+                {
+                    b.Navigation("PermissionRoles");
+                });
+
+            modelBuilder.Entity("Domain.Solicitude", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
