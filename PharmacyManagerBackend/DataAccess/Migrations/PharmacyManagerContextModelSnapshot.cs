@@ -88,7 +88,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("PermissionRole");
+                    b.ToTable("PermissionRoleSet");
 
                     b.HasData(
                         new

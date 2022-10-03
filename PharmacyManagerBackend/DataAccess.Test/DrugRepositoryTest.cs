@@ -2,7 +2,7 @@
 using Domain;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Exceptions;
+using Exceptions  ;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;

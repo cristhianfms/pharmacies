@@ -25,8 +25,6 @@ public class UserLogic
         return createdUser;
     }
 
-
-
     public virtual User GetUserByUserName(string userName)
     {
         return _userRepository.GetFirst(u => u.UserName == userName);

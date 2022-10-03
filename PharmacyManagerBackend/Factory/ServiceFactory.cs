@@ -22,16 +22,16 @@ public class ServiceFactory
 
     public void AddCustomServices()
     {
-        _services.AddScoped<RoleLogic, RoleLogic>();
-        _services.AddScoped<UserLogic, UserLogic>();
+        _services.AddScoped<RoleLogic>();
+        _services.AddScoped<UserLogic>();
         
         _services.AddScoped<ISessionLogic, SessionLogic>();
         _services.AddScoped<IPharmacyLogic, PharmacyLogic>();
         _services.AddScoped<IInvitationLogic, InvitationLogic>();
         _services.AddScoped<IDrugLogic, DrugLogic>();
         _services.AddScoped<ISolicitudeLogic, SolicitudeLogic>();
-        _services.AddScoped<DrugLogic, DrugLogic>();
-        _services.AddScoped<PharmacyLogic, PharmacyLogic>();
+        _services.AddScoped<DrugLogic>();
+        _services.AddScoped<PharmacyLogic>();
         _services.AddScoped<IPermissionLogic, PermissionLogic>();
 
         _services.AddScoped<AuthorizationAttributeFilter>();

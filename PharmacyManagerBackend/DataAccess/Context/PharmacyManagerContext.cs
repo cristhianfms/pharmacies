@@ -15,6 +15,7 @@ public class PharmacyManagerContext : DbContext
     public DbSet<DrugInfo> DrugInfoSet { get; set; }
     public DbSet<Drug> DrugSet { get; set; }
     public DbSet<Permission> PermissionSet { get; set; }
+    public DbSet<PermissionRole> PermissionRoleSet { get; set; }
     public DbSet<Solicitude> SolicitudeSet { get; set; }
     public PharmacyManagerContext() : base() { }
     public PharmacyManagerContext(DbContextOptions options) : base(options) { }
@@ -89,34 +90,34 @@ public class PharmacyManagerContext : DbContext
             updateSolicitude,
             createDrug,
             deleteDrug,
-         //   getDrug,
+            //getDrug,
             createPharmacy);
-        
+
         // Permission - Role
         modelBuilder.Entity<PermissionRole>().HasData(
-            new PermissionRole(){ PermissionId = createInvitation.Id, RoleId = admin.Id},
-            new PermissionRole() { PermissionId = createSolicitude.Id, RoleId = employee.Id},
-            new PermissionRole() { PermissionId = getSolicitudes.Id, RoleId = employee.Id},
+            new PermissionRole() { PermissionId = createInvitation.Id, RoleId = admin.Id },
+            new PermissionRole() { PermissionId = createSolicitude.Id, RoleId = employee.Id },
+            new PermissionRole() { PermissionId = getSolicitudes.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = getSolicitudes.Id, RoleId = owner.Id },
-            new PermissionRole() { PermissionId = updateSolicitude.Id, RoleId = owner.Id},
+            new PermissionRole() { PermissionId = updateSolicitude.Id, RoleId = owner.Id },
             new PermissionRole() { PermissionId = createDrug.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = deleteDrug.Id, RoleId = employee.Id },
-           // new PermissionRole() { PermissionId = getDrug.Id, RoleId = employee.Id },
-            new PermissionRole() { PermissionId = createPharmacy.Id, RoleId = admin.Id}
+            //new PermissionRole() { PermissionId = getDrug.Id, RoleId = employee.Id },
+            new PermissionRole() { PermissionId = createPharmacy.Id, RoleId = admin.Id }
             );
-        
+
 
         // Default admin
         modelBuilder.Entity<User>().HasData(
-            new User() 
-            { 
-                Id = 1, 
-                UserName = "Admin", 
-                Email = "admin@admin", 
-                Address = "", 
-                Password = "admin1234", 
-                RoleId = admin.Id, 
-                RegistrationDate = DateTime.Parse("2022-09-01") 
+            new User()
+            {
+                Id = 1,
+                UserName = "Admin",
+                Email = "admin@admin",
+                Address = "",
+                Password = "admin1234",
+                RoleId = admin.Id,
+                RegistrationDate = DateTime.Parse("2022-09-01")
             }
         );
 

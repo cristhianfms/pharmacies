@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class SolicitudesSeed : Migration
+    public partial class PharmacyManagerMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -124,7 +124,7 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PermissionRole",
+                name: "PermissionRoleSet",
                 columns: table => new
                 {
                     RoleId = table.Column<int>(type: "int", nullable: false),
@@ -132,15 +132,15 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PermissionRole", x => new { x.RoleId, x.PermissionId });
+                    table.PrimaryKey("PK_PermissionRoleSet", x => new { x.RoleId, x.PermissionId });
                     table.ForeignKey(
-                        name: "FK_PermissionRole_PermissionSet_PermissionId",
+                        name: "FK_PermissionRoleSet_PermissionSet_PermissionId",
                         column: x => x.PermissionId,
                         principalTable: "PermissionSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PermissionRole_RoleSet_RoleId",
+                        name: "FK_PermissionRoleSet_RoleSet_RoleId",
                         column: x => x.RoleId,
                         principalTable: "RoleSet",
                         principalColumn: "Id",
@@ -282,7 +282,7 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "PermissionRole",
+                table: "PermissionRoleSet",
                 columns: new[] { "PermissionId", "RoleId" },
                 values: new object[,]
                 {
@@ -322,8 +322,8 @@ namespace DataAccess.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PermissionRole_PermissionId",
-                table: "PermissionRole",
+                name: "IX_PermissionRoleSet_PermissionId",
+                table: "PermissionRoleSet",
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
@@ -378,7 +378,7 @@ namespace DataAccess.Migrations
                 name: "InvitationSet");
 
             migrationBuilder.DropTable(
-                name: "PermissionRole");
+                name: "PermissionRoleSet");
 
             migrationBuilder.DropTable(
                 name: "SessionSet");
