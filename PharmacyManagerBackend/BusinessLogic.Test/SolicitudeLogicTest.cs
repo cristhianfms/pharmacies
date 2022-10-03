@@ -108,7 +108,7 @@ namespace BusinessLogic.Test
                 Items = solicitudeItems,
             };
 
-
+            _pharmacyLogicMock.Setup(p => p.ExistsDrug(It.IsAny<string>(), It.IsAny<int>()));
             _solicitudeRepositoryMock.Setup(s => s.Create(solicitudeToCreate)).Returns(solicitudeRepository);
             _userLogicMock.Setup(u => u.GetUserByUserName(_userEmployeeForTest.UserName)).Returns(_userEmployeeForTest);
 

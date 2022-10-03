@@ -40,7 +40,7 @@ public class PurchasesControllerTest
             Items = purchaseItems,
             Pharmacy = new Pharmacy()
             {
-                Name = "Pharamacy Name"   
+                Name = "PharamacyName"   
             }
         };
         List<PurchaseItemModel> purchaseItemModels = new List<PurchaseItemModel>(){
@@ -52,7 +52,8 @@ public class PurchasesControllerTest
         PurchaseRequestModel purchaseRequestModel = new PurchaseRequestModel()
         {
             UserEmail = purchase.UserEmail,
-            Items = purchaseItemModels
+            Items = purchaseItemModels,
+            PharmacyName = purchase.Pharmacy.Name
         };
 
         _purchaseLogicMock.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
