@@ -2,7 +2,7 @@
 using Domain;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Exceptions;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -68,6 +68,95 @@ namespace DataAccess.Test
                 var drugs = context.Set<Drug>();
                 _drugRepository.Delete(drugCreated);
                 Assert.IsFalse(_drugRepository.GetAll().Contains<Drug>(drugCreated));
+            }
+        }
+
+        [TestMethod]
+        public void GetDrugOk()
+        {
+            DrugInfo di = new DrugInfo()
+            {
+                Name = "Perifar Flex",
+                Symptoms = "Dolor de cabeza",
+                Presentation = "Blister",
+                QuantityPerPresentation = 8,
+                UnitOfMeasurement = "Gramos"
+            };
+
+            Drug drugToGet = new Drug()
+            {
+                DrugCode = "2a5678bx1",
+                Price = 25.99,
+                Stock = 15,
+                NeedsPrescription = false,
+                DrugInfo = di
+            };
+
+            using (var context = new PharmacyManagerContext(this._contextOptions))
+            {
+                Drug drugCreated = this._drugRepository.Create(drugToGet);
+                var drugs = context.Set<Drug>();
+                Drug drugFetched = _drugRepository.GetFirst(d=>d.Id == drugCreated.Id);
+                Assert.AreEqual(drugCreated, drugFetched);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ResourceNotFoundException))]
+        public void GetDrugFail()
+        {
+            DrugInfo di = new DrugInfo()
+            {
+                Name = "Perifar Flex",
+                Symptoms = "Dolor de cabeza",
+                Presentation = "Blister",
+                QuantityPerPresentation = 8,
+                UnitOfMeasurement = "Gramos"
+            };
+
+            Drug drug = new Drug()
+            {
+                DrugCode = "2a5678bx1",
+                Price = 25.99,
+                Stock = 15,
+                NeedsPrescription = false,
+                DrugInfo = di
+            };
+
+            using (var context = new PharmacyManagerContext(this._contextOptions))
+            {
+                var drugs = context.Set<Drug>();
+                Drug drugFetched = _drugRepository.GetFirst(d => d.Id == drug.Id);
+            }
+        }
+
+        [TestMethod]
+        public void GetDrugInfoOk()
+        {
+            DrugInfo di = new DrugInfo()
+            {
+                Name = "Perifar Flex",
+                Symptoms = "Dolor de cabeza",
+                Presentation = "Blister",
+                QuantityPerPresentation = 8,
+                UnitOfMeasurement = "Gramos"
+            };
+
+            Drug drug = new Drug()
+            {
+                DrugCode = "2a5678bx1",
+                Price = 25.99,
+                Stock = 15,
+                NeedsPrescription = false,
+                DrugInfo = di
+            };
+
+            using (var context = new PharmacyManagerContext(this._contextOptions))
+            {
+                Drug drugCreated = this._drugRepository.Create(drug);
+                var drugs = context.Set<Drug>();
+                Drug drugFetched = _drugRepository.GetFirst(d => d.Id == drugCreated.Id);
+                Assert.AreEqual(drugCreated.DrugInfo.Id, drugFetched.DrugInfo.Id);
             }
         }
 

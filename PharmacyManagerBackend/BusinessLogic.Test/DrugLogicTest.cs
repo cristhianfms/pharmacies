@@ -27,9 +27,13 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void CreateNewDrugOk()
         {
+            List<Drug> drugs = new List<Drug>();
+            
+
             Pharmacy pharmacy = new Pharmacy
             {
-                Id = 1
+                Id = 1,
+                Drugs = drugs
             };
 
             Drug drug = new Drug()
@@ -41,6 +45,7 @@ namespace BusinessLogic.Test
                 NeedsPrescription = false,
                 DrugInfo = new DrugInfo()
             };
+
 
             _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Returns(pharmacy);
             _drugRepositoryMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
