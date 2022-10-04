@@ -37,7 +37,7 @@ public class ExceptionFilter : IExceptionFilter
             };
             context.Result = new BadRequestObjectResult(exceptionModel);
         }
-        catch (Exception)
+        catch (Exception e)
         {
             ExceptionModel exceptionModel = new ExceptionModel()
             {

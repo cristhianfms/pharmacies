@@ -4,6 +4,7 @@ using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    partial class PharmacyManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20221004033014_InvitationPharmacyNuleable")]
+    partial class InvitationPharmacyNuleable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,11 +70,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 6,
                             Endpoint = "DELETE/api/drugs/"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Endpoint = "GET/api/drugs/*"
                         },
                         new
                         {
@@ -133,11 +130,6 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            RoleId = 3,
-                            PermissionId = 7
-                        },
-                        new
-                        {
                             RoleId = 1,
                             PermissionId = 8
                         });
@@ -182,7 +174,7 @@ namespace DataAccess.Migrations
                     b.Property<bool>("NeedsPrescription")
                         .HasColumnType("bit");
 
-                    b.Property<int>("PharmacyId")
+                    b.Property<int?>("PharmacyId")
                         .HasColumnType("int");
 
                     b.Property<double>("Price")
@@ -477,9 +469,7 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.Pharmacy", null)
                         .WithMany("Drugs")
-                        .HasForeignKey("PharmacyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PharmacyId");
 
                     b.Navigation("DrugInfo");
                 });

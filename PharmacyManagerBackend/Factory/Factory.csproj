@@ -7,6 +7,7 @@
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\IDataAccess\IDataAccess.csproj" />
     <ProjectReference Include="..\WebApi.Filter\WebApi.Filter.csproj" />
+    <ProjectReference Include="..\IAuthLogic\IAuthLogic.csproj" />
   </ItemGroup>
 
   <ItemGroup>
