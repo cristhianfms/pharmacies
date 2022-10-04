@@ -61,7 +61,8 @@ namespace AuthLogic
         {
             Invitation invitation = getCreatedInvitation(invitationCode);
             checkInvitationUserName(invitation, invitationDto.UserName);
-
+            checkIfUserEmailIsRepeated(invitationDto.Email);
+            
             User userToCreate = new User()
             {
                 UserName = invitation.UserName,
@@ -127,7 +128,7 @@ namespace AuthLogic
             bool userExist = true;
             try
             {
-                User user = _userLogic.GetUserByUserName(userName);
+                User user = _userLogic.GetFirst(u => u.UserName == userName);
             }
             catch (ResourceNotFoundException e)
             {
@@ -203,6 +204,24 @@ namespace AuthLogic
             }
 
             return invitation;
+        }
+        
+        private void checkIfUserEmailIsRepeated(string email)
+        {
+            bool userExist = true;
+            try
+            {
+                User user = _userLogic.GetFirst(u => u.Email == email);
+            }
+            catch (ResourceNotFoundException e)
+            {
+                userExist = false;
+            }
+
+            if (userExist)
+            {
+                throw new ValidationException("email already registered");
+            }
         }
     }
 }

@@ -5,5 +5,5 @@ namespace IBusinessLogic;
 public interface IUserLogic
 {
     User Create(User user);
-    User GetUserByUserName(string userName);
+    User GetFirst(Func<User, bool> expresion);
 }

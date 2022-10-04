@@ -25,9 +25,9 @@ public class UserLogic : IUserLogic
         return createdUser;
     }
 
-    public virtual User GetUserByUserName(string userName)
+    public virtual User GetFirst(Func<User, bool> expresion)
     {
-        return _userRepository.GetFirst(u => u.UserName == userName);
+        return _userRepository.GetFirst(expresion);
     }
 
 
