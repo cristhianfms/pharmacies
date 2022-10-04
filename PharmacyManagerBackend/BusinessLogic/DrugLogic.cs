@@ -11,14 +11,14 @@ namespace BusinessLogic
     {
         private IDrugRepository _drugRepository;
         private IDrugInfoRepository _drugInfoRepository;
-        private IPharmacyRepository _pharmacyRepository;
+        private PharmacyLogic _pharmacyLogic;
         private Context _context;
 
-        public DrugLogic(IDrugRepository drugRepository, IDrugInfoRepository drugInfoRepository, IPharmacyRepository pharmacyRepository)
+        public DrugLogic(IDrugRepository drugRepository, IDrugInfoRepository drugInfoRepository, PharmacyLogic pharmacyLogic)
         {
             this._drugRepository = drugRepository;
             this._drugInfoRepository = drugInfoRepository;
-            this._pharmacyRepository = pharmacyRepository;
+            this._pharmacyLogic = pharmacyLogic;
         }
 
         public void SetContext(User currentUser)
@@ -31,14 +31,14 @@ namespace BusinessLogic
 
         public Drug Create(Drug drug)
         {
-            int pharmacyId = _context.CurrentUser.Pharmacy.Id;
-            Pharmacy pharmacy = FindPharmacy(pharmacyId);
-            drug.PharmacyId = pharmacyId;
+            Pharmacy pharmacy = _pharmacyLogic.GetPharmacyByName(_context.CurrentUser.Pharmacy.Name);
+            EmployeeBelongsInPharmacy(pharmacy);
+            drug.PharmacyId = pharmacy.Id;
             DrugCodeNotRepeatedInPharmacy(drug.DrugCode, pharmacy);
             _drugInfoRepository.Create(drug.DrugInfo);
             Drug drugCreated = _drugRepository.Create(drug);
             pharmacy.Drugs.Add(drugCreated);
-            _pharmacyRepository.Update(pharmacy);
+            _pharmacyLogic.UpdatePharmacy(pharmacy);
             return drugCreated;
         }
 
@@ -61,35 +61,25 @@ namespace BusinessLogic
             }
         }
 
+        public IEnumerable<Drug> GetAll()
+        {
+            return _drugRepository.GetAll();
+        }
 
         private void DrugCodeNotRepeatedInPharmacy(string drugCode, Pharmacy pharmacy)
         {
-            if (pharmacy.Drugs.Exists(d => d.DrugCode.Equals(drugCode)))
+            if (pharmacy.Drugs.Exists(d => d.DrugCode == drugCode))
                 throw new ValidationException("The drug code already exists in this pharmacy");
         }
 
         public void Delete(int drugId)
         {
-            int pharmacyId = _context.CurrentUser.Pharmacy.Id;
             Drug drug = Get(drugId);
-            Pharmacy pharmacy = FindPharmacy(pharmacyId);
+            Pharmacy pharmacy = _pharmacyLogic.GetPharmacyByName(_context.CurrentUser.Pharmacy.Name);
             pharmacy.Drugs.Remove(drug);
-            _pharmacyRepository.Update(pharmacy);
+            _pharmacyLogic.UpdatePharmacy(pharmacy);
             DrugInfo drugInfo = FindDrugInfo(drug.DrugInfoId);
             _drugInfoRepository.Delete(drugInfo);
-        }
-
-        private Pharmacy FindPharmacy(int pharmacyId)
-        {
-            try
-            {
-                Pharmacy pharmacy = _pharmacyRepository.GetFirst(p => p.Id == pharmacyId);
-                return pharmacy;
-            }
-            catch (ResourceNotFoundException e)
-            {
-                throw new ResourceNotFoundException("Pharmacy does not exist");
-            }
         }
 
         private DrugInfo FindDrugInfo(int drugInfoId)
@@ -105,7 +95,7 @@ namespace BusinessLogic
             }
         }
 
-        public virtual void AddStock(List<SolicitudeItem> drugsToAddStock)
+        public virtual void AddStock(IEnumerable<SolicitudeItem> drugsToAddStock)
         {
             foreach (var drugSolicitude in drugsToAddStock)
             {

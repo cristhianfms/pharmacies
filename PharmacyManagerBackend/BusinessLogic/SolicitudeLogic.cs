@@ -27,7 +27,7 @@ namespace BusinessLogic
 
         public void SetContext(User currentUser)
         {
-             _context = new Context()
+            _context = new Context()
             {
                 CurrentUser = currentUser
             };
@@ -40,18 +40,18 @@ namespace BusinessLogic
 
             try
             {
-                foreach ( SolicitudeItem itemToCheck in solicitude.Items)
+                foreach (SolicitudeItem itemToCheck in solicitude.Items)
                 {
                     _pharmacyLogic.ExistsDrug(itemToCheck.DrugCode, solicitude.PharmacyId);
                 }
-        }
+            }
             catch (NullReferenceException)
             {
                 throw new ValidationException("Items list cannot be null");
-    }
+            }
 
-    Solicitude createdSolicitude = _solicitudeRepository.Create(solicitude);
-           
+            Solicitude createdSolicitude = _solicitudeRepository.Create(solicitude);
+
             return createdSolicitude;
         }
 
@@ -60,8 +60,8 @@ namespace BusinessLogic
             IEnumerable<Solicitude> solicitudesToReturn = new List<Solicitude>();
             if (_context.CurrentUser.Role.Name.Equals(Role.EMPLOYEE))
             {
-               solicitudesToReturn = _solicitudeRepository.GetAll(
-                     s => s.Employee.Id == _context.CurrentUser.Id);
+                solicitudesToReturn = _solicitudeRepository.GetAll(
+                      s => s.Employee.Id == _context.CurrentUser.Id);
 
 
                 if (querySolicitudeDto.State != null)
@@ -73,25 +73,25 @@ namespace BusinessLogic
                 {
                     solicitudesToReturn = solicitudesToReturn.Where(s => s.Items.Any(x => x.DrugCode == querySolicitudeDto.DrugCode));
                 }
-                if(querySolicitudeDto.DateFrom != null && querySolicitudeDto.DateTo != null)
+                if (querySolicitudeDto.DateFrom != null && querySolicitudeDto.DateTo != null)
                 {
                     DateTime dateFrom = toDateTime(querySolicitudeDto.DateFrom);
                     DateTime dateTo = toDateTime(querySolicitudeDto.DateTo);
                     validateDates(dateFrom, dateTo);
                     solicitudesToReturn = solicitudesToReturn.Where(s => s.Date >= dateFrom && s.Date <= dateTo);
-                } 
-            } 
+                }
+            }
             else if (_context.CurrentUser.Role.Name.Equals(Role.OWNER))
             {
-               solicitudesToReturn = _solicitudeRepository.GetAll
-                   (s => s.PharmacyId == _context.CurrentUser.OwnerPharmacyId);
+                solicitudesToReturn = _solicitudeRepository.GetAll
+                    (s => s.PharmacyId == _context.CurrentUser.OwnerPharmacyId);
             }
 
             return solicitudesToReturn;
         }
-        private DateTime toDateTime (string stringDate)
+        private DateTime toDateTime(string stringDate)
         {
-          return  DateTime.Parse (stringDate);
+            return DateTime.Parse(stringDate);
         }
         private void validateDates(DateTime dateFrom, DateTime dateTo)
         {

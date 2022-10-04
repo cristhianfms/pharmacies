@@ -13,18 +13,25 @@ namespace BusinessLogic.Test
         private DrugLogic _drugLogic;
         private Mock<IDrugRepository> _drugRepositoryMock;
         private Mock<IDrugInfoRepository> _drugInfoRepositoryMock;
-        private Mock<IPharmacyRepository> _pharmacyRepositoryMock;
+        private Mock<PharmacyLogic> _pharmacyLogic;
         private User _userEmployeeForTest;
+        private Pharmacy _pharmacy;
 
         [TestInitialize]
         public void Initialize()
         {
             this._drugRepositoryMock = new Mock<IDrugRepository>(MockBehavior.Strict);
             this._drugInfoRepositoryMock = new Mock<IDrugInfoRepository>(MockBehavior.Strict);
-            this._pharmacyRepositoryMock = new Mock<IPharmacyRepository>(MockBehavior.Strict);
-            this._drugLogic = new DrugLogic(_drugRepositoryMock.Object, _drugInfoRepositoryMock.Object, _pharmacyRepositoryMock.Object);
+            this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
+            this._drugLogic = new DrugLogic(_drugRepositoryMock.Object, _drugInfoRepositoryMock.Object, _pharmacyLogic.Object);
 
-
+            _pharmacy = new Pharmacy()
+            {
+                Id = 1,
+                Name = "Pharmashop",
+                Drugs = new List<Drug>(),
+                Employees = new List<User>()
+            };
             _userEmployeeForTest = new User()
             {
                 Id = 1,
@@ -32,25 +39,19 @@ namespace BusinessLogic.Test
                 Email = "ususario@user.com",
                 Address = "Cuareim 123",
                 Password = "Usuario+1EsLacontraseña*",
-                EmployeePharmacy = new Pharmacy()
-                {
-                    Id = 1,
-                    Name = "Pharmashop",
-                    Drugs = new List<Drug>()
-                },
+                EmployeePharmacy = _pharmacy,
                 Role = new Role()
                 {
                     Name = "Employee"
                 }
             };
+
             _drugLogic.SetContext(_userEmployeeForTest);
         }
 
         [TestMethod]
         public void CreateNewDrugOk()
         {
-            Pharmacy pharmacy = _userEmployeeForTest.Pharmacy;
-
             Drug drug = new Drug()
             {
                 Id = 1,
@@ -59,13 +60,15 @@ namespace BusinessLogic.Test
                 Stock = 15,
                 NeedsPrescription = false,
                 DrugInfo = new DrugInfo(),
-                PharmacyId = pharmacy.Id,
+                PharmacyId = _pharmacy.Id,
             };
 
-            _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Returns(pharmacy);
+            _pharmacy.Employees.Add(_userEmployeeForTest);
+
+            _pharmacyLogic.Setup(m => m.GetPharmacyByName(_pharmacy.Name)).Returns(_pharmacy);
             _drugRepositoryMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
             _drugInfoRepositoryMock.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(new DrugInfo());
-            _pharmacyRepositoryMock.Setup(m => m.Update(It.IsAny<Pharmacy>()));
+            _pharmacyLogic.Setup(m => m.UpdatePharmacy(It.IsAny<Pharmacy>()));
 
             Drug createdDrug = _drugLogic.Create(drug);
 
@@ -74,44 +77,8 @@ namespace BusinessLogic.Test
 
         [TestMethod]
         [ExpectedException(typeof(ValidationException))]
-        public void CreateNewDrugPharmacyDoesNotExist()
-        {
-            Pharmacy pharmacy = new Pharmacy
-            {
-                Id = 2
-            };
-
-            Drug drug = new Drug()
-            {
-                Id = 1,
-                DrugCode = "2a5678bx1",
-                Price = 25.99,
-                Stock = 15,
-                NeedsPrescription = false,
-                DrugInfo = new DrugInfo(),
-                PharmacyId = pharmacy.Id
-            };
-
-
-            _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Throws(new ValidationException(""));
-
-            Drug createdDrug = _drugLogic.Create(drug);
-
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
         public void CreateNewDrugRepeatedPharmacy()
         {
-            List<Drug> drugs = new List<Drug>();
-
-
-            Pharmacy pharmacy = new Pharmacy
-            {
-                Id = 1,
-                Drugs = drugs
-            };
-
             Drug drug = new Drug()
             {
                 Id = 1,
@@ -120,14 +87,14 @@ namespace BusinessLogic.Test
                 Stock = 15,
                 NeedsPrescription = false,
                 DrugInfo = new DrugInfo(),
-                PharmacyId = pharmacy.Id
+                PharmacyId = _pharmacy.Id
             };
 
-
-            _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Returns(pharmacy);
+            _pharmacy.Drugs.Add(drug);
+            _pharmacyLogic.Setup(m => m.GetPharmacyByName(_pharmacy.Name)).Returns(_pharmacy);
             _drugRepositoryMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
             _drugInfoRepositoryMock.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(new DrugInfo());
-            _pharmacyRepositoryMock.Setup(m => m.Update(It.IsAny<Pharmacy>()));
+            _pharmacyLogic.Setup(m => m.UpdatePharmacy(It.IsAny<Pharmacy>()));
 
             Drug createdDrug = _drugLogic.Create(drug);
             _drugLogic.Create(drug);
@@ -138,15 +105,6 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void DeleteDrugOk()
         {
-            List<Drug> drugs = new List<Drug>();
-
-
-            Pharmacy pharmacy = new Pharmacy
-            {
-                Id = 1,
-                Drugs = drugs
-            };
-
             DrugInfo drugInfo = new DrugInfo();
 
 
@@ -158,12 +116,12 @@ namespace BusinessLogic.Test
                 Stock = 15,
                 NeedsPrescription = false,
                 DrugInfo = drugInfo,
-                PharmacyId = pharmacy.Id
+                PharmacyId = _pharmacy.Id
             };
 
-            _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Returns(pharmacy);
+            _pharmacyLogic.Setup(m => m.GetPharmacyByName(_pharmacy.Name)).Returns(_pharmacy);
             _drugRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
-            _pharmacyRepositoryMock.Setup(m => m.Update(It.IsAny<Pharmacy>()));
+            _pharmacyLogic.Setup(m => m.UpdatePharmacy(It.IsAny<Pharmacy>()));
             _drugInfoRepositoryMock.Setup(m => m.Delete(It.IsAny<DrugInfo>()));
             _drugInfoRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<DrugInfo, bool>>())).Returns(drugInfo);
             _drugLogic.Delete(drug.Id);

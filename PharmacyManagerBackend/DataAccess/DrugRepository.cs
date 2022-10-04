@@ -37,5 +37,23 @@ namespace DataAccess
             return entityToReturn;
         }
 
+        public override IEnumerable<Drug> GetAll(Func<Drug, bool> expresion = null)
+        {
+            IEnumerable<Drug> entities = this._table
+            .Include(i => i.DrugInfo);
+
+            if (expresion == null)
+            {
+                entities = _table;
+            }
+            else
+            {
+
+                entities = _table.Where(expresion);
+            }
+
+            return entities;
+        }
+
     }
 }
