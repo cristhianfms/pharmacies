@@ -1,3 +1,5 @@
+using Exceptions;
+
 namespace Domain.Test;
 
 [TestClass]
@@ -53,5 +55,56 @@ public class UserTest
         var test = user.Pharmacy;
 
         Assert.IsNull(user.Pharmacy);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void UserWithEmptyPassword()
+    {
+        User user = new User()
+        {
+            Password = ""
+        };
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void UserWithShortPassword()
+    {
+        User user = new User()
+        {
+            Password = "abcd"
+        };
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void UserWithSpecialCharInPassword()
+    {
+        User user = new User()
+        {
+            Password = "abcdabcd1"
+        };
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void UserWithEmptyEmail()
+    {
+        User user = new User()
+        {
+            Email = ""
+        };
+    }
+    
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void UserWithBadEmailFormat()
+    {
+        User user = new User()
+        {
+            Email = "asdfasdf@"
+        };
     }
 }

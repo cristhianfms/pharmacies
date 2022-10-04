@@ -44,7 +44,7 @@ public class SessionLogicTest
         {
             Id = 1,
             UserName = "ricardofort",
-            Password = "1234"
+            Password = "Contraseña-"
         };
         CredentialsDto credentialsDto = new CredentialsDto()
         {
@@ -80,7 +80,7 @@ public class SessionLogicTest
         {
             Id = 1,
             UserName = "ricardofort",
-            Password = "1234"
+            Password = "Contraseña-"
         };
         CredentialsDto credentialsDto = new CredentialsDto()
         {
@@ -156,12 +156,12 @@ public class SessionLogicTest
         {
             Id = 1,
             UserName = "ricardofort",
-            Password = "12345"
+            Password = "Contraseña-"
         };
         CredentialsDto credentialsDto = new CredentialsDto()
         {
             UserName = user.UserName,
-            Password = "1234"
+            Password = "Contraseña+"
         };
         _sessionRepository.Setup(m => m.GetFirst(It.IsAny<Func<Session, bool>>())).Returns(session);
         _userLogic.Setup(m => m.GetUserByUserName(It.IsAny<string>())).Returns(user);

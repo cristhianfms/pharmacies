@@ -283,7 +283,8 @@ public class InvitationLogicTest
             Email = "cris@gmail.com",
             Address = "Road A 1234",
             RoleName = "Employee",
-            PharmacyName = "PharmacyName"
+            PharmacyName = "PharmacyName",
+            Password = "Contraseña-"
         };
         InvitationDto invitationExpected = new InvitationDto()
         {
