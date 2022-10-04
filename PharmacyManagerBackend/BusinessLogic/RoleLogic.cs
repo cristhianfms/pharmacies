@@ -4,7 +4,7 @@ using IDataAccess;
 
 namespace BusinessLogic;
 
-public class RoleLogic
+public class RoleLogic : IRoleLogic
 {
     private readonly IRoleRepository _roleRepository;
     public RoleLogic() { }

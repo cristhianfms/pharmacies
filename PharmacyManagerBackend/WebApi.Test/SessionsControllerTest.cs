@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain.Dtos;
+using IAuthLogic;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

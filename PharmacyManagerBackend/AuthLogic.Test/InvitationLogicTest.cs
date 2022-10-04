@@ -1,9 +1,9 @@
 using System;
 using AuthLogic;
-using BusinessLogic;
 using Domain;
 using Domain.Dtos;
 using Exceptions;
+using IBusinessLogic;
 using IDataAccess;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -17,16 +17,16 @@ namespace AuthLogic.Test;
     {
         private InvitationLogic _invitationLogic;
         private Mock<IInvitationRepository> _invitationRepository;
-        private Mock<UserLogic> _userLogic;
-        private Mock<RoleLogic> _roleLogic;
-        private Mock<PharmacyLogic> _pharmacyLogic;
+        private Mock<IUserLogic> _userLogic;
+        private Mock<IRoleLogic> _roleLogic;
+        private Mock<IPharmacyLogic> _pharmacyLogic;
 
         [TestInitialize]
         public void Initialize()
         {
-            this._userLogic = new Mock<UserLogic>(MockBehavior.Strict, null);
-            this._roleLogic = new Mock<RoleLogic>(MockBehavior.Strict);
-            this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
+            this._userLogic = new Mock<IUserLogic>(MockBehavior.Strict);
+            this._roleLogic = new Mock<IRoleLogic>(MockBehavior.Strict);
+            this._pharmacyLogic = new Mock<IPharmacyLogic>(MockBehavior.Strict);
             this._invitationRepository = new Mock<IInvitationRepository>(MockBehavior.Strict);
             this._invitationLogic = new InvitationLogic(this._invitationRepository.Object, this._userLogic.Object, this._roleLogic.Object, this._pharmacyLogic.Object);
         }
