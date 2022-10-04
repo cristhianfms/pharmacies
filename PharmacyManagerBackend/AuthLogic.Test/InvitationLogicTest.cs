@@ -55,7 +55,7 @@ public class InvitationLogicTest
             PharmacyName = "PharmacyB"
         };
 
-        _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName))
+        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>()))
             .Throws(new ResourceNotFoundException(""));
         _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
         _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
@@ -101,7 +101,7 @@ public class InvitationLogicTest
             RoleName = "Admin"
         };
 
-        _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName))
+        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>()))
             .Throws(new ResourceNotFoundException(""));
         _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
         _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
@@ -143,7 +143,7 @@ public class InvitationLogicTest
             PharmacyName = "Farmashop"
         };
 
-        _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName))
+        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>()))
             .Throws(new ResourceNotFoundException(""));
         _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
         _invitationRepository.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
@@ -191,7 +191,8 @@ public class InvitationLogicTest
             RoleName = "Employee"
         };
 
-        _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName)).Returns(new User());
+        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>()))
+            .Returns(new User());
         _invitationRepository.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
             .Throws(new ResourceNotFoundException(""))
             .Returns(invitationRepository);
@@ -210,7 +211,7 @@ public class InvitationLogicTest
             PharmacyName = "Farmashop"
         };
 
-        _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName))
+        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>()))
             .Throws(new ResourceNotFoundException(""));
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy()
         {
@@ -234,7 +235,7 @@ public class InvitationLogicTest
             PharmacyName = "Farmashop"
         };
 
-        _userLogic.Setup(m => m.GetUserByUserName(invitationToCreate.UserName))
+        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>()))
             .Throws(new ResourceNotFoundException(""));
         _roleLogic.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
         {
@@ -304,7 +305,7 @@ public class InvitationLogicTest
             },
             Email = "cris@gmail.com",
             Address = "Road A 1234",
-            Password = "pass.1234",
+            Password = "Contraseña-",
             RegistrationDate = DateTime.Now
         };
         Invitation userInvitation = new Invitation
@@ -324,7 +325,9 @@ public class InvitationLogicTest
         _userLogic.Setup(m => m.Create(It.IsAny<User>())).Returns(userRepository);
         _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
         _invitationRepository.Setup(m => m.Delete(It.IsAny<Invitation>())).Callback(() => { });
-
+        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>()))
+            .Throws(new ResourceNotFoundException(""));
+        
         InvitationDto invitationDtoUpdated = _invitationLogic.Update(invitationCode, invitationToUpdate);
 
         Assert.AreEqual(invitationExpected, invitationDtoUpdated);

@@ -54,7 +54,7 @@ public class SessionLogicTest
 
         _sessionRepository.Setup(m => m.GetFirst(It.IsAny<Func<Session, bool>>())).Throws(new ResourceNotFoundException(""));
         _sessionRepository.Setup(m => m.Create(It.IsAny<Session>())).Returns(session);
-        _userLogic.Setup(m => m.GetUserByUserName(It.IsAny<string>())).Returns(user);
+        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>())).Returns(user);
 
         TokenDto tokenReturned = _sessionLogic.Create(credentialsDto);
 
@@ -89,7 +89,7 @@ public class SessionLogicTest
         };
 
         _sessionRepository.Setup(m => m.GetFirst(It.IsAny<Func<Session, bool>>())).Returns(session);
-        _userLogic.Setup(m => m.GetUserByUserName(It.IsAny<string>())).Returns(user);
+        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>())).Returns(user);
 
         TokenDto tokenReturned = _sessionLogic.Create(credentialsDto);
 
@@ -133,7 +133,7 @@ public class SessionLogicTest
             UserName = "ricardofort",
             Password = "1234"
         };
-        _userLogic.Setup(m => m.GetUserByUserName(It.IsAny<string>())).Returns((User)null);
+        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>())).Returns((User)null);
 
         _sessionLogic.Create(credentialsDto);
     }
@@ -164,7 +164,7 @@ public class SessionLogicTest
             Password = "Contraseña+"
         };
         _sessionRepository.Setup(m => m.GetFirst(It.IsAny<Func<Session, bool>>())).Returns(session);
-        _userLogic.Setup(m => m.GetUserByUserName(It.IsAny<string>())).Returns(user);
+        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>())).Returns(user);
 
         _sessionLogic.Create(credentialsDto);
     }

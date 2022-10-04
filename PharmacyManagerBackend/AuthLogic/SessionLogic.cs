@@ -20,7 +20,7 @@ public class SessionLogic : ISessionLogic
 
     public TokenDto Create(CredentialsDto credentialsDto)
     {
-        User registeredUser = _userLogic.GetUserByUserName(credentialsDto.UserName);
+        User registeredUser = _userLogic.GetFirst(u => u.UserName == credentialsDto.UserName);
         checkIfUserIsNotNull(registeredUser);
         checkIfPassowrdIsCorrect(registeredUser, credentialsDto);
 

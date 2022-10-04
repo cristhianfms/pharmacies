@@ -114,7 +114,7 @@ public class PharmacyManagerContext : DbContext
                 Id = 1,
                 UserName = "Admin",
                 Email = "admin@admin",
-                Address = "",
+                Address = "dirección",
                 Password = "admin1234-",
                 RoleId = admin.Id,
                 RegistrationDate = DateTime.Parse("2022-09-01")
