@@ -17,6 +17,7 @@ public class PharmacyManagerContext : DbContext
     public DbSet<Permission> PermissionSet { get; set; }
     public DbSet<PermissionRole> PermissionRoleSet { get; set; }
     public DbSet<Solicitude> SolicitudeSet { get; set; }
+    public DbSet<Purchase> PurchaseSet { get; set; }
     public PharmacyManagerContext() : base() { }
     public PharmacyManagerContext(DbContextOptions options) : base(options) { }
 

@@ -1,3 +1,4 @@
+using Domain.Utils;
 using Exceptions;
 
 namespace Domain;
@@ -18,7 +19,7 @@ public class User
         get { return _email; }
         set
         {
-            checkValidEmail(value);
+            FormatValidator.CheckValidEmailFormat(value);
             _email = value;
         }
     }
@@ -82,40 +83,7 @@ public class User
                EmployeePharmacyId == user.EmployeePharmacyId &&
                RegistrationDate == user.RegistrationDate;
     }
-
-    private void checkValidEmail(string email)
-    {
-        if (String.IsNullOrEmpty(email))
-        {
-            throw new ValidationException("email can't be empty");
-        }
-        else if (!isValidEmailFormat(email))
-        {
-            throw new ValidationException("email bad format");
-        }
-    }
-
-    private bool isValidEmailFormat(string email)
-    {
-        // reference: https://stackoverflow.com/questions/1365407/c-sharp-code-to-validate-email-address
-        var trimmedEmail = email.Trim();
-
-        if (trimmedEmail.EndsWith("."))
-        {
-            return false;
-        }
-
-        try
-        {
-            var addr = new System.Net.Mail.MailAddress(email);
-            return addr.Address == trimmedEmail;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
+    
     private void checkValidPassworkd(string password)
     {
         if (String.IsNullOrEmpty(password))

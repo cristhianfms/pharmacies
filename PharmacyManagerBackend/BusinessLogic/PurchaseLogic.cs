@@ -1,10 +1,8 @@
-using System.ComponentModel.DataAnnotations;
 using Domain;
 using Domain.Dtos;
 using Exceptions;
 using IBusinessLogic;
 using IDataAccess;
-using System.Linq;
 using ValidationException = Exceptions.ValidationException;
 
 namespace BusinessLogic;
@@ -31,14 +29,18 @@ public class PurchaseLogic : IPurchaseLogic
     public Purchase Create(Purchase purchase)
     {
         Pharmacy pharmacy = GetPharmacyByName(purchase.Pharmacy.Name);
-        CheckPurchaseStock(pharmacy, purchase.Items);
-        UpdateDrugStock(pharmacy, purchase.Items);
+        CheckAndBindExistentDrugs(pharmacy, purchase.Items);
+        CheckDrugsStock(purchase.Items);
+        UpdateDrugStock(purchase.Items);
         double totalPrice = CalculateTotalPrice(pharmacy, purchase.Items);
 
+        purchase.Pharmacy = pharmacy;
         purchase.TotalPrice = totalPrice;
+        purchase.Date = DateTime.Now;
 
         return _purchaseRepository.Create(purchase);
     }
+
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
     { 
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
@@ -77,18 +79,6 @@ public class PurchaseLogic : IPurchaseLogic
         return pharmacy;
     }
 
-    private Drug GetDrug(Pharmacy pharmacy, string drugCode)
-    {
-        Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode);
-
-        if (drug == null)
-        {
-            throw new ValidationException($"{drugCode} not exist in pharmacy {pharmacy.Name}");
-        }
-        
-        return drug;
-    }
-
     private void CheckStock(Drug drug, int purchaseItemQuantity)
     {
         if (drug.Stock < purchaseItemQuantity)
@@ -97,22 +87,21 @@ public class PurchaseLogic : IPurchaseLogic
         }
     }
 
-    private void UpdateDrugStock(Pharmacy pharmacy, List<PurchaseItem> purchaseItems)
+    private void UpdateDrugStock(List<PurchaseItem> purchaseItems)
     {
         foreach (var purchaseItem in purchaseItems)
         {
-            Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
+            Drug drug = purchaseItem.Drug;
             drug.Stock -= purchaseItem.Quantity;
             _drugLogic.Update(drug.Id, drug);
         }
     }
 
-    private void CheckPurchaseStock(Pharmacy pharmacy, List<PurchaseItem> purchaseItems)
+    private void CheckDrugsStock(List<PurchaseItem> purchaseItems)
     {
         foreach (var purchaseItem in purchaseItems)
         {
-            Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
-            CheckStock(drug, purchaseItem.Quantity);
+            CheckStock(purchaseItem.Drug, purchaseItem.Quantity);
         }
     }
     
@@ -126,5 +115,27 @@ public class PurchaseLogic : IPurchaseLogic
         }
 
         return totalPrice;
+    }
+    
+    private void CheckAndBindExistentDrugs(Pharmacy pharmacy, List<PurchaseItem> purchaseItems)
+    {
+        foreach (var purchaseItem in purchaseItems)
+        {
+            Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
+            purchaseItem.Drug = drug;
+        }
+    }
+    
+    
+    private Drug GetDrug(Pharmacy pharmacy, string drugCode)
+    {
+        Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode);
+
+        if (drug == null)
+        {
+            throw new ValidationException($"{drugCode} not exist in pharmacy {pharmacy.Name}");
+        }
+        
+        return drug;
     }
 }
