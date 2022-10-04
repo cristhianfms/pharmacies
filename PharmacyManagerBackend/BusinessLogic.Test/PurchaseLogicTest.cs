@@ -248,15 +248,11 @@ public class PurchaseLogicTest
         };
         List<Purchase> purchasesRepository = new List<Purchase>() { purchaseRepository1, purchaseRepository2 };
         double totalPrice = purchaseRepository1.TotalPrice + purchaseRepository2.TotalPrice;
-
-        Context context = new Context()
+        User currentUser = new User()
         {
-            CurrentUser = new User()
+            Role = new Role()
             {
-                Role = new Role()
-                {
-                    Name = Role.EMPLOYEE
-                }
+                Name = Role.EMPLOYEE
             }
         };
         QueryPurchaseDto queryPurchaseDto = new QueryPurchaseDto()
@@ -266,7 +262,7 @@ public class PurchaseLogicTest
         };
         _purchaseRepository.Setup(m => m.GetAll(It.IsAny<Func<Purchase, bool>>())).Returns(purchasesRepository);
         
-        _purchaseLogic.SetContext(context);
+        _purchaseLogic.SetContext(currentUser);
         PurchaseReportDto purchasesReport = _purchaseLogic.GetPurchasesReport(queryPurchaseDto);
         
         Assert.AreEqual(totalPrice, purchasesReport.TotalPrice);

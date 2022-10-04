@@ -21,13 +21,15 @@ public class AuthorizationAttributeFilter : Attribute, IAuthorizationFilter
     private readonly ISessionLogic _sessionLogic;
     private readonly IPermissionLogic _permissionLogic;
     private readonly ISolicitudeLogic _solicitudeLogic;
+    private readonly IPurchaseLogic _purchaseLogic;
 
     public AuthorizationAttributeFilter(ISessionLogic sessionsLogic, IPermissionLogic permissionLogic,
-        ISolicitudeLogic solicitudeLogic)
+        ISolicitudeLogic solicitudeLogic, IPurchaseLogic purchaseLogic)
     {
         this._sessionLogic = sessionsLogic;
         this._permissionLogic = permissionLogic;
         this._solicitudeLogic = solicitudeLogic;
+        this._purchaseLogic = purchaseLogic;
     }
 
     public void OnAuthorization(AuthorizationFilterContext context)
@@ -98,8 +100,8 @@ public class AuthorizationAttributeFilter : Attribute, IAuthorizationFilter
                     StatusCode = ForbiddenCode
                 };
             }
-            _solicitudeLogic.SetContext(loggedUser); 
-
+            _solicitudeLogic.SetContext(loggedUser);
+            _purchaseLogic.SetContext(loggedUser);
         }
     }
 }
