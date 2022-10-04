@@ -7,6 +7,7 @@ public class User
     private const int PASSWORD_MIN_LENGTH = 8;
     private string _email;
     private string _password;
+    private string _address;
     public int Id { get; set; }
     public string UserName { get; set; }
     public int RoleId { get; set; }
@@ -14,31 +15,38 @@ public class User
 
     public string Email
     {
-        get
-        {
-            return _email;
-        }
+        get { return _email; }
         set
         {
             checkValidEmail(value);
             _email = value;
         }
     }
-    public string Address { get; set; }
+
+    public string Address
+    {
+        get { return _address; }
+        set
+        {
+            if (String.IsNullOrEmpty(value))
+            {
+                throw new ValidationException("address can't be empty");
+            }
+
+            _address = value;
+        }
+    }
 
     public string Password
     {
-        get
-        {
-            return _password;
-        }
+        get { return _password; }
         set
         {
             checkValidPassworkd(value);
             _password = value;
         }
     }
-    
+
     public int? OwnerPharmacyId { get; set; }
     public Pharmacy? OwnerPharmacy { get; set; }
     public int? EmployeePharmacyId { get; set; }
@@ -47,10 +55,7 @@ public class User
 
     public Pharmacy? Pharmacy
     {
-        get
-        {
-            return OwnerPharmacy != null ? OwnerPharmacy : EmployeePharmacy;
-        }
+        get { return OwnerPharmacy != null ? OwnerPharmacy : EmployeePharmacy; }
         set
         {
             if (Role.OWNER.Equals(Role.Name))
@@ -77,43 +82,51 @@ public class User
                EmployeePharmacyId == user.EmployeePharmacyId &&
                RegistrationDate == user.RegistrationDate;
     }
-    
+
     private void checkValidEmail(string email)
     {
         if (String.IsNullOrEmpty(email))
         {
             throw new ValidationException("email can't be empty");
-        } else if (!isValidEmailFormat(email))
+        }
+        else if (!isValidEmailFormat(email))
         {
             throw new ValidationException("email bad format");
         }
     }
+
     private bool isValidEmailFormat(string email)
     {
         // reference: https://stackoverflow.com/questions/1365407/c-sharp-code-to-validate-email-address
         var trimmedEmail = email.Trim();
 
-        if (trimmedEmail.EndsWith(".")) {
+        if (trimmedEmail.EndsWith("."))
+        {
             return false;
         }
-        try {
+
+        try
+        {
             var addr = new System.Net.Mail.MailAddress(email);
             return addr.Address == trimmedEmail;
         }
-        catch {
+        catch
+        {
             return false;
         }
     }
-    
+
     private void checkValidPassworkd(string password)
     {
         if (String.IsNullOrEmpty(password))
         {
             throw new ValidationException("password can't be empty");
-        } else if (password.Length < PASSWORD_MIN_LENGTH)
+        }
+        else if (password.Length < PASSWORD_MIN_LENGTH)
         {
             throw new ValidationException("passowrd must contain at least 8 characters");
-        } else if (!hasSpecialChar(password))
+        }
+        else if (!hasSpecialChar(password))
         {
             throw new ValidationException("password must contain at least one special character");
         }

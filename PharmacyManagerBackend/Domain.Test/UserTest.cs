@@ -107,4 +107,13 @@ public class UserTest
             Email = "asdfasdf@"
         };
     }
+
+    [ExpectedException(typeof(ValidationException))]
+    public void UserWithEmptyAddress()
+    {
+        User user = new User()
+        {
+            Address = ""
+        };
+    }
 }
