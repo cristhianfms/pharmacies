@@ -17,6 +17,7 @@ public class PharmacyManagerContext : DbContext
     public DbSet<Permission> PermissionSet { get; set; }
     public DbSet<PermissionRole> PermissionRoleSet { get; set; }
     public DbSet<Solicitude> SolicitudeSet { get; set; }
+    public DbSet<Purchase> PurchaseSet { get; set; }
     public PharmacyManagerContext() : base() { }
     public PharmacyManagerContext(DbContextOptions options) : base(options) { }
 
@@ -81,7 +82,8 @@ public class PharmacyManagerContext : DbContext
         Permission deleteDrug = new Permission() { Id = 6, Endpoint = "DELETE/api/drugs/" };
         Permission getDrug = new Permission() { Id = 7, Endpoint = "GET/api/drugs*" };
 
-
+        //Purchase Permissions
+        Permission getAllPurchases = new Permission() { Id = 9, Endpoint = "GET/api/purchases" };
 
         modelBuilder.Entity<Permission>().HasData(
             createInvitation,
@@ -91,7 +93,8 @@ public class PharmacyManagerContext : DbContext
             createDrug,
             deleteDrug,
             getDrug,
-            createPharmacy);
+            createPharmacy,
+            getAllPurchases);
 
         // Permission - Role
         modelBuilder.Entity<PermissionRole>().HasData(
@@ -103,8 +106,10 @@ public class PharmacyManagerContext : DbContext
             new PermissionRole() { PermissionId = createDrug.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = deleteDrug.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = getDrug.Id, RoleId = employee.Id },
-            new PermissionRole() { PermissionId = createPharmacy.Id, RoleId = admin.Id }
-            );
+            new PermissionRole() { PermissionId = createPharmacy.Id, RoleId = admin.Id },
+            new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = admin.Id },
+            new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = employee.Id }
+        );
 
 
         // Default admin

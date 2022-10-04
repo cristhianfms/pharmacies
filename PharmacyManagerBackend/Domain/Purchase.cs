@@ -1,3 +1,4 @@
+using Domain.Utils;
 using Exceptions;
 
 namespace Domain;
@@ -18,11 +19,7 @@ public class Purchase
         }
         set
         {
-            if (String.IsNullOrEmpty(value))
-            {
-                throw new ValidationException("user email can not be null");
-            }
-
+            FormatValidator.CheckValidEmailFormat(value);
             _userEmail = value;
         }
     }
