@@ -21,9 +21,12 @@ public class PurchaseLogic : IPurchaseLogic
         this._drugLogic = drugLogic;
     }
 
-    public void SetContext(Context context)
+    public void SetContext(User user)
     {
-        _context = context;
+        _context = new Context()
+        {
+            CurrentUser = user
+        };
     }
 
     public Purchase Create(Purchase purchase)
