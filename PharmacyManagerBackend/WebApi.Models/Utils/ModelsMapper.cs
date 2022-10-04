@@ -164,5 +164,13 @@ public static class ModelsMapper
             PharmacyId = drug.PharmacyId
         };
     }
-
+    public static IEnumerable<DrugGetModel> ToModelList(IEnumerable<Drug> drugs)
+    {
+        List<DrugGetModel> drugGetModel = new List<DrugGetModel>();
+        foreach (Drug _drug in drugs)
+        {
+            drugGetModel.Add(ToGetModel(_drug));
+        }
+        return drugGetModel;
+    }
 }

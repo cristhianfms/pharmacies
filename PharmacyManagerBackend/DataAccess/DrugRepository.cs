@@ -39,18 +39,16 @@ namespace DataAccess
 
         public override IEnumerable<Drug> GetAll(Func<Drug, bool> expresion = null)
         {
-            IEnumerable<Drug> entities = this._table
-            .Include(i => i.DrugInfo);
+            IEnumerable<Drug> entities;
 
             if (expresion == null)
-            {
-                entities = _table;
-            }
-            else
-            {
+                entities = this._table
+                .Include(i => i.DrugInfo);
 
-                entities = _table.Where(expresion);
-            }
+            else
+                entities = this._table
+                .Include(i => i.DrugInfo).Where(expresion);
+
 
             return entities;
         }

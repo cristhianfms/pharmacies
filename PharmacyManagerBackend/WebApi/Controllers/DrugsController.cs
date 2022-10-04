@@ -46,6 +46,15 @@ namespace WebApi.Controllers
             DrugGetModel drugModel = ModelsMapper.ToGetModel(drug);
             return Ok(drugModel);
         }
+
+        [HttpGet]
+        [ServiceFilter(typeof(AuthorizationAttributeFilter))]
+        public IActionResult Get()
+        {
+            IEnumerable<Drug> drugs = _drugLogic.GetAll();
+            IEnumerable<DrugGetModel> drugModels = ModelsMapper.ToModelList(drugs);
+            return Ok(drugModels);
+        }
     }
 
 }
