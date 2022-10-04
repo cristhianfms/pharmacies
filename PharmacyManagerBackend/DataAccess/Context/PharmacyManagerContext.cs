@@ -78,8 +78,8 @@ public class PharmacyManagerContext : DbContext
 
         //Drug Permissions
         Permission createDrug = new Permission() { Id = 5, Endpoint = "POST/api/drugs" };
-        Permission deleteDrug = new Permission() { Id = 6, Endpoint = "DELETE/api/drugs/" };
-        Permission getDrug = new Permission() { Id = 7, Endpoint = "GET/api/drugs*" };
+        Permission deleteDrug = new Permission() { Id = 6, Endpoint = "DELETE/api/drugs/.*" };
+        Permission getDrug = new Permission() { Id = 7, Endpoint = "GET/api/drugs/.*" };
 
 
 

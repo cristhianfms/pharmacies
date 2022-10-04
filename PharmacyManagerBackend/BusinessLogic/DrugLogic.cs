@@ -4,6 +4,7 @@ using Domain;
 using IBusinessLogic;
 using IDataAccess;
 using System;
+using Domain.Dtos;
 
 namespace BusinessLogic
 {
@@ -61,9 +62,27 @@ namespace BusinessLogic
             }
         }
 
-        public IEnumerable<Drug> GetAll()
+        public IEnumerable<Drug> GetAll(QueryDrugDto queryDrugDto)
         {
-            return _drugRepository.GetAll();
+            IEnumerable<Drug> drugs = new List<Drug>();
+            
+            if (queryDrugDto.DrugName == null &&
+                queryDrugDto.WithStock == false)
+                drugs = _drugRepository.GetAll();
+            
+            if (queryDrugDto.DrugName == null &&
+                queryDrugDto.WithStock == true)
+                drugs = _drugRepository.GetAll(d => d.Stock > 0);
+            
+            if (queryDrugDto.DrugName != null &&
+                queryDrugDto.WithStock == false)
+                drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName);
+            
+            if (queryDrugDto.DrugName != null &&
+                queryDrugDto.WithStock == true)
+                drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName && d.Stock > 0);
+
+            return drugs;
         }
 
         private void DrugCodeNotRepeatedInPharmacy(string drugCode, Pharmacy pharmacy)

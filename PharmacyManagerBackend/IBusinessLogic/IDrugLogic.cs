@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Domain;
+using Domain.Dtos;
 
 namespace IBusinessLogic
 {
@@ -11,7 +12,7 @@ namespace IBusinessLogic
         void Delete(int drugId);
         void AddStock(IEnumerable<SolicitudeItem> items);
         void SetContext(User currentUser);
-        IEnumerable<Drug> GetAll();
+        IEnumerable<Drug> GetAll(QueryDrugDto queryDrugDto);
 
     }
 }
