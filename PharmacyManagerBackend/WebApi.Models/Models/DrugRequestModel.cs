@@ -11,7 +11,6 @@ public class DrugRequestModel
     public string DrugCode { get; set; }
     public double Price { get; set; }
     public bool NeedsPrescription { get; set; }
-    public int PharmacyId { get; set; }
 
     public override bool Equals(object? obj)
     {
@@ -24,8 +23,7 @@ public class DrugRequestModel
                UnitOfMeasurement == model.UnitOfMeasurement &&
                DrugCode == model.DrugCode &&
                Price == model.Price &&
-               NeedsPrescription == model.NeedsPrescription &&
-               PharmacyId == model.PharmacyId;
+               NeedsPrescription == model.NeedsPrescription; 
     }
 }
 

@@ -31,11 +31,10 @@ namespace BusinessLogic
 
         public Drug Create(Drug drug)
         {
-            //int pharmacyId = _context.CurrentUser.Pharmacy.Id;
-            Pharmacy pharmacy = FindPharmacy(drug.PharmacyId);
+            int pharmacyId = _context.CurrentUser.Pharmacy.Id;
+            Pharmacy pharmacy = FindPharmacy(pharmacyId);
+            drug.PharmacyId = pharmacyId;
             DrugCodeNotRepeatedInPharmacy(drug.DrugCode, pharmacy);
-            //EmployeeBelongsInPharmacy(pharmacy);
-            //drug.PharmacyId = pharmacyId;
             _drugInfoRepository.Create(drug.DrugInfo);
             Drug drugCreated = _drugRepository.Create(drug);
             pharmacy.Drugs.Add(drugCreated);
@@ -71,9 +70,9 @@ namespace BusinessLogic
 
         public void Delete(int drugId)
         {
-            //int pharmacyId = _context.CurrentUser.Pharmacy.Id;
+            int pharmacyId = _context.CurrentUser.Pharmacy.Id;
             Drug drug = Get(drugId);
-            Pharmacy pharmacy = FindPharmacy(drug.PharmacyId);
+            Pharmacy pharmacy = FindPharmacy(pharmacyId);
             pharmacy.Drugs.Remove(drug);
             _pharmacyRepository.Update(pharmacy);
             DrugInfo drugInfo = FindDrugInfo(drug.DrugInfoId);

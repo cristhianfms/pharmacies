@@ -10,7 +10,8 @@ namespace IBusinessLogic
         Drug Get(int drugId);
         void Delete(int drugId);
         void AddStock(List<SolicitudeItem> items);
-            
+        void SetContext(User currentUser);
+
     }
 }
 

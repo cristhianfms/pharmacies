@@ -14,6 +14,7 @@ namespace BusinessLogic.Test
         private Mock<IDrugRepository> _drugRepositoryMock;
         private Mock<IDrugInfoRepository> _drugInfoRepositoryMock;
         private Mock<IPharmacyRepository> _pharmacyRepositoryMock;
+        private User _userEmployeeForTest;
 
         [TestInitialize]
         public void Initialize()
@@ -22,19 +23,32 @@ namespace BusinessLogic.Test
             this._drugInfoRepositoryMock = new Mock<IDrugInfoRepository>(MockBehavior.Strict);
             this._pharmacyRepositoryMock = new Mock<IPharmacyRepository>(MockBehavior.Strict);
             this._drugLogic = new DrugLogic(_drugRepositoryMock.Object, _drugInfoRepositoryMock.Object, _pharmacyRepositoryMock.Object);
+
+
+            _userEmployeeForTest = new User()
+            {
+                Id = 1,
+                UserName = "Usuario1",
+                Email = "ususario@user.com",
+                Address = "Cuareim 123",
+                Password = "Usuario+1EsLacontraseña*",
+                EmployeePharmacy = new Pharmacy()
+                {
+                    Id = 1,
+                    Name = "Pharmashop"
+                },
+                Role = new Role()
+                {
+                    Name = "Employee"
+                }
+            };
+            _drugLogic.SetContext(_userEmployeeForTest);
         }
 
         [TestMethod]
         public void CreateNewDrugOk()
         {
             List<Drug> drugs = new List<Drug>();
-            
-
-            Pharmacy pharmacy = new Pharmacy
-            {
-                Id = 1,
-                Drugs = drugs
-            };
 
             Drug drug = new Drug()
             {
@@ -44,7 +58,7 @@ namespace BusinessLogic.Test
                 Stock = 15,
                 NeedsPrescription = false,
                 DrugInfo = new DrugInfo(),
-                PharmacyId = pharmacy.Id
+                PharmacyId =_userEmployeeForTest.Pharmacy.Id,
             };
 
 
