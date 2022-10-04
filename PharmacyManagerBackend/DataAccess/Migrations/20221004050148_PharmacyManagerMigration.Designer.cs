@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20221004032032_PharmacyManagerMigration")]
+    [Migration("20221004050148_PharmacyManagerMigration")]
     partial class PharmacyManagerMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,7 +74,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 7,
-                            Endpoint = "GET/api/drugs/*"
+                            Endpoint = "GET/api/drugs*"
                         },
                         new
                         {
@@ -246,7 +246,7 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PharmacyId")
+                    b.Property<int?>("PharmacyId")
                         .HasColumnType("int");
 
                     b.Property<int>("RoleId")
@@ -490,9 +490,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("Domain.Pharmacy", "Pharmacy")
                         .WithMany()
-                        .HasForeignKey("PharmacyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PharmacyId");
 
                     b.HasOne("Domain.Role", "Role")
                         .WithMany()

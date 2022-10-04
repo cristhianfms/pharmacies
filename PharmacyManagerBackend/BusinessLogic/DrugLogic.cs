@@ -12,6 +12,7 @@ namespace BusinessLogic
         private IDrugRepository _drugRepository;
         private IDrugInfoRepository _drugInfoRepository;
         private IPharmacyRepository _pharmacyRepository;
+        private Context _context;
 
         public DrugLogic(IDrugRepository drugRepository, IDrugInfoRepository drugInfoRepository, IPharmacyRepository pharmacyRepository)
         {
@@ -20,15 +21,32 @@ namespace BusinessLogic
             this._pharmacyRepository = pharmacyRepository;
         }
 
+        public void SetContext(User currentUser)
+        {
+            _context = new Context()
+            {
+                CurrentUser = currentUser
+            };
+        }
+
         public Drug Create(Drug drug)
         {
+            //int pharmacyId = _context.CurrentUser.Pharmacy.Id;
             Pharmacy pharmacy = FindPharmacy(drug.PharmacyId);
             DrugCodeNotRepeatedInPharmacy(drug.DrugCode, pharmacy);
+            //EmployeeBelongsInPharmacy(pharmacy);
+            //drug.PharmacyId = pharmacyId;
             _drugInfoRepository.Create(drug.DrugInfo);
             Drug drugCreated = _drugRepository.Create(drug);
             pharmacy.Drugs.Add(drugCreated);
             _pharmacyRepository.Update(pharmacy);
             return drugCreated;
+        }
+
+        private void EmployeeBelongsInPharmacy(Pharmacy pharmacy)
+        {
+            if (pharmacy.Employees.Find(e => e.Id == _context.CurrentUser.Id) == null)
+                throw new ValidationException("The employee does not belong in the pharmacy");
         }
 
         public Drug Get(int drugId)
@@ -40,7 +58,7 @@ namespace BusinessLogic
             }
             catch (ResourceNotFoundException e)
             {
-                throw new ValidationException("Drug not found");
+                throw new ResourceNotFoundException("Drug not found");
             }
         }
 
@@ -53,6 +71,7 @@ namespace BusinessLogic
 
         public void Delete(int drugId)
         {
+            //int pharmacyId = _context.CurrentUser.Pharmacy.Id;
             Drug drug = Get(drugId);
             Pharmacy pharmacy = FindPharmacy(drug.PharmacyId);
             pharmacy.Drugs.Remove(drug);
@@ -70,7 +89,7 @@ namespace BusinessLogic
             }
             catch (ResourceNotFoundException e)
             {
-                throw new ValidationException("Pharmacy does not exist");
+                throw new ResourceNotFoundException("Pharmacy does not exist");
             }
         }
 
@@ -83,7 +102,7 @@ namespace BusinessLogic
             }
             catch (ResourceNotFoundException e)
             {
-                throw new ValidationException("There is no info on the drug available");
+                throw new ResourceNotFoundException("There is no info on the drug available");
             }
         }
 

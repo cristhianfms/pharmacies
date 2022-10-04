@@ -72,7 +72,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 7,
-                            Endpoint = "GET/api/drugs/*"
+                            Endpoint = "GET/api/drugs*"
                         },
                         new
                         {

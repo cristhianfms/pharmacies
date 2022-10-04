@@ -105,7 +105,7 @@ namespace DataAccess.Migrations
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PharmacyId = table.Column<int>(type: "int", nullable: false)
+                    PharmacyId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -114,8 +114,7 @@ namespace DataAccess.Migrations
                         name: "FK_InvitationSet_PharmacySet_PharmacyId",
                         column: x => x.PharmacyId,
                         principalTable: "PharmacySet",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_InvitationSet_RoleSet_RoleId",
                         column: x => x.RoleId,
@@ -269,7 +268,7 @@ namespace DataAccess.Migrations
                     { 4, "PUT/api/solicitudes/.*" },
                     { 5, "POST/api/drugs" },
                     { 6, "DELETE/api/drugs/" },
-                    { 7, "GET/api/drugs/*" },
+                    { 7, "GET/api/drugs*" },
                     { 8, "POST/api/pharmacies" }
                 });
 
