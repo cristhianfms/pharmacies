@@ -3,6 +3,7 @@ using AuthLogic;
 using BusinessLogic;
 using DataAccess;
 using DataAccess.Context;
+using IAuthLogic;
 using IBusinessLogic;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc.Filters;

@@ -9,7 +9,7 @@ using Domain.Dtos;
 
 namespace BusinessLogic;
 
-public class UserLogic
+public class UserLogic : IUserLogic
 {
     private readonly IUserRepository _userRepository;
 

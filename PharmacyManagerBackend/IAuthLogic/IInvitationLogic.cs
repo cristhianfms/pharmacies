@@ -4,7 +4,7 @@ using System.Text;
 using Domain;
 using Domain.Dtos;
 
-namespace IBusinessLogic;
+namespace IAuthLogic;
 
 public interface IInvitationLogic
 {

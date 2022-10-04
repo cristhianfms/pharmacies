@@ -6,6 +6,7 @@ using Domain;
 using IDataAccess;
 using Exceptions;
 using Domain.Dtos;
+using IAuthLogic;
 
 namespace AuthLogic
 {
@@ -13,10 +14,10 @@ namespace AuthLogic
     public class InvitationLogic : IInvitationLogic
     {
         private IInvitationRepository _invitationRepository;
-        private UserLogic _userLogic;
-        private RoleLogic _roleLogic;
-        private PharmacyLogic _pharmacyLogic;
-        public InvitationLogic(IInvitationRepository invitationRepository, UserLogic userLogic, RoleLogic roleLogic, PharmacyLogic pharmacyLogic)
+        private IUserLogic _userLogic;
+        private IRoleLogic _roleLogic;
+        private IPharmacyLogic _pharmacyLogic;
+        public InvitationLogic(IInvitationRepository invitationRepository, IUserLogic userLogic, IRoleLogic roleLogic, IPharmacyLogic pharmacyLogic)
         {
             this._invitationRepository = invitationRepository;
             this._userLogic = userLogic;

@@ -2,6 +2,7 @@
 using Domain;
 using Domain.AuthDomain;
 using Exceptions;
+using IAuthLogic;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

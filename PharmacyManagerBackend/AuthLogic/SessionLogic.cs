@@ -1,9 +1,9 @@
 ﻿using System;
-using BusinessLogic;
 using Domain;
 using Domain.AuthDomain;
 using Domain.Dtos;
 using Exceptions;
+using IAuthLogic;
 using IBusinessLogic;
 using IDataAccess;
 
@@ -11,8 +11,8 @@ namespace AuthLogic;
 public class SessionLogic : ISessionLogic
 {
     private readonly ISessionRepository _sessionRepository;
-    private readonly UserLogic _userLogic;
-    public SessionLogic(ISessionRepository sessionRepository, UserLogic userLogic)
+    private readonly IUserLogic _userLogic;
+    public SessionLogic(ISessionRepository sessionRepository, IUserLogic userLogic)
     {
         this._sessionRepository = sessionRepository;
         this._userLogic = userLogic;

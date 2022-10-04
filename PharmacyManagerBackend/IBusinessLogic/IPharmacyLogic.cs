@@ -7,5 +7,6 @@ public interface IPharmacyLogic
 {
     Pharmacy Create(Pharmacy pharmacy);
     void ExistsDrug(string drugCode, int pharmacyId);
+    Pharmacy GetPharmacyByName(string pharmacyName);
 }
 

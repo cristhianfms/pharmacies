@@ -1,6 +1,6 @@
 using Domain;
 
-namespace IBusinessLogic;
+namespace IAuthLogic;
 
 public interface IPermissionLogic
 {
