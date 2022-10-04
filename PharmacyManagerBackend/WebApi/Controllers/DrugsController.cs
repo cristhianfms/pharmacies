@@ -21,11 +21,11 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(AuthorizationAttributeFilter))]
-        public IActionResult Create([FromBody] DrugModel drugModel)
+        public IActionResult Create([FromBody] DrugRequestModel drugModel)
         {
             Drug drug = ModelsMapper.ToEntity(drugModel);
             Drug drugCreated = _drugLogic.Create(drug);
-            DrugModel drugCreatedModel = ModelsMapper.ToModel(drugCreated);
+            DrugRequestModel drugCreatedModel = ModelsMapper.ToModel(drugCreated);
             return Ok(drugCreatedModel);
         }
 
@@ -43,7 +43,7 @@ namespace WebApi.Controllers
         {
             Drug drug = _drugLogic.Get(drugId);
 
-            DrugModel drugModel = ModelsMapper.ToModel(drug);
+            DrugGetModel drugModel = ModelsMapper.ToGetModel(drug);
             return Ok(drugModel);
         }
     }

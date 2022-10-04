@@ -43,20 +43,19 @@ public class DrugsControllerTest
         const int pharmacyId = 3;
         _drugLogicMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(_drug);
         
-        var drugModel = new DrugModel()
+        var drugModel = new DrugRequestModel()
         {
             Id = 1,
             DrugCode = "2A5",
             Price = 150,
             NeedsPrescription = false,
-            Stock = 20,
             PharmacyId = pharmacyId
            
         };
 
         var result = _drugApiController.Create(drugModel);
         var okResult = result as OkObjectResult;
-        var createdDrug = okResult.Value as DrugModel;
+        var createdDrug = okResult.Value as DrugRequestModel;
 
         Assert.IsTrue(ModelsComparer.DrugCompare(drugModel, createdDrug));
         _drugLogicMock.VerifyAll();

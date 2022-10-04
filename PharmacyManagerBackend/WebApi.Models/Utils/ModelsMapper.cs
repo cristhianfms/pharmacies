@@ -109,7 +109,7 @@ public static class ModelsMapper
         };
     }
 
-    public static Drug ToEntity(DrugModel drugModel)
+    public static Drug ToEntity(DrugRequestModel drugModel)
     {
         DrugInfo drugInfo  = new DrugInfo
         {
@@ -133,9 +133,25 @@ public static class ModelsMapper
         };
     }
 
-    public static DrugModel ToModel(Drug drug)
+    public static DrugRequestModel ToModel(Drug drug)
     {
-        return new DrugModel
+        return new DrugRequestModel
+        {
+            Id = drug.Id,
+            DrugCode = drug.DrugCode,
+            NeedsPrescription = drug.NeedsPrescription,
+            Price = drug.Price,
+            Name = drug.DrugInfo.Name,
+            Symptoms = drug.DrugInfo.Symptoms,
+            Presentation = drug.DrugInfo.Presentation,
+            QuantityPerPresentation = drug.DrugInfo.QuantityPerPresentation,
+            UnitOfMeasurement= drug.DrugInfo.UnitOfMeasurement,
+            PharmacyId = drug.PharmacyId
+        };
+    }
+    public static DrugGetModel ToGetModel(Drug drug)
+    {
+        return new DrugGetModel
         {
             Id = drug.Id,
             DrugCode = drug.DrugCode,
@@ -146,7 +162,7 @@ public static class ModelsMapper
             Symptoms = drug.DrugInfo.Symptoms,
             Presentation = drug.DrugInfo.Presentation,
             QuantityPerPresentation = drug.DrugInfo.QuantityPerPresentation,
-            UnitOfMeasurement= drug.DrugInfo.UnitOfMeasurement,
+            UnitOfMeasurement = drug.DrugInfo.UnitOfMeasurement,
             PharmacyId = drug.PharmacyId
         };
     }
