@@ -44,20 +44,25 @@ public class InvitationsControllerTest
     public void CreateInvitationOk()
     {
         _invitationLogicMock.Setup(m => m.Create(It.IsAny<InvitationDto>())).Returns(_invitation);
-        var invitationModel = new InvitationModel()
+        var invitationModel = new InvitationRequestModel()
         {
             UserName = "JuanPerez",
             RoleName = "Employee",
-            InvitationCode = "2A5678BX",
             PharmacyName = "FarmaciaB"
         };
-
+        var invitationModelExpected = new InvitationResponseModel()
+        {
+            UserName = "JuanPerez",
+            RoleName = "Employee",
+            PharmacyName = "FarmaciaB",
+            InvitationCode = "2A5678BX"
+        };
 
         var result = _invitationApiController.Create(invitationModel);
         var okResult = result as OkObjectResult;
-        var createdInvitation = okResult.Value as InvitationModel;
+        var createdInvitation = okResult.Value as InvitationResponseModel;
 
-        Assert.IsTrue(ModelsComparer.InvitationCompare(invitationModel, createdInvitation));
+        Assert.AreEqual(invitationModelExpected, createdInvitation);
         _invitationLogicMock.VerifyAll();
     }
 

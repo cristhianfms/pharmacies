@@ -5,7 +5,7 @@ using Domain.Dtos;
 namespace WebApi.Models.Utils;
 public class InvitationModelsMapper
 {
-    public static InvitationDto ToEntity(InvitationModel invitationModel)
+    public static InvitationDto ToEntity(InvitationRequestModel invitationModel)
     {
         return new InvitationDto
         {
@@ -15,9 +15,9 @@ public class InvitationModelsMapper
         };
     }
 
-    public static InvitationModel ToModel(Invitation invitation)
+    public static InvitationResponseModel ToModel(Invitation invitation)
     {
-        return new InvitationModel
+        return new InvitationResponseModel
         {
             UserName = invitation.UserName,
             RoleName = invitation.Role.Name,
