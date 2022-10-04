@@ -4,25 +4,26 @@ using Domain;
 using Domain.AuthDomain;
 using Domain.Dtos;
 using Exceptions;
+using IBusinessLogic;
 using IDataAccess;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 
-namespace BusinessLogic.Test;
+namespace AuthLogic.Test;
 
 [TestClass]
 public class SessionLogicTest
 {
     private SessionLogic _sessionLogic;
     private Mock<ISessionRepository> _sessionRepository;
-    private Mock<UserLogic> _userLogic;
+    private Mock<IUserLogic> _userLogic;
 
     [TestInitialize]
     public void Initialize()
     {
         this._sessionRepository = new Mock<ISessionRepository>(MockBehavior.Strict);
-        this._userLogic = new Mock<UserLogic>(MockBehavior.Strict, null);
+        this._userLogic = new Mock<IUserLogic>(MockBehavior.Strict);
         _sessionLogic = new SessionLogic(this._sessionRepository.Object, this._userLogic.Object);
     }
 

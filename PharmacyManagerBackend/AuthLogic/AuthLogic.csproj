@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\IAuthLogic\IAuthLogic.csproj" />
       <ProjectReference Include="..\IBusinessLogic\IBusinessLogic.csproj" />
