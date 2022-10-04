@@ -33,22 +33,17 @@ namespace BusinessLogic
 
         public Drug Get(int drugId)
         {
-            return FindDrug(drugId);
-        }
-
-        private Drug FindDrug(int drugId)
-        {
             try
             {
-                Drug drug1 = _drugRepository.GetFirst(d => d.Id == drugId);
-                return drug1;
+                Drug drug = _drugRepository.GetFirst(d => d.Id == drugId);
+                return drug;
             }
             catch (ResourceNotFoundException e)
             {
                 throw new ValidationException("Drug not found");
             }
-
         }
+
 
         private void DrugCodeNotRepeatedInPharmacy(string drugCode, Pharmacy pharmacy)
         {
@@ -58,7 +53,7 @@ namespace BusinessLogic
 
         public void Delete(int drugId)
         {
-            Drug drug = FindDrug(drugId);
+            Drug drug = Get(drugId);
             Pharmacy pharmacy = FindPharmacy(drug.PharmacyId);
             pharmacy.Drugs.Remove(drug);
             _pharmacyRepository.Update(pharmacy);
@@ -104,7 +99,7 @@ namespace BusinessLogic
 
         public virtual Drug Update(int drugId, Drug drug)
         {
-            Drug drugToUpdate = FindDrug(drugId);
+            Drug drugToUpdate = Get(drugId);
             drugToUpdate.Stock = drug.Stock;
 
             _drugRepository.Update(drugToUpdate);
