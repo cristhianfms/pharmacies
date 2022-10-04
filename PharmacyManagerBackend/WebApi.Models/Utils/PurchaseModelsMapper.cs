@@ -1,10 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
+
 using Domain;
 using Domain.Dtos;
-using WebApi.Models;
 
-namespace WebApi.Utils;
+namespace WebApi.Models.Utils;
 
 public static class PurchaseModelsMapper
 {

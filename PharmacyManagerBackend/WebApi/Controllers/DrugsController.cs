@@ -1,10 +1,10 @@
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Models;
-using WebApi.Utils;
 using System.Collections.Generic;
 using IBusinessLogic;
 using WebApi.Filter;
+using WebApi.Models;
+using WebApi.Models.Utils;
 
 namespace WebApi.Controllers
 {

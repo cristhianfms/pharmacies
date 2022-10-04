@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32901.82
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{A456C3FC-388D-44C9-81BF-DB29386FB41D}"
 EndProject
@@ -29,13 +29,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Test", "Domain.Test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{AC956C2D-BCB6-4DD9-975F-098E39135F79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthLogic", "AuthLogic\AuthLogic.csproj", "{B1E1AD49-9377-498A-B8F1-1C3D76B65C77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthLogic", "AuthLogic\AuthLogic.csproj", "{B1E1AD49-9377-498A-B8F1-1C3D76B65C77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthLogic.Test", "AuthLogic.Test\AuthLogic.Test.csproj", "{E98FC9C9-9CD6-48D8-84EC-285E9AF723CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthLogic.Test", "AuthLogic.Test\AuthLogic.Test.csproj", "{E98FC9C9-9CD6-48D8-84EC-285E9AF723CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Filter", "WebApi.Filter\WebApi.Filter.csproj", "{073BDEA2-D77D-42DC-B7AC-E36BC309A4BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Filter", "WebApi.Filter\WebApi.Filter.csproj", "{073BDEA2-D77D-42DC-B7AC-E36BC309A4BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Filter.Test", "WebApi.Filter.Test\WebApi.Filter.Test.csproj", "{F367CF7B-CD78-48E6-BF2A-A81FDF337620}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Filter.Test", "WebApi.Filter.Test\WebApi.Filter.Test.csproj", "{F367CF7B-CD78-48E6-BF2A-A81FDF337620}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Models", "WebApi.Models\WebApi.Models.csproj", "{2A3121BE-AA6B-430F-AA7A-D7F0128DBC75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Models.Test", "WebApi.Models.Test\WebApi.Models.Test.csproj", "{D12047F6-1FD1-4743-8EC5-71800039E83C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +115,14 @@ Global
 		{F367CF7B-CD78-48E6-BF2A-A81FDF337620}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F367CF7B-CD78-48E6-BF2A-A81FDF337620}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F367CF7B-CD78-48E6-BF2A-A81FDF337620}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A3121BE-AA6B-430F-AA7A-D7F0128DBC75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A3121BE-AA6B-430F-AA7A-D7F0128DBC75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A3121BE-AA6B-430F-AA7A-D7F0128DBC75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A3121BE-AA6B-430F-AA7A-D7F0128DBC75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D12047F6-1FD1-4743-8EC5-71800039E83C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D12047F6-1FD1-4743-8EC5-71800039E83C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D12047F6-1FD1-4743-8EC5-71800039E83C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D12047F6-1FD1-4743-8EC5-71800039E83C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

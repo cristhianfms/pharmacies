@@ -1,8 +1,26 @@
+using Exceptions;
+
 namespace Domain;
 public class Pharmacy
 {
+    private string _name;
     public int Id { get; set; }
-    public string Name { get; set; }
+    public string Name 
+    { 
+        get 
+        {
+            return _name;
+        }
+        set
+        {
+            if (String.IsNullOrEmpty(value) || value.Length > 50)
+            {
+                throw new ValidationException("pharmacy name can not be null or gratter than 50 characters");
+            }
+            _name = value;
+
+        }
+    }
     public string? Address { get; set; }
     public virtual List<Drug> Drugs { get; set; }
     public virtual List <User> Employees { get; set; }

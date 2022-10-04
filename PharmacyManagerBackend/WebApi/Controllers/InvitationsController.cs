@@ -4,7 +4,7 @@ using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filter;
 using WebApi.Models;
-using WebApi.Utils;
+using WebApi.Models.Utils;
 
 namespace WebApi.Controllers;
 [ApiController]
@@ -20,11 +20,11 @@ public class InvitationsController : ControllerBase
 
     [HttpPost]
     [ServiceFilter(typeof(AuthorizationAttributeFilter))]
-    public IActionResult Create([FromBody] InvitationModel invitationModel)
+    public IActionResult Create([FromBody] InvitationRequestModel invitationModel)
     {
         InvitationDto invitationToCreate = InvitationModelsMapper.ToEntity(invitationModel);
         Invitation invitationCreated = _invitationLogic.Create(invitationToCreate);
-        InvitationModel invitationCreatedModel = InvitationModelsMapper.ToModel(invitationCreated);
+        InvitationResponseModel invitationCreatedModel = InvitationModelsMapper.ToModel(invitationCreated);
 
         return Ok(invitationCreatedModel);
     }

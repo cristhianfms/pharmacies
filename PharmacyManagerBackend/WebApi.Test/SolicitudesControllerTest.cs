@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebApi.Controllers;
 using WebApi.Models;
-using WebApi.Utils;
+using WebApi.Models.Utils;
 
 namespace WebApi.Test;
 
