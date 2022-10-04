@@ -3,6 +3,7 @@ using AuthLogic;
 using BusinessLogic;
 using DataAccess;
 using DataAccess.Context;
+using Domain;
 using IAuthLogic;
 using IBusinessLogic;
 using IDataAccess;
@@ -23,8 +24,8 @@ public class ServiceFactory
 
     public void AddCustomServices()
     {
-        _services.AddScoped<RoleLogic>();
-        _services.AddScoped<UserLogic>();
+        _services.AddScoped<IRoleLogic, RoleLogic>();
+        _services.AddScoped<IUserLogic, UserLogic>();
         
         _services.AddScoped<ISessionLogic, SessionLogic>();
         _services.AddScoped<IPharmacyLogic, PharmacyLogic>();

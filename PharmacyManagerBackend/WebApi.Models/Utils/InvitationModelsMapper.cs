@@ -22,7 +22,7 @@ public class InvitationModelsMapper
             UserName = invitation.UserName,
             RoleName = invitation.Role.Name,
             InvitationCode = invitation.Code,
-            PharmacyName = invitation.Pharmacy.Name
+            PharmacyName = invitation.Pharmacy?.Name
         };
     }
 

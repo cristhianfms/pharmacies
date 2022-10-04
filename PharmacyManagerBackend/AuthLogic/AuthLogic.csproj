@@ -11,6 +11,7 @@
       <ProjectReference Include="..\IAuthLogic\IAuthLogic.csproj" />
       <ProjectReference Include="..\IBusinessLogic\IBusinessLogic.csproj" />
       <ProjectReference Include="..\IDataAccess\IDataAccess.csproj" />
+      <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
     </ItemGroup>
 
 </Project>

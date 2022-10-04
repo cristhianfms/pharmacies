@@ -26,21 +26,33 @@ namespace AuthLogic
 
         public virtual Invitation Create(InvitationDto invitationDto)
         {
-            checkIfUserNameIsRepeated(invitationDto.UserName);
-            Pharmacy pharmacy = getExistantPharmacy(invitationDto.PharmacyName);
-            Role role = getExistantRole(invitationDto.RoleName);
-
-            Invitation invitationToCreate = new Invitation()
+            Invitation createdInvitation;
+            Invitation? existentInvitation = getInvitationForUser(invitationDto.UserName);
+            if (existentInvitation == null)
             {
-                UserName = invitationDto.UserName,
-                Role = role,
-                Pharmacy = pharmacy
-            };
+                checkIfUserNameIsRepeated(invitationDto.UserName);
+                Role role = getExistantRole(invitationDto.RoleName);
+                Invitation invitationToCreate = new Invitation()
+                {
+                    UserName = invitationDto.UserName,
+                    Role = role
+                };
 
-            string codeGenerated = generateNewInvitationCode();
-            invitationToCreate.Code = codeGenerated;
+                if (!role.Name.Equals(Role.ADMIN))
+                {
+                    Pharmacy pharmacy = getExistantPharmacy(invitationDto.PharmacyName);
+                    invitationToCreate.Pharmacy = pharmacy;
+                }
 
-            Invitation createdInvitation = _invitationRepository.Create(invitationToCreate);
+                string codeGenerated = generateNewInvitationCode();
+                invitationToCreate.Code = codeGenerated;
+
+                createdInvitation = _invitationRepository.Create(invitationToCreate);
+            }
+            else
+            {
+                createdInvitation = existentInvitation;
+            }
 
             return createdInvitation;
         }
@@ -176,6 +188,21 @@ namespace AuthLogic
             {
                 throw new ValidationException("invalid invitation code");
             }
+        }
+        
+        private Invitation getInvitationForUser(string userName)
+        {
+            Invitation invitation;
+            try
+            {
+                invitation = _invitationRepository.GetFirst(i => i.UserName == userName);
+            }
+            catch (ResourceNotFoundException e)
+            {
+                invitation = null;
+            }
+
+            return invitation;
         }
     }
 }
