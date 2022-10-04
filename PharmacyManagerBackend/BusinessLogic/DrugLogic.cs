@@ -28,7 +28,7 @@ namespace BusinessLogic
             Drug drugCreated = _drugRepository.Create(drug);
             pharmacy.Drugs.Add(drugCreated);
             _pharmacyRepository.Update(pharmacy);
-            return _drugRepository.Create(drugCreated);
+            return drugCreated;
         }
 
         public Drug Get(int drugId)
@@ -62,7 +62,6 @@ namespace BusinessLogic
             Pharmacy pharmacy = FindPharmacy(drug.PharmacyId);
             pharmacy.Drugs.Remove(drug);
             _pharmacyRepository.Update(pharmacy);
-            _drugRepository.Delete(drug);
             DrugInfo drugInfo = FindDrugInfo(drug.DrugInfoId);
             _drugInfoRepository.Delete(drugInfo);
         }
