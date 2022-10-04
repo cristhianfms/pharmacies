@@ -3,7 +3,7 @@ using Domain;
 using Exceptions;
 using IDataAccess;
 using Moq;
-using System.Collections.Generic;
+using Domain.Dtos;
 
 namespace BusinessLogic.Test
 {
@@ -125,6 +125,54 @@ namespace BusinessLogic.Test
             _drugInfoRepositoryMock.Setup(m => m.Delete(It.IsAny<DrugInfo>()));
             _drugInfoRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<DrugInfo, bool>>())).Returns(drugInfo);
             _drugLogic.Delete(drug.Id);
+
+            _drugRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetAllDrugsOk()
+        {
+            DrugInfo drugInfo = new DrugInfo();
+
+
+            Drug drug = new Drug()
+            {
+                Id = 1,
+                DrugCode = "2a5678bx",
+                Price = 25.99,
+                Stock = 15,
+                NeedsPrescription = false,
+                DrugInfo = drugInfo,
+                PharmacyId = _pharmacy.Id
+            };
+
+            List<Drug> drugs = new List<Drug>();
+            drugs.Add(drug);
+            _drugRepositoryMock.Setup(m => m.GetAll(It.IsAny<Func<Drug, bool>>())).Returns(drugs);
+            _drugLogic.GetAll(new QueryDrugDto());
+
+            _drugRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetDrugOk()
+        {
+            DrugInfo drugInfo = new DrugInfo();
+
+
+            Drug drug = new Drug()
+            {
+                Id = 1,
+                DrugCode = "2a5678bx",
+                Price = 25.99,
+                Stock = 15,
+                NeedsPrescription = false,
+                DrugInfo = drugInfo,
+                PharmacyId = _pharmacy.Id
+            };
+
+            _drugRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
+            _drugLogic.Get(drug.Id);
 
             _drugRepositoryMock.VerifyAll();
         }
