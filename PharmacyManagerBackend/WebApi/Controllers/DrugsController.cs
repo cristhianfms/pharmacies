@@ -24,7 +24,7 @@ namespace WebApi.Controllers
         public IActionResult Create([FromBody] DrugModel drugModel)
         {
             Drug drug = ModelsMapper.ToEntity(drugModel);
-            Drug drugCreated = _drugLogic.Create(drug, drugModel.PharmacyId);
+            Drug drugCreated = _drugLogic.Create(drug);
             DrugModel drugCreatedModel = ModelsMapper.ToModel(drugCreated);
             return Ok(drugCreatedModel);
         }

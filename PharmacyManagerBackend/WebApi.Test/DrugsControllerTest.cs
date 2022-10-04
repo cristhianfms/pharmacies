@@ -41,7 +41,7 @@ public class DrugsControllerTest
     public void CreateDrugOk()
     {
         const int pharmacyId = 3;
-        _drugLogicMock.Setup(m => m.Create(It.IsAny<Drug>(), pharmacyId)).Returns(_drug);
+        _drugLogicMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(_drug);
         
         var drugModel = new DrugModel()
         {

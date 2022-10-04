@@ -15,6 +15,7 @@ namespace DataAccess.Test
     {
         private DbConnection _connection;
         private BaseRepository<Drug> _drugRepository;
+        private BaseRepository<Pharmacy> _pharmacyRepository;
 
         private PharmacyManagerContext _pharmacyManagerContext;
         private DbContextOptions<PharmacyManagerContext> _contextOptions;
@@ -26,6 +27,7 @@ namespace DataAccess.Test
 
             this._pharmacyManagerContext = new PharmacyManagerContext(this._contextOptions);
             this._drugRepository = new BaseRepository<Drug>(this._pharmacyManagerContext);
+            this._pharmacyRepository = new BaseRepository<Pharmacy>(this._pharmacyManagerContext);
         }
 
         [TestInitialize]
@@ -44,6 +46,12 @@ namespace DataAccess.Test
         [TestMethod]
         public void DeleteDrugOk()
         {
+            Pharmacy pharmacy = new Pharmacy
+            {
+                Id = 1,
+                Name = "Farmashop"
+            };
+
             DrugInfo di = new DrugInfo()
             {
                 Name = "Perifar Flex",
@@ -64,6 +72,8 @@ namespace DataAccess.Test
 
             using (var context = new PharmacyManagerContext(this._contextOptions))
             {
+                Pharmacy pharmacyCreated = _pharmacyRepository.Create(pharmacy);
+                drugToDelete.PharmacyId = pharmacyCreated.Id;
                 Drug drugCreated = this._drugRepository.Create(drugToDelete);
                 var drugs = context.Set<Drug>();
                 _drugRepository.Delete(drugCreated);
@@ -74,6 +84,12 @@ namespace DataAccess.Test
         [TestMethod]
         public void GetDrugOk()
         {
+            Pharmacy pharmacy = new Pharmacy
+            {
+                Id = 1,
+                Name = "Farmashop"
+            };
+
             DrugInfo di = new DrugInfo()
             {
                 Name = "Perifar Flex",
@@ -94,6 +110,9 @@ namespace DataAccess.Test
 
             using (var context = new PharmacyManagerContext(this._contextOptions))
             {
+                Pharmacy pharmacyCreated = _pharmacyRepository.Create(pharmacy);
+                drugToGet.PharmacyId = pharmacyCreated.Id;
+
                 Drug drugCreated = this._drugRepository.Create(drugToGet);
                 var drugs = context.Set<Drug>();
                 Drug drugFetched = _drugRepository.GetFirst(d=>d.Id == drugCreated.Id);
@@ -105,6 +124,11 @@ namespace DataAccess.Test
         [ExpectedException(typeof(ResourceNotFoundException))]
         public void GetDrugFail()
         {
+            Pharmacy pharmacy = new Pharmacy
+            {
+                Id = 1
+            };
+
             DrugInfo di = new DrugInfo()
             {
                 Name = "Perifar Flex",
@@ -120,7 +144,8 @@ namespace DataAccess.Test
                 Price = 25.99,
                 Stock = 15,
                 NeedsPrescription = false,
-                DrugInfo = di
+                DrugInfo = di,
+                PharmacyId = pharmacy.Id
             };
 
             using (var context = new PharmacyManagerContext(this._contextOptions))
@@ -133,6 +158,12 @@ namespace DataAccess.Test
         [TestMethod]
         public void GetDrugInfoOk()
         {
+            Pharmacy pharmacy = new Pharmacy
+            {
+                Id = 1,
+                Name = "Farmashop"
+            };
+
             DrugInfo di = new DrugInfo()
             {
                 Name = "Perifar Flex",
@@ -148,11 +179,14 @@ namespace DataAccess.Test
                 Price = 25.99,
                 Stock = 15,
                 NeedsPrescription = false,
-                DrugInfo = di
+                DrugInfo = di,
+                PharmacyId = pharmacy.Id
             };
 
             using (var context = new PharmacyManagerContext(this._contextOptions))
             {
+                Pharmacy pharmacyCreated = _pharmacyRepository.Create(pharmacy);
+                drug.PharmacyId = pharmacyCreated.Id;
                 Drug drugCreated = this._drugRepository.Create(drug);
                 var drugs = context.Set<Drug>();
                 Drug drugFetched = _drugRepository.GetFirst(d => d.Id == drugCreated.Id);

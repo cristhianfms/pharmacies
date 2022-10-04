@@ -43,7 +43,8 @@ namespace BusinessLogic.Test
                 Price = 25.99,
                 Stock = 15,
                 NeedsPrescription = false,
-                DrugInfo = new DrugInfo()
+                DrugInfo = new DrugInfo(),
+                PharmacyId = pharmacy.Id
             };
 
 
@@ -52,7 +53,7 @@ namespace BusinessLogic.Test
             _drugInfoRepositoryMock.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(new DrugInfo());
             _pharmacyRepositoryMock.Setup(m => m.Update(It.IsAny<Pharmacy>()));
 
-            Drug createdDrug = _drugLogic.Create(drug, 1);
+            Drug createdDrug = _drugLogic.Create(drug);
 
             _drugRepositoryMock.VerifyAll();
         }
@@ -61,7 +62,10 @@ namespace BusinessLogic.Test
         [ExpectedException(typeof(ValidationException))]
         public void CreateNewDrugPharmacyDoesNotExist()
         {
-            Pharmacy pharmacy = null;
+            Pharmacy pharmacy = new Pharmacy
+            {
+                Id = 2
+            };
 
             Drug drug = new Drug()
             {
@@ -70,13 +74,14 @@ namespace BusinessLogic.Test
                 Price = 25.99,
                 Stock = 15,
                 NeedsPrescription = false,
-                DrugInfo = new DrugInfo()
+                DrugInfo = new DrugInfo(),
+                PharmacyId = pharmacy.Id
             };
 
 
-            _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Returns(pharmacy);
+            _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Throws(new ValidationException(""));
 
-            Drug createdDrug = _drugLogic.Create(drug, 1);
+            Drug createdDrug = _drugLogic.Create(drug);
 
         }
 
@@ -100,7 +105,8 @@ namespace BusinessLogic.Test
                 Price = 25.99,
                 Stock = 15,
                 NeedsPrescription = false,
-                DrugInfo = new DrugInfo()
+                DrugInfo = new DrugInfo(),
+                PharmacyId= pharmacy.Id
             };
 
 
@@ -109,9 +115,8 @@ namespace BusinessLogic.Test
             _drugInfoRepositoryMock.Setup(m => m.Create(It.IsAny<DrugInfo>())).Returns(new DrugInfo());
             _pharmacyRepositoryMock.Setup(m => m.Update(It.IsAny<Pharmacy>()));
 
-            Drug createdDrug = _drugLogic.Create(drug, 1);
-            _drugLogic.Create(drug, 1);
-            _drugLogic.Create(drug, 1);
+            Drug createdDrug = _drugLogic.Create(drug);
+            _drugLogic.Create(drug);
 
             _drugRepositoryMock.VerifyAll();
         }
@@ -119,18 +124,35 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void DeleteDrugOk()
         {
+            List<Drug> drugs = new List<Drug>();
+
+
+            Pharmacy pharmacy = new Pharmacy
+            {
+                Id = 1,
+                Drugs = drugs
+            };
+
+            DrugInfo drugInfo = new DrugInfo();
+
+
             Drug drug = new Drug()
             {
                 Id = 1,
                 DrugCode = "2a5678bx",
                 Price = 25.99,
                 Stock = 15,
-                NeedsPrescription = false
+                NeedsPrescription = false,
+                DrugInfo = drugInfo,
+                PharmacyId = pharmacy.Id
             };
 
+            _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Returns(pharmacy);
             _drugRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
             _drugRepositoryMock.Setup(m => m.Delete(drug));
-
+            _pharmacyRepositoryMock.Setup(m => m.Update(It.IsAny<Pharmacy>()));
+            _drugInfoRepositoryMock.Setup(m => m.Delete(It.IsAny<DrugInfo>()));
+            _drugInfoRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<DrugInfo, bool>>())).Returns(drugInfo);
             _drugLogic.Delete(drug.Id);
 
             _drugRepositoryMock.VerifyAll();

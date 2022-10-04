@@ -132,7 +132,8 @@ public static class ModelsMapper
             NeedsPrescription = drugModel.NeedsPrescription,
             Price = drugModel.Price,
             Stock = 0,
-            DrugInfo = drugInfo
+            DrugInfo = drugInfo,
+            PharmacyId = drugModel.PharmacyId
         };
     }
 
@@ -149,7 +150,8 @@ public static class ModelsMapper
             Symptoms = drug.DrugInfo.Symptoms,
             Presentation = drug.DrugInfo.Presentation,
             QuantityPerPresentation = drug.DrugInfo.QuantityPerPresentation,
-            UnitOfMeasurement= drug.DrugInfo.UnitOfMeasurement
+            UnitOfMeasurement= drug.DrugInfo.UnitOfMeasurement,
+            PharmacyId = drug.PharmacyId
         };
     }
 
