@@ -81,7 +81,7 @@ public class UserLogicTest
 
         _userRepository.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>())).Returns(userRepository);
 
-        User userReturned = _userLogic.GetUserByUserName(userName);
+        User userReturned = _userLogic.GetFirst(u => u.UserName == userName);
 
         Assert.AreEqual(userRepository, userReturned);
         _userRepository.VerifyAll();
