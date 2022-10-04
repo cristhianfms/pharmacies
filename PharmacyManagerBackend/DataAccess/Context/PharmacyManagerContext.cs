@@ -79,7 +79,7 @@ public class PharmacyManagerContext : DbContext
         //Drug Permissions
         Permission createDrug = new Permission() { Id = 5, Endpoint = "POST/api/drugs" };
         Permission deleteDrug = new Permission() { Id = 6, Endpoint = "DELETE/api/drugs/" };
-        //Permission getDrug = new Permission() { Id = 7, Endpoint = "GET/api/drugs/*" };
+        Permission getDrug = new Permission() { Id = 7, Endpoint = "GET/api/drugs*" };
 
 
 
@@ -90,7 +90,7 @@ public class PharmacyManagerContext : DbContext
             updateSolicitude,
             createDrug,
             deleteDrug,
-            //getDrug,
+            getDrug,
             createPharmacy);
 
         // Permission - Role
@@ -102,7 +102,7 @@ public class PharmacyManagerContext : DbContext
             new PermissionRole() { PermissionId = updateSolicitude.Id, RoleId = owner.Id },
             new PermissionRole() { PermissionId = createDrug.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = deleteDrug.Id, RoleId = employee.Id },
-            //new PermissionRole() { PermissionId = getDrug.Id, RoleId = employee.Id },
+            new PermissionRole() { PermissionId = getDrug.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = createPharmacy.Id, RoleId = admin.Id }
             );
 

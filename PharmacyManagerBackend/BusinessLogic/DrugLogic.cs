@@ -20,57 +20,71 @@ namespace BusinessLogic
             this._pharmacyRepository = pharmacyRepository;
         }
 
-        public Drug Create(Drug drug, int pharmacyId)
+        public Drug Create(Drug drug)
         {
-            DrugCodeNotRepeatedInPharmacy(drug.DrugCode, pharmacyId);
+            Pharmacy pharmacy = FindPharmacy(drug.PharmacyId);
+            DrugCodeNotRepeatedInPharmacy(drug.DrugCode, pharmacy);
             _drugInfoRepository.Create(drug.DrugInfo);
-            return _drugRepository.Create(drug);
+            Drug drugCreated = _drugRepository.Create(drug);
+            pharmacy.Drugs.Add(drugCreated);
+            _pharmacyRepository.Update(pharmacy);
+            return drugCreated;
         }
 
         public Drug Get(int drugId)
         {
             try
             {
-                Drug myDrug = _drugRepository.GetFirst(d => d.Id == drugId);
-                return myDrug;
+                Drug drug = _drugRepository.GetFirst(d => d.Id == drugId);
+                return drug;
             }
-            catch (Exception e)
+            catch (ResourceNotFoundException e)
             {
                 throw new ValidationException("Drug not found");
             }
         }
 
-        private Drug FindDrug(int drugId)
+
+        private void DrugCodeNotRepeatedInPharmacy(string drugCode, Pharmacy pharmacy)
         {
-            try
-            {
-                Drug drug1 = _drugRepository.GetFirst(d => d.Id == drugId);
-                return drug1;
-            }
-            catch (InvalidOperationException e)
-            {
-                throw new ValidationException("Drug not found");
-            }
-
-        }
-
-        private void DrugCodeNotRepeatedInPharmacy(string drugCode, int pharmacyId)
-        {
-            Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Id == pharmacyId);
-
-            if (pharmacy != null && pharmacy.Drugs.Exists(d => d.DrugCode == drugCode))
+            if (pharmacy.Drugs.Exists(d => d.DrugCode.Equals(drugCode)))
                 throw new ValidationException("The drug code already exists in this pharmacy");
         }
 
         public void Delete(int drugId)
         {
-            Drug drug = FindDrug(drugId);
+            Drug drug = Get(drugId);
+            Pharmacy pharmacy = FindPharmacy(drug.PharmacyId);
+            pharmacy.Drugs.Remove(drug);
+            _pharmacyRepository.Update(pharmacy);
+            DrugInfo drugInfo = FindDrugInfo(drug.DrugInfoId);
+            _drugInfoRepository.Delete(drugInfo);
+        }
 
-            if (drug == null)
-                throw new ValidationException("Drug does not exist");
+        private Pharmacy FindPharmacy(int pharmacyId)
+        {
+            try
+            {
+                Pharmacy pharmacy = _pharmacyRepository.GetFirst(p => p.Id == pharmacyId);
+                return pharmacy;
+            }
+            catch (ResourceNotFoundException e)
+            {
+                throw new ValidationException("Pharmacy does not exist");
+            }
+        }
 
-            _drugRepository.Delete(drug);
-
+        private DrugInfo FindDrugInfo(int drugInfoId)
+        {
+            try
+            {
+                DrugInfo drugInfo = _drugInfoRepository.GetFirst(di => di.Id == drugInfoId);
+                return drugInfo;
+            }
+            catch (ResourceNotFoundException e)
+            {
+                throw new ValidationException("There is no info on the drug available");
+            }
         }
 
         public virtual void AddStock(List<SolicitudeItem> drugsToAddStock)
@@ -85,11 +99,11 @@ namespace BusinessLogic
 
         public virtual Drug Update(int drugId, Drug drug)
         {
-            Drug drugToUpdate = _drugRepository.GetFirst(d => d.Id == drugId);
+            Drug drugToUpdate = Get(drugId);
             drugToUpdate.Stock = drug.Stock;
-            
+
             _drugRepository.Update(drugToUpdate);
-            
+
             return drugToUpdate;
         }
     }

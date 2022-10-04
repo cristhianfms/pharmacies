@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20221003182030_PharmacyManagerMigration")]
+    [Migration("20221004032032_PharmacyManagerMigration")]
     partial class PharmacyManagerMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,6 +73,11 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
+                            Id = 7,
+                            Endpoint = "GET/api/drugs/*"
+                        },
+                        new
+                        {
                             Id = 8,
                             Endpoint = "POST/api/pharmacies"
                         });
@@ -130,6 +135,11 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
+                            RoleId = 3,
+                            PermissionId = 7
+                        },
+                        new
+                        {
                             RoleId = 1,
                             PermissionId = 8
                         });
@@ -174,7 +184,7 @@ namespace DataAccess.Migrations
                     b.Property<bool>("NeedsPrescription")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("PharmacyId")
+                    b.Property<int>("PharmacyId")
                         .HasColumnType("int");
 
                     b.Property<double>("Price")
@@ -469,7 +479,9 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.Pharmacy", null)
                         .WithMany("Drugs")
-                        .HasForeignKey("PharmacyId");
+                        .HasForeignKey("PharmacyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("DrugInfo");
                 });

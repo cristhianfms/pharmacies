@@ -77,7 +77,7 @@ namespace DataAccess.Migrations
                     Stock = table.Column<int>(type: "int", nullable: false),
                     NeedsPrescription = table.Column<bool>(type: "bit", nullable: false),
                     DrugInfoId = table.Column<int>(type: "int", nullable: false),
-                    PharmacyId = table.Column<int>(type: "int", nullable: true)
+                    PharmacyId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,7 +92,8 @@ namespace DataAccess.Migrations
                         name: "FK_DrugSet_PharmacySet_PharmacyId",
                         column: x => x.PharmacyId,
                         principalTable: "PharmacySet",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -268,6 +269,7 @@ namespace DataAccess.Migrations
                     { 4, "PUT/api/solicitudes/.*" },
                     { 5, "POST/api/drugs" },
                     { 6, "DELETE/api/drugs/" },
+                    { 7, "GET/api/drugs/*" },
                     { 8, "POST/api/pharmacies" }
                 });
 
@@ -293,7 +295,8 @@ namespace DataAccess.Migrations
                     { 2, 3 },
                     { 3, 3 },
                     { 5, 3 },
-                    { 6, 3 }
+                    { 6, 3 },
+                    { 7, 3 }
                 });
 
             migrationBuilder.InsertData(

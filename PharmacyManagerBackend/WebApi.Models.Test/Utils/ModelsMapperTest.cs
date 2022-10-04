@@ -185,7 +185,7 @@ public class ModelsMapperTest
             Price = 25.5
         };
 
-        DrugModel drugModel = ModelsMapper.ToModel(drug);
+        DrugRequestModel drugModel = ModelsMapper.ToModel(drug);
 
         Assert.AreEqual(drugModel.Id, drug.Id);
         Assert.AreEqual(drugModel.DrugCode, drug.DrugCode);
@@ -201,7 +201,7 @@ public class ModelsMapperTest
     [TestMethod]
     public void DrugModelToEntityOK()
     {
-        DrugModel drugModel = new DrugModel
+        DrugRequestModel drugModel = new DrugRequestModel
         {
             Id = 1,
             Name = "Perifar Flex",

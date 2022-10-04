@@ -1,6 +1,6 @@
 namespace WebApi.Models;
 
-public class DrugModel
+public class DrugGetModel
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -16,7 +16,7 @@ public class DrugModel
 
     public override bool Equals(object? obj)
     {
-        return obj is DrugModel model &&
+        return obj is DrugGetModel model &&
                Id == model.Id &&
                Name == model.Name &&
                Symptoms == model.Symptoms &&
