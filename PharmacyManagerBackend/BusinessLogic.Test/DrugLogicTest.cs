@@ -35,7 +35,8 @@ namespace BusinessLogic.Test
                 EmployeePharmacy = new Pharmacy()
                 {
                     Id = 1,
-                    Name = "Pharmashop"
+                    Name = "Pharmashop",
+                    Drugs = new List<Drug>()
                 },
                 Role = new Role()
                 {
@@ -48,7 +49,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void CreateNewDrugOk()
         {
-            List<Drug> drugs = new List<Drug>();
+            Pharmacy pharmacy = _userEmployeeForTest.Pharmacy;
 
             Drug drug = new Drug()
             {
@@ -58,9 +59,8 @@ namespace BusinessLogic.Test
                 Stock = 15,
                 NeedsPrescription = false,
                 DrugInfo = new DrugInfo(),
-                PharmacyId =_userEmployeeForTest.Pharmacy.Id,
+                PharmacyId = pharmacy.Id,
             };
-
 
             _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Returns(pharmacy);
             _drugRepositoryMock.Setup(m => m.Create(It.IsAny<Drug>())).Returns(drug);
@@ -120,7 +120,7 @@ namespace BusinessLogic.Test
                 Stock = 15,
                 NeedsPrescription = false,
                 DrugInfo = new DrugInfo(),
-                PharmacyId= pharmacy.Id
+                PharmacyId = pharmacy.Id
             };
 
 
@@ -163,7 +163,6 @@ namespace BusinessLogic.Test
 
             _pharmacyRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Pharmacy, bool>>())).Returns(pharmacy);
             _drugRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
-            _drugRepositoryMock.Setup(m => m.Delete(drug));
             _pharmacyRepositoryMock.Setup(m => m.Update(It.IsAny<Pharmacy>()));
             _drugInfoRepositoryMock.Setup(m => m.Delete(It.IsAny<DrugInfo>()));
             _drugInfoRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<DrugInfo, bool>>())).Returns(drugInfo);
@@ -200,7 +199,7 @@ namespace BusinessLogic.Test
 
             Assert.AreEqual(drug.Stock, 25);
             Assert.AreEqual(drug.DrugCode, solicitudeItem1.DrugCode);
-            
+
             _drugRepositoryMock.VerifyAll();
         }
 
@@ -225,7 +224,7 @@ namespace BusinessLogic.Test
                 NeedsPrescription = false
             };
             _drugRepositoryMock.Setup(s => s.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drugInRepository);
-            _drugRepositoryMock.Setup(m => m.Update(It.IsAny<Drug>()));;
+            _drugRepositoryMock.Setup(m => m.Update(It.IsAny<Drug>())); ;
 
             Drug drugUpdated = _drugLogic.Update(drugId, drugToUpdate);
 
