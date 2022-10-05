@@ -104,7 +104,6 @@ public class AuthorizationAttributeFilter : Attribute, IAuthorizationFilter
             }
             _solicitudeLogic.SetContext(loggedUser);
             _drugLogic.SetContext(loggedUser);
-
             _purchaseLogic.SetContext(loggedUser);
         }
     }
