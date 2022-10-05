@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20221004112538_PM_Migration")]
-    partial class PM_Migration
+    [Migration("20221005033737_OwnerPurchasePermission")]
+    partial class OwnerPurchasePermission
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,17 +69,22 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 6,
-                            Endpoint = "DELETE/api/drugs/"
+                            Endpoint = "DELETE/api/drugs/.*"
                         },
                         new
                         {
                             Id = 7,
-                            Endpoint = "GET/api/drugs*"
+                            Endpoint = "GET/api/drugs/.*"
                         },
                         new
                         {
                             Id = 8,
                             Endpoint = "POST/api/pharmacies"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Endpoint = "GET/api/purchases"
                         });
                 });
 
@@ -142,6 +147,21 @@ namespace DataAccess.Migrations
                         {
                             RoleId = 1,
                             PermissionId = 8
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 9
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 9
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 9
                         });
                 });
 
@@ -246,7 +266,7 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PharmacyId")
+                    b.Property<int?>("PharmacyId")
                         .HasColumnType("int");
 
                     b.Property<int>("RoleId")
@@ -283,6 +303,60 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PharmacySet");
+                });
+
+            modelBuilder.Entity("Domain.Purchase", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PharmacyId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PharmacyId");
+
+                    b.ToTable("PurchaseSet");
+                });
+
+            modelBuilder.Entity("Domain.PurchaseItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("DrugId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PurchaseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DrugId");
+
+                    b.HasIndex("PurchaseId");
+
+                    b.ToTable("PurchaseItem");
                 });
 
             modelBuilder.Entity("Domain.Role", b =>
@@ -430,9 +504,9 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "",
+                            Address = "dirección",
                             Email = "admin@admin",
-                            Password = "admin1234",
+                            Password = "admin1234-",
                             RegistrationDate = new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 1,
                             UserName = "Admin"
@@ -490,9 +564,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("Domain.Pharmacy", "Pharmacy")
                         .WithMany()
-                        .HasForeignKey("PharmacyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PharmacyId");
 
                     b.HasOne("Domain.Role", "Role")
                         .WithMany()
@@ -503,6 +575,32 @@ namespace DataAccess.Migrations
                     b.Navigation("Pharmacy");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Domain.Purchase", b =>
+                {
+                    b.HasOne("Domain.Pharmacy", "Pharmacy")
+                        .WithMany()
+                        .HasForeignKey("PharmacyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pharmacy");
+                });
+
+            modelBuilder.Entity("Domain.PurchaseItem", b =>
+                {
+                    b.HasOne("Domain.Drug", "Drug")
+                        .WithMany()
+                        .HasForeignKey("DrugId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Purchase", null)
+                        .WithMany("Items")
+                        .HasForeignKey("PurchaseId");
+
+                    b.Navigation("Drug");
                 });
 
             modelBuilder.Entity("Domain.Solicitude", b =>
@@ -573,6 +671,11 @@ namespace DataAccess.Migrations
 
                     b.Navigation("Owner")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Purchase", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Domain.Role", b =>

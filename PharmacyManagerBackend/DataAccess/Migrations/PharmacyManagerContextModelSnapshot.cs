@@ -67,12 +67,12 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 6,
-                            Endpoint = "DELETE/api/drugs/"
+                            Endpoint = "DELETE/api/drugs/.*"
                         },
                         new
                         {
                             Id = 7,
-                            Endpoint = "GET/api/drugs*"
+                            Endpoint = "GET/api/drugs/.*"
                         },
                         new
                         {
@@ -154,6 +154,11 @@ namespace DataAccess.Migrations
                         new
                         {
                             RoleId = 3,
+                            PermissionId = 9
+                        },
+                        new
+                        {
+                            RoleId = 2,
                             PermissionId = 9
                         });
                 });
