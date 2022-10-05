@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class PM_Migration : Migration
+    public partial class CreateMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -97,6 +97,28 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PurchaseSet",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TotalPrice = table.Column<double>(type: "float", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PharmacyId = table.Column<int>(type: "int", nullable: false),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PurchaseSet", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PurchaseSet_PharmacySet_PharmacyId",
+                        column: x => x.PharmacyId,
+                        principalTable: "PharmacySet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InvitationSet",
                 columns: table => new
                 {
@@ -105,7 +127,7 @@ namespace DataAccess.Migrations
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PharmacyId = table.Column<int>(type: "int", nullable: false)
+                    PharmacyId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -114,8 +136,7 @@ namespace DataAccess.Migrations
                         name: "FK_InvitationSet_PharmacySet_PharmacyId",
                         column: x => x.PharmacyId,
                         principalTable: "PharmacySet",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_InvitationSet_RoleSet_RoleId",
                         column: x => x.RoleId,
@@ -188,6 +209,32 @@ namespace DataAccess.Migrations
                         principalTable: "RoleSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PurchaseItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DrugId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    PurchaseId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PurchaseItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PurchaseItem_DrugSet_DrugId",
+                        column: x => x.DrugId,
+                        principalTable: "DrugSet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PurchaseItem_PurchaseSet_PurchaseId",
+                        column: x => x.PurchaseId,
+                        principalTable: "PurchaseSet",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -269,8 +316,9 @@ namespace DataAccess.Migrations
                     { 4, "PUT/api/solicitudes/.*" },
                     { 5, "POST/api/drugs" },
                     { 6, "DELETE/api/drugs/.*" },
-                    { 7, "GET/api/drugs*" },
-                    { 8, "POST/api/pharmacies" }
+                    { 7, "GET/api/drugs/.*" },
+                    { 8, "POST/api/pharmacies" },
+                    { 9, "GET/api/purchases" }
                 });
 
             migrationBuilder.InsertData(
@@ -290,19 +338,21 @@ namespace DataAccess.Migrations
                 {
                     { 1, 1 },
                     { 8, 1 },
+                    { 9, 1 },
                     { 3, 2 },
                     { 4, 2 },
                     { 2, 3 },
                     { 3, 3 },
                     { 5, 3 },
                     { 6, 3 },
-                    { 7, 3 }
+                    { 7, 3 },
+                    { 9, 3 }
                 });
 
             migrationBuilder.InsertData(
                 table: "UserSet",
                 columns: new[] { "Id", "Address", "Email", "EmployeePharmacyId", "OwnerPharmacyId", "Password", "PharmacyId", "RegistrationDate", "RoleId", "UserName" },
-                values: new object[] { 1, "", "admin@admin", null, null, "admin1234", null, new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Admin" });
+                values: new object[] { 1, "dirección", "admin@admin", null, null, "admin1234-", null, new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DrugSet_DrugInfoId",
@@ -328,6 +378,21 @@ namespace DataAccess.Migrations
                 name: "IX_PermissionRoleSet_PermissionId",
                 table: "PermissionRoleSet",
                 column: "PermissionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseItem_DrugId",
+                table: "PurchaseItem",
+                column: "DrugId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseItem_PurchaseId",
+                table: "PurchaseItem",
+                column: "PurchaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseSet_PharmacyId",
+                table: "PurchaseSet",
+                column: "PharmacyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SessionSet_UserId",
@@ -375,13 +440,13 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DrugSet");
-
-            migrationBuilder.DropTable(
                 name: "InvitationSet");
 
             migrationBuilder.DropTable(
                 name: "PermissionRoleSet");
+
+            migrationBuilder.DropTable(
+                name: "PurchaseItem");
 
             migrationBuilder.DropTable(
                 name: "SessionSet");
@@ -390,13 +455,19 @@ namespace DataAccess.Migrations
                 name: "SolicitudeItem");
 
             migrationBuilder.DropTable(
-                name: "DrugInfoSet");
-
-            migrationBuilder.DropTable(
                 name: "PermissionSet");
 
             migrationBuilder.DropTable(
+                name: "DrugSet");
+
+            migrationBuilder.DropTable(
+                name: "PurchaseSet");
+
+            migrationBuilder.DropTable(
                 name: "SolicitudeSet");
+
+            migrationBuilder.DropTable(
+                name: "DrugInfoSet");
 
             migrationBuilder.DropTable(
                 name: "UserSet");

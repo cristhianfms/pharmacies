@@ -41,9 +41,10 @@ namespace DataAccess
 
         public override Solicitude GetFirst(Func<Solicitude, bool> expresion)
         {
-            IEnumerable<Solicitude> entities = this._table.
-          Include(s =>s.Items).
-          Where(expresion);
+            IEnumerable<Solicitude> entities = this._table
+                .Include(s => s.Items)
+                .Include(s => s.Employee)
+                .Where(expresion);
             Solicitude entityToReturn;
             try
             {
