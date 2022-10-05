@@ -1,5 +1,6 @@
 using Domain;
 using Domain.Dtos;
+using IAuthLogic;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filter;

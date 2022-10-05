@@ -2,6 +2,7 @@
 using Domain.Dtos;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Filter;
 using WebApi.Models;
 using WebApi.Models.Utils;
 
@@ -30,6 +31,7 @@ public class PurchasesController : ControllerBase
     }
 
     [HttpGet]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult GetPurchasesReport([FromQuery] QueryPurchaseDto queryPurchaseDto)
     {
         PurchaseReportDto purchaseReport = _purchaseLogic.GetPurchasesReport(queryPurchaseDto);

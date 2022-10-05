@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using BusinessLogic;
 using IBusinessLogic;
 using Domain;
 using IDataAccess;
 using Exceptions;
 using Domain.Dtos;
+using IAuthLogic;
 
 namespace AuthLogic
 {
@@ -13,10 +13,10 @@ namespace AuthLogic
     public class InvitationLogic : IInvitationLogic
     {
         private IInvitationRepository _invitationRepository;
-        private UserLogic _userLogic;
-        private RoleLogic _roleLogic;
-        private PharmacyLogic _pharmacyLogic;
-        public InvitationLogic(IInvitationRepository invitationRepository, UserLogic userLogic, RoleLogic roleLogic, PharmacyLogic pharmacyLogic)
+        private IUserLogic _userLogic;
+        private IRoleLogic _roleLogic;
+        private IPharmacyLogic _pharmacyLogic;
+        public InvitationLogic(IInvitationRepository invitationRepository, IUserLogic userLogic, IRoleLogic roleLogic, IPharmacyLogic pharmacyLogic)
         {
             this._invitationRepository = invitationRepository;
             this._userLogic = userLogic;
@@ -26,21 +26,33 @@ namespace AuthLogic
 
         public virtual Invitation Create(InvitationDto invitationDto)
         {
-            checkIfUserNameIsRepeated(invitationDto.UserName);
-            Pharmacy pharmacy = getExistantPharmacy(invitationDto.PharmacyName);
-            Role role = getExistantRole(invitationDto.RoleName);
-
-            Invitation invitationToCreate = new Invitation()
+            Invitation createdInvitation;
+            Invitation? existentInvitation = getInvitationForUser(invitationDto.UserName);
+            if (existentInvitation == null)
             {
-                UserName = invitationDto.UserName,
-                Role = role,
-                Pharmacy = pharmacy
-            };
+                checkIfUserNameIsRepeated(invitationDto.UserName);
+                Role role = getExistantRole(invitationDto.RoleName);
+                Invitation invitationToCreate = new Invitation()
+                {
+                    UserName = invitationDto.UserName,
+                    Role = role
+                };
 
-            string codeGenerated = generateNewInvitationCode();
-            invitationToCreate.Code = codeGenerated;
+                if (!role.Name.Equals(Role.ADMIN))
+                {
+                    Pharmacy pharmacy = getExistantPharmacy(invitationDto.PharmacyName);
+                    invitationToCreate.Pharmacy = pharmacy;
+                }
 
-            Invitation createdInvitation = _invitationRepository.Create(invitationToCreate);
+                string codeGenerated = generateNewInvitationCode();
+                invitationToCreate.Code = codeGenerated;
+
+                createdInvitation = _invitationRepository.Create(invitationToCreate);
+            }
+            else
+            {
+                createdInvitation = existentInvitation;
+            }
 
             return createdInvitation;
         }
@@ -49,7 +61,8 @@ namespace AuthLogic
         {
             Invitation invitation = getCreatedInvitation(invitationCode);
             checkInvitationUserName(invitation, invitationDto.UserName);
-
+            checkIfUserEmailIsRepeated(invitationDto.Email);
+            
             User userToCreate = new User()
             {
                 UserName = invitation.UserName,
@@ -115,7 +128,7 @@ namespace AuthLogic
             bool userExist = true;
             try
             {
-                User user = _userLogic.GetUserByUserName(userName);
+                User user = _userLogic.GetFirst(u => u.UserName == userName);
             }
             catch (ResourceNotFoundException e)
             {
@@ -175,6 +188,39 @@ namespace AuthLogic
             if (invitation.UserName != userName)
             {
                 throw new ValidationException("invalid invitation code");
+            }
+        }
+        
+        private Invitation getInvitationForUser(string userName)
+        {
+            Invitation invitation;
+            try
+            {
+                invitation = _invitationRepository.GetFirst(i => i.UserName == userName);
+            }
+            catch (ResourceNotFoundException e)
+            {
+                invitation = null;
+            }
+
+            return invitation;
+        }
+        
+        private void checkIfUserEmailIsRepeated(string email)
+        {
+            bool userExist = true;
+            try
+            {
+                User user = _userLogic.GetFirst(u => u.Email == email);
+            }
+            catch (ResourceNotFoundException e)
+            {
+                userExist = false;
+            }
+
+            if (userExist)
+            {
+                throw new ValidationException("email already registered");
             }
         }
     }

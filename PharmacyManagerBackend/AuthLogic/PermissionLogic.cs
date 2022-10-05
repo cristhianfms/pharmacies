@@ -1,8 +1,6 @@
-﻿using Domain;
-using Domain.AuthDomain;
-using IBusinessLogic;
+﻿using Domain.AuthDomain;
+using IAuthLogic;
 using IDataAccess;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AuthLogic;

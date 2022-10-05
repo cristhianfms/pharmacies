@@ -3,6 +3,8 @@ using AuthLogic;
 using BusinessLogic;
 using DataAccess;
 using DataAccess.Context;
+using Domain;
+using IAuthLogic;
 using IBusinessLogic;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -22,9 +24,8 @@ public class ServiceFactory
 
     public void AddCustomServices()
     {
-        _services.AddScoped<RoleLogic>();
-        _services.AddScoped<UserLogic>();
-        
+        _services.AddScoped<IRoleLogic, RoleLogic>();
+        _services.AddScoped<IUserLogic, UserLogic>();
         _services.AddScoped<ISessionLogic, SessionLogic>();
         _services.AddScoped<IPharmacyLogic, PharmacyLogic>();
         _services.AddScoped<IInvitationLogic, InvitationLogic>();
@@ -33,13 +34,10 @@ public class ServiceFactory
         _services.AddScoped<DrugLogic>();
         _services.AddScoped<PharmacyLogic>();
         _services.AddScoped<IPermissionLogic, PermissionLogic>();
-
-        _services.AddScoped<AuthorizationAttributeFilter>();
-        
+        _services.AddScoped<IPurchaseLogic, PurchaseLogic>();
 
         _services.AddScoped<IRoleRepository, RoleRepository>();
         _services.AddScoped<IUserRepository, UserRepository>();
-
         _services.AddScoped<ISessionRepository, SessionRepository>();
         _services.AddScoped<IPharmacyRepository, PharmacyRepository>();
         _services.AddScoped<IInvitationRepository, InvitationRepository>();
@@ -47,6 +45,9 @@ public class ServiceFactory
         _services.AddScoped<IDrugInfoRepository, DrugInfoRepository>();
         _services.AddScoped<ISolicitudeRepository, SolicitudeRepository>();
         _services.AddScoped<IPermissionRepository, PermissionRepository>();
+        _services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+        
+        _services.AddScoped<AuthorizationAttributeFilter>();
     }
     public void AddDbContextService()
     {

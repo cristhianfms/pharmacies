@@ -17,6 +17,16 @@ public class PurchaseTest
     
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
+    public void BadFormatUserEmailShouldFail()
+    {
+        Purchase purchase = new Purchase()
+        {
+            UserEmail = "test"
+        };
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
     public void EmptyItemsListShouldFail()
     {
         Purchase purchase = new Purchase()

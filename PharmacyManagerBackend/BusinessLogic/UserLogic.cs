@@ -9,7 +9,7 @@ using Domain.Dtos;
 
 namespace BusinessLogic;
 
-public class UserLogic
+public class UserLogic : IUserLogic
 {
     private readonly IUserRepository _userRepository;
 
@@ -25,9 +25,9 @@ public class UserLogic
         return createdUser;
     }
 
-    public virtual User GetUserByUserName(string userName)
+    public virtual User GetFirst(Func<User, bool> expresion)
     {
-        return _userRepository.GetFirst(u => u.UserName == userName);
+        return _userRepository.GetFirst(expresion);
     }
 
 

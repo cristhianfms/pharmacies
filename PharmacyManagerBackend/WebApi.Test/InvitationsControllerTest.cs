@@ -8,6 +8,7 @@ using WebApi.Models;
 using WebApi.Test.Utils;
 using IBusinessLogic;
 using Domain.Dtos;
+using IAuthLogic;
 
 namespace WebApi.Test;
 

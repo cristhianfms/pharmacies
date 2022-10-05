@@ -53,7 +53,7 @@ public class UserRepositoryTest
             },
             Email = "cris@gmail.com",
             Address = "Address",
-            Password = "Password",
+            Password = "Contraseña-",
             RegistrationDate = DateTime.Now,
             OwnerPharmacy = new Pharmacy()
             {
@@ -84,7 +84,7 @@ public class UserRepositoryTest
             },
             Email = "cris@gmail.com",
             Address = "Address",
-            Password = "Password",
+            Password = "Contraseña-",
             RegistrationDate = DateTime.Now,
             OwnerPharmacy = new Pharmacy()
             {
@@ -115,7 +115,7 @@ public class UserRepositoryTest
             },
             Email = "cris@gmail.com",
             Address = "Address",
-            Password = "Password",
+            Password = "Contraseña-",
             RegistrationDate = DateTime.Now,
             OwnerPharmacy = new Pharmacy()
             {
@@ -166,7 +166,7 @@ public class UserRepositoryTest
             },
             Email = "cris@gmail.com",
             Address = "Address",
-            Password = "Password",
+            Password = "Contraseña-",
             RegistrationDate = DateTime.Now,
             OwnerPharmacy = new Pharmacy()
             {
@@ -226,7 +226,7 @@ public class UserRepositoryTest
             },
             Email = "cris@gmail.com",
             Address = "Address",
-            Password = "Password",
+            Password = "Contraseña-",
             RegistrationDate = DateTime.Now,
             OwnerPharmacy = new Pharmacy()
             {
@@ -281,7 +281,7 @@ public class UserRepositoryTest
             },
             Email = "cris@gmail.com",
             Address = "Address",
-            Password = "Password",
+            Password = "Contraseña-",
             RegistrationDate = DateTime.Now,
             OwnerPharmacy = new Pharmacy()
             {

@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 
-namespace BusinessLogic.Test;
+namespace AuthLogic.Test;
 
 [TestClass]
 public class PermissionLogicTest
