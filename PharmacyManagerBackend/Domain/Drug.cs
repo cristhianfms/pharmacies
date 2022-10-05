@@ -5,6 +5,7 @@ namespace Domain
     {
         public int Id { get; set; }
         private string drugCode;
+        private int stock;
         public string DrugCode
         {
             get { return drugCode; }
@@ -18,7 +19,17 @@ namespace Domain
             }
         }
         public double Price { get; set; }
-        public int Stock { get; set; }
+        public int Stock {
+            get { return stock; }
+            set
+            {
+                if (value<0)
+                    throw new ValidationException("Stock must be greater than 0");
+
+                stock = value;
+
+            }
+        }
         public bool NeedsPrescription { get; set; }
         public int DrugInfoId { get; set; }
         public DrugInfo DrugInfo { get; set; }

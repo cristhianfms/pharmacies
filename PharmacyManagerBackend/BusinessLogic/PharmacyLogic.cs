@@ -56,5 +56,21 @@ public class PharmacyLogic : IPharmacyLogic
         }
 
     }
+
+    public virtual void DrugCodeRepeatedInPharmacy(string drugCode, int pharmacyId)
+    {
+        Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Id == pharmacyId);
+
+        if (pharmacy.Drugs.Exists(d => d.DrugCode == drugCode))
+        {
+            throw new ResourceNotFoundException("The drug code already exists in this pharmacy");
+        }
+
+    }
+
+    public virtual void UpdatePharmacy(Pharmacy pharmacy)
+    {
+        this._pharmacyRepository.Update(pharmacy);
+    }
 }
 

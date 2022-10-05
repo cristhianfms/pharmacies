@@ -18,20 +18,25 @@ namespace WebApi.Filter.Test;
 public class AuthorizationAttributeFilterTest
 {
     private AuthorizationAttributeFilter _authFilter;
-    private Mock<ISessionLogic> _sessionLogic;
-    private Mock<IPermissionLogic> _permissionLogic;
-    private Mock <ISolicitudeLogic> _solicitudeLogic;
-    private Mock <IPurchaseLogic> _purchaseLogic;
+    private Mock<ISessionLogic> _sessionLogicMock;
+    private Mock<IPermissionLogic> _permissionLogicMock;
+    private Mock<ISolicitudeLogic> _solicitudeLogicMock;
+    private Mock<IDrugLogic> _drugLogicMock;
+    private Mock<IPurchaseLogic> _purchaseLogicMock;
 
     [TestInitialize]
     public void Initialize()
     {
-        this._sessionLogic = new Mock<ISessionLogic>(MockBehavior.Strict);
-        this._permissionLogic = new Mock<IPermissionLogic>(MockBehavior.Strict);
-        this._solicitudeLogic = new Mock<ISolicitudeLogic>(MockBehavior.Strict);
-        this._purchaseLogic = new Mock<IPurchaseLogic>(MockBehavior.Strict);
-        _authFilter = new AuthorizationAttributeFilter(this._sessionLogic.Object, this._permissionLogic.Object, 
-            this._solicitudeLogic.Object, this._purchaseLogic.Object);
+        this._sessionLogicMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+        this._permissionLogicMock = new Mock<IPermissionLogic>(MockBehavior.Strict);
+        this._solicitudeLogicMock = new Mock<ISolicitudeLogic>(MockBehavior.Strict);
+        this._drugLogicMock = new Mock<IDrugLogic>(MockBehavior.Strict);
+        this._purchaseLogicMock = new Mock<IPurchaseLogic>(MockBehavior.Strict);
+        _authFilter = new AuthorizationAttributeFilter(this._sessionLogicMock.Object,
+        this._permissionLogicMock.Object, this._solicitudeLogicMock.Object,
+        this._drugLogicMock.Object, this._purchaseLogicMock.Object);
+
+
     }
 
     [TestMethod]
@@ -55,16 +60,17 @@ public class AuthorizationAttributeFilterTest
             new ActionContext(httpContextMock.Object, new RouteData(), new ActionDescriptor());
         AuthorizationFilterContext authFilterContext =
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
-        _sessionLogic.Setup(m => m.Get(token)).Returns(sessionRepository);
-        _permissionLogic.Setup(m => m.HasPermission(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-        _solicitudeLogic.Setup(m => m.SetContext(user));
-        _purchaseLogic.Setup(m => m.SetContext(user));
+        _sessionLogicMock.Setup(m => m.Get(token)).Returns(sessionRepository);
+        _permissionLogicMock.Setup(m => m.HasPermission(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+        _solicitudeLogicMock.Setup(m => m.SetContext(user));
+        _drugLogicMock.Setup(m => m.SetContext(user));
+        _purchaseLogicMock.Setup(m => m.SetContext(user));
 
         _authFilter.OnAuthorization(authFilterContext);
 
         Assert.IsNull(authFilterContext.Result);
-        _sessionLogic.VerifyAll();
-        _permissionLogic.VerifyAll();
+        _sessionLogicMock.VerifyAll();
+        _permissionLogicMock.VerifyAll();
     }
 
     [TestMethod]
@@ -88,7 +94,7 @@ public class AuthorizationAttributeFilterTest
             new ActionContext(httpContextMock.Object, new RouteData(), new ActionDescriptor());
         AuthorizationFilterContext authFilterContext =
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
-        _sessionLogic.Setup(m => m.Get(token)).Throws(new ResourceNotFoundException(""));
+        _sessionLogicMock.Setup(m => m.Get(token)).Throws(new ResourceNotFoundException(""));
 
         _authFilter.OnAuthorization(authFilterContext);
 
@@ -118,11 +124,12 @@ public class AuthorizationAttributeFilterTest
             new ActionContext(httpContextMock.Object, new RouteData(), new ActionDescriptor());
         AuthorizationFilterContext authFilterContext =
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
-        _sessionLogic.Setup(m => m.Get(token)).Returns(sessionRepository);
-        _permissionLogic.Setup(m => m.HasPermission(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-        _solicitudeLogic.Setup(m => m.SetContext(user));
-        _purchaseLogic.Setup(m => m.SetContext(user));
-        
+        _sessionLogicMock.Setup(m => m.Get(token)).Returns(sessionRepository);
+        _permissionLogicMock.Setup(m => m.HasPermission(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
+        _solicitudeLogicMock.Setup(m => m.SetContext(user));
+        _drugLogicMock.Setup(m => m.SetContext(user));
+        _purchaseLogicMock.Setup(m => m.SetContext(user));
+
         _authFilter.OnAuthorization(authFilterContext);
 
         var result = authFilterContext.Result as ObjectResult;
@@ -146,7 +153,7 @@ public class AuthorizationAttributeFilterTest
 
         Assert.AreEqual(401, result.StatusCode);
     }
-    
+
     [TestMethod]
     public void BadFormatoOfTokenTest()
     {

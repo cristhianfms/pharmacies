@@ -1,6 +1,6 @@
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using Domain.Dtos;
 using IBusinessLogic;
 using WebApi.Filter;
 using WebApi.Models;
@@ -45,6 +45,14 @@ namespace WebApi.Controllers
 
             DrugGetModel drugModel = ModelsMapper.ToGetModel(drug);
             return Ok(drugModel);
+        }
+
+        [HttpGet]
+        public IActionResult Get([FromQuery] QueryDrugDto queryDrugDto)
+        {
+            IEnumerable<Drug> drugs = _drugLogic.GetAll(queryDrugDto);
+            IEnumerable<DrugGetModel> drugModels = ModelsMapper.ToModelList(drugs);
+            return Ok(drugModels);
         }
     }
 

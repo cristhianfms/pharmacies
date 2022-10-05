@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20221004032032_PharmacyManagerMigration")]
-    partial class PharmacyManagerMigration
+    [Migration("20221004112538_PM_Migration")]
+    partial class PM_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -74,7 +74,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 7,
-                            Endpoint = "GET/api/drugs/*"
+                            Endpoint = "GET/api/drugs*"
                         },
                         new
                         {

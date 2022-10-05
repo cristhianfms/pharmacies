@@ -49,7 +49,6 @@ public class DrugsControllerTest
             DrugCode = "2A5",
             Price = 150,
             NeedsPrescription = false,
-            PharmacyId = pharmacyId
            
         };
 

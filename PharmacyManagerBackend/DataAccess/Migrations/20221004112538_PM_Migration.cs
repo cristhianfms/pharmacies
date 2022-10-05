@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class PharmacyManagerMigration : Migration
+    public partial class PM_Migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -268,8 +268,8 @@ namespace DataAccess.Migrations
                     { 3, "GET/api/solicitudes" },
                     { 4, "PUT/api/solicitudes/.*" },
                     { 5, "POST/api/drugs" },
-                    { 6, "DELETE/api/drugs/" },
-                    { 7, "GET/api/drugs/*" },
+                    { 6, "DELETE/api/drugs/.*" },
+                    { 7, "GET/api/drugs*" },
                     { 8, "POST/api/pharmacies" }
                 });
 

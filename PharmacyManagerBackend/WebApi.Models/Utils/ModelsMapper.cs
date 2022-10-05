@@ -129,7 +129,6 @@ public static class ModelsMapper
             Price = drugModel.Price,
             Stock = 0,
             DrugInfo = drugInfo,
-            PharmacyId = drugModel.PharmacyId
         };
     }
 
@@ -146,7 +145,6 @@ public static class ModelsMapper
             Presentation = drug.DrugInfo.Presentation,
             QuantityPerPresentation = drug.DrugInfo.QuantityPerPresentation,
             UnitOfMeasurement= drug.DrugInfo.UnitOfMeasurement,
-            PharmacyId = drug.PharmacyId
         };
     }
     public static DrugGetModel ToGetModel(Drug drug)
@@ -166,5 +164,13 @@ public static class ModelsMapper
             PharmacyId = drug.PharmacyId
         };
     }
-
+    public static IEnumerable<DrugGetModel> ToModelList(IEnumerable<Drug> drugs)
+    {
+        List<DrugGetModel> drugGetModel = new List<DrugGetModel>();
+        foreach (Drug _drug in drugs)
+        {
+            drugGetModel.Add(ToGetModel(_drug));
+        }
+        return drugGetModel;
+    }
 }
