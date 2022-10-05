@@ -32,6 +32,7 @@ namespace BusinessLogic.Test
                 Drugs = new List<Drug>(),
                 Employees = new List<User>()
             };
+
             _userEmployeeForTest = new User()
             {
                 Id = 1,
