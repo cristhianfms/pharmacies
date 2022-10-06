@@ -9,7 +9,7 @@ public class CredentialsDtoTest
 {
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
-    public void ValidateCredentialsWithNullPasswordThrowsException()
+    public void ValidateCredentialsWithEmptyPasswordThrowsException()
     {
         CredentialsDto credentialsDto = new CredentialsDto()
         {
@@ -20,7 +20,7 @@ public class CredentialsDtoTest
 
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
-    public void ValidateCredentialsWithNullUserNameThrowsException()
+    public void ValidateCredentialsWithEmptyUserNameThrowsException()
     {
         CredentialsDto credentialsDto = new CredentialsDto()
         {
