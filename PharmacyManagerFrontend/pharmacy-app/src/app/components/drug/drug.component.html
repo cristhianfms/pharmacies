@@ -1,10 +1,14 @@
-<h2>{{drug.name}}</h2>
-<h2>$ {{drug.price}}</h2>
-<p>Code: {{drug.drugCode}}</p>
-<p>Pharmacy: {{drug.pharmacyName}}</p>
-<p>Symptoms: {{drug.symptoms}}</p>
-<p>Presentation type: {{drug.presentation}}</p>
-<p>Presentation: {{drug.quantityPerPresentation}} {{drug.unitOfMeasurement}}</p>
-<p>Stock: {{drug.stock}}</p>
-<p *ngIf="drug.needsPrescription">Needs prescription</p>
-<button (click)="onAddToCart()">Add</button>
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{drug.name}}</h5>
+        <h5 class="card-title">$ {{drug.price}}</h5>
+        <p class="card-text">Code: {{drug.drugCode}}</p>
+        <p class="card-text">Pharmacy: {{drug.pharmacyName}}</p>
+        <p class="card-text">Symptoms: {{drug.symptoms}}</p>
+        <p class="card-text">Presentation type: {{drug.presentation}}</p>
+        <p class="card-text">Presentation: {{drug.quantityPerPresentation}} {{drug.unitOfMeasurement}}</p>
+        <p class="card-text">Stock: {{drug.stock}}</p>
+        <p class="card-text" *ngIf="drug.needsPrescription">Needs prescription</p>
+        <a href="#"  (click)="onAddToCart() "class="btn btn-primary">Add to cart</a>
+    </div>
+</div>
