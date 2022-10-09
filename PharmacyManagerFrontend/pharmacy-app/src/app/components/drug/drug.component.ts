@@ -10,15 +10,16 @@ export class DrugComponent implements OnInit {
 
   @Input() drug: Drug = {
     id: 0,
-    code: '',
+    drugCode: '',
     name: '',
     price: 0,
     symptoms: '',
     presentation: '',
-    presentationQuantity: 0,
-    measureUnit: '',
+    quantityPerPresentation: 0,
+    unitOfMeasurement: '',
     needsPrescription: true,
-    pharmacyName: ''
+    pharmacyName: '',
+    stock: 0
   }
   @Output() addedProduct = new EventEmitter<Drug>();
 

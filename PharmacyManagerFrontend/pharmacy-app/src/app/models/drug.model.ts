@@ -1,12 +1,13 @@
 export interface Drug {
     id: number,
-    code: string,
+    drugCode: string,
     name: string,
     price: number,
     symptoms: string,
     presentation: string,
-    presentationQuantity: number,
-    measureUnit: string,
+    quantityPerPresentation: number,
+    unitOfMeasurement: string,
     needsPrescription: boolean,
-    pharmacyName: string
+    pharmacyName: string,
+    stock: number
 }

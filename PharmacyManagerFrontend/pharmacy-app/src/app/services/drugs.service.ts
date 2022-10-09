@@ -10,6 +10,6 @@ export class DrugsService {
   constructor( private http: HttpClient) { }
 
   getAllDrugs() {
-    return this.http.get<Drug[]>('')
+    return this.http.get<Drug[]>('https://localhost:7245/api/drugs')
   }
 }

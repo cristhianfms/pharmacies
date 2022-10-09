@@ -1,9 +1,10 @@
 <h2>{{drug.name}}</h2>
 <h2>$ {{drug.price}}</h2>
-<p>Code: {{drug.code}}</p>
+<p>Code: {{drug.drugCode}}</p>
 <p>Pharmacy: {{drug.pharmacyName}}</p>
 <p>Symptoms: {{drug.symptoms}}</p>
 <p>Presentation type: {{drug.presentation}}</p>
-<p>Presentation: {{drug.presentationQuantity}} {{drug.measureUnit}}</p>
+<p>Presentation: {{drug.quantityPerPresentation}} {{drug.unitOfMeasurement}}</p>
+<p>Stock: {{drug.stock}}</p>
 <p *ngIf="drug.needsPrescription">Needs prescription</p>
 <button (click)="onAddToCart()">Add</button>
