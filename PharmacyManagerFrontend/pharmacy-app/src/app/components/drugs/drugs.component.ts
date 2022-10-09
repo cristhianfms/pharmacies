@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Drug} from "../../models/drug.model";
+import {CreateDrugDTO, Drug} from "../../models/drug.model";
 import {StoreService} from "../../services/store.service";
 import {DrugsService} from "../../services/drugs.service";
 
@@ -13,6 +13,19 @@ export class DrugsComponent implements OnInit {
     totalPrice : number = 0
     myShoppingCart : Drug[] = []
     drugs: Drug[] = []
+    drugChosen: Drug = {
+        id: 0,
+        drugCode: "",
+        name: "",
+        price: 0,
+        symptoms: "",
+        presentation: "",
+        quantityPerPresentation: 20,
+        unitOfMeasurement: "",
+        needsPrescription: true,
+        pharmacyId: 0,
+        stock: 0
+    }
 
     constructor( private storeService: StoreService, private drugService: DrugsService) {
         this.myShoppingCart = this.storeService.getShoppingCart();
@@ -29,4 +42,29 @@ export class DrugsComponent implements OnInit {
         this.totalPrice = this.storeService.getTotal()
     }
 
+    createNewDrug(){
+        const newDrug : CreateDrugDTO = {
+            drugCode: "A01",
+            name: "Nombre de droga nueva",
+            price: 100.50,
+            symptoms: "Sintomas locos",
+            presentation: "presentacion nueva",
+            quantityPerPresentation: 50,
+            unitOfMeasurement: "ml",
+            needsPrescription: true,
+            pharmacyId: 1
+        }
+        this.drugService.create(newDrug).subscribe((data: any) => {
+            console.log('created', data)
+            this.drugs.push(data)
+        })
+    }
+
+    deleteDrug() {
+        const id = this.drugChosen.id;
+        this.drugService.delete(id).subscribe(() => {
+            const drugIndex = this.drugs.findIndex(d => d.id === id)
+            this.drugs.splice(drugIndex, 1)
+        })
+    }
 }

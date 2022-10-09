@@ -18,8 +18,8 @@ export class DrugComponent implements OnInit {
     quantityPerPresentation: 0,
     unitOfMeasurement: '',
     needsPrescription: true,
-    pharmacyName: '',
-    stock: 0
+    stock: 0,
+    pharmacyId: 0
   }
   @Output() addedProduct = new EventEmitter<Drug>();
 
