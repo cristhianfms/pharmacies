@@ -22,9 +22,22 @@ export class InvitationsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  createInvitation(){
+    this.invitationService.create({
+      roleName: "Admin",
+      userName: "cris1",
+      pharmacyName: "farmashop"
+    }).subscribe(response => {
+      console.log(response)
+    })
+  }
+
   updateInvitation(){
     const changes: UpdateInvitationDto = {
-      pharmacyName: 'nuevaFarmacia'
+      userName: 'nuevaFarmacia',
+      email: 'email@email',
+      address: 'address',
+      password: 'password'
     }
     const id = this.invitationChosen.id
     this.invitationService.update(id, changes).subscribe( data => {

@@ -26,15 +26,29 @@ export class DrugsComponent implements OnInit {
         pharmacyId: 0,
         stock: 0
     }
+    statusGetAll: 'loading' | 'success' | 'error' | 'init' = 'init'
 
     constructor( private storeService: StoreService, private drugService: DrugsService) {
         this.myShoppingCart = this.storeService.getShoppingCart();
     }
 
     ngOnInit(): void {
-        this.drugService.getAllDrugs().subscribe(
-            data => this.drugs = data
+        this.statusGetAll = 'loading'
+        this.drugService.getAllDrugs().subscribe({
+                next: this.handleGetAllResponse.bind(this),
+                error: this.handleError.bind(this)
+            }
         )
+    }
+
+    handleGetAllResponse(data: any){
+        this.drugs = data
+        this.statusGetAll = 'success'
+    }
+
+    handleError(error: any){
+        window.alert(error)
+        this.statusGetAll = 'error'
     }
 
     onAddToShoppingCart(drug: Drug) {

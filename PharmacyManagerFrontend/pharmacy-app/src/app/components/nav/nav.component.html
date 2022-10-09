@@ -19,9 +19,12 @@
             </li>
         </ul>
     </div>
-    <button class="btn btn-outline-success" type="button">LogIn</button>
+
+
     <div class="info">
-        <div class="account">loggedUser</div>
+        <button *ngIf= "!profile; else elseBlock" class="btn btn-outline-success" type="button">LogIn</button>
+        <ng-template #elseBlock>{{profile?.email}}</ng-template>
+
         <div class="cart">
             <a href="">
                 <img src="./assets/svg/icon_shopping_cart.svg" alt="logo">

@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode} from "@angular/common/http";
 import {CreateDrugDTO, Drug} from "../models/drug.model";
 import {environment} from "../../environments/environment";
+import {catchError, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DrugsService {
 
-  apiUrl: string = `${environment}/api/drugs`
+  apiUrl: string = `${environment.API_URL}/api/drugs`
 
   constructor( private http: HttpClient) { }
 
@@ -22,6 +23,14 @@ export class DrugsService {
     }
 
     return this.http.get<Drug[]>(`${this.apiUrl}`, {params})
+        .pipe(
+            catchError((error: HttpErrorResponse) => {
+              if (error.status === HttpStatusCode.InternalServerError) {
+                return throwError(() => new Error("Issue with the server"));
+              }
+              return throwError(() => new Error("Something went wrong"))
+            })
+        )
   }
 
   create(dto: CreateDrugDTO){

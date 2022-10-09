@@ -9,6 +9,9 @@ export interface CreateInvitationDto extends Omit<Invitation, 'id'> {
 
 }
 
-export interface UpdateInvitationDto extends Partial<CreateInvitationDto> {
-
+export interface UpdateInvitationDto {
+    userName: string,
+    email: string,
+    address: string,
+    password:string
 }

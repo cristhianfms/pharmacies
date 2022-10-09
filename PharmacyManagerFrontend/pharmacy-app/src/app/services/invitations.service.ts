@@ -8,7 +8,7 @@ import {environment} from "../../environments/environment";
 })
 export class InvitationsService {
 
-  apiUrl: string = `${environment}/api/invitations`
+  apiUrl: string = `${environment.API_URL}/api/invitations`
 
   constructor(private http: HttpClient) { }
 

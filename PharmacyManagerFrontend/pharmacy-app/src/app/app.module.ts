@@ -10,6 +10,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { InvitationComponent } from './components/invitation/invitation.component';
 import { InvitationsComponent } from './components/invitations/invitations.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { InvitationsComponent } from './components/invitations/invitations.compo
     DrugsComponent,
     NavComponent,
     InvitationComponent,
-    InvitationsComponent
+    InvitationsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
