@@ -1,5 +1,3 @@
-using System;
-using AuthLogic;
 using Domain;
 using Domain.Dtos;
 using Exceptions;
@@ -19,7 +17,7 @@ public class InvitationLogicTest
     private Mock<IUserLogic> _userLogic;
     private Mock<IRoleLogic> _roleLogic;
     private Mock<IPharmacyLogic> _pharmacyLogic;
-    private Mock<User> _currentUser;
+    private Mock<Context> _currentContext;
     
     [TestInitialize]
     public void Initialize()
@@ -28,9 +26,13 @@ public class InvitationLogicTest
         this._roleLogic = new Mock<IRoleLogic>(MockBehavior.Strict);
         this._pharmacyLogic = new Mock<IPharmacyLogic>(MockBehavior.Strict);
         this._invitationRepository = new Mock<IInvitationRepository>(MockBehavior.Strict);
-        this._currentUser = new Mock<User>(MockBehavior.Strict);
-        this._invitationLogic = new InvitationLogic(this._invitationRepository.Object, this._userLogic.Object,
-            this._roleLogic.Object, this._pharmacyLogic.Object, this._currentUser.Object);
+        this._currentContext = new Mock<Context>(MockBehavior.Strict);
+        this._invitationLogic = new InvitationLogic(
+            this._invitationRepository.Object, 
+            this._userLogic.Object, 
+            this._roleLogic.Object, 
+            this._pharmacyLogic.Object, 
+            this._currentContext.Object);
     }
 
     [TestMethod]
@@ -70,10 +72,13 @@ public class InvitationLogicTest
         {
             Name = invitationToCreate.RoleName
         });
-        _currentUser.Setup(m => m.Role).Returns(new Role()
+        _currentContext.Setup(m => m.CurrentUser).Returns(new User()
         {
-            Name = Role.ADMIN
-        });
+            Role = new Role()
+            {
+                Name = Role.ADMIN
+
+        }});
 
         Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
 
@@ -86,7 +91,7 @@ public class InvitationLogicTest
         _invitationRepository.VerifyAll();
         _pharmacyLogic.VerifyAll();
         _roleLogic.VerifyAll();
-        _currentUser.VerifyAll();
+        _currentContext.VerifyAll();
     }
 
     [TestMethod]
@@ -117,10 +122,13 @@ public class InvitationLogicTest
         {
             Name = invitationToCreate.RoleName
         });
-        _currentUser.Setup(m => m.Role).Returns(new Role()
+        _currentContext.Setup(m => m.CurrentUser).Returns(new User()
         {
-            Name = Role.ADMIN
-        });
+            Role = new Role()
+            {
+                Name = Role.ADMIN
+
+            }});
 
         Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
 
@@ -132,6 +140,7 @@ public class InvitationLogicTest
         _invitationRepository.VerifyAll();
         _pharmacyLogic.VerifyAll();
         _roleLogic.VerifyAll();
+        _currentContext.VerifyAll();
     }
     
     [TestMethod]
@@ -163,10 +172,15 @@ public class InvitationLogicTest
         _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
         _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
             .Throws(new ResourceNotFoundException(""));
-        _currentUser.Setup(m => m.Pharmacy).Returns(pharmacyOfOwner);
-        _currentUser.Setup(m => m.Role).Returns(new Role()
+        
+        _currentContext.Setup(m => m.CurrentUser).Returns(new User()
         {
-            Name = Role.OWNER
+            Role = new Role()
+            {
+                Name = Role.OWNER
+
+            },
+            Pharmacy = pharmacyOfOwner
         });
         _roleLogic.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
         {
@@ -182,7 +196,7 @@ public class InvitationLogicTest
         Assert.IsTrue(createdInvitation.Code.Length == 6);
         _userLogic.VerifyAll();
         _invitationRepository.VerifyAll();
-        _currentUser.VerifyAll();
+        _currentContext.VerifyAll();
         _roleLogic.VerifyAll();
     }
     
@@ -253,9 +267,13 @@ public class InvitationLogicTest
         {
             Name = invitationToCreate.RoleName
         });
-        _currentUser.Setup(m => m.Role).Returns(new Role()
+        _currentContext.Setup(m => m.CurrentUser).Returns(new User()
         {
-            Name = Role.ADMIN
+            Role = new Role()
+            {
+                Name = Role.ADMIN
+
+            }
         });
 
         Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
@@ -269,7 +287,7 @@ public class InvitationLogicTest
         _invitationRepository.VerifyAll();
         _pharmacyLogic.VerifyAll();
         _roleLogic.VerifyAll();
-        _currentUser.VerifyAll();
+        _currentContext.VerifyAll();
     }
 
     [TestMethod]
@@ -320,9 +338,13 @@ public class InvitationLogicTest
         _roleLogic.Setup(m => m.GetRoleByName(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
         _invitationRepository.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
             .Throws(new ResourceNotFoundException(""));
-        _currentUser.Setup(m => m.Role).Returns(new Role()
+        _currentContext.Setup(m => m.CurrentUser).Returns(new User()
         {
-            Name = Role.ADMIN
+            Role = new Role()
+            {
+                Name = Role.ADMIN
+
+            }
         });
 
         Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
@@ -345,9 +367,13 @@ public class InvitationLogicTest
         {
             Name = invitationToCreate.RoleName
         });
-        _currentUser.Setup(m => m.Role).Returns(new Role()
+        _currentContext.Setup(m => m.CurrentUser).Returns(new User()
         {
-            Name = Role.ADMIN
+            Role = new Role()
+            {
+                Name = Role.ADMIN
+
+            }
         });
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
         _invitationRepository.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))

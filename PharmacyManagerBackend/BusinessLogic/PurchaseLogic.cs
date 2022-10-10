@@ -14,19 +14,15 @@ public class PurchaseLogic : IPurchaseLogic
     private DrugLogic _drugLogic;
     private Context _context;
 
-    public PurchaseLogic(IPurchaseRepository purchaseRepository, PharmacyLogic pharmacyLogic, DrugLogic drugLogic)
+    public PurchaseLogic(IPurchaseRepository purchaseRepository, 
+        PharmacyLogic pharmacyLogic, 
+        DrugLogic drugLogic,
+        Context currentContext)
     {
         this._purchaseRepository = purchaseRepository;
         this._pharmacyLogic = pharmacyLogic;
         this._drugLogic = drugLogic;
-    }
-
-    public void SetContext(User user)
-    {
-        _context = new Context()
-        {
-            CurrentUser = user
-        };
+        this._context = currentContext;
     }
 
     public Purchase Create(Purchase purchase)

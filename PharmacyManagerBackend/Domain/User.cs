@@ -12,7 +12,7 @@ public class User
     public int Id { get; set; }
     public string UserName { get; set; }
     public int RoleId { get; set; }
-    public virtual Role Role { get; set; }
+    public Role Role { get; set; }
 
     public string Email
     {
@@ -54,7 +54,7 @@ public class User
     public Pharmacy? EmployeePharmacy { get; set; }
     public DateTime RegistrationDate { get; set; }
 
-    public virtual Pharmacy? Pharmacy
+    public Pharmacy? Pharmacy
     {
         get { return OwnerPharmacy != null ? OwnerPharmacy : EmployeePharmacy; }
         set

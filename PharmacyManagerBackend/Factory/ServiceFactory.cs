@@ -35,6 +35,7 @@ public class ServiceFactory
         _services.AddScoped<PharmacyLogic>();
         _services.AddScoped<IPermissionLogic, PermissionLogic>();
         _services.AddScoped<IPurchaseLogic, PurchaseLogic>();
+        _services.AddScoped<Context>();
 
         _services.AddScoped<IRoleRepository, RoleRepository>();
         _services.AddScoped<IUserRepository, UserRepository>();

@@ -15,19 +15,15 @@ namespace BusinessLogic
         private PharmacyLogic _pharmacyLogic;
         private Context _context;
 
-        public DrugLogic(IDrugRepository drugRepository, IDrugInfoRepository drugInfoRepository, PharmacyLogic pharmacyLogic)
+        public DrugLogic(IDrugRepository drugRepository, 
+            IDrugInfoRepository drugInfoRepository, 
+            PharmacyLogic pharmacyLogic,
+            Context currentContext)
         {
             this._drugRepository = drugRepository;
             this._drugInfoRepository = drugInfoRepository;
             this._pharmacyLogic = pharmacyLogic;
-        }
-
-        public void SetContext(User currentUser)
-        {
-            _context = new Context()
-            {
-                CurrentUser = currentUser
-            };
+            this._context = currentContext;
         }
 
         public Drug Create(Drug drug)

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using IBusinessLogic;
+﻿using IBusinessLogic;
 using Domain;
 using IDataAccess;
 using Exceptions;
@@ -16,20 +14,20 @@ namespace AuthLogic
         private IUserLogic _userLogic;
         private IRoleLogic _roleLogic;
         private IPharmacyLogic _pharmacyLogic;
-        private User _currentUser;
+        private Context _currentContext;
         
         public InvitationLogic(
             IInvitationRepository invitationRepository, 
             IUserLogic userLogic, 
             IRoleLogic roleLogic, 
             IPharmacyLogic pharmacyLogic,
-            User currentUser)
+            Context currentContext)
         {
             this._invitationRepository = invitationRepository;
             this._userLogic = userLogic;
             this._pharmacyLogic = pharmacyLogic;
             this._roleLogic = roleLogic;
-            this._currentUser = currentUser;
+            this._currentContext = currentContext;
         }
 
         public virtual Invitation Create(InvitationDto invitationDto)
@@ -232,9 +230,10 @@ namespace AuthLogic
         private Pharmacy? getFarmacyForInvitation(InvitationDto invitationDto)
         {
             Pharmacy? pharmacy = null;
-            if (_currentUser.Role.Name.Equals(Role.OWNER))
+            User currentUser = _currentContext.CurrentUser;
+            if (currentUser.Role.Name.Equals(Role.OWNER))
             {
-                pharmacy = _currentUser.Pharmacy;
+                pharmacy = currentUser.Pharmacy;
             }
             else
             {
@@ -250,7 +249,8 @@ namespace AuthLogic
         private Role getRoleForInvitation(InvitationDto invitationDto)
         {
             Role role;
-            if (_currentUser.Role.Name.Equals(Role.OWNER))
+            User currentUser = _currentContext.CurrentUser;
+            if (currentUser.Role.Name.Equals(Role.OWNER))
             {
                 role = getExistantRole(Role.EMPLOYEE);
             }
