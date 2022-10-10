@@ -31,6 +31,7 @@ public class InvitationsController : ControllerBase
     }
 
     [HttpPut("{invitationCode}")]
+    [ServiceFilter(typeof(AuthorizationAttributePublicFilter))]
     public IActionResult Update(string invitationCode, [FromBody] InvitationPutModel invitationPutModel)
     {
         InvitationDto invitationToUpdate = InvitationModelsMapper.ToEntity(invitationPutModel);
