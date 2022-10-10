@@ -8,9 +8,16 @@ import { DrugsComponent } from './components/drugs/drugs.component';
 import { NavComponent } from './components/nav/nav.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
-import { InvitationComponent } from './components/invitation/invitation.component';
-import { InvitationsComponent } from './components/invitations/invitations.component';
 import { LoginComponent } from './components/login/login.component';
+import { MyCartComponent } from './pages/my-cart/my-cart.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { HomeComponent } from './pages/home/home.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { SolicitudesComponent } from './pages/solicitudes/solicitudes.component';
+import { PurchasesComponent } from './pages/purchases/purchases.component';
+import { PharmaciesComponent } from './pages/pharmacies/pharmacies.component';
+import { InvitationEditComponent } from './pages/invitation-edit/invitation-edit.component';
+import { InvitationComponent } from './pages/invitation/invitation.component';
 
 @NgModule({
   declarations: [
@@ -18,9 +25,16 @@ import { LoginComponent } from './components/login/login.component';
     DrugComponent,
     DrugsComponent,
     NavComponent,
-    InvitationComponent,
-    InvitationsComponent,
-    LoginComponent
+    LoginComponent,
+    MyCartComponent,
+    RegisterComponent,
+    HomeComponent,
+    NotFoundComponent,
+    SolicitudesComponent,
+    PurchasesComponent,
+    PharmaciesComponent,
+    InvitationEditComponent,
+    InvitationComponent
   ],
   imports: [
     BrowserModule,

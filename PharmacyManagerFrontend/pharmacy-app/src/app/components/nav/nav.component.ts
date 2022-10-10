@@ -20,6 +20,9 @@ export class NavComponent implements OnInit {
         this.storeService.myCart$.subscribe(drugs => {
             this.counter = drugs.length;
         })
+        this.sessionService.user$.subscribe(data => {
+            this.profile = data;
+        })
     }
 
     login() {

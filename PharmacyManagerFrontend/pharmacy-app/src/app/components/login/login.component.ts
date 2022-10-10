@@ -9,7 +9,6 @@ import {SessionsService} from "../../services/sessions.service";
 })
 export class LoginComponent implements OnInit {
 
-  token: string = ""
   constructor(private http: HttpClient, private sessionService: SessionsService) { }
 
   ngOnInit(): void {
@@ -19,14 +18,6 @@ export class LoginComponent implements OnInit {
     this.sessionService.login("Admin", "admin1234-")
         .subscribe(session => {
           console.log(session.token)
-          this.token = session.token
-        })
-  }
-
-  getProfile(){
-    this.sessionService.profile()
-        .subscribe(profile => {
-          console.log(profile)
         })
   }
 }

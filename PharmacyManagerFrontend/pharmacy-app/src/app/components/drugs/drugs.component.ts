@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CreateDrugDTO, Drug} from "../../models/drug.model";
 import {StoreService} from "../../services/store.service";
 import {DrugsService} from "../../services/drugs.service";
@@ -8,11 +8,11 @@ import {DrugsService} from "../../services/drugs.service";
     templateUrl: './drugs.component.html',
     styleUrls: ['./drugs.component.scss']
 })
-export class DrugsComponent implements OnInit {
+export class DrugsComponent {
 
     totalPrice : number = 0
     myShoppingCart : Drug[] = []
-    drugs: Drug[] = []
+    @Input() drugs: Drug[] = []
     drugChosen: Drug = {
         id: 0,
         drugCode: "",
@@ -30,25 +30,6 @@ export class DrugsComponent implements OnInit {
 
     constructor( private storeService: StoreService, private drugService: DrugsService) {
         this.myShoppingCart = this.storeService.getShoppingCart();
-    }
-
-    ngOnInit(): void {
-        this.statusGetAll = 'loading'
-        this.drugService.getAllDrugs().subscribe({
-                next: this.handleGetAllResponse.bind(this),
-                error: this.handleError.bind(this)
-            }
-        )
-    }
-
-    handleGetAllResponse(data: any){
-        this.drugs = data
-        this.statusGetAll = 'success'
-    }
-
-    handleError(error: any){
-        window.alert(error)
-        this.statusGetAll = 'error'
     }
 
     onAddToShoppingCart(drug: Drug) {
