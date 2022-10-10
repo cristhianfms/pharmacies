@@ -59,7 +59,8 @@ public class AuthorizationAttributeFilterTest
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
         _sessionLogicMock.Setup(m => m.Get(token)).Returns(sessionRepository);
         _permissionLogicMock.Setup(m => m.HasPermission(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-
+        _context.SetupSet(m => m.CurrentUser = user);
+            
         _authFilter.OnAuthorization(authFilterContext);
 
         Assert.IsNull(authFilterContext.Result);
@@ -120,7 +121,8 @@ public class AuthorizationAttributeFilterTest
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
         _sessionLogicMock.Setup(m => m.Get(token)).Returns(sessionRepository);
         _permissionLogicMock.Setup(m => m.HasPermission(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-
+        _context.SetupSet(m => m.CurrentUser = user);
+        
         _authFilter.OnAuthorization(authFilterContext);
 
         var result = authFilterContext.Result as ObjectResult;

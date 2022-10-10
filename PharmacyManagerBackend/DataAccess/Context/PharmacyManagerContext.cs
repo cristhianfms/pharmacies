@@ -99,6 +99,7 @@ public class PharmacyManagerContext : DbContext
         // Permission - Role
         modelBuilder.Entity<PermissionRole>().HasData(
             new PermissionRole() { PermissionId = createInvitation.Id, RoleId = admin.Id },
+            new PermissionRole() { PermissionId = createInvitation.Id, RoleId = owner.Id },
             new PermissionRole() { PermissionId = createSolicitude.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = getSolicitudes.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = getSolicitudes.Id, RoleId = owner.Id },
