@@ -14,8 +14,8 @@ public class PurchaseLogic : IPurchaseLogic
     private DrugLogic _drugLogic;
     private Context _context;
 
-    public PurchaseLogic(IPurchaseRepository purchaseRepository, 
-        PharmacyLogic pharmacyLogic, 
+    public PurchaseLogic(IPurchaseRepository purchaseRepository,
+        PharmacyLogic pharmacyLogic,
         DrugLogic drugLogic,
         Context currentContext)
     {
@@ -41,13 +41,13 @@ public class PurchaseLogic : IPurchaseLogic
     }
 
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
-    { 
+    {
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
-        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p => 
+        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p =>
             p.PharmacyId == pharmacyOfCurrentUser.Id &&
             p.Date >= queryPurchaseDto.GetParsedDateFrom() &&
             p.Date <= queryPurchaseDto.GetParsedDateTo());
-        
+
         double totalPrice = 0;
         foreach (var purchase in purchases)
         {
@@ -56,7 +56,7 @@ public class PurchaseLogic : IPurchaseLogic
 
         PurchaseReportDto purchaseReport = new PurchaseReportDto()
         {
-            Purchases =  purchases,
+            Purchases = purchases,
             TotalPrice = totalPrice
         };
 
@@ -103,7 +103,7 @@ public class PurchaseLogic : IPurchaseLogic
             CheckStock(purchaseItem.Drug, purchaseItem.Quantity);
         }
     }
-    
+
     private double CalculateTotalPrice(Pharmacy pharmacy, List<PurchaseItem> purchaseItems)
     {
         double totalPrice = 0;
@@ -115,7 +115,7 @@ public class PurchaseLogic : IPurchaseLogic
 
         return totalPrice;
     }
-    
+
     private void CheckAndBindExistentDrugs(Pharmacy pharmacy, List<PurchaseItem> purchaseItems)
     {
         foreach (var purchaseItem in purchaseItems)
@@ -124,8 +124,23 @@ public class PurchaseLogic : IPurchaseLogic
             purchaseItem.Drug = drug;
         }
     }
-    
-    
+
+    public virtual void DrugExistsInPurchase(Drug drug)
+    {
+        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll();
+
+        foreach (Purchase p in purchases)
+            if (p.PharmacyId == drug.PharmacyId)
+            {
+                foreach (PurchaseItem pi in p.Items)
+                    if (pi.DrugId == drug.Id)
+                    {
+                        throw new ValidationException("This drug cannot be deleted" +
+                    "because it's part of a purchase");
+                    }
+            }
+    }
+
     private Drug GetDrug(Pharmacy pharmacy, string drugCode)
     {
         Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode);
@@ -134,7 +149,7 @@ public class PurchaseLogic : IPurchaseLogic
         {
             throw new ValidationException($"{drugCode} not exist in pharmacy {pharmacy.Name}");
         }
-        
+
         return drug;
     }
 }

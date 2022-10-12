@@ -13,16 +13,21 @@ namespace BusinessLogic
         private IDrugRepository _drugRepository;
         private IDrugInfoRepository _drugInfoRepository;
         private PharmacyLogic _pharmacyLogic;
+        private PurchaseLogic _purchaseLogic;
+        private SolicitudeLogic _solicitudeLogic;
         private Context _context;
 
-        public DrugLogic(IDrugRepository drugRepository, 
-            IDrugInfoRepository drugInfoRepository, 
+        public DrugLogic(IDrugRepository drugRepository,
+            IDrugInfoRepository drugInfoRepository,
             PharmacyLogic pharmacyLogic,
-            Context currentContext)
+            Context currentContext, PurchaseLogic purchaseLogic,
+            SolicitudeLogic solicitudeLogic)
         {
             this._drugRepository = drugRepository;
             this._drugInfoRepository = drugInfoRepository;
             this._pharmacyLogic = pharmacyLogic;
+            this._purchaseLogic = purchaseLogic;
+            this._solicitudeLogic = solicitudeLogic;
             this._context = currentContext;
         }
 
@@ -61,19 +66,19 @@ namespace BusinessLogic
         public IEnumerable<Drug> GetAll(QueryDrugDto queryDrugDto)
         {
             IEnumerable<Drug> drugs = new List<Drug>();
-            
+
             if (queryDrugDto.DrugName == null &&
                 queryDrugDto.WithStock == false)
                 drugs = _drugRepository.GetAll();
-            
+
             if (queryDrugDto.DrugName == null &&
                 queryDrugDto.WithStock == true)
                 drugs = _drugRepository.GetAll(d => d.Stock > 0);
-            
+
             if (queryDrugDto.DrugName != null &&
                 queryDrugDto.WithStock == false)
                 drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName);
-            
+
             if (queryDrugDto.DrugName != null &&
                 queryDrugDto.WithStock == true)
                 drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName && d.Stock > 0);
@@ -91,6 +96,8 @@ namespace BusinessLogic
         {
             Drug drug = Get(drugId);
             Pharmacy pharmacy = _pharmacyLogic.GetPharmacyByName(_context.CurrentUser.Pharmacy.Name);
+            _solicitudeLogic.DrugExistsInSolicitude(drug);
+            _purchaseLogic.DrugExistsInPurchase(drug);
             pharmacy.Drugs.Remove(drug);
             _pharmacyLogic.UpdatePharmacy(pharmacy);
             DrugInfo drugInfo = FindDrugInfo(drug.DrugInfoId);

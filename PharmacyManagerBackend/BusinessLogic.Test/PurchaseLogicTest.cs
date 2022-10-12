@@ -22,7 +22,7 @@ public class PurchaseLogicTest
         this._context = new Mock<Context>(MockBehavior.Strict);
         this._purchaseRepository = new Mock<IPurchaseRepository>(MockBehavior.Strict);
         this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
-        this._drugLogic = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null, null);
+        this._drugLogic = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null, null, null, null);
         this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object, 
             this._pharmacyLogic.Object, 
             this._drugLogic.Object,
