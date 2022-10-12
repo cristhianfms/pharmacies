@@ -112,6 +112,11 @@ namespace AuthLogic
             return invitationDtoToReturn;
         }
 
+        public IEnumerable<Invitation> GetAll()
+        {
+            return _invitationRepository.GetAll();
+        }
+
         private Pharmacy getExistantPharmacy(string pharmacyName)
         {
             Pharmacy pharmacy;

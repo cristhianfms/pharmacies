@@ -22,7 +22,8 @@ public class InvitationModelsMapper
             UserName = invitation.UserName,
             RoleName = invitation.Role.Name,
             InvitationCode = invitation.Code,
-            PharmacyName = invitation.Pharmacy?.Name
+            PharmacyName = invitation.Pharmacy?.Name,
+            Used = invitation.Used
         };
     }
 
@@ -50,5 +51,15 @@ public class InvitationModelsMapper
             Address = invitationDto.Address,
             InvitationCode = invitationDto.Code
         };
+    }
+    
+    public static IEnumerable<InvitationResponseModel> ToModelList(IEnumerable<Invitation> invitations)
+    {
+        List<InvitationResponseModel> invitationModels = new List<InvitationResponseModel>();
+        foreach (Invitation invitation in invitations)
+        {
+            invitationModels.Add(ToModel(invitation));
+        }
+        return invitationModels;
     }
 }

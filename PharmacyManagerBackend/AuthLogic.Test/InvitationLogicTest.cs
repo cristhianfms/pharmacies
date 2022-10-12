@@ -641,4 +641,31 @@ public class InvitationLogicTest
         
         _invitationLogic.Update(invitationCode, invitationToUpdate);
     }
+    
+    [TestMethod]
+    public void TestGetAllInvitationsOK()
+    {
+
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            UserName = "Cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = "OtherInvitationCode",
+            Used = false
+        };
+        List<Invitation> invitationItems = new List<Invitation>()
+        {
+            userInvitation
+        };
+        _invitationRepository.Setup(s => s.GetAll(It.IsAny<Func<Invitation, bool>>())).Returns(invitationItems);
+
+        List<Invitation> invitationsReturned = _invitationLogic.GetAll().ToList();
+        
+        CollectionAssert.AreEqual(invitationItems, invitationsReturned);
+        _invitationRepository.VerifyAll();
+    }
 }

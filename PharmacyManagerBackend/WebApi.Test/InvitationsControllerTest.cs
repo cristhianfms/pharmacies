@@ -9,6 +9,7 @@ using WebApi.Test.Utils;
 using IBusinessLogic;
 using Domain.Dtos;
 using IAuthLogic;
+using WebApi.Models.Utils;
 
 namespace WebApi.Test;
 
@@ -99,6 +100,25 @@ public class InvitationsControllerTest
         Assert.AreEqual(invitationUpdated.PharmacyName, confirmedInvitation.PharmacyName);
         Assert.AreEqual(invitationUpdated.Email, confirmedInvitation.Email);
         Assert.AreEqual(invitationUpdated.Address, confirmedInvitation.Address);
+
+        _invitationLogicMock.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void GetAllInvitationsOk()
+    {
+        List<Invitation> invitations = new List<Invitation>()
+        {
+            _invitation
+        };
+        _invitationLogicMock.Setup(s => s.GetAll()).Returns(invitations);
+
+
+        var result = _invitationApiController.GetInvitations();
+        var okResult = result as OkObjectResult;
+        var invitationsResult = okResult.Value as List<InvitationResponseModel>;
+
+        Assert.AreEqual(InvitationModelsMapper.ToModel(invitations[0]), invitationsResult[0]);
 
         _invitationLogicMock.VerifyAll();
     }
