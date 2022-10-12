@@ -33,7 +33,9 @@ public class InvitationModelsMapper
             UserName = invitationPutModel.UserName,
             Email = invitationPutModel.Email,
             Address = invitationPutModel.Address,
-            Password = invitationPutModel.Password
+            Password = invitationPutModel.Password,
+            RoleName = invitationPutModel.RoleName,
+            PharmacyName = invitationPutModel.PharmacyName
         };
     }
 
@@ -45,7 +47,8 @@ public class InvitationModelsMapper
             RoleName = invitationDto.RoleName,
             PharmacyName = invitationDto.PharmacyName,
             Email = invitationDto.Email,
-            Address = invitationDto.Address
+            Address = invitationDto.Address,
+            InvitationCode = invitationDto.Code
         };
     }
 }
