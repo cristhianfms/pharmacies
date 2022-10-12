@@ -6,6 +6,7 @@ public class InvitationResponseModel
     public string RoleName { get; set; }
     public string InvitationCode { get; set; }
     public string? PharmacyName { get; set; }
+    public bool Used { get; set; }
     
     public override bool Equals(object obj)
     {

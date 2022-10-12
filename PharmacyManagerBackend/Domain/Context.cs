@@ -2,6 +2,6 @@
 {
     public class Context
     {
-        public virtual User CurrentUser { get; set; }
+        public virtual User? CurrentUser { get; set; }
     }
 }

@@ -75,4 +75,60 @@ public class InvitationRepositoryTest
     {
         this._invitationRepository.GetFirst(u => true);
     }
+    
+    [TestMethod]
+    public void GetAllInvitationsOK()
+    {
+        Invitation invitationRepository = new Invitation()
+        {
+            Id = 1,
+            UserName = "cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = "123456",
+            Pharmacy = new Pharmacy()
+            {
+                Name = "PharmacyB"
+            }
+        };
+        using (var context = new PharmacyManagerContext(this._contextOptions))
+        {
+            context.Add(invitationRepository);
+            context.SaveChanges();
+        }
+
+        List<Invitation> returnedInvitations = this._invitationRepository.GetAll().ToList();
+        
+        Assert.IsTrue(returnedInvitations.Exists(p => p.UserName == invitationRepository.UserName));
+    }
+
+    [TestMethod]
+    public void GetAllUsersWithExpresion()
+    {
+        Invitation invitationRepository = new Invitation()
+        {
+            Id = 1,
+            UserName = "cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = "123456",
+            Pharmacy = new Pharmacy()
+            {
+                Name = "PharmacyB"
+            }
+        };
+        using (var context = new PharmacyManagerContext(this._contextOptions))
+        {
+            context.Add(invitationRepository);
+            context.SaveChanges();
+        }
+
+        List<Invitation> returnedInvitations = this._invitationRepository.GetAll(i => i.UserName == invitationRepository.UserName).ToList();
+        
+        Assert.IsTrue(returnedInvitations.Count == 1);
+    }
 }

@@ -458,16 +458,114 @@ public class InvitationLogicTest
         };
         _userLogic.Setup(m => m.Create(It.IsAny<User>())).Returns(userRepository);
         _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
-        _invitationRepository.Setup(m => m.Delete(It.IsAny<Invitation>())).Callback(() => { });
+        _invitationRepository.Setup(m => m.Update(It.IsAny<Invitation>())).Callback(() => { });
         _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>()))
             .Throws(new ResourceNotFoundException(""));
+        _currentContext.Setup(m => m.CurrentUser).Returns((User) null);
         
         InvitationDto invitationDtoUpdated = _invitationLogic.Update(invitationCode, invitationToUpdate);
 
         Assert.AreEqual(invitationExpected, invitationDtoUpdated);
         _userLogic.VerifyAll();
         _invitationRepository.VerifyAll();
+        _currentContext.VerifyAll();
     }
+    
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void UpdateInvitationUsedShouldThrowError()
+    {
+        string invitationCode = "111111";
+        InvitationDto invitationToUpdate = new InvitationDto()
+        {
+            UserName = "Cris01",
+            Code = invitationCode,
+            Email = "cris@gmail.com",
+            Address = "Road A 1234",
+            RoleName = "Employee",
+            PharmacyName = "PharmacyName",
+            Password = "Contraseña-"
+        };
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            UserName = "Cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = invitationToUpdate.Code,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "PharmacyName"
+            },
+            Used = true
+        };
+        _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
+
+        _invitationLogic.Update(invitationCode, invitationToUpdate);
+    }
+    
+    
+    [TestMethod]
+    public void UpdateInvitationAsAdminOk()
+    {
+        string invitationCode = "111111";
+        InvitationDto invitationToUpdate = new InvitationDto()
+        {
+            UserName = "Cris01",
+            RoleName = "Employee",
+            PharmacyName = "PharmacyName"
+        };
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            UserName = "Cris02",
+            Role = new Role()
+            {
+                Name = "Owner"
+            },
+            Code = invitationToUpdate.Code,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "PharmacyName2"
+            }
+        };
+
+        _invitationRepository.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
+            .Returns(userInvitation)
+            .Throws(new ResourceNotFoundException(""));
+        _invitationRepository.Setup(m => m.Update(It.IsAny<Invitation>())).Callback(() => { });
+        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>()))
+            .Throws(new ResourceNotFoundException(""));
+        _currentContext.Setup(m => m.CurrentUser).Returns(new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.ADMIN 
+            }
+        });
+        _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy()
+        {
+            Name = invitationToUpdate.PharmacyName
+        });
+        _roleLogic.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
+        {
+            Name = invitationToUpdate.RoleName
+        });
+        
+        InvitationDto invitationDtoUpdated = _invitationLogic.Update(invitationCode, invitationToUpdate);
+
+        Assert.AreEqual(invitationToUpdate.UserName, invitationDtoUpdated.UserName);
+        Assert.AreEqual(invitationToUpdate.PharmacyName, invitationDtoUpdated.PharmacyName);
+        Assert.AreEqual(invitationToUpdate.RoleName, invitationDtoUpdated.RoleName);
+        Assert.IsNotNull(invitationDtoUpdated.Code);
+        _userLogic.VerifyAll();
+        _invitationRepository.VerifyAll();
+        _currentContext.VerifyAll();
+    }
+
 
 
     [TestMethod]
@@ -539,7 +637,35 @@ public class InvitationLogicTest
         };
         _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
         _invitationRepository.Setup(m => m.Delete(It.IsAny<Invitation>())).Callback(() => { });
-
+        _currentContext.Setup(m => m.CurrentUser).Returns((User) null);
+        
         _invitationLogic.Update(invitationCode, invitationToUpdate);
+    }
+    
+    [TestMethod]
+    public void TestGetAllInvitationsOK()
+    {
+
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            UserName = "Cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = "OtherInvitationCode",
+            Used = false
+        };
+        List<Invitation> invitationItems = new List<Invitation>()
+        {
+            userInvitation
+        };
+        _invitationRepository.Setup(s => s.GetAll(It.IsAny<Func<Invitation, bool>>())).Returns(invitationItems);
+
+        List<Invitation> invitationsReturned = _invitationLogic.GetAll().ToList();
+        
+        CollectionAssert.AreEqual(invitationItems, invitationsReturned);
+        _invitationRepository.VerifyAll();
     }
 }

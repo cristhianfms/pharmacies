@@ -49,6 +49,7 @@ public class ServiceFactory
         _services.AddScoped<IPurchaseRepository, PurchaseRepository>();
         
         _services.AddScoped<AuthorizationAttributeFilter>();
+        _services.AddScoped<AuthorizationAttributePublicFilter>();
     }
     public void AddDbContextService()
     {
