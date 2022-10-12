@@ -40,4 +40,14 @@ public class InvitationsController : ControllerBase
 
         return Ok(invitationCreatedModel);
     }
+    
+    [HttpGet]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
+    public IActionResult GetInvitations()
+    {
+        IEnumerable<Invitation> invitations = _invitationLogic.GetAll();
+        IEnumerable<InvitationResponseModel> invitationModels = InvitationModelsMapper.ToModelList(invitations);
+
+        return Ok(invitationModels);
+    }
 }

@@ -10,5 +10,6 @@ public interface IInvitationLogic
 {
     Invitation Create(InvitationDto invitation);
     InvitationDto Update(string invitationCode, InvitationDto invitationDto);
+    IEnumerable<Invitation> GetAll();
 }
 
