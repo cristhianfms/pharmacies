@@ -22,4 +22,5 @@ public class Invitation
     public string Code { get; set; }
     public int? PharmacyId { get; set; }
     public Pharmacy? Pharmacy { get; set; }
+    public Boolean Used{ get; set; }
 }

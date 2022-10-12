@@ -23,20 +23,17 @@ public class AuthorizationAttributeFilterTest
     private Mock<ISolicitudeLogic> _solicitudeLogicMock;
     private Mock<IDrugLogic> _drugLogicMock;
     private Mock<IPurchaseLogic> _purchaseLogicMock;
+    private Mock<Context> _context;
 
     [TestInitialize]
     public void Initialize()
     {
         this._sessionLogicMock = new Mock<ISessionLogic>(MockBehavior.Strict);
         this._permissionLogicMock = new Mock<IPermissionLogic>(MockBehavior.Strict);
-        this._solicitudeLogicMock = new Mock<ISolicitudeLogic>(MockBehavior.Strict);
-        this._drugLogicMock = new Mock<IDrugLogic>(MockBehavior.Strict);
-        this._purchaseLogicMock = new Mock<IPurchaseLogic>(MockBehavior.Strict);
+        this._context = new Mock<Context>(MockBehavior.Strict);
         _authFilter = new AuthorizationAttributeFilter(this._sessionLogicMock.Object,
-        this._permissionLogicMock.Object, this._solicitudeLogicMock.Object,
-        this._drugLogicMock.Object, this._purchaseLogicMock.Object);
-
-
+        this._permissionLogicMock.Object,
+        this._context.Object);
     }
 
     [TestMethod]
@@ -62,10 +59,8 @@ public class AuthorizationAttributeFilterTest
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
         _sessionLogicMock.Setup(m => m.Get(token)).Returns(sessionRepository);
         _permissionLogicMock.Setup(m => m.HasPermission(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-        _solicitudeLogicMock.Setup(m => m.SetContext(user));
-        _drugLogicMock.Setup(m => m.SetContext(user));
-        _purchaseLogicMock.Setup(m => m.SetContext(user));
-
+        _context.SetupSet(m => m.CurrentUser = user);
+            
         _authFilter.OnAuthorization(authFilterContext);
 
         Assert.IsNull(authFilterContext.Result);
@@ -126,10 +121,8 @@ public class AuthorizationAttributeFilterTest
             new AuthorizationFilterContext(actionContext, new List<IFilterMetadata> { });
         _sessionLogicMock.Setup(m => m.Get(token)).Returns(sessionRepository);
         _permissionLogicMock.Setup(m => m.HasPermission(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-        _solicitudeLogicMock.Setup(m => m.SetContext(user));
-        _drugLogicMock.Setup(m => m.SetContext(user));
-        _purchaseLogicMock.Setup(m => m.SetContext(user));
-
+        _context.SetupSet(m => m.CurrentUser = user);
+        
         _authFilter.OnAuthorization(authFilterContext);
 
         var result = authFilterContext.Result as ObjectResult;

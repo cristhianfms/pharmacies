@@ -11,6 +11,5 @@ public interface ISolicitudeLogic
     Solicitude Create(Solicitude solicitude);
     IEnumerable<Solicitude> GetSolicitudes(QuerySolicitudeDto querySolicitudeDto);
     Solicitude Update(int solicitudId, Solicitude solicitude);
-    void SetContext(User currentUser);
 }
 

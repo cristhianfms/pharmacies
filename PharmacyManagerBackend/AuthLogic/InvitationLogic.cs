@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using IBusinessLogic;
+﻿using IBusinessLogic;
 using Domain;
 using IDataAccess;
 using Exceptions;
@@ -16,12 +14,20 @@ namespace AuthLogic
         private IUserLogic _userLogic;
         private IRoleLogic _roleLogic;
         private IPharmacyLogic _pharmacyLogic;
-        public InvitationLogic(IInvitationRepository invitationRepository, IUserLogic userLogic, IRoleLogic roleLogic, IPharmacyLogic pharmacyLogic)
+        private Context _currentContext;
+        
+        public InvitationLogic(
+            IInvitationRepository invitationRepository, 
+            IUserLogic userLogic, 
+            IRoleLogic roleLogic, 
+            IPharmacyLogic pharmacyLogic,
+            Context currentContext)
         {
             this._invitationRepository = invitationRepository;
             this._userLogic = userLogic;
             this._pharmacyLogic = pharmacyLogic;
             this._roleLogic = roleLogic;
+            this._currentContext = currentContext;
         }
 
         public virtual Invitation Create(InvitationDto invitationDto)
@@ -31,18 +37,15 @@ namespace AuthLogic
             if (existentInvitation == null)
             {
                 checkIfUserNameIsRepeated(invitationDto.UserName);
-                Role role = getExistantRole(invitationDto.RoleName);
+                Role role = getRoleForInvitation(invitationDto);
                 Invitation invitationToCreate = new Invitation()
                 {
                     UserName = invitationDto.UserName,
-                    Role = role
+                    Role = role,
+                    Used = false
                 };
-
-                if (!role.Name.Equals(Role.ADMIN))
-                {
-                    Pharmacy pharmacy = getExistantPharmacy(invitationDto.PharmacyName);
-                    invitationToCreate.Pharmacy = pharmacy;
-                }
+                Pharmacy? invitationPharmacy = getFarmacyForInvitation(invitationDto);
+                invitationToCreate.Pharmacy = invitationPharmacy;
 
                 string codeGenerated = generateNewInvitationCode();
                 invitationToCreate.Code = codeGenerated;
@@ -222,6 +225,41 @@ namespace AuthLogic
             {
                 throw new ValidationException("email already registered");
             }
+        }
+        
+        private Pharmacy? getFarmacyForInvitation(InvitationDto invitationDto)
+        {
+            Pharmacy? pharmacy = null;
+            User currentUser = _currentContext.CurrentUser;
+            if (currentUser.Role.Name.Equals(Role.OWNER))
+            {
+                pharmacy = currentUser.Pharmacy;
+            }
+            else
+            {
+                if (!invitationDto.RoleName.Equals(Role.ADMIN))
+                {
+                    pharmacy = getExistantPharmacy(invitationDto.PharmacyName);
+                }
+            }
+            
+            return pharmacy;
+        }
+        
+        private Role getRoleForInvitation(InvitationDto invitationDto)
+        {
+            Role role;
+            User currentUser = _currentContext.CurrentUser;
+            if (currentUser.Role.Name.Equals(Role.OWNER))
+            {
+                role = getExistantRole(Role.EMPLOYEE);
+            }
+            else
+            {
+                role = getExistantRole(invitationDto.RoleName);
+            }
+
+            return role;
         }
     }
 }

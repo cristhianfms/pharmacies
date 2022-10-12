@@ -14,16 +14,21 @@ namespace BusinessLogic.Test
         private Mock<IDrugRepository> _drugRepositoryMock;
         private Mock<IDrugInfoRepository> _drugInfoRepositoryMock;
         private Mock<PharmacyLogic> _pharmacyLogic;
+        private Mock<Context> _context;
         private User _userEmployeeForTest;
         private Pharmacy _pharmacy;
 
         [TestInitialize]
         public void Initialize()
         {
+            this._context = new Mock<Context>(MockBehavior.Strict);
             this._drugRepositoryMock = new Mock<IDrugRepository>(MockBehavior.Strict);
             this._drugInfoRepositoryMock = new Mock<IDrugInfoRepository>(MockBehavior.Strict);
             this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
-            this._drugLogic = new DrugLogic(_drugRepositoryMock.Object, _drugInfoRepositoryMock.Object, _pharmacyLogic.Object);
+            this._drugLogic = new DrugLogic(_drugRepositoryMock.Object, 
+                _drugInfoRepositoryMock.Object, 
+                _pharmacyLogic.Object,
+                _context.Object);
 
             _pharmacy = new Pharmacy()
             {
@@ -47,7 +52,7 @@ namespace BusinessLogic.Test
                 }
             };
 
-            _drugLogic.SetContext(_userEmployeeForTest);
+            _context.Setup(m => m.CurrentUser).Returns(_userEmployeeForTest);
         }
 
         [TestMethod]

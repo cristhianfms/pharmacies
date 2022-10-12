@@ -18,19 +18,15 @@ namespace BusinessLogic
         private readonly PharmacyLogic _pharmacyLogic;
         private Context _context;
 
-        public SolicitudeLogic(ISolicitudeRepository solicitudeRepository, DrugLogic drugLogic, PharmacyLogic pharmacyLogic)
+        public SolicitudeLogic(ISolicitudeRepository solicitudeRepository, 
+            DrugLogic drugLogic, 
+            PharmacyLogic pharmacyLogic,
+            Context currentContext)
         {
             this._solicitudeRepository = solicitudeRepository;
             this._drugLogic = drugLogic;
             this._pharmacyLogic = pharmacyLogic;
-        }
-
-        public void SetContext(User currentUser)
-        {
-            _context = new Context()
-            {
-                CurrentUser = currentUser
-            };
+            this._context = currentContext;
         }
 
         public virtual Solicitude Create(Solicitude solicitude)

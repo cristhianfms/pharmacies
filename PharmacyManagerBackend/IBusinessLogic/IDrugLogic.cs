@@ -11,7 +11,6 @@ namespace IBusinessLogic
         Drug Get(int drugId);
         void Delete(int drugId);
         void AddStock(IEnumerable<SolicitudeItem> items);
-        void SetContext(User currentUser);
         IEnumerable<Drug> GetAll(QueryDrugDto queryDrugDto);
 
     }

@@ -14,14 +14,19 @@ public class PurchaseLogicTest
     private Mock<IPurchaseRepository> _purchaseRepository;
     private Mock<PharmacyLogic> _pharmacyLogic;
     private Mock<DrugLogic> _drugLogic;
+    private Mock<Context> _context;
 
     [TestInitialize]
     public void Initialize()
     {
+        this._context = new Mock<Context>(MockBehavior.Strict);
         this._purchaseRepository = new Mock<IPurchaseRepository>(MockBehavior.Strict);
         this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
-        this._drugLogic = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null);
-        this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object, this._pharmacyLogic.Object, this._drugLogic.Object);
+        this._drugLogic = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null, null);
+        this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object, 
+            this._pharmacyLogic.Object, 
+            this._drugLogic.Object,
+            this._context.Object);
     }
 
     [TestMethod]
@@ -261,8 +266,8 @@ public class PurchaseLogicTest
             DateTo = "2022-09-30"
         };
         _purchaseRepository.Setup(m => m.GetAll(It.IsAny<Func<Purchase, bool>>())).Returns(purchasesRepository);
-        
-        _purchaseLogic.SetContext(currentUser);
+        _context.Setup(m => m.CurrentUser).Returns(currentUser);
+
         PurchaseReportDto purchasesReport = _purchaseLogic.GetPurchasesReport(queryPurchaseDto);
         
         Assert.AreEqual(totalPrice, purchasesReport.TotalPrice);
