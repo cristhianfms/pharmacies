@@ -1,7 +1,7 @@
 using System;
 using Exceptions;
 
-namespace Domain.Dtos;
+namespace Domain.Dto;
 
 public class InvitationDto
 {

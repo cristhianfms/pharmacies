@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Domain;
-using Domain.Dtos;
+using Domain.Dto;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebApi.Models;
 using WebApi.Models.Utils;
@@ -102,5 +102,37 @@ public class InvitationModelsMapperTest
         Assert.AreEqual(invitation.Address, invitationConfirmedModel.Address);
         Assert.AreEqual(invitation.RoleName, invitationConfirmedModel.RoleName);
         Assert.AreEqual(invitation.PharmacyName, invitationConfirmedModel.PharmacyName);
+    }
+
+    [TestMethod]
+    public void InvitationsToModelListOK()
+    {
+        Invitation invitationForList = new Invitation()
+        {
+            Id = 1,
+            UserName = "JuanPerez",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Pharmacy = new Pharmacy()
+            {
+                Name = "FarmaciaB"
+            },
+            Code = "2A5678BX"
+
+        };
+
+        List<Invitation> invitationsToConvert = new List<Invitation>()
+            {
+                invitationForList,
+            };
+
+        List<InvitationResponseModel> invitationResponseModels = InvitationModelsMapper.ToModelList(invitationsToConvert);
+
+        Assert.AreEqual(invitationsToConvert.Count, solicitudeResponseModels.Count);
+        Assert.AreEqual(invitationsToConvert[0].Id, solicitudeResponseModels[0].Id);
+        
+
     }
 }
