@@ -9,6 +9,9 @@ public class PurchaseItem
     public int Id { get; set; }
     public int DrugId { get; set; }
     public Drug Drug { get; set; }
+    public int PharmacyId { get; set; }
+    public Pharmacy Pharmacy { get; set; }
+    public PurchaseState State { get; set; }
     public int Quantity
     {
         get { return _quantity; }
