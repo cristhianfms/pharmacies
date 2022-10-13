@@ -366,7 +366,7 @@ namespace BusinessLogic.Test
             QuerySolicitudeDto querysolicitudeDto = new QuerySolicitudeDto()
             {
                 DateFrom = "2020-05-08",
-                DateTo = "2022-10-08"
+                DateTo = "2022-12-30"
             };
 
             SolicitudeItem solicitudeItem = new SolicitudeItem()
