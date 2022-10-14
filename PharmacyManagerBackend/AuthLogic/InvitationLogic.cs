@@ -4,6 +4,7 @@ using IDataAccess;
 using Exceptions;
 using Domain.Dtos;
 using IAuthLogic;
+using Domain.Dto;
 
 namespace AuthLogic
 {
@@ -112,9 +113,24 @@ namespace AuthLogic
             return invitationDtoToReturn;
         }
 
-        public IEnumerable<Invitation> GetAll()
+        public IEnumerable<Invitation> GetInvitations(QueryInvitationDto queryInvitationDto)
         {
-            return _invitationRepository.GetAll();
+            IEnumerable<Invitation> invitationsToReturn = new List<Invitation>();
+            invitationsToReturn = _invitationRepository.GetAll();
+
+            if (queryInvitationDto.PharmacyName != null)
+            {
+                invitationsToReturn = invitationsToReturn.Where(i => i.Pharmacy.Name.ToLower() == queryInvitationDto.PharmacyName.ToLower());
+            }
+            if (queryInvitationDto.UserName != null)
+            {
+                invitationsToReturn = invitationsToReturn.Where(i => i.UserName == queryInvitationDto.UserName);
+            }
+            if (queryInvitationDto.Role != null)
+            {
+                invitationsToReturn = invitationsToReturn.Where(i => i.Role.Name == queryInvitationDto.Role);
+            }
+            return invitationsToReturn;
         }
 
         private Pharmacy getExistantPharmacy(string pharmacyName)

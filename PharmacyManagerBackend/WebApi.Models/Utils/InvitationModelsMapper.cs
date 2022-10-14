@@ -1,5 +1,5 @@
 using Domain;
-using Domain.Dtos;
+using Domain.Dto;
 
 
 namespace WebApi.Models.Utils;
@@ -53,7 +53,7 @@ public class InvitationModelsMapper
         };
     }
     
-    public static IEnumerable<InvitationResponseModel> ToModelList(IEnumerable<Invitation> invitations)
+    public static List<InvitationResponseModel> ToModelList(List<Invitation> invitations)
     {
         List<InvitationResponseModel> invitationModels = new List<InvitationResponseModel>();
         foreach (Invitation invitation in invitations)

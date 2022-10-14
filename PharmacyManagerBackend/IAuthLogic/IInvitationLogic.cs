@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Domain;
-using Domain.Dtos;
+using Domain.Dto;
 
 namespace IAuthLogic;
 
@@ -10,6 +10,6 @@ public interface IInvitationLogic
 {
     Invitation Create(InvitationDto invitation);
     InvitationDto Update(string invitationCode, InvitationDto invitationDto);
-    IEnumerable<Invitation> GetAll();
+    IEnumerable<Invitation> GetInvitations(QueryInvitationDto queryInvitationDto);
 }
 

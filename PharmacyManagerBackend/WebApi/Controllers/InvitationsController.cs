@@ -1,5 +1,5 @@
 using Domain;
-using Domain.Dtos;
+using Domain.Dto;
 using IAuthLogic;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
@@ -43,9 +43,9 @@ public class InvitationsController : ControllerBase
     
     [HttpGet]
     [ServiceFilter(typeof(AuthorizationAttributeFilter))]
-    public IActionResult GetInvitations()
+    public IActionResult GetInvitations([FromQuery] QueryInvitationDto queryInvitationDto)
     {
-        IEnumerable<Invitation> invitations = _invitationLogic.GetAll();
+        List<Invitation> invitations = _invitationLogic.GetInvitations(queryInvitationDto).ToList();
         IEnumerable<InvitationResponseModel> invitationModels = InvitationModelsMapper.ToModelList(invitations);
 
         return Ok(invitationModels);
