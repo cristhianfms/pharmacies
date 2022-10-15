@@ -120,14 +120,25 @@ namespace AuthLogic
 
             if (queryInvitationDto.PharmacyName != null)
             {
+                Pharmacy? pharmacy = null;
+                pharmacy = getExistantPharmacy(queryInvitationDto.PharmacyName);
+
                 invitationsToReturn = invitationsToReturn.Where(i => i.Pharmacy.Name.ToLower() == queryInvitationDto.PharmacyName.ToLower());
             }
             if (queryInvitationDto.UserName != null)
             {
+                Invitation invitationByUser = getInvitationForUser(queryInvitationDto.UserName);
+                if (invitationByUser == null)
+                {
+                    throw new ResourceNotFoundException("user doesn't exist");
+                } 
                 invitationsToReturn = invitationsToReturn.Where(i => i.UserName == queryInvitationDto.UserName);
             }
             if (queryInvitationDto.Role != null)
             {
+                Role? role = null;
+                role = getExistantRole(queryInvitationDto.Role);
+
                 invitationsToReturn = invitationsToReturn.Where(i => i.Role.Name == queryInvitationDto.Role);
             }
             return invitationsToReturn;

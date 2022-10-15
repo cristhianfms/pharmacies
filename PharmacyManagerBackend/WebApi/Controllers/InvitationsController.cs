@@ -46,7 +46,7 @@ public class InvitationsController : ControllerBase
     public IActionResult GetInvitations([FromQuery] QueryInvitationDto queryInvitationDto)
     {
         List<Invitation> invitations = _invitationLogic.GetInvitations(queryInvitationDto).ToList();
-        IEnumerable<InvitationResponseModel> invitationModels = InvitationModelsMapper.ToModelList(invitations);
+        List<InvitationResponseModel> invitationModels = InvitationModelsMapper.ToModelList(invitations);
 
         return Ok(invitationModels);
     }
