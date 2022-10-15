@@ -10,4 +10,3 @@ public enum State
     PENDING = 0,
     REJECTED = 2,
 }
-

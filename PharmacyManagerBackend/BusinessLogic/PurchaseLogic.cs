@@ -30,7 +30,6 @@ public class PurchaseLogic : IPurchaseLogic
         CheckAndBindExistentDrugs(purchase.Items);
         SetPendingState(purchase.Items);
         CheckDrugsStock(purchase.Items);
-        UpdateDrugStock(purchase.Items);
         double totalPrice = CalculateTotalPrice(purchase.Items);
         
         purchase.TotalPrice = totalPrice;

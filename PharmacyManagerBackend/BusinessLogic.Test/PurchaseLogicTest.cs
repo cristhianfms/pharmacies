@@ -89,14 +89,12 @@ public class PurchaseLogicTest
         _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
         _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Throws(new ResourceNotFoundException(""));
         _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseRepository);
-        _drugLogic.Setup(m => m.Update(It.IsAny<int>(), It.IsAny<Drug>())).Returns(drug);
 
         Purchase purchaseCreated = _purchaseLogic.Create(purchaseToCreate);
         
         Assert.AreEqual(purchaseRepository, purchaseCreated);
         _pharmacyLogic.VerifyAll();
         _purchaseRepository.VerifyAll();
-        _drugLogic.VerifyAll();
     }
     
     [TestMethod]
@@ -162,14 +160,12 @@ public class PurchaseLogicTest
             .Returns(new Purchase(){})
             .Throws(new ResourceNotFoundException(""));
         _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseRepository);
-        _drugLogic.Setup(m => m.Update(It.IsAny<int>(), It.IsAny<Drug>())).Returns(drug);
 
         Purchase purchaseCreated = _purchaseLogic.Create(purchaseToCreate);
         
         Assert.AreEqual(purchaseRepository, purchaseCreated);
         _pharmacyLogic.VerifyAll();
         _purchaseRepository.VerifyAll();
-        _drugLogic.VerifyAll();
     }
 
     [TestMethod]
