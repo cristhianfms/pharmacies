@@ -17,20 +17,20 @@ public class PurchaseModelsMapperTest
         List<PurchaseItemModel> purchaseItemModels = new List<PurchaseItemModel>(){
                 new PurchaseItemModel(){
                     DrugCode = "A01",
-                    Quantity = 1
+                    Quantity = 1,
+                    PharmacyName = "Pharamacy Name"
                 }
             };
         PurchaseRequestModel purchaseRequestModel = new PurchaseRequestModel()
         {
             UserEmail = "email@email.com",
             Items = purchaseItemModels,
-            PharmacyName = "Pharamacy Name"
         };
 
         Purchase purchase = PurchaseModelsMapper.ToEntity(purchaseRequestModel);
 
         Assert.AreEqual(purchaseRequestModel.UserEmail, purchase.UserEmail);
-        Assert.AreEqual(purchaseRequestModel.PharmacyName, purchase.Pharmacy.Name);
+        Assert.AreEqual(purchaseRequestModel.Items[0].PharmacyName, purchase.Items[0].Pharmacy.Name);
         Assert.AreEqual(purchaseRequestModel.Items[0].DrugCode, purchase.Items[0].Drug.DrugCode);
         Assert.AreEqual(purchaseRequestModel.Items[0].Quantity, purchase.Items[0].Quantity);
     }
@@ -45,7 +45,11 @@ public class PurchaseModelsMapperTest
             {
                 DrugCode = "A01",
             },
-            Quantity = 1
+            Quantity = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "Pharamacy Name",
+            }
         };
         List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
         Purchase purchaseDto = new Purchase()
@@ -54,17 +58,13 @@ public class PurchaseModelsMapperTest
             UserEmail = "email@email.com",
             Date = DateTime.Now,
             Items = purchaseItems,
-            Pharmacy = new Pharmacy()
-            {
-                Name = "Pharamacy Name",
-            }
         };
 
         PurchaseResponseModel purchaseResponse = PurchaseModelsMapper.ToModel(purchaseDto);
 
         Assert.AreEqual(purchaseDto.Id, purchaseResponse.Id);
         Assert.AreEqual(purchaseDto.UserEmail, purchaseResponse.UserEmail);
-        Assert.AreEqual(purchaseDto.Pharmacy.Name, purchaseResponse.PharmacyName);
+        Assert.AreEqual(purchaseDto.Items[0].Pharmacy.Name, purchaseResponse.Items[0].PharmacyName);
         Assert.AreEqual(purchaseDto.Date, purchaseResponse.CreatedDate);
         Assert.AreEqual(purchaseDto.Items[0].Drug.DrugCode, purchaseResponse.Items[0].DrugCode);
         Assert.AreEqual(purchaseDto.Items[0].Quantity, purchaseResponse.Items[0].Quantity);
@@ -79,7 +79,11 @@ public class PurchaseModelsMapperTest
             {
                 DrugCode = "A01"
             },
-            Quantity = 1
+            Quantity = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "Pharamacy Name"
+            }
         };
         List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
         Purchase purchaseDto = new Purchase()
@@ -89,10 +93,6 @@ public class PurchaseModelsMapperTest
             Date = DateTime.Now,
             TotalPrice = 100.99,
             Items = purchaseItems,
-            Pharmacy = new Pharmacy()
-            {
-                Name = "Pharamacy Name"
-            }
         };
         List<Purchase> purchases = new List<Purchase>() { purchaseDto };
         PurchaseReportDto purchaseReportDto = new PurchaseReportDto

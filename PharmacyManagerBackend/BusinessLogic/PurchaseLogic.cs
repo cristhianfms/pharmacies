@@ -27,15 +27,14 @@ public class PurchaseLogic : IPurchaseLogic
 
     public Purchase Create(Purchase purchase)
     {
-        Pharmacy pharmacy = GetPharmacyByName(purchase.Pharmacy.Name);
-        CheckAndBindExistentDrugs(pharmacy, purchase.Items);
+        CheckAndBindExistentDrugs(purchase.Items);
+        SetPendingState(purchase.Items);
         CheckDrugsStock(purchase.Items);
-        UpdateDrugStock(purchase.Items);
-        double totalPrice = CalculateTotalPrice(pharmacy, purchase.Items);
-
-        purchase.Pharmacy = pharmacy;
+        double totalPrice = CalculateTotalPrice(purchase.Items);
+        
         purchase.TotalPrice = totalPrice;
         purchase.Date = DateTime.Now;
+        purchase.Code = GenerateNewInvitationCode();
 
         return _purchaseRepository.Create(purchase);
     }
@@ -44,7 +43,8 @@ public class PurchaseLogic : IPurchaseLogic
     { 
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
         IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p => 
-            p.PharmacyId == pharmacyOfCurrentUser.Id &&
+            //TODO: Analizar esto de farmacia
+            //p.PharmacyId == pharmacyOfCurrentUser.Id &&
             p.Date >= queryPurchaseDto.GetParsedDateFrom() &&
             p.Date <= queryPurchaseDto.GetParsedDateTo());
         
@@ -104,11 +104,12 @@ public class PurchaseLogic : IPurchaseLogic
         }
     }
     
-    private double CalculateTotalPrice(Pharmacy pharmacy, List<PurchaseItem> purchaseItems)
+    private double CalculateTotalPrice(List<PurchaseItem> purchaseItems)
     {
         double totalPrice = 0;
         foreach (var purchaseItem in purchaseItems)
         {
+            Pharmacy pharmacy = GetPharmacyByName(purchaseItem.Pharmacy.Name);
             Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
             totalPrice += drug.Price;
         }
@@ -116,15 +117,23 @@ public class PurchaseLogic : IPurchaseLogic
         return totalPrice;
     }
     
-    private void CheckAndBindExistentDrugs(Pharmacy pharmacy, List<PurchaseItem> purchaseItems)
+    private void CheckAndBindExistentDrugs(List<PurchaseItem> purchaseItems)
     {
         foreach (var purchaseItem in purchaseItems)
         {
+            Pharmacy pharmacy = GetPharmacyByName(purchaseItem.Pharmacy.Name);
             Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
             purchaseItem.Drug = drug;
         }
     }
     
+    private void SetPendingState(List<PurchaseItem> purchaseItems)
+    {
+        foreach (var purchaseItem in purchaseItems)
+        {
+            purchaseItem.State = PurchaseState.PENDING;
+        }
+    }
     
     private Drug GetDrug(Pharmacy pharmacy, string drugCode)
     {
@@ -136,5 +145,32 @@ public class PurchaseLogic : IPurchaseLogic
         }
         
         return drug;
+    }
+    
+    private string GenerateNewInvitationCode()
+    {
+        Random generator = new Random();
+        String code;
+        do
+        {
+            code = generator.Next(0, 1000000).ToString("D6");
+        } while (IsExistantCode(code));
+
+        return code;
+    }
+
+    private bool IsExistantCode(string code)
+    {
+        bool invitationExists = true;
+        try
+        {
+            _purchaseRepository.GetFirst(i => i.Code == code);
+        }
+        catch (ResourceNotFoundException e)
+        {
+            invitationExists = false;
+        }
+
+        return invitationExists;
     }
 }

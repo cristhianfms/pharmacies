@@ -29,7 +29,11 @@ public class PurchasesControllerTest
             {
                 DrugCode = "A01"
             },
-            Quantity = 1
+            Quantity = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "PharamacyName"   
+            }
         };
         List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
         Purchase purchase = new Purchase()
@@ -38,22 +42,18 @@ public class PurchasesControllerTest
             UserEmail = "email@email.com",
             Date = DateTime.Now,
             Items = purchaseItems,
-            Pharmacy = new Pharmacy()
-            {
-                Name = "PharamacyName"   
-            }
         };
         List<PurchaseItemModel> purchaseItemModels = new List<PurchaseItemModel>(){
                 new PurchaseItemModel(){
                     DrugCode = purchaseItem.Drug.DrugCode,
-                    Quantity = purchaseItem.Quantity
+                    Quantity = purchaseItem.Quantity,
+                    PharmacyName = purchaseItem.Pharmacy.Name
                 }
             };
         PurchaseRequestModel purchaseRequestModel = new PurchaseRequestModel()
         {
             UserEmail = purchase.UserEmail,
             Items = purchaseItemModels,
-            PharmacyName = purchase.Pharmacy.Name
         };
 
         _purchaseLogicMock.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
@@ -64,7 +64,7 @@ public class PurchasesControllerTest
 
         Assert.AreEqual(purchase.Id, createdPurchase.Id);
         Assert.AreEqual(purchase.UserEmail, createdPurchase.UserEmail);
-        Assert.AreEqual(purchase.Pharmacy.Name, createdPurchase.PharmacyName);
+        Assert.AreEqual(purchase.Items[0].Pharmacy.Name, createdPurchase.Items[0].PharmacyName);
         Assert.AreEqual(purchase.Date, createdPurchase.CreatedDate);
         Assert.AreEqual(purchase.Items[0].Drug.DrugCode, createdPurchase.Items[0].DrugCode);
         Assert.AreEqual(purchase.Items[0].Quantity, createdPurchase.Items[0].Quantity);
@@ -80,7 +80,11 @@ public class PurchasesControllerTest
             {
                 DrugCode = "A01"
             },
-            Quantity = 1
+            Quantity = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "Pharamacy Name"
+            }
         };
         List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
         Purchase purchase = new Purchase()
@@ -90,10 +94,6 @@ public class PurchasesControllerTest
             Date = DateTime.Now,
             TotalPrice = 100.99,
             Items = purchaseItems,
-            Pharmacy = new Pharmacy()
-            {
-                Name = "Pharamacy Name"
-            }
         };
         List<Purchase> purchases = new List<Purchase>() { purchase };
         PurchaseReportDto purchaseReportDto = new PurchaseReportDto

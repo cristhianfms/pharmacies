@@ -63,7 +63,6 @@ public class PurchaseRepositoryTest
         };
         Purchase purchaseRepository = new Purchase()
         {
-            Pharmacy = pharmacyRepository,
             TotalPrice = 100.50,
             UserEmail = "email@email.com",
             Items = new List<PurchaseItem>()
@@ -72,9 +71,12 @@ public class PurchaseRepositoryTest
                 {
                     Id = 1,
                     Quantity = 2,
-                    Drug = drugRepository
+                    Drug = drugRepository,
+                    Pharmacy = pharmacyRepository,
+                    State = PurchaseState.PENDING
                 }
-            }
+            },
+            Code = "1234"
         };
         using (var context = new PharmacyManagerContext(this._contextOptions))
         {
@@ -117,7 +119,6 @@ public class PurchaseRepositoryTest
         };
         Purchase purchaseRepository = new Purchase()
         {
-            Pharmacy = pharmacyRepository,
             TotalPrice = 100.50,
             UserEmail = "email@email.com",
             Items = new List<PurchaseItem>()
@@ -126,9 +127,12 @@ public class PurchaseRepositoryTest
                 {
                     Id = 1,
                     Quantity = 2,
-                    Drug = drugRepository
-                }
-            }
+                    Drug = drugRepository,
+                    Pharmacy = pharmacyRepository,
+                    State = PurchaseState.PENDING
+                },
+            },
+            Code = "1234"
         };
         using (var context = new PharmacyManagerContext(this._contextOptions))
         {
