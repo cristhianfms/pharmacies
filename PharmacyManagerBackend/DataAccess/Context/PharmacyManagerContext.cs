@@ -54,7 +54,11 @@ public class PharmacyManagerContext : DbContext
         modelBuilder.Entity<Pharmacy>()
             .HasOne(p => p.Owner)
             .WithOne(u => u.OwnerPharmacy);
-
+        modelBuilder.Entity<PurchaseItem>()
+            .HasOne(pi => pi.Pharmacy)
+            .WithMany()
+            .HasForeignKey("PharmacyId")
+            .OnDelete(DeleteBehavior.NoAction);
 
         // Data seed
         // Roles
