@@ -801,7 +801,6 @@ public class InvitationLogicTest
         _invitationRepositoryMock.VerifyAll();
 
     }
-    //TODO: ver si esta exception o ResourceNotFound
     
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
@@ -841,7 +840,7 @@ public class InvitationLogicTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ResourceNotFoundException))]
+    [ExpectedException(typeof(ValidationException))]
     public void GetInvitationsByNotExistantUser()
     {
         QueryInvitationDto queryInvitationDto = new QueryInvitationDto()
@@ -868,7 +867,7 @@ public class InvitationLogicTest
         {
             userInvitation
         };
-        _invitationRepositoryMock.Setup(i => i.GetFirst(It.IsAny<Func<Invitation, bool>>())).Throws(new ResourceNotFoundException(""));
+        _invitationRepositoryMock.Setup(i => i.GetFirst(It.IsAny<Func<Invitation, bool>>())).Throws(new ValidationException(""));
         _invitationRepositoryMock.Setup(s => s.GetAll(It.IsAny<Func<Invitation, bool>>())).Returns(invitationItems);
 
 

@@ -130,7 +130,7 @@ namespace AuthLogic
                 Invitation invitationByUser = getInvitationForUser(queryInvitationDto.UserName);
                 if (invitationByUser == null)
                 {
-                    throw new ResourceNotFoundException("user doesn't exist");
+                    throw new ValidationException("user doesn't exist");
                 } 
                 invitationsToReturn = invitationsToReturn.Where(i => i.UserName == queryInvitationDto.UserName);
             }
