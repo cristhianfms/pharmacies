@@ -63,6 +63,11 @@ public class PurchaseLogic : IPurchaseLogic
         return purchaseReport;
     }
 
+    public Purchase Update(int id, Purchase purchase)
+    {
+        throw new NotImplementedException();
+    }
+
     private Pharmacy GetPharmacyByName(string pharmacyName)
     {
         Pharmacy pharmacy;

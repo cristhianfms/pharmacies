@@ -6,7 +6,6 @@ namespace WebApi.Models.Utils;
 
 public static class PurchaseModelsMapper
 {
-    
     public static PurchaseResponseModel ToModel(Purchase purchaseDto)
     {
         List<PurchaseItemModel> purchaseItems = purchaseDto.Items.Select(i => ToModel(i)).ToList();
@@ -65,6 +64,23 @@ public static class PurchaseModelsMapper
             {
                 Name = purchaseItemModel.PharmacyName
             }
+        };
+    }
+    
+    public static Purchase ToEntity(PurchasePutModel purchasePutModel)
+    {
+        List<PurchaseItem> purchaseItems = purchasePutModel.Items.Select(i => ToEntity(i)).ToList();
+        return new Purchase()
+        {
+            Items = purchaseItems
+        };
+    }
+    
+    private static PurchaseItem ToEntity(PurchaseItemPutModel purchaseItemPutModel)
+    {
+        return new PurchaseItem
+        {
+            State = purchaseItemPutModel.State
         };
     }
 }

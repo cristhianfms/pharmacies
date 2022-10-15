@@ -34,6 +34,24 @@ public class PurchaseModelsMapperTest
         Assert.AreEqual(purchaseRequestModel.Items[0].DrugCode, purchase.Items[0].Drug.DrugCode);
         Assert.AreEqual(purchaseRequestModel.Items[0].Quantity, purchase.Items[0].Quantity);
     }
+    
+    [TestMethod]
+    public void PurchasePutModelToEntityOK()
+    {
+        List<PurchaseItemPutModel> purchaseItemPutModels = new List<PurchaseItemPutModel>(){
+            new PurchaseItemPutModel(){
+                State = PurchaseState.ACCEPTED
+            }
+        };
+        PurchasePutModel purchasePutModel = new PurchasePutModel()
+        {
+            Items = purchaseItemPutModels,
+        };
+
+        Purchase purchase = PurchaseModelsMapper.ToEntity(purchasePutModel);
+        
+        Assert.AreEqual(purchasePutModel.Items[0].State, purchase.Items[0].State);
+    }
 
 
     [TestMethod]

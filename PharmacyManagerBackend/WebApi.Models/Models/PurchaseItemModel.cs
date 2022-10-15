@@ -9,4 +9,13 @@ public class PurchaseItemModel
     public int Quantity { get; set; }
     public string PharmacyName { get; set; }
     public PurchaseState State { get; set; }
+    
+    public override bool Equals(object obj)
+    {
+        return obj is PurchaseItemModel item &&
+               item.DrugCode == DrugCode &&
+               item.Quantity == Quantity &&
+               item.PharmacyName == PharmacyName &&
+               item.State == State;
+    }
 }
