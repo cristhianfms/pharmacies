@@ -44,18 +44,18 @@ public class QueryPurchaseDto
     
     public DateTime? GetParsedDateFrom()
     {
-        return _dateFrom != null ? _dateFrom : DateTime.MinValue;
+        return _dateFrom != null ? _dateFrom : new DateTime(DateTime.Now.Year, DateTime.Now.Month, 01);
     }
     
     public DateTime? GetParsedDateTo()
     {
-        return _dateTo != null ? _dateTo : DateTime.MaxValue;
+        return _dateTo != null ? _dateTo : DateTime.Now;
     }
     
     
     private void checkTimeLine()
     {
-        if (_dateFrom != null && _dateTo != null && _dateFrom > _dateTo)
+        if (_dateFrom != null && _dateTo != null && _dateFrom >= _dateTo)
         {
             throw new ValidationException("DateTo must be after DateFrom");
         }
