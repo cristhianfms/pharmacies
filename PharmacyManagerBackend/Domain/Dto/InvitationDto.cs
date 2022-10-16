@@ -12,6 +12,7 @@ public class InvitationDto
     public string Email { get; set; }
     public string Address { get; set; }
     public string Password { get; set; }
+    public bool Used { get; set; }
     
     public override bool Equals(object? obj)
     {

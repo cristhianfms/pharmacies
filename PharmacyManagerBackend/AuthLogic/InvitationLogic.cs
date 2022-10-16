@@ -91,6 +91,7 @@ namespace AuthLogic
                 invitationDtoToReturn.PharmacyName = invitation.Pharmacy?.Name;
                 invitationDtoToReturn.Email = createdUser.Email;
                 invitationDtoToReturn.Address = createdUser.Address;
+                invitationDtoToReturn.Used = true;
             } 
             else if (_currentContext.CurrentUser.Role.Name.Equals(Role.ADMIN))
             {
@@ -108,6 +109,7 @@ namespace AuthLogic
                 invitationDtoToReturn.RoleName = invitation.Role.Name;
                 invitationDtoToReturn.PharmacyName = invitation.Pharmacy?.Name;
                 invitationDtoToReturn.Code = invitation.Code;
+                invitationDtoToReturn.Used = invitation.Used;
             }
 
             return invitationDtoToReturn;

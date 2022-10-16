@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebApi.Controllers;
 using WebApi.Models;
+using WebApi.Models.Utils;
+
 namespace WebApi.Test;
 
 [TestClass]
@@ -122,5 +124,53 @@ public class PurchasesControllerTest
         _purchaseLogicMock.VerifyAll();
     }
 
+    [TestMethod]
+    public void UpdatePurchaseOk()
+    {
+        int purchaseId = 1;
+        PurchaseItem purchaseItem = new PurchaseItem
+        {
+            Drug = new Drug()
+            {
+                DrugCode = "A01"
+            },
+            Quantity = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "Pharamacy Name"
+            },
+            State = PurchaseState.ACCEPTED
+        };
+        List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
+        Purchase purchase = new Purchase()
+        {
+            Id = 1,
+            UserEmail = "email@email.com",
+            Date = DateTime.Now,
+            TotalPrice = 100.99,
+            Items = purchaseItems,
+            Code = "1234"
+        };
+        _purchaseLogicMock.Setup(m => m.Update(It.IsAny<int>(), It.IsAny<Purchase>())).Returns(purchase);
+        var purchasePutModel = new PurchasePutModel()
+        {
+            Items = new List<PurchaseItemPutModel>()
+            {
+                new PurchaseItemPutModel()
+                {
+                    State = PurchaseState.ACCEPTED
+                }
+            }
+        };
+        var purchaseModelExpected = PurchaseModelsMapper.ToModel(purchase);
+
+        var result = _purchasesApiController.Update(purchaseId, purchasePutModel);
+        var okResult = result as OkObjectResult;
+        var purchaseUpdatedModel = okResult.Value as PurchaseResponseModel;
+
+        Assert.AreEqual(purchaseModelExpected, purchaseUpdatedModel);
+        CollectionAssert.AreEqual(purchaseModelExpected.Items, purchaseUpdatedModel.Items);
+        _purchaseLogicMock.VerifyAll();
+    }
 }
 

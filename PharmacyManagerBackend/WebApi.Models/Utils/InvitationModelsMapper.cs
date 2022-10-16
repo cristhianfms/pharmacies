@@ -49,7 +49,8 @@ public class InvitationModelsMapper
             PharmacyName = invitationDto.PharmacyName,
             Email = invitationDto.Email,
             Address = invitationDto.Address,
-            InvitationCode = invitationDto.Code
+            InvitationCode = invitationDto.Code,
+            Used = invitationDto.Used
         };
     }
     
