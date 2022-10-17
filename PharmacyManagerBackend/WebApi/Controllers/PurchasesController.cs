@@ -30,7 +30,7 @@ public class PurchasesController : ControllerBase
         return Ok(purchaseResponseModel);
     }
     
-    [HttpPut("{id}")]
+    [HttpPut("{purchaseId}")]
     [ServiceFilter(typeof(AuthorizationAttributePublicFilter))]
     public IActionResult Update(int purchaseId, [FromBody] PurchasePutModel purchasePutModel)
     {

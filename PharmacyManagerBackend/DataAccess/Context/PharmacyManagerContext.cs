@@ -92,7 +92,8 @@ public class PharmacyManagerContext : DbContext
 
         //Purchase Permissions
         Permission getAllPurchases = new Permission() { Id = 9, Endpoint = "GET/api/purchases" };
-
+        Permission updatePurchase = new Permission() { Id = 12, Endpoint = "PUT/api/purchases/.*" };
+        
         modelBuilder.Entity<Permission>().HasData(
             createInvitation,
             createSolicitude,
@@ -104,7 +105,8 @@ public class PharmacyManagerContext : DbContext
             createPharmacy,
             getAllPurchases,
             updateInvitation,
-            getAllInvitations);
+            getAllInvitations,
+            updatePurchase);
 
         // Permission - Role
         modelBuilder.Entity<PermissionRole>().HasData(
@@ -121,6 +123,7 @@ public class PharmacyManagerContext : DbContext
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = admin.Id },
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = owner.Id },
+            new PermissionRole() { PermissionId = updatePurchase.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = updateInvitation.Id, RoleId = admin.Id },
             new PermissionRole() { PermissionId = getAllInvitations.Id, RoleId = admin.Id }
         );

@@ -135,6 +135,7 @@ public class PurchaseLogic : IPurchaseLogic
             Pharmacy pharmacy = GetPharmacyByName(purchaseItem.Pharmacy.Name);
             Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
             purchaseItem.Drug = drug;
+            purchaseItem.Pharmacy = pharmacy;
         }
     }
     

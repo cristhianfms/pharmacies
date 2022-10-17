@@ -1,6 +1,7 @@
 using System.Data.Common;
 using DataAccess.Context;
 using Domain;
+using Exceptions;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -149,5 +150,71 @@ public class PurchaseRepositoryTest
         List<Purchase> returnedPurchases = this._purchaseRepository.GetAll(p => p.UserEmail == purchaseRepository.UserEmail).ToList();
         
         Assert.IsTrue(returnedPurchases.Count == 1);
+    }
+    
+    [TestMethod]
+    public void GetFirstOk()
+    {
+        string drugCode = "A01";
+        string pharmacyName = "PharmacyName";
+        DrugInfo drugInfo = new DrugInfo()
+        {
+            Name = "Drug",
+            Symptoms = "Symtoms",
+            Presentation = "Presentation",
+            QuantityPerPresentation = 1,
+            UnitOfMeasurement = "Comprimidos"
+        };
+        Drug drugRepository = new Drug()
+        {
+            DrugCode = drugCode
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Name = pharmacyName
+        };
+        Purchase purchaseRepository = new Purchase()
+        {
+            TotalPrice = 100.50,
+            UserEmail = "email@email.com",
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Id = 1,
+                    Quantity = 2,
+                    Drug = drugRepository,
+                    Pharmacy = pharmacyRepository,
+                    State = PurchaseState.PENDING
+                },
+            },
+            Code = "1234"
+        };
+        using (var context = new PharmacyManagerContext(this._contextOptions))
+        {
+            context.Add(pharmacyRepository);
+            context.Add(drugInfo);
+            context.SaveChanges();
+            drugRepository.DrugInfo = drugInfo;
+            drugRepository.PharmacyId = pharmacyRepository.Id;
+            context.Add(drugRepository);
+            context.SaveChanges();
+            context.Add(purchaseRepository);
+            context.SaveChanges();
+        }
+
+        Purchase purchaseReturned = this._purchaseRepository.GetFirst(p => p.Code == "1234");
+        
+        Assert.AreEqual(purchaseReturned.TotalPrice, purchaseRepository.TotalPrice);
+        Assert.AreEqual(purchaseReturned.Code, purchaseRepository.Code);
+        Assert.AreEqual(purchaseReturned.UserEmail, purchaseRepository.UserEmail);
+    }
+
+    [TestMethod]
+    
+    [ExpectedException(typeof(ResourceNotFoundException))]
+    public void GetFirstShoudlThrowExcptionWhenUserNotExists()
+    {
+        this._purchaseRepository.GetFirst(u => u.Code == "Code");
     }
 }
