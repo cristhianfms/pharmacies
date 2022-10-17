@@ -80,6 +80,10 @@ public static class PurchaseModelsMapper
     {
         return new PurchaseItem
         {
+            Drug = new Drug()
+            {
+                DrugCode = purchaseItemPutModel.DrugCode
+            },
             State = purchaseItemPutModel.State
         };
     }

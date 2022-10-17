@@ -281,7 +281,8 @@ public class PurchaseLogicTest
         Drug drugRepository = new Drug()
         {
             DrugCode = drugCode,
-            Stock = 2
+            Stock = 2,
+            PharmacyId = 1
         };
         Pharmacy pharmacyRepository = new Pharmacy()
         {
@@ -341,5 +342,441 @@ public class PurchaseLogicTest
         
         Assert.AreEqual(totalPrice, purchasesReport.TotalPrice);
         CollectionAssert.AreEqual(purchasesRepository, purchasesReport.Purchases.ToList());
+    }
+    
+    [TestMethod]
+    public void UpdatePurchaseOk()
+    {
+        string drugCode = "A01";
+        string pharmacyName = "PharmacyName";
+        Drug drug = new Drug()
+        {
+            DrugCode = drugCode,
+            Stock = 2,
+            PharmacyId = 1
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>(){drug}
+        };
+        User currentUser = new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.EMPLOYEE
+            },
+            Pharmacy = pharmacyRepository
+        };
+        Purchase purchaseRepository = new Purchase()
+        {
+            Id = 1,
+            TotalPrice = 100.50,
+            UserEmail = "email@email.com",
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = drug,
+                    Pharmacy = pharmacyRepository,
+                    PharmacyId = 1,
+                    State = PurchaseState.PENDING
+                },
+            },
+        };
+        Purchase purchaseToUpdate = new Purchase()
+        {
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Drug = new Drug()
+                    {
+                        DrugCode = drugCode
+                    },
+                    State = PurchaseState.ACCEPTED
+                }
+            }
+        };
+        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
+        _purchaseRepository.Setup(m => m.Update(It.IsAny<Purchase>()));
+        _context.Setup(m => m.CurrentUser).Returns(currentUser);
+        _drugLogic.Setup(m => m.Update(It.IsAny<int>(), It.IsAny<Drug>())).Returns(drug);
+        
+        Purchase purchaseUpdated = _purchaseLogic.Update(1, purchaseToUpdate);
+        
+        Assert.AreEqual(purchaseUpdated.Items[0].State, PurchaseState.ACCEPTED);
+        Assert.AreEqual(purchaseUpdated.Items[0].Drug.Stock, 0);
+        _purchaseRepository.VerifyAll();
+        _context.VerifyAll();
+        _drugLogic.VerifyAll();
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ResourceNotFoundException))]
+    public void UpdateNotExistantPurchase()
+    {
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = "pharmacyName",
+        };
+        User currentUser = new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.EMPLOYEE
+            },
+            Pharmacy = pharmacyRepository
+        };
+        Purchase purchaseToUpdate = new Purchase()
+        {
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Drug = new Drug()
+                    {
+                        DrugCode = "drugCode"
+                    },
+                    State = PurchaseState.ACCEPTED
+                }
+            }
+        };
+        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Throws(new ResourceNotFoundException(""));
+        _context.Setup(m => m.CurrentUser).Returns(currentUser);
+        
+        _purchaseLogic.Update(1, purchaseToUpdate);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void UpdatePurchaseWithNotExitentItem()
+    {
+        string drugCode = "A01";
+        string pharmacyName = "PharmacyName";
+        Drug drug = new Drug()
+        {
+            DrugCode = drugCode,
+            Stock = 2,
+            PharmacyId = 1
+        };
+        Drug drug2 = new Drug()
+        {
+            DrugCode = "A02",
+            Stock = 2,
+            PharmacyId = 1
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>(){drug}
+        };
+        User currentUser = new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.EMPLOYEE
+            },
+            Pharmacy = pharmacyRepository
+        };
+        Purchase purchaseRepository = new Purchase()
+        {
+            Id = 1,
+            TotalPrice = 100.50,
+            UserEmail = "email@email.com",
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = drug2,
+                    Pharmacy = pharmacyRepository,
+                    PharmacyId = 1,
+                    State = PurchaseState.PENDING
+                },
+            },
+        };
+        Purchase purchaseToUpdate = new Purchase()
+        {
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Drug = new Drug()
+                    {
+                        DrugCode = drugCode
+                    },
+                    State = PurchaseState.ACCEPTED
+                }
+            }
+        };
+        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
+        _purchaseRepository.Setup(m => m.Update(It.IsAny<Purchase>()));
+        _context.Setup(m => m.CurrentUser).Returns(currentUser);
+        
+        _purchaseLogic.Update(1, purchaseToUpdate);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void UpdatePurchaseWithoutStock()
+    {
+        string drugCode = "A01";
+        string pharmacyName = "PharmacyName";
+        Drug drug = new Drug()
+        {
+            DrugCode = drugCode,
+            Stock = 0,
+            PharmacyId = 1
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>(){drug}
+        };
+        User currentUser = new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.EMPLOYEE
+            },
+            Pharmacy = pharmacyRepository
+        };
+        Purchase purchaseRepository = new Purchase()
+        {
+            Id = 1,
+            TotalPrice = 100.50,
+            UserEmail = "email@email.com",
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = drug,
+                    Pharmacy = pharmacyRepository,
+                    PharmacyId = 1,
+                    State = PurchaseState.PENDING
+                },
+            },
+        };
+        Purchase purchaseToUpdate = new Purchase()
+        {
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Drug = new Drug()
+                    {
+                        DrugCode = drugCode
+                    },
+                    State = PurchaseState.ACCEPTED
+                }
+            }
+        };
+        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
+        _purchaseRepository.Setup(m => m.Update(It.IsAny<Purchase>()));
+        _context.Setup(m => m.CurrentUser).Returns(currentUser);
+        
+        _purchaseLogic.Update(1, purchaseToUpdate);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void UpdatePurchaseAlreadyAceptedItem()
+    {
+        string drugCode = "A01";
+        string pharmacyName = "PharmacyName";
+        Drug drug = new Drug()
+        {
+            DrugCode = drugCode,
+            Stock = 2,
+            PharmacyId = 1
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>(){drug}
+        };
+        User currentUser = new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.EMPLOYEE
+            },
+            Pharmacy = pharmacyRepository
+        };
+        Purchase purchaseRepository = new Purchase()
+        {
+            Id = 1,
+            TotalPrice = 100.50,
+            UserEmail = "email@email.com",
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = drug,
+                    Pharmacy = pharmacyRepository,
+                    PharmacyId = 1,
+                    State = PurchaseState.ACCEPTED
+                },
+            },
+        };
+        Purchase purchaseToUpdate = new Purchase()
+        {
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Drug = new Drug()
+                    {
+                        DrugCode = drugCode
+                    },
+                    State = PurchaseState.ACCEPTED
+                }
+            }
+        };
+        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
+        _purchaseRepository.Setup(m => m.Update(It.IsAny<Purchase>()));
+        _context.Setup(m => m.CurrentUser).Returns(currentUser);
+        
+        _purchaseLogic.Update(1, purchaseToUpdate);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void UpdatePurchaseAlreadyRejectedItem()
+    {
+        string drugCode = "A01";
+        string pharmacyName = "PharmacyName";
+        Drug drug = new Drug()
+        {
+            DrugCode = drugCode,
+            Stock = 2,
+            PharmacyId = 1
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>(){drug}
+        };
+        User currentUser = new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.EMPLOYEE
+            },
+            Pharmacy = pharmacyRepository
+        };
+        Purchase purchaseRepository = new Purchase()
+        {
+            Id = 1,
+            TotalPrice = 100.50,
+            UserEmail = "email@email.com",
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = drug,
+                    Pharmacy = pharmacyRepository,
+                    PharmacyId = 1,
+                    State = PurchaseState.REJECTED
+                },
+            },
+        };
+        Purchase purchaseToUpdate = new Purchase()
+        {
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Drug = new Drug()
+                    {
+                        DrugCode = drugCode
+                    },
+                    State = PurchaseState.ACCEPTED
+                }
+            }
+        };
+        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
+        _purchaseRepository.Setup(m => m.Update(It.IsAny<Purchase>()));
+        _context.Setup(m => m.CurrentUser).Returns(currentUser);
+        
+        _purchaseLogic.Update(1, purchaseToUpdate);
+    }
+    
+    [TestMethod]
+    public void UpdateRejectedPurchaseOk()
+    {
+        string drugCode = "A01";
+        string pharmacyName = "PharmacyName";
+        Drug drug = new Drug()
+        {
+            DrugCode = drugCode,
+            Stock = 2,
+            PharmacyId = 1
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>(){drug}
+        };
+        User currentUser = new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.EMPLOYEE
+            },
+            Pharmacy = pharmacyRepository
+        };
+        Purchase purchaseRepository = new Purchase()
+        {
+            Id = 1,
+            TotalPrice = 100.50,
+            UserEmail = "email@email.com",
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = drug,
+                    Pharmacy = pharmacyRepository,
+                    PharmacyId = 1,
+                    State = PurchaseState.PENDING
+                },
+            },
+        };
+        Purchase purchaseToUpdate = new Purchase()
+        {
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Drug = new Drug()
+                    {
+                        DrugCode = drugCode
+                    },
+                    State = PurchaseState.REJECTED
+                }
+            }
+        };
+        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
+        _purchaseRepository.Setup(m => m.Update(It.IsAny<Purchase>()));
+        _context.Setup(m => m.CurrentUser).Returns(currentUser);
+        
+        Purchase purchaseUpdated = _purchaseLogic.Update(1, purchaseToUpdate);
+        
+        Assert.AreEqual(purchaseUpdated.Items[0].State, PurchaseState.REJECTED);
+        _purchaseRepository.VerifyAll();
+        _context.VerifyAll();
     }
 }
