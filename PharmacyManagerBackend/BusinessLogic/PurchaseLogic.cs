@@ -39,6 +39,11 @@ public class PurchaseLogic : IPurchaseLogic
         return _purchaseRepository.Create(purchase);
     }
 
+    public IEnumerable<PurchaseItem> GetPurchaseStatus()
+    {
+
+    }
+
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
     { 
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;

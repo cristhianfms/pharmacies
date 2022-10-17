@@ -50,5 +50,10 @@ public class PurchasesController : ControllerBase
 
         return Ok(purchaseReportModel);
     }
+
+    public object GetPurchase(string purchaseCode)
+    {
+        throw new NotImplementedException();
+    }
 }
 

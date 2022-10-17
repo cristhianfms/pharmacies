@@ -34,7 +34,7 @@ public class PurchasesControllerTest
             Quantity = 1,
             Pharmacy = new Pharmacy()
             {
-                Name = "PharamacyName"   
+                Name = "PharamacyName"
             }
         };
         List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
@@ -171,6 +171,43 @@ public class PurchasesControllerTest
         Assert.AreEqual(purchaseModelExpected, purchaseUpdatedModel);
         CollectionAssert.AreEqual(purchaseModelExpected.Items, purchaseUpdatedModel.Items);
         _purchaseLogicMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void GetPurchaseStatusOk()
+    {
+        string purchaseCode = "1234";
+        PurchaseItem purchaseItem = new PurchaseItem
+        {
+            Drug = new Drug()
+            {
+                DrugCode = "A01"
+            },
+            Quantity = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "Pharamacy Name"
+            },
+            State = PurchaseState.ACCEPTED
+        };
+        List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
+        Purchase purchase = new Purchase()
+        {
+            Id = 1,
+            UserEmail = "email@email.com",
+            Date = DateTime.Now,
+            TotalPrice = 100.99,
+            Items = purchaseItems,
+            Code = "1234"
+        };
+        _purchaseLogicMock.Setup(m => m.GetPurchaseStatus(It.IsAny<string>())).Returns(purchaseItems);
+        
+        var result = _purchasesApiController.GetPurchase(purchaseCode);
+        var okResult = result as OkObjectResult;
+        var purchaseUpdatedModel = okResult.Value as PurchaseResponseModel;
+
+        /*CollectionAssert.AreEqual(purchaseModelExpected.Items, purchaseUpdatedModel.Items);
+        */_purchaseLogicMock.VerifyAll();
     }
 }
 
