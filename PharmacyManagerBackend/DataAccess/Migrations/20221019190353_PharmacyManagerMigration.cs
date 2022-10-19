@@ -77,7 +77,8 @@ namespace DataAccess.Migrations
                     Stock = table.Column<int>(type: "int", nullable: false),
                     NeedsPrescription = table.Column<bool>(type: "bit", nullable: false),
                     DrugInfoId = table.Column<int>(type: "int", nullable: false),
-                    PharmacyId = table.Column<int>(type: "int", nullable: false)
+                    PharmacyId = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,7 +128,8 @@ namespace DataAccess.Migrations
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PharmacyId = table.Column<int>(type: "int", nullable: true)
+                    PharmacyId = table.Column<int>(type: "int", nullable: true),
+                    Used = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -339,6 +341,7 @@ namespace DataAccess.Migrations
                     { 1, 1 },
                     { 8, 1 },
                     { 9, 1 },
+                    { 1, 2 },
                     { 3, 2 },
                     { 4, 2 },
                     { 9, 2 },

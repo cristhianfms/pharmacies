@@ -95,26 +95,10 @@ namespace BusinessLogic
         public void Delete(int drugId)
         {
             Drug drug = Get(drugId);
+            drug.IsActive = false;
+            _drugRepository.Update(drug);
             Pharmacy pharmacy = _pharmacyLogic.GetPharmacyByName(_context.CurrentUser.Pharmacy.Name);
-            _solicitudeLogic.DrugExistsInSolicitude(drug);
-            _purchaseLogic.DrugExistsInPurchase(drug);
-            pharmacy.Drugs.Remove(drug);
-            _pharmacyLogic.UpdatePharmacy(pharmacy);
-            DrugInfo drugInfo = FindDrugInfo(drug.DrugInfoId);
-            _drugInfoRepository.Delete(drugInfo);
-        }
 
-        private DrugInfo FindDrugInfo(int drugInfoId)
-        {
-            try
-            {
-                DrugInfo drugInfo = _drugInfoRepository.GetFirst(di => di.Id == drugInfoId);
-                return drugInfo;
-            }
-            catch (ResourceNotFoundException e)
-            {
-                throw new ResourceNotFoundException("There is no info on the drug available");
-            }
         }
 
         public virtual void AddStock(IEnumerable<SolicitudeItem> drugsToAddStock)

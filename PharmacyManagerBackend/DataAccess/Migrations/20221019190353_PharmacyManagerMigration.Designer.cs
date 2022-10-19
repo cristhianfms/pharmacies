@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20221005042348_PharmacyManagerMigration")]
+    [Migration("20221019190353_PharmacyManagerMigration")]
     partial class PharmacyManagerMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,6 +110,11 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
+                            RoleId = 2,
+                            PermissionId = 1
+                        },
+                        new
+                        {
                             RoleId = 3,
                             PermissionId = 2
                         },
@@ -201,6 +206,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("DrugInfoId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("NeedsPrescription")
                         .HasColumnType("bit");
 
@@ -271,6 +279,9 @@ namespace DataAccess.Migrations
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Used")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .IsRequired()

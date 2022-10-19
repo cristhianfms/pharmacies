@@ -204,6 +204,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("DrugInfoId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("NeedsPrescription")
                         .HasColumnType("bit");
 

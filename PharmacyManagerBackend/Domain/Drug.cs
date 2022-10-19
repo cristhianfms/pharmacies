@@ -34,6 +34,7 @@ namespace Domain
         public int DrugInfoId { get; set; }
         public DrugInfo DrugInfo { get; set; }
         public int PharmacyId { get; set; }
+        public bool IsActive { get; set; }
         public override bool Equals(object obj)
         {
             return this.DrugCode.Equals(((Drug)obj).DrugCode);
