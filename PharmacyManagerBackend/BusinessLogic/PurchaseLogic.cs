@@ -42,21 +42,34 @@ public class PurchaseLogic : IPurchaseLogic
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
     { 
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
-        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p => 
-            //TODO: Analizar esto de farmacia
-            //p.PharmacyId == pharmacyOfCurrentUser.Id &&
+        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p =>
+            p.Items.Any(i => i.Pharmacy.Id == pharmacyOfCurrentUser.Id) &&
             p.Date >= queryPurchaseDto.GetParsedDateFrom() &&
             p.Date <= queryPurchaseDto.GetParsedDateTo());
-        
+
+
         double totalPrice = 0;
+        List<Purchase> purchasesToReport = new List<Purchase>();
         foreach (var purchase in purchases)
         {
-            totalPrice += purchase.TotalPrice;
-        }
+            List<PurchaseItem> purchaseItems = new List<PurchaseItem>();
+            purchaseItems = purchase.Items.FindAll(i => i.PharmacyId == pharmacyOfCurrentUser.Id);
 
+            totalPrice += CalculateTotalPrice(purchaseItems);
+
+            Purchase purchaseToReport = new Purchase()
+            {
+                Id = purchase.Id,
+                UserEmail = purchase.UserEmail,
+                Items = purchaseItems,
+                Date = purchase.Date,
+                TotalPrice = CalculateTotalPrice(purchaseItems),
+            };
+            purchasesToReport.Add(purchaseToReport);
+        }
         PurchaseReportDto purchaseReport = new PurchaseReportDto()
         {
-            Purchases =  purchases,
+            Purchases =  purchasesToReport,
             TotalPrice = totalPrice
         };
 
@@ -114,20 +127,20 @@ public class PurchaseLogic : IPurchaseLogic
             CheckStock(purchaseItem.Drug, purchaseItem.Quantity);
         }
     }
-    
+
     private double CalculateTotalPrice(List<PurchaseItem> purchaseItems)
     {
         double totalPrice = 0;
         foreach (var purchaseItem in purchaseItems)
         {
-            Pharmacy pharmacy = GetPharmacyByName(purchaseItem.Pharmacy.Name);
-            Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
-            totalPrice += drug.Price;
+            var quantity = purchaseItem.Quantity;
+            var unitaryPrice = purchaseItem.Drug.Price;
+            totalPrice += quantity *unitaryPrice;
         }
 
         return totalPrice;
     }
-    
+
     private void CheckAndBindExistentDrugs(List<PurchaseItem> purchaseItems)
     {
         foreach (var purchaseItem in purchaseItems)
