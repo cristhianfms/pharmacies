@@ -51,9 +51,12 @@ public class PurchasesController : ControllerBase
         return Ok(purchaseReportModel);
     }
 
-    public object GetPurchase(string purchaseCode)
+    [HttpGet("{code}")]
+    public IActionResult GetPurchaseStatus(string code)
     {
-        throw new NotImplementedException();
+        IEnumerable<PurchaseItemStatusModel> purchaseItemModel = PurchaseModelsMapper.ToModelList(_purchaseLogic.GetPurchaseStatus(code));
+    
+        return Ok(purchaseItemModel);
     }
 }
 

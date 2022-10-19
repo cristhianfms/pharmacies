@@ -15,8 +15,8 @@ namespace BusinessLogic
         private PharmacyLogic _pharmacyLogic;
         private Context _context;
 
-        public DrugLogic(IDrugRepository drugRepository, 
-            IDrugInfoRepository drugInfoRepository, 
+        public DrugLogic(IDrugRepository drugRepository,
+            IDrugInfoRepository drugInfoRepository,
             PharmacyLogic pharmacyLogic,
             Context currentContext)
         {
@@ -61,19 +61,19 @@ namespace BusinessLogic
         public IEnumerable<Drug> GetAll(QueryDrugDto queryDrugDto)
         {
             IEnumerable<Drug> drugs = new List<Drug>();
-            
+
             if (queryDrugDto.DrugName == null &&
                 queryDrugDto.WithStock == false)
                 drugs = _drugRepository.GetAll();
-            
+
             if (queryDrugDto.DrugName == null &&
                 queryDrugDto.WithStock == true)
                 drugs = _drugRepository.GetAll(d => d.Stock > 0);
-            
+
             if (queryDrugDto.DrugName != null &&
                 queryDrugDto.WithStock == false)
                 drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName);
-            
+
             if (queryDrugDto.DrugName != null &&
                 queryDrugDto.WithStock == true)
                 drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName && d.Stock > 0);
@@ -109,7 +109,6 @@ namespace BusinessLogic
                 throw new ResourceNotFoundException("There is no info on the drug available");
             }
         }
-
         public virtual void AddStock(IEnumerable<SolicitudeItem> drugsToAddStock)
         {
             foreach (var drugSolicitude in drugsToAddStock)
@@ -122,7 +121,7 @@ namespace BusinessLogic
 
         public virtual Drug Update(int drugId, Drug drug)
         {
-            Drug drugToUpdate = Get(drugId);
+            Drug drugToUpdate = _drugRepository.GetFirst(d => d.Id == drugId);
             drugToUpdate.Stock = drug.Stock;
 
             _drugRepository.Update(drugToUpdate);

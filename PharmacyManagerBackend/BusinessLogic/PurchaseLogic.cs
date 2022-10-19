@@ -14,8 +14,8 @@ public class PurchaseLogic : IPurchaseLogic
     private DrugLogic _drugLogic;
     private Context _context;
 
-    public PurchaseLogic(IPurchaseRepository purchaseRepository, 
-        PharmacyLogic pharmacyLogic, 
+    public PurchaseLogic(IPurchaseRepository purchaseRepository,
+        PharmacyLogic pharmacyLogic,
         DrugLogic drugLogic,
         Context currentContext)
     {
@@ -31,7 +31,7 @@ public class PurchaseLogic : IPurchaseLogic
         SetPendingState(purchase.Items);
         CheckDrugsStock(purchase.Items);
         double totalPrice = CalculateTotalPrice(purchase.Items);
-        
+
         purchase.TotalPrice = totalPrice;
         purchase.Date = DateTime.Now;
         purchase.Code = GenerateNewInvitationCode();
@@ -39,20 +39,35 @@ public class PurchaseLogic : IPurchaseLogic
         return _purchaseRepository.Create(purchase);
     }
 
-    public IEnumerable<PurchaseItem> GetPurchaseStatus()
+    public IEnumerable<PurchaseItemStatusDto> GetPurchaseStatus(string purchaseCode)
     {
+        if (!IsExistantCode(purchaseCode))
+            throw new ValidationException("The code doesn't belong to a purchase");
 
+        Purchase purchase = _purchaseRepository.GetFirst(p => p.Code == purchaseCode);
+        List<PurchaseItemStatusDto> result = new List<PurchaseItemStatusDto>();
+        foreach( var pi in purchase.Items)
+        {
+            PurchaseItemStatusDto itemDto = new PurchaseItemStatusDto
+            {
+                DrugCode = pi.Drug.DrugCode,
+                State = Enum.GetName(typeof(PurchaseState), pi.State)
+            };
+            result.Add(itemDto);
+        }
+        return result;
     }
 
+
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
-    { 
+    {
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
-        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p => 
+        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p =>
             //TODO: Analizar esto de farmacia
             //p.PharmacyId == pharmacyOfCurrentUser.Id &&
             p.Date >= queryPurchaseDto.GetParsedDateFrom() &&
             p.Date <= queryPurchaseDto.GetParsedDateTo());
-        
+
         double totalPrice = 0;
         foreach (var purchase in purchases)
         {
@@ -61,7 +76,7 @@ public class PurchaseLogic : IPurchaseLogic
 
         PurchaseReportDto purchaseReport = new PurchaseReportDto()
         {
-            Purchases =  purchases,
+            Purchases = purchases,
             TotalPrice = totalPrice
         };
 
@@ -113,7 +128,7 @@ public class PurchaseLogic : IPurchaseLogic
             CheckStock(purchaseItem.Drug, purchaseItem.Quantity);
         }
     }
-    
+
     private double CalculateTotalPrice(List<PurchaseItem> purchaseItems)
     {
         double totalPrice = 0;
@@ -126,7 +141,7 @@ public class PurchaseLogic : IPurchaseLogic
 
         return totalPrice;
     }
-    
+
     private void CheckAndBindExistentDrugs(List<PurchaseItem> purchaseItems)
     {
         foreach (var purchaseItem in purchaseItems)
@@ -136,7 +151,7 @@ public class PurchaseLogic : IPurchaseLogic
             purchaseItem.Drug = drug;
         }
     }
-    
+
     private void SetPendingState(List<PurchaseItem> purchaseItems)
     {
         foreach (var purchaseItem in purchaseItems)
@@ -144,7 +159,7 @@ public class PurchaseLogic : IPurchaseLogic
             purchaseItem.State = PurchaseState.PENDING;
         }
     }
-    
+
     private Drug GetDrug(Pharmacy pharmacy, string drugCode)
     {
         Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode);
@@ -153,10 +168,10 @@ public class PurchaseLogic : IPurchaseLogic
         {
             throw new ValidationException($"{drugCode} not exist in pharmacy {pharmacy.Name}");
         }
-        
+
         return drug;
     }
-    
+
     private string GenerateNewInvitationCode()
     {
         Random generator = new Random();
