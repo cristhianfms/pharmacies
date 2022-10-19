@@ -11,5 +11,12 @@ namespace WebApi.Models
     {
         public string DrugCode { get; set; }
         public string State { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PurchaseItemStatusModel item &&
+                   item.DrugCode == DrugCode &&
+                   item.State == State;
+        }
     }
 }
