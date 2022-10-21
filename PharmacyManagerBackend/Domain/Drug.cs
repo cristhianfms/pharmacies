@@ -18,6 +18,12 @@ namespace Domain
 
             }
         }
+
+        public Drug()
+        {
+            IsActive = true;
+        }
+
         public double Price { get; set; }
         public int Stock {
             get { return stock; }
