@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain;
+using Exceptions;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +37,28 @@ public class PurchaseRepository : BaseRepository<Purchase>, IPurchaseRepository
         }
 
         return entities;
+    }
+    
+    public override Purchase GetFirst(Func<Purchase, bool> expresion)
+    {
+        IEnumerable<Purchase> entities = this._table
+            .Include(p => p.Items)
+            .ThenInclude(i => i.Drug )
+            .Include(p => p.Items)
+            .ThenInclude(i => i.Pharmacy)
+            .Where(expresion);
+        
+        Purchase entityToReturn;
+        try
+        {
+            entityToReturn = entities.First(expresion);
+        }
+        catch (InvalidOperationException)
+        {
+            throw new ResourceNotFoundException("resource not found");
+        }
+
+        return entityToReturn;
     }
     
 }

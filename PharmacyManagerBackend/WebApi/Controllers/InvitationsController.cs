@@ -1,5 +1,5 @@
 using Domain;
-using Domain.Dtos;
+using Domain.Dto;
 using IAuthLogic;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +31,7 @@ public class InvitationsController : ControllerBase
     }
 
     [HttpPut("{invitationCode}")]
+    [ServiceFilter(typeof(AuthorizationAttributePublicFilter))]
     public IActionResult Update(string invitationCode, [FromBody] InvitationPutModel invitationPutModel)
     {
         InvitationDto invitationToUpdate = InvitationModelsMapper.ToEntity(invitationPutModel);
@@ -38,5 +39,15 @@ public class InvitationsController : ControllerBase
         InvitationConfirmedModel invitationCreatedModel = InvitationModelsMapper.ToModel(invitationCreated);
 
         return Ok(invitationCreatedModel);
+    }
+    
+    [HttpGet]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
+    public IActionResult GetInvitations([FromQuery] QueryInvitationDto queryInvitationDto)
+    {
+        List<Invitation> invitations = _invitationLogic.GetInvitations(queryInvitationDto).ToList();
+        List<InvitationResponseModel> invitationModels = InvitationModelsMapper.ToModelList(invitations);
+
+        return Ok(invitationModels);
     }
 }

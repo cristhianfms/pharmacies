@@ -65,7 +65,6 @@ public class PharmacyLogic : IPharmacyLogic
         {
             throw new ResourceNotFoundException("The drug code already exists in this pharmacy");
         }
-
     }
 
     public virtual void UpdatePharmacy(Pharmacy pharmacy)

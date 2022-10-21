@@ -31,7 +31,7 @@ public class AuthorizationAttributeFilter : Attribute, IAuthorizationFilter
         this._context = currentContext;
     }
 
-    public void OnAuthorization(AuthorizationFilterContext context)
+    public virtual void OnAuthorization(AuthorizationFilterContext context)
     {
         var tokenRow = context.HttpContext.Request.Headers["Authorization"];
         var endpoint = context.HttpContext.Request.Method + context.HttpContext.Request.Path;

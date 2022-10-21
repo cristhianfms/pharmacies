@@ -29,6 +29,17 @@ public class PurchasesController : ControllerBase
 
         return Ok(purchaseResponseModel);
     }
+    
+    [HttpPut("{purchaseId}")]
+    [ServiceFilter(typeof(AuthorizationAttributePublicFilter))]
+    public IActionResult Update(int purchaseId, [FromBody] PurchasePutModel purchasePutModel)
+    {
+        Purchase purchaseToUpdate = PurchaseModelsMapper.ToEntity(purchasePutModel);
+        Purchase purchaseUpdated = _purchaseLogic.Update(purchaseId, purchaseToUpdate);
+        PurchaseResponseModel purchaseUpdatedModel = PurchaseModelsMapper.ToModel(purchaseUpdated);
+
+        return Ok(purchaseUpdatedModel);
+    }
 
     [HttpGet]
     [ServiceFilter(typeof(AuthorizationAttributeFilter))]

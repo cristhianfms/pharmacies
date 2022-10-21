@@ -29,7 +29,7 @@ namespace BusinessLogic.Test
         {
             this._context = new Mock<Context>(MockBehavior.Strict);
             this._solicitudeRepositoryMock = new Mock<ISolicitudeRepository>(MockBehavior.Strict);
-            this._drugLogicMock = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null, null, null, null);
+            this._drugLogicMock = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null, null);
             this._pharmacyLogicMock = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
             this._userLogicMock = new Mock<UserLogic>(MockBehavior.Strict, null);
             this._solicitudeLogic = new SolicitudeLogic(this._solicitudeRepositoryMock.Object,
@@ -366,7 +366,7 @@ namespace BusinessLogic.Test
             QuerySolicitudeDto querysolicitudeDto = new QuerySolicitudeDto()
             {
                 DateFrom = "2020-05-08",
-                DateTo = "2022-10-08"
+                DateTo = "2022-12-30"
             };
 
             SolicitudeItem solicitudeItem = new SolicitudeItem()

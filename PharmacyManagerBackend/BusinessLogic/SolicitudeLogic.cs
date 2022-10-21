@@ -18,8 +18,8 @@ namespace BusinessLogic
         private readonly PharmacyLogic _pharmacyLogic;
         private Context _context;
 
-        public SolicitudeLogic(ISolicitudeRepository solicitudeRepository,
-            DrugLogic drugLogic,
+        public SolicitudeLogic(ISolicitudeRepository solicitudeRepository, 
+            DrugLogic drugLogic, 
             PharmacyLogic pharmacyLogic,
             Context currentContext)
         {
@@ -39,6 +39,7 @@ namespace BusinessLogic
                 foreach (SolicitudeItem itemToCheck in solicitude.Items)
                 {
                     _pharmacyLogic.ExistsDrug(itemToCheck.DrugCode, solicitude.PharmacyId);
+                    _drugLogic.DrugIsActive(itemToCheck.DrugCode);
                 }
             }
             catch (NullReferenceException)
@@ -49,22 +50,6 @@ namespace BusinessLogic
             Solicitude createdSolicitude = _solicitudeRepository.Create(solicitude);
 
             return createdSolicitude;
-        }
-
-        public virtual void DrugExistsInSolicitude(Drug drug)
-        {
-            IEnumerable<Solicitude> solicitudes = _solicitudeRepository.GetAll();
-
-            foreach (Solicitude s in solicitudes)
-                if (s.PharmacyId == drug.PharmacyId)
-                {
-                    foreach (SolicitudeItem si in s.Items)
-                        if (si.DrugCode == drug.DrugCode)
-                        {
-                            throw new ValidationException("This drug cannot be deleted" +
-                        "because it's part of a solicitude");
-                        }
-                }
         }
 
         public IEnumerable<Solicitude> GetSolicitudes(QuerySolicitudeDto querySolicitudeDto)

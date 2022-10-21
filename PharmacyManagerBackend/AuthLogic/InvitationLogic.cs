@@ -4,6 +4,7 @@ using IDataAccess;
 using Exceptions;
 using Domain.Dtos;
 using IAuthLogic;
+using Domain.Dto;
 
 namespace AuthLogic
 {
@@ -63,33 +64,86 @@ namespace AuthLogic
         public InvitationDto Update(string invitationCode, InvitationDto invitationDto)
         {
             Invitation invitation = getCreatedInvitation(invitationCode);
-            checkInvitationUserName(invitation, invitationDto.UserName);
-            checkIfUserEmailIsRepeated(invitationDto.Email);
+            CheckUsedInvitation(invitation);
+                
+            InvitationDto invitationDtoToReturn = new InvitationDto(){};
             
-            User userToCreate = new User()
+            if (_currentContext.CurrentUser == null)
             {
-                UserName = invitation.UserName,
-                Role = invitation.Role,
-                Email = invitationDto.Email,
-                Address = invitationDto.Address,
-                Password = invitationDto.Password,
-                RegistrationDate = DateTime.Now,
-                Pharmacy = invitation.Pharmacy
-            };
+                checkInvitationUserNameMatches(invitation, invitationDto.UserName);
+                checkIfUserEmailIsRepeated(invitationDto.Email);
+                User userToCreate = new User()
+                {
+                    UserName = invitation.UserName,
+                    Role = invitation.Role,
+                    Email = invitationDto.Email,
+                    Address = invitationDto.Address,
+                    Password = invitationDto.Password,
+                    RegistrationDate = DateTime.Now,
+                    Pharmacy = invitation.Pharmacy
+                };
+                User createdUser = _userLogic.Create(userToCreate);
+                invitation.Used = true;
+                _invitationRepository.Update(invitation);
 
-            User createdUser = _userLogic.Create(userToCreate);
-            _invitationRepository.Delete(invitation);
-
-            InvitationDto invitationDtoToReturn = new InvitationDto()
+                invitationDtoToReturn.UserName = userToCreate.UserName;
+                invitationDtoToReturn.RoleName = invitation.Role.Name;
+                invitationDtoToReturn.PharmacyName = invitation.Pharmacy?.Name;
+                invitationDtoToReturn.Email = createdUser.Email;
+                invitationDtoToReturn.Address = createdUser.Address;
+                invitationDtoToReturn.Used = true;
+            } 
+            else if (_currentContext.CurrentUser.Role.Name.Equals(Role.ADMIN))
             {
-                UserName = userToCreate.UserName,
-                RoleName = invitation.Role.Name,
-                PharmacyName = invitation.Pharmacy?.Name,
-                Email = createdUser.Email,
-                Address = createdUser.Address,
-            };
+                checkIfUserNameIsRepeated(invitationDto.UserName, invitation.Id);
+                Role invitationRole = getRoleForInvitation(invitationDto);
+                Pharmacy? invitationPharmacy = getFarmacyForInvitation(invitationDto);
+                invitation.Code = generateNewInvitationCode();
+                invitation.UserName = invitationDto.UserName;
+                invitation.Role = invitationRole;
+                invitation.Pharmacy = invitationPharmacy;
+
+                _invitationRepository.Update(invitation);
+                
+                invitationDtoToReturn.UserName = invitation.UserName;
+                invitationDtoToReturn.RoleName = invitation.Role.Name;
+                invitationDtoToReturn.PharmacyName = invitation.Pharmacy?.Name;
+                invitationDtoToReturn.Code = invitation.Code;
+                invitationDtoToReturn.Used = invitation.Used;
+            }
 
             return invitationDtoToReturn;
+        }
+
+        public IEnumerable<Invitation> GetInvitations(QueryInvitationDto queryInvitationDto)
+        {
+            IEnumerable<Invitation> invitationsToReturn = new List<Invitation>();
+            invitationsToReturn = _invitationRepository.GetAll();
+
+            if (queryInvitationDto.PharmacyName != null)
+            {
+                Pharmacy? pharmacy = null;
+                pharmacy = getExistantPharmacy(queryInvitationDto.PharmacyName);
+
+                invitationsToReturn = invitationsToReturn.Where(i => i.Pharmacy.Name.ToLower() == queryInvitationDto.PharmacyName.ToLower());
+            }
+            if (queryInvitationDto.UserName != null)
+            {
+                Invitation invitationByUser = getInvitationForUser(queryInvitationDto.UserName);
+                if (invitationByUser == null)
+                {
+                    throw new ValidationException("user doesn't exist");
+                } 
+                invitationsToReturn = invitationsToReturn.Where(i => i.UserName == queryInvitationDto.UserName);
+            }
+            if (queryInvitationDto.Role != null)
+            {
+                Role? role = null;
+                role = getExistantRole(queryInvitationDto.Role);
+
+                invitationsToReturn = invitationsToReturn.Where(i => i.Role.Name == queryInvitationDto.Role);
+            }
+            return invitationsToReturn;
         }
 
         private Pharmacy getExistantPharmacy(string pharmacyName)
@@ -131,7 +185,27 @@ namespace AuthLogic
             bool userExist = true;
             try
             {
-                User user = _userLogic.GetFirst(u => u.UserName == userName);
+                _userLogic.GetFirst(u => u.UserName == userName);
+               _invitationRepository.GetFirst(i => i.UserName == userName);
+            }
+            catch (ResourceNotFoundException e)
+            {
+                userExist = false;
+            }
+
+            if (userExist)
+            {
+                throw new ValidationException("username already exists");
+            }
+        }
+        
+        private void checkIfUserNameIsRepeated(string userName, int invitationIdExcluded)
+        {
+            bool userExist = true;
+            try
+            {
+                _userLogic.GetFirst(u => u.UserName == userName);
+                _invitationRepository.GetFirst(i => i.UserName == userName && i.Id != invitationIdExcluded);
             }
             catch (ResourceNotFoundException e)
             {
@@ -186,7 +260,7 @@ namespace AuthLogic
             return invitation;
         }
 
-        private void checkInvitationUserName(Invitation invitation, string userName)
+        private void checkInvitationUserNameMatches(Invitation invitation, string userName)
         {
             if (invitation.UserName != userName)
             {
@@ -260,6 +334,14 @@ namespace AuthLogic
             }
 
             return role;
+        }
+        
+        private void CheckUsedInvitation(Invitation invitation)
+        {
+            if (invitation.Used)
+            {
+                throw new ValidationException("Invitation already used");
+            }
         }
     }
 }

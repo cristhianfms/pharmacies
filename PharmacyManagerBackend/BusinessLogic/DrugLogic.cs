@@ -13,21 +13,16 @@ namespace BusinessLogic
         private IDrugRepository _drugRepository;
         private IDrugInfoRepository _drugInfoRepository;
         private PharmacyLogic _pharmacyLogic;
-        private PurchaseLogic _purchaseLogic;
-        private SolicitudeLogic _solicitudeLogic;
         private Context _context;
 
         public DrugLogic(IDrugRepository drugRepository,
             IDrugInfoRepository drugInfoRepository,
             PharmacyLogic pharmacyLogic,
-            Context currentContext, PurchaseLogic purchaseLogic,
-            SolicitudeLogic solicitudeLogic)
+            Context currentContext)
         {
             this._drugRepository = drugRepository;
             this._drugInfoRepository = drugInfoRepository;
             this._pharmacyLogic = pharmacyLogic;
-            this._purchaseLogic = purchaseLogic;
-            this._solicitudeLogic = solicitudeLogic;
             this._context = currentContext;
         }
 
@@ -95,10 +90,22 @@ namespace BusinessLogic
         public void Delete(int drugId)
         {
             Drug drug = Get(drugId);
-            drug.IsActive = false;
-            _drugRepository.Update(drug);
             Pharmacy pharmacy = _pharmacyLogic.GetPharmacyByName(_context.CurrentUser.Pharmacy.Name);
+            pharmacy.Drugs = ChangeDrugToDeactivated(pharmacy, drug);
+            _pharmacyLogic.UpdatePharmacy(pharmacy);
+        }
 
+        private List<Drug> ChangeDrugToDeactivated(Pharmacy pharmacy, Drug drug)
+        {
+            List<Drug> drugs = pharmacy.Drugs;
+
+            foreach (var d in drugs)
+            {
+                if (d.Equals(drug))
+                    d.IsActive = false;
+            }
+
+            return drugs;
         }
 
         public virtual void AddStock(IEnumerable<SolicitudeItem> drugsToAddStock)
@@ -119,6 +126,20 @@ namespace BusinessLogic
             _drugRepository.Update(drugToUpdate);
 
             return drugToUpdate;
+        }
+
+        public void DrugIsActive(string drugCode)
+        {
+            try
+            {
+                Drug drug = _drugRepository.GetFirst(d => d.DrugCode == drugCode);
+                if(!drug.IsActive)
+                    throw new ResourceNotFoundException("resource does not exist");
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ResourceNotFoundException("resource does not exist");
+            }
         }
     }
 }

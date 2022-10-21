@@ -6,6 +6,7 @@ using Domain.AuthDomain;
 using Exceptions;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace DataAccess
 {
@@ -23,7 +24,10 @@ namespace DataAccess
         public override Drug GetFirst(Func<Drug, bool> expresion)
         {
             IEnumerable<Drug> entities = this._table
-            .Include(i => i.DrugInfo).Where(expresion).Where(d => d.IsActive == true);
+                .Include(i => i.DrugInfo)
+                .Include(p => p.Pharmacy)
+                .Where(expresion).Where(d => d.IsActive);
+
             Drug entityToReturn;
             try
             {
@@ -40,11 +44,12 @@ namespace DataAccess
         public override IEnumerable<Drug> GetAll(Func<Drug, bool> expresion = null)
         {
             IEnumerable<Drug> entities = this._table
-                .Include(i => i.DrugInfo).Where(d => d.IsActive == true);
+                .Include(i => i.DrugInfo).Where(d => d.IsActive);
 
-            if(expresion != null)
+            if (expresion != null)
                 entities = this._table
-                .Include(i => i.DrugInfo).Where(expresion);
+                .Include(i => i.DrugInfo).Where(d => d.IsActive)
+                .Where(expresion);
 
 
             return entities;

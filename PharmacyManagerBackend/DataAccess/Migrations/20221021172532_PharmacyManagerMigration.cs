@@ -54,6 +54,22 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PurchaseSet",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TotalPrice = table.Column<double>(type: "float", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PurchaseSet", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoleSet",
                 columns: table => new
                 {
@@ -91,28 +107,6 @@ namespace DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_DrugSet_PharmacySet_PharmacyId",
-                        column: x => x.PharmacyId,
-                        principalTable: "PharmacySet",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PurchaseSet",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TotalPrice = table.Column<double>(type: "float", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PharmacyId = table.Column<int>(type: "int", nullable: false),
-                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PurchaseSet", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PurchaseSet_PharmacySet_PharmacyId",
                         column: x => x.PharmacyId,
                         principalTable: "PharmacySet",
                         principalColumn: "Id",
@@ -220,6 +214,8 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DrugId = table.Column<int>(type: "int", nullable: false),
+                    PharmacyId = table.Column<int>(type: "int", nullable: false),
+                    State = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     PurchaseId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -232,6 +228,11 @@ namespace DataAccess.Migrations
                         principalTable: "DrugSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PurchaseItem_PharmacySet_PharmacyId",
+                        column: x => x.PharmacyId,
+                        principalTable: "PharmacySet",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PurchaseItem_PurchaseSet_PurchaseId",
                         column: x => x.PurchaseId,
@@ -320,7 +321,10 @@ namespace DataAccess.Migrations
                     { 6, "DELETE/api/drugs/.*" },
                     { 7, "GET/api/drugs/.*" },
                     { 8, "POST/api/pharmacies" },
-                    { 9, "GET/api/purchases" }
+                    { 9, "GET/api/purchases" },
+                    { 10, "PUT/api/invitations/.*" },
+                    { 11, "GET/api/invitations" },
+                    { 12, "PUT/api/purchases/.*" }
                 });
 
             migrationBuilder.InsertData(
@@ -341,6 +345,8 @@ namespace DataAccess.Migrations
                     { 1, 1 },
                     { 8, 1 },
                     { 9, 1 },
+                    { 10, 1 },
+                    { 11, 1 },
                     { 1, 2 },
                     { 3, 2 },
                     { 4, 2 },
@@ -350,7 +356,8 @@ namespace DataAccess.Migrations
                     { 5, 3 },
                     { 6, 3 },
                     { 7, 3 },
-                    { 9, 3 }
+                    { 9, 3 },
+                    { 12, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -389,14 +396,14 @@ namespace DataAccess.Migrations
                 column: "DrugId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PurchaseItem_PharmacyId",
+                table: "PurchaseItem",
+                column: "PharmacyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PurchaseItem_PurchaseId",
                 table: "PurchaseItem",
                 column: "PurchaseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PurchaseSet_PharmacyId",
-                table: "PurchaseSet",
-                column: "PharmacyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SessionSet_UserId",

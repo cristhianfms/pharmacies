@@ -54,7 +54,11 @@ public class PharmacyManagerContext : DbContext
         modelBuilder.Entity<Pharmacy>()
             .HasOne(p => p.Owner)
             .WithOne(u => u.OwnerPharmacy);
-
+        modelBuilder.Entity<PurchaseItem>()
+            .HasOne(pi => pi.Pharmacy)
+            .WithMany()
+            .HasForeignKey("PharmacyId")
+            .OnDelete(DeleteBehavior.NoAction);
 
         // Data seed
         // Roles
@@ -68,8 +72,12 @@ public class PharmacyManagerContext : DbContext
             employee
         );
 
-        // Admin Permissions
+        // Invitations Permissions
         Permission createInvitation = new Permission() { Id = 1, Endpoint = "POST/api/invitations" };
+        Permission updateInvitation = new Permission() { Id = 10, Endpoint = "PUT/api/invitations/.*" };
+        Permission getAllInvitations = new Permission() { Id = 11, Endpoint = "GET/api/invitations" };
+        
+        //Pharmacy permissions
         Permission createPharmacy = new Permission() { Id = 8, Endpoint = "POST/api/pharmacies" };
 
         //Solicitude Permissions
@@ -84,7 +92,8 @@ public class PharmacyManagerContext : DbContext
 
         //Purchase Permissions
         Permission getAllPurchases = new Permission() { Id = 9, Endpoint = "GET/api/purchases" };
-
+        Permission updatePurchase = new Permission() { Id = 12, Endpoint = "PUT/api/purchases/.*" };
+        
         modelBuilder.Entity<Permission>().HasData(
             createInvitation,
             createSolicitude,
@@ -94,7 +103,10 @@ public class PharmacyManagerContext : DbContext
             deleteDrug,
             getDrug,
             createPharmacy,
-            getAllPurchases);
+            getAllPurchases,
+            updateInvitation,
+            getAllInvitations,
+            updatePurchase);
 
         // Permission - Role
         modelBuilder.Entity<PermissionRole>().HasData(
@@ -110,7 +122,10 @@ public class PharmacyManagerContext : DbContext
             new PermissionRole() { PermissionId = createPharmacy.Id, RoleId = admin.Id },
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = admin.Id },
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = employee.Id },
-            new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = owner.Id }
+            new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = owner.Id },
+            new PermissionRole() { PermissionId = updatePurchase.Id, RoleId = employee.Id },
+            new PermissionRole() { PermissionId = updateInvitation.Id, RoleId = admin.Id },
+            new PermissionRole() { PermissionId = getAllInvitations.Id, RoleId = admin.Id }
         );
 
 

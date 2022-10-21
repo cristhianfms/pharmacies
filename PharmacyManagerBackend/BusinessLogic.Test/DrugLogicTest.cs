@@ -14,8 +14,6 @@ namespace BusinessLogic.Test
         private Mock<IDrugRepository> _drugRepositoryMock;
         private Mock<IDrugInfoRepository> _drugInfoRepositoryMock;
         private Mock<PharmacyLogic> _pharmacyLogic;
-        private Mock<SolicitudeLogic> _solicitudeLogic;
-        private Mock<PurchaseLogic> _purchaseLogic;
         private Mock<Context> _context;
         private User _userEmployeeForTest;
         private Pharmacy _pharmacy;
@@ -27,13 +25,10 @@ namespace BusinessLogic.Test
             this._drugRepositoryMock = new Mock<IDrugRepository>(MockBehavior.Strict);
             this._drugInfoRepositoryMock = new Mock<IDrugInfoRepository>(MockBehavior.Strict);
             this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
-            this._purchaseLogic = new Mock<PurchaseLogic>(MockBehavior.Strict, null, null, null, null);
-            this._solicitudeLogic = new Mock<SolicitudeLogic>(MockBehavior.Strict, null, null, null, null);
-            this._drugLogic = new DrugLogic(_drugRepositoryMock.Object,
-                _drugInfoRepositoryMock.Object,
+            this._drugLogic = new DrugLogic(_drugRepositoryMock.Object, 
+                _drugInfoRepositoryMock.Object, 
                 _pharmacyLogic.Object,
-                _context.Object, _purchaseLogic.Object,
-                _solicitudeLogic.Object);
+                _context.Object);
 
             _pharmacy = new Pharmacy()
             {
@@ -132,8 +127,6 @@ namespace BusinessLogic.Test
 
             _pharmacyLogic.Setup(m => m.GetPharmacyByName(_pharmacy.Name)).Returns(_pharmacy);
             _drugRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Drug, bool>>())).Returns(drug);
-            _solicitudeLogic.Setup(m => m.DrugExistsInSolicitude(drug));
-            _purchaseLogic.Setup(m => m.DrugExistsInPurchase(drug));
             _pharmacyLogic.Setup(m => m.UpdatePharmacy(It.IsAny<Pharmacy>()));
             _drugInfoRepositoryMock.Setup(m => m.Delete(It.IsAny<DrugInfo>()));
             _drugInfoRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<DrugInfo, bool>>())).Returns(drugInfo);
