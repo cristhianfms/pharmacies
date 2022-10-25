@@ -46,6 +46,6 @@ public class Purchase
                TotalPrice == purchase.TotalPrice &&
                Date == purchase.Date &&
                UserEmail == purchase.UserEmail &&
-               EqualityComparer<List<PurchaseItem>>.Default.Equals(Items, purchase.Items);
+               Items.SequenceEqual(purchase.Items);
     }
 }

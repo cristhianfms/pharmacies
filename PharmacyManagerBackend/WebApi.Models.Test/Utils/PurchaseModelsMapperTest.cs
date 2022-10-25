@@ -40,7 +40,8 @@ public class PurchaseModelsMapperTest
     {
         List<PurchaseItemPutModel> purchaseItemPutModels = new List<PurchaseItemPutModel>(){
             new PurchaseItemPutModel(){
-                State = PurchaseState.ACCEPTED
+                State = PurchaseState.ACCEPTED,
+                DrugCode = "A01"
             }
         };
         PurchasePutModel purchasePutModel = new PurchasePutModel()
