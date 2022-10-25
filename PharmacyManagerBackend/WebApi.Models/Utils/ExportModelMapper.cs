@@ -1,16 +1,15 @@
-using Domain.Dto;
-using System.Linq;
+using ExporterDomain.Dto;
 
 namespace WebApi.Models.Utils;
 
 public class ExportModelMapper
 {
-    public static ExportDto ToEntity(ExportModel exportModel)
+    public static ExportDto ToEntity(ExportRequestModel exportModel)
     {
         List<ExportPropertyDto> props = exportModel.Props.Select(p => ToEntity(p)).ToList();
         return new ExportDto()
         {
-            ExporterName = exportModel.ExporterName,
+            Name = exportModel.Name,
             Props = props
         };
     }
@@ -25,8 +24,18 @@ public class ExportModelMapper
         };
     }
 
+    public static ExportResponseModel ToModel(ExportDto exportDto)
+    {
+        List<ExportPropertyResponseModel> props = exportDto.Props.Select(p => ToModel(p)).ToList();
 
-    public static ExportPropertyResponseModel ToModel(ExportPropertyDto exportPropertyDto)
+        return new ExportResponseModel()
+        {
+            Name = exportDto.Name,
+            Props = props
+        };
+    }
+
+    private static ExportPropertyResponseModel ToModel(ExportPropertyDto exportPropertyDto)
     {
         return new ExportPropertyResponseModel()
         {

@@ -28,6 +28,7 @@
     <ProjectReference Include="..\WebApi.Filter\WebApi.Filter.csproj" />
     <ProjectReference Include="..\WebApi.Models\WebApi.Models.csproj" />
     <ProjectReference Include="..\IAuthLogic\IAuthLogic.csproj" />
+    <ProjectReference Include="..\ExporterDomain\ExporterDomain.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

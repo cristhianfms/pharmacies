@@ -1,12 +1,11 @@
-﻿using Domain.Dto;
+﻿using ExporterDomain.Dto;
 
 namespace IBusinessLogic
 {
     public interface IExporterManager
     {
-        List<string> GetAllExporters();
+        List<ExportDto> GetAllExporters();
         void ExportDrugs(ExportDto exportDto);
-        List<ExportPropertyDto> GetAllProperties(string exporterName);
     }
 }
 

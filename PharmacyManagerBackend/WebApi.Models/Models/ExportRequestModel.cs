@@ -1,7 +1,7 @@
 namespace WebApi.Models;
 
-public class ExportModel
+public class ExportRequestModel
 {
-    public string ExporterName { get; set; }
+    public string Name { get; set; }
     public List<ExportPropertyRequestModel> Props { get; set; }
 }
