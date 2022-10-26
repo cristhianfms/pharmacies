@@ -15,9 +15,6 @@ import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { SolicitudesComponent } from './pages/solicitudes/solicitudes.component';
 import { PurchasesComponent } from './pages/purchases/purchases.component';
-import { PharmaciesComponent } from './pages/pharmacies/pharmacies.component';
-import { InvitationEditComponent } from './pages/invitation-edit/invitation-edit.component';
-import { InvitationComponent } from './pages/invitation/invitation.component';
 
 @NgModule({
   declarations: [
@@ -32,9 +29,6 @@ import { InvitationComponent } from './pages/invitation/invitation.component';
     NotFoundComponent,
     SolicitudesComponent,
     PurchasesComponent,
-    PharmaciesComponent,
-    InvitationEditComponent,
-    InvitationComponent
   ],
   imports: [
     BrowserModule,
