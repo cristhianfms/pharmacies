@@ -4,6 +4,7 @@ using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    partial class PharmacyManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20221026020558_DrugExporterPermission")]
+    partial class DrugExporterPermission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,12 +104,12 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 13,
-                            Endpoint = "GET/api/drug-exporters"
+                            Endpoint = "GET/drug-exporters"
                         },
                         new
                         {
                             Id = 14,
-                            Endpoint = "POST/api/drug-exporters/export"
+                            Endpoint = "POST/drug-exporters/export"
                         });
                 });
 
