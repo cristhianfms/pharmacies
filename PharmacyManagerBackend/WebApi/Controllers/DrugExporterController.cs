@@ -1,5 +1,6 @@
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Filter;
 using WebApi.Models;
 using WebApi.Models.Utils;
 
@@ -17,6 +18,7 @@ public class DrugExporterController : ControllerBase
     }
     
     [HttpGet]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult GetExporters()
     {
         List<ExportResponseModel> exporters = _exporterManager.GetAllExporters()
@@ -25,6 +27,7 @@ public class DrugExporterController : ControllerBase
     }
 
     [HttpPost("export")]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult ExportDrugs([FromBody] ExportRequestModel exportModel)
     {
         var exportDto = ExportModelMapper.ToEntity(exportModel);

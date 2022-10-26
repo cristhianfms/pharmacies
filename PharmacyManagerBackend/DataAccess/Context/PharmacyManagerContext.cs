@@ -94,6 +94,10 @@ public class PharmacyManagerContext : DbContext
         Permission getAllPurchases = new Permission() { Id = 9, Endpoint = "GET/api/purchases" };
         Permission updatePurchase = new Permission() { Id = 12, Endpoint = "PUT/api/purchases/.*" };
         
+        //Drug Exporter permissons 
+        Permission getDrugExporters = new Permission() { Id = 13, Endpoint = "GET/api/drug-exporters" };
+        Permission exportDrugs = new Permission() { Id = 14, Endpoint = "POST/api/drug-exporters/export" };
+        
         modelBuilder.Entity<Permission>().HasData(
             createInvitation,
             createSolicitude,
@@ -106,7 +110,9 @@ public class PharmacyManagerContext : DbContext
             getAllPurchases,
             updateInvitation,
             getAllInvitations,
-            updatePurchase);
+            updatePurchase,
+            getDrugExporters,
+            exportDrugs);
 
         // Permission - Role
         modelBuilder.Entity<PermissionRole>().HasData(
@@ -125,7 +131,9 @@ public class PharmacyManagerContext : DbContext
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = owner.Id },
             new PermissionRole() { PermissionId = updatePurchase.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = updateInvitation.Id, RoleId = admin.Id },
-            new PermissionRole() { PermissionId = getAllInvitations.Id, RoleId = admin.Id }
+            new PermissionRole() { PermissionId = getAllInvitations.Id, RoleId = admin.Id },
+            new PermissionRole() { PermissionId = getDrugExporters.Id, RoleId = employee.Id },
+            new PermissionRole() { PermissionId = exportDrugs.Id, RoleId = employee.Id }
         );
 
 
