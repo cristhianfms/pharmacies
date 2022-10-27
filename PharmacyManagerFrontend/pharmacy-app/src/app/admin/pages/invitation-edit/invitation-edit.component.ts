@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {switchMap} from "rxjs";
-import {Invitation} from "../../models/invitation.model";
-import {InvitationsService} from "../../services/invitations.service";
+import {Invitation} from "../../../models/invitation.model";
+import {InvitationsService} from "../../../services/invitations.service";
 
 @Component({
     selector: 'app-invitation-edit',

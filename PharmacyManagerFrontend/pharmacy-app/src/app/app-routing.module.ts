@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MyCartComponent } from './pages/my-cart/my-cart.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { SolicitudesComponent } from './pages/solicitudes/solicitudes.component';
 import { PurchasesComponent } from './pages/purchases/purchases.component';
-import { PharmaciesComponent } from './pages/pharmacies/pharmacies.component';
-import { InvitationEditComponent } from './pages/invitation-edit/invitation-edit.component';
-import {InvitationComponent} from "./pages/invitation/invitation.component";
+import {AdminGuard} from "./guards/admin.guard";
+import {EmployeeGuard} from "./guards/employee.guard";
+import {OwnerGuard} from "./guards/owner.guard";
 
 const routes: Routes = [
   {
@@ -19,14 +18,6 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
-  },
-  {
-    path: 'invitation/:id',
-    component: InvitationEditComponent
-  },
-  {
-    path: 'invitation',
-    component: InvitationComponent
   },
   {
     path: 'solicitudes',
@@ -41,8 +32,26 @@ const routes: Routes = [
     component: RegisterComponent
   },
   {
-    path: 'pharmacies',
-    component: PharmaciesComponent
+    path: '',
+    loadChildren: () => import('./website/website.module').then(m => m.WebsiteModule),
+    data: {
+      preload: true,
+    }
+  },
+  {
+    path: 'admin',
+    canActivate: [AdminGuard],
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+  },
+  {
+    path: 'employee',
+    canActivate: [EmployeeGuard],
+    loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
+  },
+  {
+    path: 'owner',
+    canActivate: [OwnerGuard],
+    loadChildren: () => import('./owner/owner.module').then(m => m.OwnerModule),
   },
   {
     path: '**',
