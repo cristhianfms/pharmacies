@@ -78,22 +78,27 @@ public class PurchasesControllerTest
     {
         PurchaseItem purchaseItem = new PurchaseItem
         {
+            Id = 1,
             Drug = new Drug()
             {
-                DrugCode = "A01"
+                DrugCode = "A01",
+                Id = 1
+                
             },
             Quantity = 1,
             Pharmacy = new Pharmacy()
             {
+                Id = 1,
                 Name = "Pharamacy Name"
-            }
+            },
+            State =PurchaseState.PENDING,
         };
         List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
         Purchase purchase = new Purchase()
         {
             Id = 1,
             UserEmail = "email@email.com",
-            Date = DateTime.Now,
+            Date = new DateTime(2022-10-14),
             TotalPrice = 100.99,
             Items = purchaseItems,
         };
@@ -129,14 +134,17 @@ public class PurchasesControllerTest
     {
         int purchaseId = 1;
         PurchaseItem purchaseItem = new PurchaseItem
-        {
+        {   
+            Id = 1,
             Drug = new Drug()
             {
+                Id = 1,
                 DrugCode = "A01"
             },
             Quantity = 1,
             Pharmacy = new Pharmacy()
-            {
+            { 
+                Id = 1,
                 Name = "Pharamacy Name"
             },
             State = PurchaseState.ACCEPTED
@@ -158,7 +166,8 @@ public class PurchasesControllerTest
             {
                 new PurchaseItemPutModel()
                 {
-                    State = PurchaseState.ACCEPTED
+                    State = PurchaseState.ACCEPTED,
+                    DrugCode = "A01"
                 }
             }
         };
