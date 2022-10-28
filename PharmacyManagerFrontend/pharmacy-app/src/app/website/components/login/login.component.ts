@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {SessionsService} from "../../services/sessions.service";
+import {SessionsService} from "../../../services/sessions.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import {SessionsService} from "../../services/sessions.service";
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private http: HttpClient, private sessionService: SessionsService) { }
+  constructor(private http: HttpClient, private sessionService: SessionsService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
   login() {
     this.sessionService.login("Admin", "admin1234-")
         .subscribe(session => {
-          console.log(session.token)
+            console.log(session.token)
+            this.router.navigate(['/admin']);
         })
   }
 }

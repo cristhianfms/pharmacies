@@ -22,6 +22,7 @@
 
 
     <div class="info">
+        <app-login></app-login>
         <button *ngIf= "!profile; else elseBlock" class="btn btn-outline-success" type="button">LogIn</button>
         <ng-template #elseBlock>{{profile?.email}}</ng-template>
 
