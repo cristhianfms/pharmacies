@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RegisterComponent } from './pages/register/register.component';
-import { HomeComponent } from './pages/home/home.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { SolicitudesComponent } from './pages/solicitudes/solicitudes.component';
-import { PurchasesComponent } from './pages/purchases/purchases.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 import {AdminGuard} from "./guards/admin.guard";
 import {EmployeeGuard} from "./guards/employee.guard";
 import {OwnerGuard} from "./guards/owner.guard";
@@ -17,22 +13,6 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: HomeComponent
-  },
-  {
-    path: 'solicitudes',
-    component: SolicitudesComponent
-  },
-  {
-    path: 'purchases',
-    component: PurchasesComponent
-  },
-  {
-    path: 'register',
-    component: RegisterComponent
-  },
-  {
-    path: '',
     loadChildren: () => import('./website/website.module').then(m => m.WebsiteModule),
     data: {
       preload: true,

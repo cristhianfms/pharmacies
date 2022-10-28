@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CreateDrugDTO, Drug} from "../../models/drug.model";
-import {StoreService} from "../../services/store.service";
-import {DrugsService} from "../../services/drugs.service";
+import {CreateDrugDTO, Drug} from "../../../models/drug.model";
+import {StoreService} from "../../../services/store.service";
+import {DrugsService} from "../../../services/drugs.service";
 
 @Component({
     selector: 'app-drugs',
