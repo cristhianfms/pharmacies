@@ -31,6 +31,15 @@ public static class PurchaseModelsMapper
         };
     }
 
+    private static PurchaseItemStatusModel ToModel(PurchaseItemStatusDto purchaseItem)
+    {
+        return new PurchaseItemStatusModel
+        {
+            DrugCode = purchaseItem.DrugCode,
+            State = purchaseItem.State
+        };
+    }
+
     public static PurchaseReportModel ToModel(PurchaseReportDto purchaseReport)
     {
         List<PurchaseResponseModel> purchaseModels = purchaseReport.Purchases.Select(p => ToModel(p)).ToList();
@@ -86,5 +95,15 @@ public static class PurchaseModelsMapper
             },
             State = purchaseItemPutModel.State
         };
+    }
+
+    public static IEnumerable<PurchaseItemStatusModel> ToModelList(IEnumerable<PurchaseItemStatusDto> purchaseItems)
+    {
+        List<PurchaseItemStatusModel> purchaseItemModels = new List<PurchaseItemStatusModel>();
+
+        foreach(var pi in purchaseItems)
+            purchaseItemModels.Add(ToModel(pi));
+
+        return purchaseItemModels;
     }
 }

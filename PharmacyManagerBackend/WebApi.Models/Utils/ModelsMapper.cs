@@ -1,7 +1,5 @@
-
 using Domain;
 using Domain.Dtos;
-
 
 namespace WebApi.Models.Utils;
 
@@ -91,6 +89,7 @@ public static class ModelsMapper
             DrugCode = solicitudeItem.DrugCode
         };
     }
+
     public static List<SolicitudeResponseModel> ToModelList(List<Solicitude> solicitudes)
     {
         List<SolicitudeResponseModel> solicitudeResponseModels = new List<SolicitudeResponseModel>();
@@ -111,7 +110,7 @@ public static class ModelsMapper
 
     public static Drug ToEntity(DrugRequestModel drugModel)
     {
-        DrugInfo drugInfo  = new DrugInfo
+        DrugInfo drugInfo = new DrugInfo
         {
             Id = drugModel.Id,
             Name = drugModel.Name,
@@ -144,7 +143,7 @@ public static class ModelsMapper
             Symptoms = drug.DrugInfo.Symptoms,
             Presentation = drug.DrugInfo.Presentation,
             QuantityPerPresentation = drug.DrugInfo.QuantityPerPresentation,
-            UnitOfMeasurement= drug.DrugInfo.UnitOfMeasurement,
+            UnitOfMeasurement = drug.DrugInfo.UnitOfMeasurement,
         };
     }
     public static DrugGetModel ToGetModel(Drug drug)
@@ -164,6 +163,7 @@ public static class ModelsMapper
             PharmacyId = drug.PharmacyId
         };
     }
+
     public static IEnumerable<DrugGetModel> ToModelList(IEnumerable<Drug> drugs)
     {
         List<DrugGetModel> drugGetModel = new List<DrugGetModel>();

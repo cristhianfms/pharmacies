@@ -34,7 +34,7 @@ public class PurchasesControllerTest
             Quantity = 1,
             Pharmacy = new Pharmacy()
             {
-                Name = "PharamacyName"   
+                Name = "PharamacyName"
             }
         };
         List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
@@ -179,6 +179,52 @@ public class PurchasesControllerTest
 
         Assert.AreEqual(purchaseModelExpected, purchaseUpdatedModel);
         CollectionAssert.AreEqual(purchaseModelExpected.Items, purchaseUpdatedModel.Items);
+        _purchaseLogicMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void GetPurchaseStatusOk()
+    {
+        string purchaseCode = "1234";
+        PurchaseItem purchaseItem = new PurchaseItem
+        {
+            Drug = new Drug()
+            {
+                DrugCode = "A01"
+            },
+            Quantity = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "Pharamacy Name"
+            },
+            State = PurchaseState.ACCEPTED
+        };
+        PurchaseItemStatusDto purchaseItemStatusDto = new PurchaseItemStatusDto
+        {
+            DrugCode = "A01",
+            State = "ACCEPTED"
+        };
+        List<PurchaseItem> purchaseItems = new List<PurchaseItem>() { purchaseItem };
+        Purchase purchase = new Purchase()
+        {
+            Id = 1,
+            UserEmail = "email@email.com",
+            Date = DateTime.Now,
+            TotalPrice = 100.99,
+            Items = purchaseItems,
+            Code = "1234"
+        };
+        List<PurchaseItemStatusDto> purchaseItemStatusDtoList = new List<PurchaseItemStatusDto>() { purchaseItemStatusDto };
+        _purchaseLogicMock.Setup(m => m.GetPurchaseStatus(It.IsAny<string>())).Returns(purchaseItemStatusDtoList);
+
+        var purchaseItemStatusModelExpected = PurchaseModelsMapper.ToModelList(purchaseItemStatusDtoList).ToList();
+
+        var result = _purchasesApiController.GetPurchaseStatus(purchaseCode);
+        var okResult = result as OkObjectResult;
+        List<PurchaseItemStatusModel> purchaseItemStatusModel = okResult.Value as List<PurchaseItemStatusModel>;
+
+        CollectionAssert.AreEqual(purchaseItemStatusModel, purchaseItemStatusModelExpected);
+        
         _purchaseLogicMock.VerifyAll();
     }
 }

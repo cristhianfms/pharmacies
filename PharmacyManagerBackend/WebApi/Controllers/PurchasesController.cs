@@ -50,5 +50,13 @@ public class PurchasesController : ControllerBase
 
         return Ok(purchaseReportModel);
     }
+
+    [HttpGet("{code}")]
+    public IActionResult GetPurchaseStatus(string code)
+    {
+        IEnumerable<PurchaseItemStatusModel> purchaseItemModel = PurchaseModelsMapper.ToModelList(_purchaseLogic.GetPurchaseStatus(code));
+    
+        return Ok(purchaseItemModel);
+    }
 }
 

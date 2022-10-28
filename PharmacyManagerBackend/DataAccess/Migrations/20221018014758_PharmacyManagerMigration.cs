@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class UpdatePurchaseProperties : Migration
+    public partial class PharmacyManagerMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

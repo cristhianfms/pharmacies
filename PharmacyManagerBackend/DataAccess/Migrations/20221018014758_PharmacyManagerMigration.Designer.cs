@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20221015020418_UpdatePurchaseProperties")]
-    partial class UpdatePurchaseProperties
+    [Migration("20221018014758_PharmacyManagerMigration")]
+    partial class PharmacyManagerMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
