@@ -40,29 +40,42 @@ public class PurchaseLogic : IPurchaseLogic
     }
 
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
-    { 
+    {
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
-        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p => 
-            //TODO: Analizar esto de farmacia
-            //p.PharmacyId == pharmacyOfCurrentUser.Id &&
+        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p =>
+            p.Items.Any(i => i.Pharmacy.Id == pharmacyOfCurrentUser.Id) &&
             p.Date >= queryPurchaseDto.GetParsedDateFrom() &&
             p.Date <= queryPurchaseDto.GetParsedDateTo());
-        
+
+
         double totalPrice = 0;
+        List<Purchase> purchasesToReport = new List<Purchase>();
         foreach (var purchase in purchases)
         {
-            totalPrice += purchase.TotalPrice;
-        }
+            List<PurchaseItem> purchaseItems = new List<PurchaseItem>();
+            purchaseItems = purchase.Items.FindAll(i => i.PharmacyId == pharmacyOfCurrentUser.Id);
 
+            totalPrice += CalculateTotalPrice(purchaseItems);
+
+            Purchase purchaseToReport = new Purchase()
+            {
+                Id = purchase.Id,
+                UserEmail = purchase.UserEmail,
+                Items = purchaseItems,
+                Date = purchase.Date,
+                TotalPrice = CalculateTotalPrice(purchaseItems),
+            };
+            purchasesToReport.Add(purchaseToReport);
+        }
         PurchaseReportDto purchaseReport = new PurchaseReportDto()
         {
-            Purchases =  purchases,
+            Purchases = purchasesToReport,
             TotalPrice = totalPrice
         };
 
         return purchaseReport;
     }
-
+        
     public Purchase Update(int id, Purchase purchase)
     {
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
@@ -149,9 +162,9 @@ public class PurchaseLogic : IPurchaseLogic
     
     private Drug GetDrug(Pharmacy pharmacy, string drugCode)
     {
-        Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode);
+        Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode && d.IsActive);
 
-        if (drug == null)
+        if (drug == null)   
         {
             throw new ValidationException($"{drugCode} not exist in pharmacy {pharmacy.Name}");
         }
