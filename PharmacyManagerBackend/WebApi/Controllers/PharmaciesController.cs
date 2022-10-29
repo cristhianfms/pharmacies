@@ -27,4 +27,14 @@ public class PharmaciesController : ControllerBase
 
         return Ok(pharmacyCreatedModel);
     }
+
+    [HttpPost]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
+    public IActionResult Get()
+    {
+        IEnumerable<Pharmacy> pharmacies = _pharmacyLogic.GetAll();
+        IEnumerable<PharmacyModel> pharmacyCreatedModel = ModelsMapper.ToModelList(pharmacies);
+
+        return Ok(pharmacyCreatedModel);
+    }
 }
