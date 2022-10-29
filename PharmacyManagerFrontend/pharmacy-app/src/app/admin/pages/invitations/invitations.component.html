@@ -1,1 +1,24 @@
-<app-invitation-list></app-invitation-list>
+<div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm-1">Pharmacy Name</span>
+    </div>
+    <input [(ngModel)]="filterPharmacyName" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm-2">Username</span>
+    </div>
+    <input [(ngModel)]="filterUserName" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Role</label>
+        </div>
+        <select [(ngModel)]="filterRole" class="custom-select" id="inputGroupSelect01">
+            <option selected value="All">All</option>
+            <option value="Admin">Admin</option>
+            <option value="Employee">Employee</option>
+            <option value="Owner">Owner</option>
+        </select>
+    </div>
+    <button (click)="updateInvitationQuery()" class="btn btn-primary" type="button">Search</button>
+</div>
+
+<app-invitation-list [invitationQuery]="invitationQuery"></app-invitation-list>
