@@ -60,7 +60,7 @@ public class PharmaciesControllerTest
         var pharmacyModel = new PharmacyModel()
         {
             Name = "Farmashop",
-            Address = "Rivera 2030",
+            Address = "Rivera 2030"
         };
 
         var result = _pharmacyApiController.Get();
@@ -71,8 +71,7 @@ public class PharmaciesControllerTest
         {
             pharmacyModel
         };
-
-        CollectionAssert.AreEqual(createdPharmacyList, pharmaciesModel);
+        Assert.IsTrue(ModelsComparer.PharmacyCompare(createdPharmacyList[0], pharmaciesModel[0]));
         _pharmacyLogicMock.VerifyAll();
     }
 }

@@ -28,7 +28,7 @@ public class PharmaciesController : ControllerBase
         return Ok(pharmacyCreatedModel);
     }
 
-    [HttpPost]
+    [HttpGet]
     [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult Get()
     {
