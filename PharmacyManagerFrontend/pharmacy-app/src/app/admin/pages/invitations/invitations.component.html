@@ -1,3 +1,7 @@
+<button (click)="onCreateInvitation()" id="button-create" type="button" class="btn btn-primary btn-sm">
+    Create invitation
+</button>
+
 <div class="input-group input-group-sm mb-3">
     <div class="input-group-prepend">
         <span class="input-group-text" id="inputGroup-sizing-sm-1">Pharmacy Name</span>
@@ -9,7 +13,7 @@
     <input [(ngModel)]="filterUserName" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <label class="input-group-text" for="`inputGroupSelect01`">Role</label>
+            <label class="input-group-text" for="inputGroupSelect01">Role</label>
         </div>
         <select [(ngModel)]="filterRole" class="custom-select" id="inputGroupSelect01">
             <option selected value="All">All</option>

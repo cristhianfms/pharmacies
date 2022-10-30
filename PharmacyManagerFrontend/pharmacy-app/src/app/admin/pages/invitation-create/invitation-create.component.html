@@ -1,0 +1,32 @@
+<div class="page-edit-product">
+    <div class="row">
+        <div class="form-group">
+            <label for="userName">Username</label>
+            <input required id="userName" class="form-control" type="text" [(ngModel)]="newInvitation.userName">
+        </div>
+        <div class="form-group">
+            <label for="roleName">Role</label>
+            <select [(ngModel)]="newInvitation.roleName" class="custom-select form-control" id="roleName">
+                <option [selected]="newInvitation.roleName == 'Admin'" value="Admin">Admin</option>
+                <option [selected]="newInvitation.roleName == 'Employee'" value="Employee">Employee</option>
+                <option [selected]="newInvitation.roleName == 'Owner'" value="Owner">Owner</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pharmacyName">Pharmacy</label>
+            <input required id="pharmacyName" class="form-control" type="text" [(ngModel)]="newInvitation.pharmacyName">
+        </div>
+        <div class="buttons">
+            <button type="button" (click)="goToInvitationsHome()" class="btn btn-primary">Back</button>
+            <button type="submit" (click)="onSubmit()" class="btn btn-primary">Save</button>
+        </div>
+        <div>
+            <div *ngIf="createStatus=='success'" class="alert alert-success" role="alert">
+                The invitation is created with the code {{createdInvitation?.invitationCode}}
+            </div>
+            <div *ngIf="createStatus=='error'"class="alert alert-danger" role="alert">
+                Error: {{errorMessage}}
+            </div>
+        </div>
+    </div>
+</div>
