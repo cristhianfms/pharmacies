@@ -5,6 +5,7 @@ import {PharmaciesComponent} from "./pages/pharmacies/pharmacies.component";
 import {InvitationsComponent} from "./pages/invitations/invitations.component";
 import {InvitationEditComponent} from "./pages/invitation-edit/invitation-edit.component";
 import {InvitationCreateComponent} from "./pages/invitation-create/invitation-create.component";
+import {PharmacyCreateComponent} from "./pages/pharmacy-create/pharmacy-create.component";
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
       {
         path: 'invitation-create',
         component: InvitationCreateComponent
+      },
+      {
+        path: 'pharmacy-create',
+        component: PharmacyCreateComponent
       }
     ]
   }
