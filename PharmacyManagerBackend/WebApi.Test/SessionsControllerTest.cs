@@ -1,4 +1,6 @@
 ﻿using System;
+using Domain;
+using Domain.AuthDomain;
 using Domain.Dtos;
 using IAuthLogic;
 using IBusinessLogic;
@@ -42,6 +44,32 @@ public class SessionsControllerTest
         var tokenModel = okResult.Value as TokenModel;
 
         Assert.AreEqual(token.Token, tokenModel.Token);
+        _sessionLogicMock.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void GetProfileOk()
+    {
+        var session = new Session()
+        {
+            User = new User()
+            {
+                UserName = "UserName",
+                Role = new Role()
+                {
+                    Name = "Employee"
+                }
+            }
+        };
+        _sessionLogicMock.Setup(m => m.Get(It.IsAny<Guid>())).Returns(session);
+
+
+        var result = _sessionsApiController.GetSessionProfile("token");
+        var okResult = result as OkObjectResult;
+        var profile = okResult.Value as SessionProfileModel;
+
+        Assert.AreEqual(session.User.UserName, profile.UserName);
+        Assert.AreEqual(session.User.Role.Name, profile.RoleName);
         _sessionLogicMock.VerifyAll();
     }
 

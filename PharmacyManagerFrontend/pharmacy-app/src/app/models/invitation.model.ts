@@ -1,11 +1,12 @@
 export interface Invitation {
-    id: number
+    invitationCode: string,
     userName: string,
     roleName: string,
-    pharmacyName: string
+    pharmacyName: string,
+    used: boolean
 }
 
-export interface CreateInvitationDto extends Omit<Invitation, 'id'> {
+export interface CreateInvitationDto extends Omit<Invitation, 'used' | 'invitationCode'> {
 
 }
 

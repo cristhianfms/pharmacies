@@ -25,4 +25,14 @@ public class PurchaseItem
             _quantity = value;
         }
     }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is PurchaseItem item &&
+               Id == item.Id &&
+               DrugId == item.DrugId &&
+               PharmacyId == item.PharmacyId &&
+               State == item.State &&
+               Quantity == item.Quantity;
+    }
 }

@@ -10,21 +10,21 @@ namespace BusinessLogic.Test;
 public class PurchaseLogicTest
 {
     private PurchaseLogic _purchaseLogic;
-    private Mock<IPurchaseRepository> _purchaseRepository;
-    private Mock<PharmacyLogic> _pharmacyLogic;
-    private Mock<DrugLogic> _drugLogic;
+    private Mock<IPurchaseRepository> _purchaseRepositoryMock;
+    private Mock<PharmacyLogic> _pharmacyLogicMock;
+    private Mock<DrugLogic> _drugLogicMock;
     private Mock<Context> _context;
 
     [TestInitialize]
     public void Initialize()
     {
         this._context = new Mock<Context>(MockBehavior.Strict);
-        this._purchaseRepository = new Mock<IPurchaseRepository>(MockBehavior.Strict);
-        this._pharmacyLogic = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
-        this._drugLogic = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null, null);
-        this._purchaseLogic = new PurchaseLogic(this._purchaseRepository.Object, 
-            this._pharmacyLogic.Object, 
-            this._drugLogic.Object,
+        this._purchaseRepositoryMock = new Mock<IPurchaseRepository>(MockBehavior.Strict);
+        this._pharmacyLogicMock = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
+        this._drugLogicMock = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null, null);
+        this._purchaseLogic = new PurchaseLogic(this._purchaseRepositoryMock.Object, 
+            this._pharmacyLogicMock.Object, 
+            this._drugLogicMock.Object,
             this._context.Object);
     }
 
@@ -86,15 +86,15 @@ public class PurchaseLogicTest
                 },
             }
         };
-        _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
-        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Throws(new ResourceNotFoundException(""));
-        _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseRepository);
+        _pharmacyLogicMock.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
+        _purchaseRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Throws(new ResourceNotFoundException(""));
+        _purchaseRepositoryMock.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseRepository);
 
         Purchase purchaseCreated = _purchaseLogic.Create(purchaseToCreate);
         
         Assert.AreEqual(purchaseRepository, purchaseCreated);
-        _pharmacyLogic.VerifyAll();
-        _purchaseRepository.VerifyAll();
+        _pharmacyLogicMock.VerifyAll();
+        _purchaseRepositoryMock.VerifyAll();
     }
     
     [TestMethod]
@@ -155,17 +155,17 @@ public class PurchaseLogicTest
                 },
             }
         };
-        _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
-        _purchaseRepository.SetupSequence(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>()))
+        _pharmacyLogicMock.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
+        _purchaseRepositoryMock.SetupSequence(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>()))
             .Returns(new Purchase(){})
             .Throws(new ResourceNotFoundException(""));
-        _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseRepository);
+        _purchaseRepositoryMock.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseRepository);
 
         Purchase purchaseCreated = _purchaseLogic.Create(purchaseToCreate);
         
         Assert.AreEqual(purchaseRepository, purchaseCreated);
-        _pharmacyLogic.VerifyAll();
-        _purchaseRepository.VerifyAll();
+        _pharmacyLogicMock.VerifyAll();
+        _purchaseRepositoryMock.VerifyAll();
     }
 
     [TestMethod]
@@ -189,8 +189,8 @@ public class PurchaseLogicTest
             UserEmail = "email@email.com",
             Items = items,
         };
-        _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
-        _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
+        _purchaseRepositoryMock.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
+        _pharmacyLogicMock.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
 
         _purchaseLogic.Create(purchase);
     }
@@ -225,8 +225,8 @@ public class PurchaseLogicTest
             UserEmail = "email@email.com",
             Items = items
         };
-        _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacy);
-        _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
+        _pharmacyLogicMock.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacy);
+        _purchaseRepositoryMock.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchase);
 
         _purchaseLogic.Create(purchase);
     }
@@ -267,8 +267,8 @@ public class PurchaseLogicTest
                 }
             }
         };
-        _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
-        _purchaseRepository.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseToCreate);
+        _pharmacyLogicMock.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(pharmacyRepository);
+        _purchaseRepositoryMock.Setup(m => m.Create(It.IsAny<Purchase>())).Returns(purchaseToCreate);
 
         _purchaseLogic.Create(purchaseToCreate);
     }
@@ -281,8 +281,9 @@ public class PurchaseLogicTest
         Drug drugRepository = new Drug()
         {
             DrugCode = drugCode,
-            Stock = 2,
-            PharmacyId = 1
+            Stock = 20,
+            PharmacyId = 1,
+            Price = 100   
         };
         Pharmacy pharmacyRepository = new Pharmacy()
         {
@@ -294,32 +295,35 @@ public class PurchaseLogicTest
         Purchase purchaseRepository1 = new Purchase()
         {
             Id = 1,
-            TotalPrice = 100.50,
+            TotalPrice = 200,
             UserEmail = "email@email.com",
+            Date = new DateTime(2022 - 09 - 30),
             Items = new List<PurchaseItem>()
             {
                 new PurchaseItem()
                 {
                     Quantity = 2,
                     Drug = drugRepository,
-                    Pharmacy = pharmacyRepository,
-                }
-            }
+                    PharmacyId = pharmacyRepository.Id,
+                    State = PurchaseState.PENDING
+                },
+            },
         };
         Purchase purchaseRepository2 = new Purchase()
         {
             Id = 2,
-            TotalPrice = 200.99,
+            TotalPrice = 300,
             UserEmail = "email2@email.com",
             Items = new List<PurchaseItem>()
             {
                 new PurchaseItem()
                 {
-                    Quantity = 2,
+                    Quantity = 3,
                     Drug = drugRepository,
-                    Pharmacy = pharmacyRepository,
-                }
-            }
+                    PharmacyId = pharmacyRepository.Id,
+                    State = PurchaseState.PENDING
+                },
+            },
         };
         List<Purchase> purchasesRepository = new List<Purchase>() { purchaseRepository1, purchaseRepository2 };
         double totalPrice = purchaseRepository1.TotalPrice + purchaseRepository2.TotalPrice;
@@ -328,20 +332,25 @@ public class PurchaseLogicTest
             Role = new Role()
             {
                 Name = Role.EMPLOYEE
-            }
+            },
+            Pharmacy = pharmacyRepository
         };
         QueryPurchaseDto queryPurchaseDto = new QueryPurchaseDto()
         {
             DateFrom = "2022-09-01",
-            DateTo = "2022-09-30"
+            DateTo = "2022-10-30"
         };
-        _purchaseRepository.Setup(m => m.GetAll(It.IsAny<Func<Purchase, bool>>())).Returns(purchasesRepository);
+        _purchaseRepositoryMock.Setup(m => m.GetAll(It.IsAny<Func<Purchase, bool>>())).Returns(purchasesRepository);
         _context.Setup(m => m.CurrentUser).Returns(currentUser);
 
         PurchaseReportDto purchasesReport = _purchaseLogic.GetPurchasesReport(queryPurchaseDto);
-        
+
+
         Assert.AreEqual(totalPrice, purchasesReport.TotalPrice);
         CollectionAssert.AreEqual(purchasesRepository, purchasesReport.Purchases.ToList());
+
+        _purchaseRepositoryMock.VerifyAll();
+        _context.VerifyAll();
     }
     
     [TestMethod]
@@ -400,18 +409,18 @@ public class PurchaseLogicTest
                 }
             }
         };
-        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
-        _purchaseRepository.Setup(m => m.Update(It.IsAny<Purchase>()));
+        _purchaseRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
+        _purchaseRepositoryMock.Setup(m => m.Update(It.IsAny<Purchase>()));
         _context.Setup(m => m.CurrentUser).Returns(currentUser);
-        _drugLogic.Setup(m => m.Update(It.IsAny<int>(), It.IsAny<Drug>())).Returns(drug);
+        _drugLogicMock.Setup(m => m.Update(It.IsAny<int>(), It.IsAny<Drug>())).Returns(drug);
         
         Purchase purchaseUpdated = _purchaseLogic.Update(1, purchaseToUpdate);
         
         Assert.AreEqual(purchaseUpdated.Items[0].State, PurchaseState.ACCEPTED);
         Assert.AreEqual(purchaseUpdated.Items[0].Drug.Stock, 0);
-        _purchaseRepository.VerifyAll();
+        _purchaseRepositoryMock.VerifyAll();
         _context.VerifyAll();
-        _drugLogic.VerifyAll();
+        _drugLogicMock.VerifyAll();
     }
     
     [TestMethod]
@@ -445,7 +454,7 @@ public class PurchaseLogicTest
                 }
             }
         };
-        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Throws(new ResourceNotFoundException(""));
+        _purchaseRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Throws(new ResourceNotFoundException(""));
         _context.Setup(m => m.CurrentUser).Returns(currentUser);
         
         _purchaseLogic.Update(1, purchaseToUpdate);
@@ -514,8 +523,8 @@ public class PurchaseLogicTest
                 }
             }
         };
-        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
-        _purchaseRepository.Setup(m => m.Update(It.IsAny<Purchase>()));
+        _purchaseRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
+        _purchaseRepositoryMock.Setup(m => m.Update(It.IsAny<Purchase>()));
         _context.Setup(m => m.CurrentUser).Returns(currentUser);
         
         _purchaseLogic.Update(1, purchaseToUpdate);
@@ -578,8 +587,8 @@ public class PurchaseLogicTest
                 }
             }
         };
-        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
-        _purchaseRepository.Setup(m => m.Update(It.IsAny<Purchase>()));
+        _purchaseRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
+        _purchaseRepositoryMock.Setup(m => m.Update(It.IsAny<Purchase>()));
         _context.Setup(m => m.CurrentUser).Returns(currentUser);
         
         _purchaseLogic.Update(1, purchaseToUpdate);
@@ -642,8 +651,8 @@ public class PurchaseLogicTest
                 }
             }
         };
-        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
-        _purchaseRepository.Setup(m => m.Update(It.IsAny<Purchase>()));
+        _purchaseRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
+        _purchaseRepositoryMock.Setup(m => m.Update(It.IsAny<Purchase>()));
         _context.Setup(m => m.CurrentUser).Returns(currentUser);
         
         _purchaseLogic.Update(1, purchaseToUpdate);
@@ -706,8 +715,8 @@ public class PurchaseLogicTest
                 }
             }
         };
-        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
-        _purchaseRepository.Setup(m => m.Update(It.IsAny<Purchase>()));
+        _purchaseRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
+        _purchaseRepositoryMock.Setup(m => m.Update(It.IsAny<Purchase>()));
         _context.Setup(m => m.CurrentUser).Returns(currentUser);
         
         _purchaseLogic.Update(1, purchaseToUpdate);
@@ -769,14 +778,14 @@ public class PurchaseLogicTest
                 }
             }
         };
-        _purchaseRepository.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
-        _purchaseRepository.Setup(m => m.Update(It.IsAny<Purchase>()));
+        _purchaseRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Purchase, bool>>())).Returns(purchaseRepository);
+        _purchaseRepositoryMock.Setup(m => m.Update(It.IsAny<Purchase>()));
         _context.Setup(m => m.CurrentUser).Returns(currentUser);
         
         Purchase purchaseUpdated = _purchaseLogic.Update(1, purchaseToUpdate);
         
         Assert.AreEqual(purchaseUpdated.Items[0].State, PurchaseState.REJECTED);
-        _purchaseRepository.VerifyAll();
+        _purchaseRepositoryMock.VerifyAll();
         _context.VerifyAll();
     }
 }

@@ -21,9 +21,18 @@ public class PharmaciesController : ControllerBase
     [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult Create([FromBody] PharmacyModel pharmacyModel)
     {
-        Pharmacy pharmacy = ModelsMapper.ToEntity(pharmacyModel);
+        Pharmacy pharmacy = PharmacyModelsMapper.ToEntity(pharmacyModel);
         Pharmacy pharmacyCreated = _pharmacyLogic.Create(pharmacy);
-        PharmacyModel pharmacyCreatedModel = ModelsMapper.ToModel(pharmacyCreated);
+        PharmacyModel pharmacyCreatedModel = PharmacyModelsMapper.ToModel(pharmacyCreated);
+
+        return Ok(pharmacyCreatedModel);
+    }
+
+    [HttpGet]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
+    public IActionResult Get()
+    {
+        IEnumerable<PharmacyModel> pharmacyCreatedModel = PharmacyModelsMapper.ToModelList(_pharmacyLogic.GetAll());
 
         return Ok(pharmacyCreatedModel);
     }

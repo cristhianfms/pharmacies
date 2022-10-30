@@ -107,7 +107,6 @@ namespace BusinessLogic
 
             return drugs;
         }
-
         public virtual void AddStock(IEnumerable<SolicitudeItem> drugsToAddStock)
         {
             foreach (var drugSolicitude in drugsToAddStock)
@@ -120,7 +119,7 @@ namespace BusinessLogic
 
         public virtual Drug Update(int drugId, Drug drug)
         {
-            Drug drugToUpdate = Get(drugId);
+            Drug drugToUpdate = _drugRepository.GetFirst(d => d.Id == drugId);
             drugToUpdate.Stock = drug.Stock;
 
             _drugRepository.Update(drugToUpdate);

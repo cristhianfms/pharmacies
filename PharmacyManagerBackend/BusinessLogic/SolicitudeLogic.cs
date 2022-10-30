@@ -106,7 +106,6 @@ namespace BusinessLogic
             {
                 if (newSolicitude.State.Equals(State.ACCEPTED))
                 {
-
                     _drugLogic.AddStock(solicitudeToUpdate.Items);
                 }
 

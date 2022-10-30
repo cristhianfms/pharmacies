@@ -1,0 +1,40 @@
+<div class="page-edit-product">
+    <div class="row">
+            <div class="form-group">
+                <label for="userName">Username</label>
+                <input required id="userName" class="form-control" type="text" [(ngModel)]="invitation.userName">
+            </div>
+            <div class="form-group">
+                <label for="roleName">Role</label>
+                <select [(ngModel)]="invitation.roleName" class="custom-select form-control" id="roleName">
+                    <option [selected]="invitation.roleName == 'Admin'" value="Admin">Admin</option>
+                    <option [selected]="invitation.roleName == 'Employee'" value="Employee">Employee</option>
+                    <option [selected]="invitation.roleName == 'Owner'" value="Owner">Owner</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="pharmacyName">Pharmacy</label>
+                <input required id="pharmacyName" class="form-control" type="text" [(ngModel)]="invitation.pharmacyName">
+            </div>
+            <div class="form-group">
+                <label for="invitationCode">Code</label>
+                <input disabled id="invitationCode" class="form-control" type="text" value="{{invitation.invitationCode}}">
+            </div>
+            <div class="form-group">
+                <label for="used">Used</label>
+                <input disabled id="used" class="form-control" type="text" value="{{invitation.used}}">
+            </div>
+            <div class="buttons">
+                <button type="button" (click)="goToInvitationsHome()" class="btn btn-primary">Back</button>
+                <button type="submit" (click)="onSubmit()" class="btn btn-primary">Save</button>
+            </div>
+            <div>
+                <div *ngIf="updatingStatus=='success'" class="alert alert-success" role="alert">
+                    Invitation updated!
+                </div>
+                <div *ngIf="updatingStatus=='error'"class="alert alert-danger" role="alert">
+                    {{errorMessage}}
+                </div>
+            </div>
+    </div>
+</div>
