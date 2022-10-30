@@ -16,9 +16,9 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.sessionService.login("Admin", "admin1234-")
-        .subscribe(session => {
-            console.log(session.token)
+    this.sessionService.loginAndGet("Admin", "admin1234-")
+        .subscribe(data => {
+            console.log(data)
             this.router.navigate(['/admin']);
         })
   }

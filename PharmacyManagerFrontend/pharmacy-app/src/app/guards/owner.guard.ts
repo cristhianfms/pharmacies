@@ -19,7 +19,7 @@ export class OwnerGuard implements CanActivate {
     return this.sessionService.user$
         .pipe(
             map(user => {
-              if(user?.role === 'Owner') {
+              if(user?.roleName === 'Owner') {
                 return true;
               } else {
                 this.router.navigate(['/home']);

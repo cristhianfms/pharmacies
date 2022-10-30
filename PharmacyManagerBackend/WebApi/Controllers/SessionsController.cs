@@ -1,6 +1,6 @@
+using Domain.AuthDomain;
 using Domain.Dtos;
 using IAuthLogic;
-using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Models.Utils;
@@ -24,6 +24,16 @@ public class SessionsController : ControllerBase
         CredentialsDto credentials = ModelsMapper.ToEntity(credentialsModel);
         TokenDto token = _sessionLogic.Create(credentials);
         TokenModel tokenModel = ModelsMapper.ToModel(token);
+
+        return Ok(tokenModel);
+    }
+    
+    [HttpGet("profile")]
+    public IActionResult GetSessionProfile([FromHeader] string authorization)
+    { 
+        Guid token = Guid.Parse(authorization);
+        Session session = _sessionLogic.Get(token);
+        SessionProfileModel tokenModel = SessionModelMapper.ToModel(session);
 
         return Ok(tokenModel);
     }
