@@ -43,7 +43,7 @@ public class PharmacyLogic : IPharmacyLogic
 
     public IEnumerable<Pharmacy> GetAll()
     {
-        throw new NotImplementedException();
+        return _pharmacyRepository.GetAll();
     }
 
     public virtual Pharmacy GetPharmacyByName(string pharmacyName)
