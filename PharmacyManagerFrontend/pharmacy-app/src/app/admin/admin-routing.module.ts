@@ -24,7 +24,7 @@ const routes: Routes = [
         component: InvitationsComponent
       },
       {
-        path: 'invitation/:id',
+        path: 'invitation-edit/:id',
         component: InvitationEditComponent
       }
     ]

@@ -1,10 +1,30 @@
 <div class="page-edit-product">
-    <button>Back</button>
-    <div class="invitation">
-        <div>
-            <h1>{{invitation?.userName}}</h1>
-            <h1>{{invitation?.roleName}}</h1>
-            <h1>{{invitation?.pharmacyName}}</h1>
-        </div>
+    <div class="row">
+        <form>
+            <div class="form-group">
+                <label for="exampleInputEmail">Username</label>
+                <input required id="exampleInputEmail" class="form-control" type="text" value="{{invitation.userName}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Role</label>
+                <input required id="exampleInputEmail1" class="form-control" type="text" value="{{invitation.roleName}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail2">Pharmacy</label>
+                <input required id="exampleInputEmail2" class="form-control" type="text" value="{{invitation.pharmacyName}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail3">Code</label>
+                <input disabled id="exampleInputEmail3" class="form-control" type="text" value="{{invitation.invitationCode}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail4">Used</label>
+                <input disabled id="exampleInputEmail4" class="form-control" type="text" value="{{invitation.used}}">
+            </div>
+            <div class="buttons">
+                <button type="button" (click)="goToInvitationsHome()" class="btn btn-primary">Back</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
     </div>
 </div>

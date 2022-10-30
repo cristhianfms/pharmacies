@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {switchMap} from "rxjs";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Invitation} from "../../../models/invitation.model";
 import {InvitationsService} from "../../../services/invitations.service";
+import {NgForm} from "@angular/forms";
 
 @Component({
     selector: 'app-invitation-edit',
@@ -11,25 +11,34 @@ import {InvitationsService} from "../../../services/invitations.service";
 })
 export class InvitationEditComponent implements OnInit {
 
-    invitationId: number | null = null
-    invitation: Invitation | null = null
+    invitation: Invitation = {
+        invitationCode: "",
+        userName: "",
+        roleName: "",
+        pharmacyName: "",
+        used: false
+    };
 
-    constructor(private route: ActivatedRoute, private invitationService: InvitationsService) {
+    userName = ""
+
+    constructor(private router: Router, private route: ActivatedRoute, private invitationService: InvitationsService) {
     }
 
     ngOnInit(): void {
-        this.route.paramMap
-            .pipe(
-                switchMap(params => {
-                        const id = params.get('id');
-                        if (id) {
-                            this.invitationId = Number(params.get('id'))
-                            return this.invitationService.getInvitation(this.invitationId);
-                        }
-                        return [null]
-                    }
-                )).subscribe(
-            data => this.invitation = data
+        this.invitationService.selectedInvitationToEdit$.subscribe((selectedInvitation) => {
+                if (selectedInvitation){
+                    this.invitation = selectedInvitation;
+                }
+            }
         )
+    }
+
+
+    goToInvitationsHome() {
+        this.router.navigate(['/admin/invitations']);
+    }
+
+    onSubmit(f: NgForm) {
+
     }
 }

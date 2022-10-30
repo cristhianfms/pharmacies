@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {CreateInvitationDto, Invitation, UpdateInvitationDto} from "../models/invitation.model";
 import {environment} from "../../environments/environment";
+import {BehaviorSubject, Subject} from "rxjs";
+import {Drug} from "../models/drug.model";
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +11,9 @@ import {environment} from "../../environments/environment";
 export class InvitationsService {
 
   apiUrl: string = `${environment.API_URL}/api/invitations`
+
+  selectedInvitationToEdit = new BehaviorSubject<Invitation | null>(null)
+  selectedInvitationToEdit$ = this.selectedInvitationToEdit.asObservable();
 
   constructor(private http: HttpClient) { }
 

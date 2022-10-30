@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Invitation} from "../../../models/invitation.model";
 import {InvitationsService} from "../../../services/invitations.service";
 import {InvitationQueryDto} from "../../../models/Dto/invitation-query.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-invitation-list',
@@ -18,7 +19,7 @@ export class InvitationListComponent implements OnInit {
     role: null
   }
 
-  constructor(private invitationService: InvitationsService) { }
+  constructor(private invitationService: InvitationsService, private router: Router) { }
 
   ngOnInit(): void {
     this.invitationService.getAllInvitations().subscribe({
@@ -34,5 +35,14 @@ export class InvitationListComponent implements OnInit {
 
   handleError(error: any){
     window.alert("Error getting invitations")
+  }
+
+  onEdit(invitation: Invitation) {
+    this.invitationService.selectedInvitationToEdit.next(invitation);
+    this.router.navigate(['/admin/invitation-edit/' + invitation.invitationCode]);
+  }
+
+  isDisable(invitation: Invitation) {
+    return invitation.used
   }
 }
