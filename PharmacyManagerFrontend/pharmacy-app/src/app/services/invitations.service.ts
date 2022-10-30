@@ -3,7 +3,6 @@ import {HttpClient} from "@angular/common/http";
 import {CreateInvitationDto, Invitation, UpdateInvitationDto} from "../models/invitation.model";
 import {environment} from "../../environments/environment";
 import {BehaviorSubject, Subject} from "rxjs";
-import {Drug} from "../models/drug.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +20,8 @@ export class InvitationsService {
     return this.http.post(`${this.apiUrl}`, dto)
   }
 
-  update(id: number, dto: UpdateInvitationDto){
-    return this.http.put<Invitation>(`${this.apiUrl}/${id}`, dto);
-  }
-
-  getInvitation(id: number){
-    return this.http.get<Invitation>(`${this.apiUrl}/${id}`)
+  update(id: string, invitation: Invitation){
+    return this.http.put<Invitation>(`${this.apiUrl}/${id}`, invitation);
   }
 
   getAllInvitations() {

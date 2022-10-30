@@ -1,30 +1,40 @@
 <div class="page-edit-product">
     <div class="row">
-        <form>
             <div class="form-group">
-                <label for="exampleInputEmail">Username</label>
-                <input required id="exampleInputEmail" class="form-control" type="text" value="{{invitation.userName}}">
+                <label for="userName">Username</label>
+                <input required id="userName" class="form-control" type="text" [(ngModel)]="invitation.userName">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Role</label>
-                <input required id="exampleInputEmail1" class="form-control" type="text" value="{{invitation.roleName}}">
+                <label for="roleName">Role</label>
+                <select [(ngModel)]="invitation.roleName" class="custom-select form-control" id="roleName">
+                    <option [selected]="invitation.roleName == 'Admin'" value="Admin">Admin</option>
+                    <option [selected]="invitation.roleName == 'Employee'" value="Employee">Employee</option>
+                    <option [selected]="invitation.roleName == 'Owner'" value="Owner">Owner</option>
+                </select>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail2">Pharmacy</label>
-                <input required id="exampleInputEmail2" class="form-control" type="text" value="{{invitation.pharmacyName}}">
+                <label for="pharmacyName">Pharmacy</label>
+                <input required id="pharmacyName" class="form-control" type="text" [(ngModel)]="invitation.pharmacyName">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail3">Code</label>
-                <input disabled id="exampleInputEmail3" class="form-control" type="text" value="{{invitation.invitationCode}}">
+                <label for="invitationCode">Code</label>
+                <input disabled id="invitationCode" class="form-control" type="text" value="{{invitation.invitationCode}}">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail4">Used</label>
-                <input disabled id="exampleInputEmail4" class="form-control" type="text" value="{{invitation.used}}">
+                <label for="used">Used</label>
+                <input disabled id="used" class="form-control" type="text" value="{{invitation.used}}">
             </div>
             <div class="buttons">
                 <button type="button" (click)="goToInvitationsHome()" class="btn btn-primary">Back</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
             </div>
-        </form>
+            <div>
+                <div *ngIf="updatingStatus=='success'" class="alert alert-success" role="alert">
+                    Invitation updated!
+                </div>
+                <div *ngIf="updatingStatus=='error'"class="alert alert-danger" role="alert">
+                    Error: {{errorMessage}}
+                </div>
+            </div>
     </div>
 </div>

@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Invitation} from "../../../models/invitation.model";
 import {InvitationsService} from "../../../services/invitations.service";
-import {NgForm} from "@angular/forms";
 
 @Component({
     selector: 'app-invitation-edit',
@@ -19,7 +18,8 @@ export class InvitationEditComponent implements OnInit {
         used: false
     };
 
-    userName = ""
+    updatingStatus: 'loading' | 'success' | 'error' | null = null
+    errorMessage: string = ''
 
     constructor(private router: Router, private route: ActivatedRoute, private invitationService: InvitationsService) {
     }
@@ -38,7 +38,23 @@ export class InvitationEditComponent implements OnInit {
         this.router.navigate(['/admin/invitations']);
     }
 
-    onSubmit(f: NgForm) {
+    onSubmit() {
+        this.updatingStatus = 'loading'
+        console.log(this.invitation)
+        this.invitationService.update(this.invitation.invitationCode, this.invitation).subscribe({
+                next: this.handleUpdateResponse.bind(this),
+                error: this.handleUpdateError.bind(this)
+            }
+        )
+    }
 
+    handleUpdateResponse(data: any){
+        this.invitation = data;
+        this.updatingStatus = 'success'
+    }
+
+    handleUpdateError(error: any){
+        this.updatingStatus = 'error'
+        this.errorMessage = error.error.message
     }
 }
