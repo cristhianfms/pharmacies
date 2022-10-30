@@ -6,7 +6,7 @@ export interface Invitation {
     used: boolean
 }
 
-export interface CreateInvitationDto extends Omit<Invitation, 'id'> {
+export interface CreateInvitationDto extends Omit<Invitation, 'used' | 'invitationCode'> {
 
 }
 

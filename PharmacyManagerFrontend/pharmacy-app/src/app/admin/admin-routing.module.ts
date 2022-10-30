@@ -4,6 +4,7 @@ import {LayoutComponent} from "./components/layout/layout.component";
 import {PharmaciesComponent} from "./pages/pharmacies/pharmacies.component";
 import {InvitationsComponent} from "./pages/invitations/invitations.component";
 import {InvitationEditComponent} from "./pages/invitation-edit/invitation-edit.component";
+import {InvitationCreateComponent} from "./pages/invitation-create/invitation-create.component";
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
       {
         path: 'invitation-edit/:id',
         component: InvitationEditComponent
+      },
+      {
+        path: 'invitation-create',
+        component: InvitationCreateComponent
       }
     ]
   }
