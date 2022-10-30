@@ -79,6 +79,7 @@ public class PharmacyManagerContext : DbContext
         
         //Pharmacy permissions
         Permission createPharmacy = new Permission() { Id = 8, Endpoint = "POST/api/pharmacies" };
+        Permission getPharmacies = new Permission() { Id = 15, Endpoint = "GET/api/pharmacies" };
 
         //Solicitude Permissions
         Permission createSolicitude = new Permission() { Id = 2, Endpoint = "POST/api/solicitudes" };
@@ -107,6 +108,7 @@ public class PharmacyManagerContext : DbContext
             deleteDrug,
             getDrug,
             createPharmacy,
+            getPharmacies,
             getAllPurchases,
             updateInvitation,
             getAllInvitations,
