@@ -81,6 +81,11 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
+                            Id = 15,
+                            Endpoint = "GET/api/pharmacies"
+                        },
+                        new
+                        {
                             Id = 9,
                             Endpoint = "GET/api/purchases"
                         },
@@ -175,6 +180,11 @@ namespace DataAccess.Migrations
                         {
                             RoleId = 1,
                             PermissionId = 8
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 15
                         },
                         new
                         {

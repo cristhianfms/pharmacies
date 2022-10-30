@@ -128,6 +128,7 @@ public class PharmacyManagerContext : DbContext
             new PermissionRole() { PermissionId = deleteDrug.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = getDrug.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = createPharmacy.Id, RoleId = admin.Id },
+            new PermissionRole() { PermissionId = getPharmacies.Id, RoleId = admin.Id },
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = admin.Id },
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = owner.Id },
