@@ -83,7 +83,7 @@ namespace BusinessLogic
 
         private void DrugCodeNotRepeatedInPharmacy(string drugCode, Pharmacy pharmacy)
         {
-            if (pharmacy.Drugs.Exists(d => d.DrugCode == drugCode))
+            if (pharmacy.Drugs.Exists(d => d.DrugCode == drugCode && d.IsActive))
                 throw new ValidationException("The drug code already exists in this pharmacy");
         }
 
@@ -91,29 +91,27 @@ namespace BusinessLogic
         {
             Drug drug = Get(drugId);
             Pharmacy pharmacy = _pharmacyLogic.GetPharmacyByName(_context.CurrentUser.Pharmacy.Name);
-            pharmacy.Drugs.Remove(drug);
+            pharmacy.Drugs = ChangeDrugToDeactivated(pharmacy, drug);
             _pharmacyLogic.UpdatePharmacy(pharmacy);
-            DrugInfo drugInfo = FindDrugInfo(drug.DrugInfoId);
-            _drugInfoRepository.Delete(drugInfo);
         }
 
-        private DrugInfo FindDrugInfo(int drugInfoId)
+        private List<Drug> ChangeDrugToDeactivated(Pharmacy pharmacy, Drug drug)
         {
-            try
+            List<Drug> drugs = pharmacy.Drugs;
+
+            foreach (var d in drugs)
             {
-                DrugInfo drugInfo = _drugInfoRepository.GetFirst(di => di.Id == drugInfoId);
-                return drugInfo;
+                if (d.Equals(drug))
+                    d.IsActive = false;
             }
-            catch (ResourceNotFoundException e)
-            {
-                throw new ResourceNotFoundException("There is no info on the drug available");
-            }
+
+            return drugs;
         }
         public virtual void AddStock(IEnumerable<SolicitudeItem> drugsToAddStock)
         {
             foreach (var drugSolicitude in drugsToAddStock)
             {
-                Drug drugToUpdate = _drugRepository.GetFirst(d => d.DrugCode == drugSolicitude.DrugCode);
+                Drug drugToUpdate = _drugRepository.GetFirst(d => d.DrugCode == drugSolicitude.DrugCode && d.IsActive);
                 drugToUpdate.Stock = drugToUpdate.Stock + drugSolicitude.DrugQuantity;
                 _drugRepository.Update(drugToUpdate);
             }
@@ -127,6 +125,20 @@ namespace BusinessLogic
             _drugRepository.Update(drugToUpdate);
 
             return drugToUpdate;
+        }
+
+        public void DrugIsActive(string drugCode)
+        {
+            try
+            {
+                Drug drug = _drugRepository.GetFirst(d => d.DrugCode == drugCode);
+                if(!drug.IsActive)
+                    throw new ResourceNotFoundException("resource does not exist");
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ResourceNotFoundException("resource does not exist");
+            }
         }
     }
 }

@@ -26,8 +26,8 @@ namespace DataAccess
             IEnumerable<Drug> entities = this._table
                 .Include(i => i.DrugInfo)
                 .Include(p => p.Pharmacy)
-                .Where(expresion);
-            
+                .Where(expresion).Where(d => d.IsActive);
+
             Drug entityToReturn;
             try
             {
@@ -43,15 +43,13 @@ namespace DataAccess
 
         public override IEnumerable<Drug> GetAll(Func<Drug, bool> expresion = null)
         {
-            IEnumerable<Drug> entities;
+            IEnumerable<Drug> entities = this._table
+                .Include(i => i.DrugInfo).Where(d => d.IsActive);
 
-            if (expresion == null)
+            if (expresion != null)
                 entities = this._table
-                .Include(i => i.DrugInfo);
-
-            else
-                entities = this._table
-                .Include(i => i.DrugInfo).Where(expresion);
+                .Include(i => i.DrugInfo).Where(d => d.IsActive)
+                .Where(expresion);
 
 
             return entities;

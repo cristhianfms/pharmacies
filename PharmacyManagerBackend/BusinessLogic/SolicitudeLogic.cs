@@ -39,6 +39,7 @@ namespace BusinessLogic
                 foreach (SolicitudeItem itemToCheck in solicitude.Items)
                 {
                     _pharmacyLogic.ExistsDrug(itemToCheck.DrugCode, solicitude.PharmacyId);
+                    _drugLogic.DrugIsActive(itemToCheck.DrugCode);
                 }
             }
             catch (NullReferenceException)
@@ -105,7 +106,6 @@ namespace BusinessLogic
             {
                 if (newSolicitude.State.Equals(State.ACCEPTED))
                 {
-
                     _drugLogic.AddStock(solicitudeToUpdate.Items);
                 }
 

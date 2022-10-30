@@ -89,13 +89,14 @@ public class PurchaseLogic : IPurchaseLogic
         }
         PurchaseReportDto purchaseReport = new PurchaseReportDto()
         {
-            Purchases =  purchasesToReport,
+
+            Purchases = purchasesToReport,
             TotalPrice = totalPrice
         };
 
         return purchaseReport;
     }
-
+        
     public Purchase Update(int id, Purchase purchase)
     {
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
@@ -182,9 +183,9 @@ public class PurchaseLogic : IPurchaseLogic
 
     private Drug GetDrug(Pharmacy pharmacy, string drugCode)
     {
-        Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode);
+        Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode && d.IsActive);
 
-        if (drug == null)
+        if (drug == null)   
         {
             throw new ValidationException($"{drugCode} not exist in pharmacy {pharmacy.Name}");
         }
