@@ -1,0 +1,14 @@
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Address</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let pharmacy of pharmacies">
+        <td>{{pharmacy.name}}</td>
+        <td>{{pharmacy.address}}</td>
+    </tr>
+    </tbody>
+</table>
