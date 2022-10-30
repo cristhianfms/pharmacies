@@ -83,7 +83,7 @@ namespace BusinessLogic
 
         private void DrugCodeNotRepeatedInPharmacy(string drugCode, Pharmacy pharmacy)
         {
-            if (pharmacy.Drugs.Exists(d => d.DrugCode == drugCode))
+            if (pharmacy.Drugs.Exists(d => d.DrugCode == drugCode && d.IsActive))
                 throw new ValidationException("The drug code already exists in this pharmacy");
         }
 
@@ -112,7 +112,7 @@ namespace BusinessLogic
         {
             foreach (var drugSolicitude in drugsToAddStock)
             {
-                Drug drugToUpdate = _drugRepository.GetFirst(d => d.DrugCode == drugSolicitude.DrugCode);
+                Drug drugToUpdate = _drugRepository.GetFirst(d => d.DrugCode == drugSolicitude.DrugCode && d.IsActive);
                 drugToUpdate.Stock = drugToUpdate.Stock + drugSolicitude.DrugQuantity;
                 _drugRepository.Update(drugToUpdate);
             }
