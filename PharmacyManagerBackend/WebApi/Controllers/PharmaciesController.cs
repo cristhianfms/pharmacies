@@ -21,9 +21,9 @@ public class PharmaciesController : ControllerBase
     [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult Create([FromBody] PharmacyModel pharmacyModel)
     {
-        Pharmacy pharmacy = ModelsMapper.ToEntity(pharmacyModel);
+        Pharmacy pharmacy = PharmacyModelsMapper.ToEntity(pharmacyModel);
         Pharmacy pharmacyCreated = _pharmacyLogic.Create(pharmacy);
-        PharmacyModel pharmacyCreatedModel = ModelsMapper.ToModel(pharmacyCreated);
+        PharmacyModel pharmacyCreatedModel = PharmacyModelsMapper.ToModel(pharmacyCreated);
 
         return Ok(pharmacyCreatedModel);
     }
@@ -32,7 +32,7 @@ public class PharmaciesController : ControllerBase
     [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult Get()
     {
-        IEnumerable<PharmacyModel> pharmacyCreatedModel = ModelsMapper.ToModelList(_pharmacyLogic.GetAll());
+        IEnumerable<PharmacyModel> pharmacyCreatedModel = PharmacyModelsMapper.ToModelList(_pharmacyLogic.GetAll());
 
         return Ok(pharmacyCreatedModel);
     }

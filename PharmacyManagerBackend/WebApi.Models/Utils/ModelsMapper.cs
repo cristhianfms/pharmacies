@@ -6,24 +6,6 @@ namespace WebApi.Models.Utils;
 
 public static class ModelsMapper
 {
-    public static Pharmacy ToEntity(PharmacyModel pharmacyModel)
-    {
-        return new Pharmacy
-        {
-            Name = pharmacyModel.Name,
-            Address = pharmacyModel.Address
-        };
-    }
-
-    public static PharmacyModel ToModel(Pharmacy pharmacy)
-    {
-        return new PharmacyModel
-        {
-            Name = pharmacy.Name,
-            Address = pharmacy.Address
-        };
-    }
-
     public static CredentialsDto ToEntity(CredentialsModel credentialsModel)
     {
         return new CredentialsDto
@@ -175,13 +157,4 @@ public static class ModelsMapper
         return drugGetModel;
     }
 
-    public static IEnumerable<PharmacyModel> ToModelList(IEnumerable<Pharmacy> pharmacies)
-    {
-        List<PharmacyModel> pharmaciesModel = new List<PharmacyModel>();
-        foreach (Pharmacy _pharmacy in pharmacies)
-        {
-            pharmaciesModel.Add(ToModel(_pharmacy));
-        }
-        return pharmaciesModel;
-    }
 }
