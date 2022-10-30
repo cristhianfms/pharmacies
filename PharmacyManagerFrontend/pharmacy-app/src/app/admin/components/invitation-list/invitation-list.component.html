@@ -6,6 +6,7 @@
         <th scope="col">Pharmacy</th>
         <th scope="col">Code</th>
         <th scope="col">Used</th>
+        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
@@ -15,6 +16,9 @@
         <td>{{invitation.pharmacyName}}</td>
         <td>{{invitation.invitationCode}}</td>
         <td>{{invitation.used}}</td>
+        <td>
+            <button (click)="onEdit(invitation)" [disabled]="isDisable(invitation)" class="btn btn-primary btn-sm">Edit</button>
+        </td>
     </tr>
     </tbody>
 </table>

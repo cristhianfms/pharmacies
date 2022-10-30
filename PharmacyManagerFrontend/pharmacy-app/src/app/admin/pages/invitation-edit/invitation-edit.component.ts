@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {switchMap} from "rxjs";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Invitation} from "../../../models/invitation.model";
 import {InvitationsService} from "../../../services/invitations.service";
 
@@ -11,25 +10,51 @@ import {InvitationsService} from "../../../services/invitations.service";
 })
 export class InvitationEditComponent implements OnInit {
 
-    invitationId: number | null = null
-    invitation: Invitation | null = null
+    invitation: Invitation = {
+        invitationCode: "",
+        userName: "",
+        roleName: "",
+        pharmacyName: "",
+        used: false
+    };
 
-    constructor(private route: ActivatedRoute, private invitationService: InvitationsService) {
+    updatingStatus: 'loading' | 'success' | 'error' | null = null
+    errorMessage: string = ''
+
+    constructor(private router: Router, private route: ActivatedRoute, private invitationService: InvitationsService) {
     }
 
     ngOnInit(): void {
-        this.route.paramMap
-            .pipe(
-                switchMap(params => {
-                        const id = params.get('id');
-                        if (id) {
-                            this.invitationId = Number(params.get('id'))
-                            return this.invitationService.getInvitation(this.invitationId);
-                        }
-                        return [null]
-                    }
-                )).subscribe(
-            data => this.invitation = data
+        this.invitationService.selectedInvitationToEdit$.subscribe((selectedInvitation) => {
+                if (selectedInvitation){
+                    this.invitation = selectedInvitation;
+                }
+            }
         )
+    }
+
+
+    goToInvitationsHome() {
+        this.router.navigate(['/admin/invitations']);
+    }
+
+    onSubmit() {
+        this.updatingStatus = 'loading'
+        console.log(this.invitation)
+        this.invitationService.update(this.invitation.invitationCode, this.invitation).subscribe({
+                next: this.handleUpdateResponse.bind(this),
+                error: this.handleUpdateError.bind(this)
+            }
+        )
+    }
+
+    handleUpdateResponse(data: any){
+        this.invitation = data;
+        this.updatingStatus = 'success'
+    }
+
+    handleUpdateError(error: any){
+        this.updatingStatus = 'error'
+        this.errorMessage = error.error.message
     }
 }
