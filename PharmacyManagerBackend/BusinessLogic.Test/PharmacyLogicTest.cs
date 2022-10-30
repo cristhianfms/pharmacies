@@ -113,5 +113,20 @@ public class PharmacyLogicTest
         _pharmacyRepository.VerifyAll();
     }
 
+    [TestMethod]
+    public void GetAllPharmaciesOk()
+    {
+        List<Pharmacy> pharmacies = new List<Pharmacy>
+        {
+            _pharmacyForTest
+        };
+        _pharmacyRepository.Setup(m => m.GetAll(null)).Returns(pharmacies);
+
+        var result = _pharmacyLogic.GetAll ();
+
+        Assert.AreEqual(result, pharmacies);
+        _pharmacyRepository.VerifyAll();
+    }
+
 }
 

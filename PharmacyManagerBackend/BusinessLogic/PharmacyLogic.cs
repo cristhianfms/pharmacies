@@ -41,6 +41,11 @@ public class PharmacyLogic : IPharmacyLogic
         }
     }
 
+    public IEnumerable<Pharmacy> GetAll()
+    {
+        return _pharmacyRepository.GetAll();
+    }
+
     public virtual Pharmacy GetPharmacyByName(string pharmacyName)
     {
         return this._pharmacyRepository.GetFirst(f => f.Name.Equals(pharmacyName));

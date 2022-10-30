@@ -1,28 +1,11 @@
 using Domain;
 using Domain.Dtos;
+using ExporterDomain;
 
 namespace WebApi.Models.Utils;
 
 public static class ModelsMapper
 {
-    public static Pharmacy ToEntity(PharmacyModel pharmacyModel)
-    {
-        return new Pharmacy
-        {
-            Name = pharmacyModel.Name,
-            Address = pharmacyModel.Address
-        };
-    }
-
-    public static PharmacyModel ToModel(Pharmacy pharmacy)
-    {
-        return new PharmacyModel
-        {
-            Name = pharmacy.Name,
-            Address = pharmacy.Address
-        };
-    }
-
     public static CredentialsDto ToEntity(CredentialsModel credentialsModel)
     {
         return new CredentialsDto
@@ -108,7 +91,7 @@ public static class ModelsMapper
         };
     }
 
-    public static Drug ToEntity(DrugRequestModel drugModel)
+    public static Domain.Drug ToEntity(DrugRequestModel drugModel)
     {
         DrugInfo drugInfo = new DrugInfo
         {
@@ -120,7 +103,7 @@ public static class ModelsMapper
             UnitOfMeasurement = drugModel.UnitOfMeasurement
         };
 
-        return new Drug
+        return new Domain.Drug
         {
             Id = drugModel.Id,
             DrugCode = drugModel.DrugCode,
@@ -131,7 +114,7 @@ public static class ModelsMapper
         };
     }
 
-    public static DrugRequestModel ToModel(Drug drug)
+    public static DrugRequestModel ToModel(Domain.Drug drug)
     {
         return new DrugRequestModel
         {
@@ -146,7 +129,7 @@ public static class ModelsMapper
             UnitOfMeasurement = drug.DrugInfo.UnitOfMeasurement,
         };
     }
-    public static DrugGetModel ToGetModel(Drug drug)
+    public static DrugGetModel ToGetModel(Domain.Drug drug)
     {
         return new DrugGetModel
         {
@@ -164,13 +147,14 @@ public static class ModelsMapper
         };
     }
 
-    public static IEnumerable<DrugGetModel> ToModelList(IEnumerable<Drug> drugs)
+    public static IEnumerable<DrugGetModel> ToModelList(IEnumerable<Domain.Drug> drugs)
     {
         List<DrugGetModel> drugGetModel = new List<DrugGetModel>();
-        foreach (Drug _drug in drugs)
+        foreach (Domain.Drug _drug in drugs)
         {
             drugGetModel.Add(ToGetModel(_drug));
         }
         return drugGetModel;
     }
+
 }
