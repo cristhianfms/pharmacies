@@ -19,7 +19,7 @@ export class EmployeeGuard implements CanActivate {
     return this.sessionService.user$
         .pipe(
             map(user => {
-              if(user?.role === 'Employee') {
+              if(user?.roleName === 'Employee') {
                 return true;
               } else {
                 this.router.navigate(['/home']);
