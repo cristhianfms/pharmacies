@@ -6,6 +6,8 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { InvitationsComponent } from './pages/invitations/invitations.component';
 import { PharmaciesComponent } from './pages/pharmacies/pharmacies.component';
 import { InvitationListComponent } from './components/invitation-list/invitation-list.component';
+import {FormsModule} from "@angular/forms";
+import { InvitationsFilterPipe } from './pipes/invitations-filter.pipe';
 
 
 @NgModule({
@@ -13,11 +15,13 @@ import { InvitationListComponent } from './components/invitation-list/invitation
     LayoutComponent,
     InvitationsComponent,
     PharmaciesComponent,
-    InvitationListComponent
+    InvitationListComponent,
+    InvitationsFilterPipe
   ],
-  imports: [
-    CommonModule,
-    AdminRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        AdminRoutingModule,
+        FormsModule
+    ]
 })
 export class AdminModule { }

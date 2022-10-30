@@ -9,7 +9,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let invitation of invitations">
+    <tr *ngFor="let invitation of invitations | invitationsFilter:invitationQuery">
         <td>{{invitation.userName}}</td>
         <td>{{invitation.roleName}}</td>
         <td>{{invitation.pharmacyName}}</td>

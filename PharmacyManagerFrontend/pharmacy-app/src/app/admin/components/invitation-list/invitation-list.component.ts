@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Invitation} from "../../../models/invitation.model";
 import {InvitationsService} from "../../../services/invitations.service";
+import {InvitationQueryDto} from "../../../models/Dto/invitation-query.model";
 
 @Component({
   selector: 'app-invitation-list',
@@ -10,6 +11,12 @@ import {InvitationsService} from "../../../services/invitations.service";
 export class InvitationListComponent implements OnInit {
 
   invitations: Invitation[] = []
+
+  @Input() invitationQuery: InvitationQueryDto = {
+    pharmacyName: null,
+    userName: null,
+    role: null
+  }
 
   constructor(private invitationService: InvitationsService) { }
 
