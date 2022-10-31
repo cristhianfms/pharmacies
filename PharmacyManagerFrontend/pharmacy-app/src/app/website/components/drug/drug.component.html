@@ -9,6 +9,6 @@
         <p class="card-text">Presentation: {{drug.quantityPerPresentation}} {{drug.unitOfMeasurement}}</p>
         <p class="card-text">Stock: {{drug.stock}}</p>
         <p class="card-text" *ngIf="drug.needsPrescription">Needs prescription</p>
-        <a href="#"  (click)="onAddToCart() "class="btn btn-primary">Add to cart</a>
+        <a href="#"  (click)="onAddToCart($event) "class="btn btn-primary">Add to cart</a>
     </div>
 </div>

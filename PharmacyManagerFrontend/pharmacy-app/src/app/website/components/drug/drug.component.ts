@@ -28,7 +28,8 @@ export class DrugComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onAddToCart() {
+  onAddToCart(event: Event) {
+    event.preventDefault()
     this.addedProduct.emit(this.drug)
   }
 }
