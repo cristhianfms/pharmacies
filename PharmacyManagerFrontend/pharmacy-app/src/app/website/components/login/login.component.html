@@ -1,1 +1,24 @@
-<button (click)="login()">Login Admin</button>
+<h2>Login</h2> 
+<form>
+
+    <div class="form">
+        
+        <div class="row">
+            <div class="form-group">
+                <label for="userName">Username: </label>
+                <input required id="userName" name ="userName"class="form-control" type="text" 
+                placeholder="Enter username" [(ngModel)]="credential.userName">
+            </div>
+            <div class="form-group">
+                <label for="password">Password: </label>
+                <input required id="password" name ="password" class="form-control" type="password"
+                placeholder="Enter password" [(ngModel)]="credential.password">
+            </div>
+            
+            <div class="buttons">
+                <button type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</form>
+

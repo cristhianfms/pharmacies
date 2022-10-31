@@ -22,9 +22,10 @@
 
 
     <div class="info">
-        <app-login></app-login>
-        <button *ngIf= "!profile; else elseBlock" class="btn btn-outline-success" type="button">LogIn</button>
-        <ng-template #elseBlock>{{profile?.email}}</ng-template>
+
+        <button  class="btn btn-outline-success" type="button">
+            <a routerLink= "login" >LogIn</a>
+        </button>
 
         <div class="cart">
             <a href="">

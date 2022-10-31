@@ -25,10 +25,10 @@ export class NavComponent implements OnInit {
         })
     }
 
-    login() {
+    /*login() {
         this.sessionService.loginAndGet("Admin", "admin1234-")
             .subscribe(user => {
                 this.profile = user
             })
-    }
+    }*/
 }
