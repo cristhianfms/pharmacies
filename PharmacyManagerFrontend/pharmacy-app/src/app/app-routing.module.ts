@@ -8,11 +8,6 @@ import {OwnerGuard} from "./guards/owner.guard";
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
-    pathMatch: 'full'
-  },
-  {
-    path: 'home',
     loadChildren: () => import('./website/website.module').then(m => m.WebsiteModule),
     data: {
       preload: true,

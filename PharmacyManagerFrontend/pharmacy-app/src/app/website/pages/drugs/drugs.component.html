@@ -1,10 +1,3 @@
-<button (click)="createNewDrug()">Create Drug</button>
-
-<div>
-    <h3>Count: {{ myShoppingCart.length }}</h3>
-    <h3>Total to pay: {{ totalPrice }}</h3>
-</div>
-
 <div class="drugs--grid">
     <app-drug
             *ngFor="let drug of drugs"
