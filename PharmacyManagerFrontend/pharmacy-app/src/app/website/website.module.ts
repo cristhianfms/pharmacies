@@ -11,6 +11,7 @@ import {PurchasesComponent} from "./pages/purchases/purchases.component";
 import {MyCartComponent} from "./pages/my-cart/my-cart.component";
 import {DrugsComponent} from "./components/drugs/drugs.component";
 import { FormsModule } from '@angular/forms';
+import { SignupComponent } from './components/signup/signup.component';
 
 
 //Todo: INCLUIR HOME PAGE PERO CAMBIAR EL NOMBRE A DRUG LISTS!
@@ -24,7 +25,8 @@ import { FormsModule } from '@angular/forms';
         DrugsComponent,
         MyCartComponent,
         HomeComponent,
-        PurchasesComponent
+        PurchasesComponent,
+        SignupComponent,
     ],
     imports: [
         CommonModule,

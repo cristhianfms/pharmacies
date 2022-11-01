@@ -24,9 +24,14 @@
     <div class="info">
 
         <button  class="btn btn-outline-success" type="button">
-            <a routerLink= "login" >LogIn</a>
+            <a id="signup" routerLink= "signup" >SignUp</a>
         </button>
-
+        <button  class="btn btn-outline-success" type="button">
+            <a id="login" routerLink= "login" >LogIn</a>
+        </button>
+        <button  class="btn btn-secondary" type="button" (click)="logOut()">
+            <a id="logout" routerLink= "" >LogOut</a>
+        </button>
         <div class="cart">
             <a href="">
                 <img src="./assets/svg/icon_shopping_cart.svg" alt="logo">

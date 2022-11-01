@@ -38,4 +38,10 @@ export class SessionsService {
           switchMap(() => this.getProfile())
         )
   }
+  logout(){
+    this.tokenService.deleteToken();
+  }
+
+
+
 }

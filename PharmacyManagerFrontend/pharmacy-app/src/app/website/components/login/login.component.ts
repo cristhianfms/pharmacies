@@ -29,6 +29,16 @@ export class LoginComponent implements OnInit {
           //next:  this.router.navigate(['/home']),
           //error: this.router.navigate(['**'])
         })
+        //this.sessionService.
 }
-
+submitLogin() {
+  console.log(this.credential)
+  this.sessionService.loginAndGet(this.credential.userName, this.credential.password)
+  .subscribe(session =>{  
+        alert(session.roleName);   
+        this.router.navigate(['/' + session.roleName]);
+        //next:  this.router.navigate(['/home']),
+        //error: this.router.navigate(['**'])
+      })
+}
 }

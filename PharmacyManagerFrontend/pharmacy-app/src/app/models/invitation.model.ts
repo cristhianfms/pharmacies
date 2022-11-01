@@ -11,8 +11,10 @@ export interface CreateInvitationDto extends Omit<Invitation, 'id'> {
 }
 
 export interface UpdateInvitationDto {
-    userName: string,
-    email: string,
-    address: string,
-    password:string
+    userName: string;
+    email: string;
+    address: string;
+    password:string;
+    roleName: string;
+    pharmacyName: string;
 }

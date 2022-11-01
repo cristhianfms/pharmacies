@@ -24,11 +24,7 @@ export class NavComponent implements OnInit {
             this.profile = data;
         })
     }
-
-    /*login() {
-        this.sessionService.loginAndGet("Admin", "admin1234-")
-            .subscribe(user => {
-                this.profile = user
-            })
-    }*/
+    logOut(){
+        this.sessionService.logout();
+    }
 }
