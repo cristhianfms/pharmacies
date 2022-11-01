@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import {Drug} from "../models/drug.model";
 import {BehaviorSubject} from "rxjs";
+import {PurchaseDrugDto} from "../models/Dto/purchase-drug-dto.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoreService {
 
-  private myShoppingCart : Drug[] = []
-  private myCart = new BehaviorSubject<Drug[]>([])
+  private myShoppingCart : PurchaseDrugDto[] = []
+  private myCart = new BehaviorSubject<PurchaseDrugDto[]>([])
   myCart$ = this.myCart.asObservable();
 
   constructor() { }
@@ -17,12 +18,9 @@ export class StoreService {
     return this.myShoppingCart;
   }
 
-  addDrug(drug: Drug){
-    this.myShoppingCart.push(drug)
+  addDrug(purchaseDrug: PurchaseDrugDto){
+    // TODO: ADD ONLY ONCE!
+    this.myShoppingCart.push(purchaseDrug)
     this.myCart.next(this.myShoppingCart);
-  }
-
-  getTotal(){
-    return this.myShoppingCart.reduce((sum, item) => sum + item.price, 0)
   }
 }

@@ -14,4 +14,3 @@ export interface Drug {
 
 export interface CreateDrugDTO extends Omit<Drug, 'id' | 'stock' | 'pharmacyName'> {
 }
-
