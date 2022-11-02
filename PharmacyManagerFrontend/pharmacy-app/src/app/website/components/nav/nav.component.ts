@@ -9,7 +9,7 @@ import {SessionsService} from "../../../services/sessions.service";
     styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
-
+    logged: boolean = false;
     counter: number = 0;
     profile: User | null = null;
 

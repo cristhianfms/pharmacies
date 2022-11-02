@@ -1,39 +1,60 @@
 <h2>SignUp</h2> 
-<form>
+<form (ngSubmit)="submitSignup(); form.reset()" #form="ngForm">
     <div class="form">
         
-        <div class="row">
+        <div class="headerForm">
+            <h2>Register here:</h2>
+        </div>
             <div class="form-group">
                 <label for="code">Invitation Code: </label>
-                <input required id="code" name ="code" class="form-control" type="number"
-                placeholder="Enter numeric code of 6 digits" [(ngModel)]="code">
+                <input required id="code" name ="code" class="form-control" type="number" 
+                minlength="6"
+                placeholder="Enter numeric code of 6 digits" [(ngModel)]="code" #icode ="ngModel">
+            </div>
+            <div [hidden]="icode.valid  || icode.pristine"
+                class="alert alert-danger">
+                Code of 6 digits is required
             </div>
             <div class="form-group">
                 <label for="userName">Username: </label>
                 <input required id="userName" name ="userName"class="form-control" type="text" 
-                placeholder="Enter username" [(ngModel)]="invitation.userName">
+                placeholder="Enter username" [(ngModel)]="invitation.userName" #userName="ngModel">
+            </div>
+            <div [hidden]="userName.valid  || userName.pristine"
+            class="alert alert-danger">
+            Username is required
             </div>
             <div class="form-group">
                 <label for="mail">Mail: </label>
                 <input required id="mail" name ="mail" class="form-control" type="email"
-                placeholder="Enter email" [(ngModel)]="invitation.email">
+                placeholder="Enter email" [(ngModel)]="invitation.email" #mail="ngModel">
             </div>
+            <div [hidden]="mail.valid  || mail.pristine"
+            class="alert alert-danger">
+            Email is required
+        </div>
             <div class="form-group">
                 <label for="address">Address: </label>
-                <input required id="address" name ="address" class="form-control" type="text"
+                <input id="address" name ="address" class="form-control" type="text"
                 placeholder="Enter address" [(ngModel)]="invitation.address">
             </div>
             <div class="form-group">
                 <label for="password">Password: </label>
                 <input required id="password" name ="password" class="form-control" type="password"
-                placeholder="Enter password" [(ngModel)]="invitation.password">
+                placeholder="Enter password" [(ngModel)]="invitation.password" #password="ngModel"
+                minlength="8">
             </div>
-
+            <div [hidden]="password.valid  || password.pristine"
+                class="alert alert-danger">
+                Password is required
+            </div>
             
             <div class="buttons">
-                <button type="submit" (click)="submitSignup()" class="btn btn-primary">Submit</button>
+                <button type="submit"  class="btn btn-primary"
+                [disabled]="!form.form.valid">
+                    Submit
+                </button>
             </div>
         </div>
-    </div>
 </form>
 
