@@ -22,7 +22,7 @@ export class OwnerGuard implements CanActivate {
               if(user?.roleName === 'Owner') {
                 return true;
               } else {
-                this.router.navigate(['/home']);
+                this.router.navigate(['/catalog']);
                 return false;
               }
             })

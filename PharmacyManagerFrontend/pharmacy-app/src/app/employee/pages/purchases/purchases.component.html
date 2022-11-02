@@ -1,0 +1,22 @@
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Code</th>
+        <th scope="col">User email</th>
+        <th scope="col">Created date</th>
+        <th scope="col">Total price</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let purchase of purchaseList.purchases">
+        <td>{{purchase.code}}</td>
+        <td>{{purchase.userEmail}}</td>
+        <td>{{purchase.createdDate}}</td>
+        <td>{{purchase.price}}</td>
+        <td>
+            <button (click)="onDetails(purchase)" class="btn btn-primary btn-sm">Details</button>
+        </td>
+    </tr>
+    </tbody>
+</table>

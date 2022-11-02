@@ -22,7 +22,7 @@ export class EmployeeGuard implements CanActivate {
               if(user?.roleName === 'Employee') {
                 return true;
               } else {
-                this.router.navigate(['/home']);
+                this.router.navigate(['/catalog']);
                 return false;
               }
             })

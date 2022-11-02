@@ -1,12 +1,28 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {LayoutComponent} from "../admin/components/layout/layout.component";
+import {LayoutComponent} from "../employee/components/layout/layout.component";
+import {PurchasesComponent} from "./pages/purchases/purchases.component";
+import {PurchaseDetailComponent} from "./pages/purchase-detail/purchase-detail.component";
 
 const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    children: []
+    children: [
+      {
+        path: '',
+        redirectTo: 'purchases',
+        pathMatch: 'full'
+      },
+      {
+        path: 'purchases',
+        component: PurchasesComponent
+      },
+      {
+        path: 'purchase-detail/:id',
+        component: PurchaseDetailComponent
+      },
+    ]
   }
 ];
 
