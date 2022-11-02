@@ -7,9 +7,11 @@ import { NavComponent } from './components/nav/nav.component';
 import {LoginComponent} from "./components/login/login.component";
 import {PurchasesComponent} from "./pages/purchases/purchases.component";
 import {MyCartComponent} from "./pages/my-cart/my-cart.component";
+import { FormsModule } from '@angular/forms';
+import { SignupComponent } from './components/signup/signup.component';
 import {DrugsComponent} from "./pages/drugs/drugs.component";
 import {DrugComponent} from "./components/drug/drug.component";
-import {FormsModule} from "@angular/forms";
+
 
 @NgModule({
     declarations: [
@@ -18,13 +20,14 @@ import {FormsModule} from "@angular/forms";
         LoginComponent,
         MyCartComponent,
         PurchasesComponent,
+        SignupComponent,
         DrugsComponent,
         DrugComponent
     ],
     imports: [
         CommonModule,
-        WebsiteRoutingModule,
+        WebsiteRoutingModule, 
         FormsModule
-    ]
+    ],
 })
 export class WebsiteModule { }

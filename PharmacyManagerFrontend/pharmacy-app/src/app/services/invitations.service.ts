@@ -20,7 +20,10 @@ export class InvitationsService {
     return this.http.post(`${this.apiUrl}`, dto)
   }
 
-  update(id: string, invitation: Invitation){
+  updateAdmin(id: string, invitation: Invitation){
+    return this.http.put<Invitation>(`${this.apiUrl}/${id}`, invitation);
+  }
+  update(id: string, invitation: UpdateInvitationDto){
     return this.http.put<Invitation>(`${this.apiUrl}/${id}`, invitation);
   }
 

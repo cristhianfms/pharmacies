@@ -1,1 +1,38 @@
-<button (click)="login()">Login Admin</button>
+<h2>Login</h2> 
+<form  (ngSubmit)="submitLogin(); form.reset()" #form="ngForm">
+
+    <div class="form">
+        
+        <div class="headerForm">
+            <h2>Login:</h2>
+        </div>
+            <div class="form-group">
+                <label for="userName">Username: </label>
+                <input required id="userName" name ="userName"class="form-control ng-invalid" type="text" 
+                placeholder="Enter username" [(ngModel)]="credential.userName" #userName="ngModel">
+            </div>
+            <div [hidden]="userName.valid  || userName.pristine"
+                class="alert alert-danger">
+                Username is required
+            </div>
+            <div class="form-group">
+                <label for="password">Password: </label>
+                <input required id="password" name ="password" class="form-control ng-invalid" type="password"
+                placeholder="Enter password" [(ngModel)]="credential.password" #password="ngModel"
+                minlength="8">
+            </div>
+            <div [hidden]="password.valid  || password.pristine"
+            class="alert alert-danger">
+                Password is required
+             </div>
+            
+            <div class="buttons">
+                <button type="submit" class="btn btn-primary"
+                [disabled]="!form.form.valid">
+                    Submit
+                </button>
+                <a routerLink= "/home/signup">New in Pharmacy Manager?</a>
+            </div>
+        </div>
+</form>
+
