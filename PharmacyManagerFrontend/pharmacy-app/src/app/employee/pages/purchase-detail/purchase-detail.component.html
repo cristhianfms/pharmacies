@@ -1,1 +1,37 @@
-<p>purchase-detail works!</p>
+<a routerLink="/employee/purchases">&lt;&lt; back</a>
+<div class="messages">
+    <div *ngIf="updatingStatus=='success'" class="alert alert-success" role="alert">
+        The purchase state has been updated
+    </div>
+    <div *ngIf="updatingStatus=='error'"class="alert alert-danger" role="alert">
+        {{errorMessage}}
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Pharmacy name</th>
+        <th scope="col">Drug code</th>
+        <th scope="col">quantity</th>
+        <th scope="col">State</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of purchase.items">
+        <td>{{item.pharmacyName}}</td>
+        <td>{{item.drugCode}}</td>
+        <td>{{item.quantity}}</td>
+        <td>{{item.state}}</td>
+        <td>
+            <button (click)="onAccept(item)" [disabled]="isAcceptDisable(item)" class="btn btn-primary btn-sm">Accept</button>
+        </td>
+        <td>
+            <button (click)="onReject(item)" [disabled]="isRejectDisable(item)" class="btn btn-primary btn-sm">Reject</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+

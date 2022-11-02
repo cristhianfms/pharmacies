@@ -64,7 +64,7 @@ public class SessionsControllerTest
         _sessionLogicMock.Setup(m => m.Get(It.IsAny<Guid>())).Returns(session);
 
 
-        var result = _sessionsApiController.GetSessionProfile("token");
+        var result = _sessionsApiController.GetSessionProfile(Guid.NewGuid().ToString());
         var okResult = result as OkObjectResult;
         var profile = okResult.Value as SessionProfileModel;
 
