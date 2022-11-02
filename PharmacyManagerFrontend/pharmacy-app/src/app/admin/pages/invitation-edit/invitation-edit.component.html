@@ -1,5 +1,6 @@
 <div class="page-edit-product">
-    <div class="row">
+    <a routerLink="/admin/invitations">&lt;&lt; back</a>
+    <div class="row form-container">
             <div class="form-group">
                 <label for="userName">Username</label>
                 <input required id="userName" class="form-control" type="text" [(ngModel)]="invitation.userName">
@@ -25,7 +26,6 @@
                 <input disabled id="used" class="form-control" type="text" value="{{invitation.used}}">
             </div>
             <div class="buttons">
-                <button type="button" (click)="goToInvitationsHome()" class="btn btn-primary">Back</button>
                 <button type="submit" (click)="onSubmit()" class="btn btn-primary">Save</button>
             </div>
             <div>
