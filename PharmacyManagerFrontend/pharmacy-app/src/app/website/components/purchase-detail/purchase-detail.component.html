@@ -1,0 +1,45 @@
+<div class="container">
+    <h3>Purchase</h3>
+    <div class="purchase">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Code</th>
+                <th scope="col">User email</th>
+                <th scope="col">Created date</th>
+                <th scope="col">Total price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{purchase.code}}</td>
+                <td>{{purchase.userEmail}}</td>
+                <td>{{purchase.createdDate | date:'short':'-0300' }}</td>
+                <td>{{purchase.price}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <h3>Items</h3>
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Pharmacy name</th>
+                <th scope="col">Drug code</th>
+                <th scope="col">quantity</th>
+                <th scope="col">State</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of purchase.items">
+                <td>{{item.pharmacyName}}</td>
+                <td>{{item.drugCode}}</td>
+                <td>{{item.quantity}}</td>
+                <td>{{item.state}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

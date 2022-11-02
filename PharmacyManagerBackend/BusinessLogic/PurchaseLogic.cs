@@ -119,6 +119,11 @@ public class PurchaseLogic : IPurchaseLogic
         };
     }
 
+    public Purchase Get(string code)
+    {
+        return _purchaseRepository.GetFirst(p => p.Code == code);
+    }
+
     private Pharmacy GetPharmacyByName(string pharmacyName)
     {
         Pharmacy pharmacy;

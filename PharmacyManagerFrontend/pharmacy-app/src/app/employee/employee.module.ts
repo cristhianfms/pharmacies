@@ -8,14 +8,17 @@ import {PurchasesComponent} from "./pages/purchases/purchases.component";
 
 
 @NgModule({
-  declarations: [
-    LayoutComponent,
-    PurchasesComponent,
-    PurchaseDetailComponent
-  ],
-  imports: [
-    CommonModule,
-    EmployeeRoutingModule
-  ]
+    declarations: [
+        LayoutComponent,
+        PurchasesComponent,
+        PurchaseDetailComponent
+    ],
+    exports: [
+        PurchaseDetailComponent
+    ],
+    imports: [
+        CommonModule,
+        EmployeeRoutingModule
+    ]
 })
 export class EmployeeModule { }

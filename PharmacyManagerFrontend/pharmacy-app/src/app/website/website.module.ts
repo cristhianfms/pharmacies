@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { SignupComponent } from './components/signup/signup.component';
 import {DrugsComponent} from "./pages/drugs/drugs.component";
 import {DrugComponent} from "./components/drug/drug.component";
+import { PurchaseDetailComponent } from './components/purchase-detail/purchase-detail.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {DrugComponent} from "./components/drug/drug.component";
         PurchasesComponent,
         SignupComponent,
         DrugsComponent,
-        DrugComponent
+        DrugComponent,
+        PurchaseDetailComponent
     ],
     imports: [
         CommonModule,
