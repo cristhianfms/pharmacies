@@ -24,7 +24,8 @@ export class InvitationsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  updateInvitationQuery() {
+  updateInvitationQuery(event: Event) {
+    event.preventDefault();
     let role = this.filterRole == "All" ? null : this.filterRole;
     this.invitationQuery = {
       pharmacyName: this.filterPharmacyName,
