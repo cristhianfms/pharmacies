@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Drug} from "../../../models/drug.model";
-import {PurchaseDrugDto} from "../../../models/Dto/purchase-drug-dto.model";
+import {PurchaseItemDto} from "../../../models/Dto/purchase-item-dto.model";
 
 @Component({
   selector: 'app-drug',
@@ -23,7 +23,7 @@ export class DrugComponent implements OnInit {
     pharmacyId: 0,
     pharmacyName: ''
   }
-  @Output() addedProduct = new EventEmitter<PurchaseDrugDto>();
+  @Output() addedProduct = new EventEmitter<PurchaseItemDto>();
   amount : number = 1
 
   constructor() { }
@@ -34,7 +34,7 @@ export class DrugComponent implements OnInit {
   onAddToCart(event: Event) {
     event.preventDefault()
 
-    let purchaseDrug : PurchaseDrugDto = {
+    let purchaseDrug : PurchaseItemDto = {
       pharmacyName: this.drug.pharmacyName,
       drugCode: this.drug.drugCode,
       quantity: this.amount

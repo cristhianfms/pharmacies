@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import {Drug} from "../models/drug.model";
 import {BehaviorSubject} from "rxjs";
-import {PurchaseDrugDto} from "../models/Dto/purchase-drug-dto.model";
+import {PurchaseItemDto} from "../models/Dto/purchase-item-dto.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoreService {
 
-  private myShoppingCart : PurchaseDrugDto[] = []
-  private myCart = new BehaviorSubject<PurchaseDrugDto[]>([])
+  private myShoppingCart : PurchaseItemDto[] = []
+  private myCart = new BehaviorSubject<PurchaseItemDto[]>([])
   myCart$ = this.myCart.asObservable();
 
   constructor() { }
@@ -18,7 +18,7 @@ export class StoreService {
     return this.myShoppingCart;
   }
 
-  addDrug(purchaseToAdd: PurchaseDrugDto){
+  addDrug(purchaseToAdd: PurchaseItemDto){
     let purchase = this.myShoppingCart.find(p =>
         p.pharmacyName === purchaseToAdd.pharmacyName && p.drugCode === purchaseToAdd.drugCode)
     if (purchase) {
@@ -30,11 +30,16 @@ export class StoreService {
     this.myCart.next(this.myShoppingCart);
   }
 
-  removeDrug(purchaseToDelete: PurchaseDrugDto) {
+  removeDrug(purchaseToDelete: PurchaseItemDto) {
     const index = this.myShoppingCart.findIndex(p =>
         p.drugCode === purchaseToDelete.drugCode && p.pharmacyName === purchaseToDelete.pharmacyName);
     this.myShoppingCart.splice(index, 1);
 
     this.myCart.next(this.myShoppingCart);
   }
+
+    emptyCart() {
+      this.myShoppingCart = []
+      this.myCart.next(this.myShoppingCart);
+    }
 }

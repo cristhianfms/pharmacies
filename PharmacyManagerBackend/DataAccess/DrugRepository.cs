@@ -44,11 +44,15 @@ namespace DataAccess
         public override IEnumerable<Drug> GetAll(Func<Drug, bool> expresion = null)
         {
             IEnumerable<Drug> entities = this._table
-                .Include(i => i.DrugInfo).Where(d => d.IsActive);
+                .Include(i => i.DrugInfo)
+                .Include(d => d.Pharmacy)
+                .Where(d => d.IsActive);
 
             if (expresion != null)
                 entities = this._table
-                .Include(i => i.DrugInfo).Where(d => d.IsActive)
+                .Include(i => i.DrugInfo)
+                .Include(d => d.Pharmacy)
+                .Where(d => d.IsActive)
                 .Where(expresion);
 
 
