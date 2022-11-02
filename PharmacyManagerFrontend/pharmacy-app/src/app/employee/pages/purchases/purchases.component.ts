@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {PurchasesService} from "../../../services/purchases.service";
 import {PurchaseList} from "../../../models/purchase-list.model";
 import {Purchase} from "../../../models/purchase.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-purchases',
@@ -14,7 +15,7 @@ export class PurchasesComponent implements OnInit {
     purchases : [],
     totalPrice: 0
   }
-  constructor(private purchasesService: PurchasesService) { }
+  constructor(private purchasesService: PurchasesService, private router: Router) { }
 
   ngOnInit(): void {
     this.purchasesService.getAllPurchases().subscribe({
@@ -33,6 +34,8 @@ export class PurchasesComponent implements OnInit {
   }
 
   onDetails(purchase: Purchase) {
+    //this.invitationService.selectedInvitationToEdit.next(invitation);
+    this.router.navigate(['/employee/purchase-detail/' + purchase.code]);
     console.log(purchase)
   }
 }

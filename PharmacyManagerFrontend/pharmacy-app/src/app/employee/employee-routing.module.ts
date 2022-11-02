@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {LayoutComponent} from "../admin/components/layout/layout.component";
-import {PharmaciesComponent} from "../admin/pages/pharmacies/pharmacies.component";
+import {LayoutComponent} from "../employee/components/layout/layout.component";
+import {PurchasesComponent} from "./pages/purchases/purchases.component";
+import {PurchaseDetailComponent} from "./pages/purchase-detail/purchase-detail.component";
 
 const routes: Routes = [
   {
@@ -10,12 +11,16 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'pharmacies',
+        redirectTo: 'purchases',
         pathMatch: 'full'
       },
       {
-        path: 'pharmacies',
-        component: PharmaciesComponent
+        path: 'purchases',
+        component: PurchasesComponent
+      },
+      {
+        path: 'purchase-detail/:id',
+        component: PurchaseDetailComponent
       },
     ]
   }
