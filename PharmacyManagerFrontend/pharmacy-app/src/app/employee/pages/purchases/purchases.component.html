@@ -12,10 +12,10 @@
     <tr *ngFor="let purchase of purchaseList.purchases">
         <td>{{purchase.code}}</td>
         <td>{{purchase.userEmail}}</td>
-        <td>{{purchase.createdDate}}</td>
+        <td>{{purchase.createdDate | date:'short':'-0300' }}</td>
         <td>{{purchase.price}}</td>
         <td>
-            <button (click)="onDetails(purchase)" class="btn btn-primary btn-sm">Details</button>
+            <button (click)="onDetails(purchase)" class="btn btn-primary btn-sm">Items detail</button>
         </td>
     </tr>
     </tbody>

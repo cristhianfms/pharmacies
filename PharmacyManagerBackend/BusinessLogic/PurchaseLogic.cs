@@ -84,6 +84,7 @@ public class PurchaseLogic : IPurchaseLogic
                 Items = purchaseItems,
                 Date = purchase.Date,
                 TotalPrice = CalculateTotalPrice(purchaseItems),
+                Code = purchase.Code
             };
             purchasesToReport.Add(purchaseToReport);
         }
@@ -106,7 +107,6 @@ public class PurchaseLogic : IPurchaseLogic
         foreach (var itemToUpdate in purchase.Items)
         {
             PurchaseItem existentItem = TryGetItemFromPharmacyItems(itemToUpdate, currentUserPurchaseItems);
-            CheckStock(existentItem.Drug, existentItem.Quantity);
             TryUpdateStatusAndStock(existentItem, itemToUpdate.State);
         }
         
@@ -255,6 +255,7 @@ public class PurchaseLogic : IPurchaseLogic
 
         if (newState.Equals(PurchaseState.ACCEPTED))
         {
+            CheckStock(purchaseItem.Drug, purchaseItem.Quantity);
             Drug drug = purchaseItem.Drug;
             drug.Stock -= purchaseItem.Quantity;
             _drugLogic.Update(drug.Id, drug);
