@@ -9,6 +9,7 @@ import {PurchasesComponent} from "./pages/purchases/purchases.component";
 import {MyCartComponent} from "./pages/my-cart/my-cart.component";
 import {DrugsComponent} from "./pages/drugs/drugs.component";
 import {DrugComponent} from "./components/drug/drug.component";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import {DrugComponent} from "./components/drug/drug.component";
     ],
     imports: [
         CommonModule,
-        WebsiteRoutingModule
+        WebsiteRoutingModule,
+        FormsModule
     ]
 })
 export class WebsiteModule { }

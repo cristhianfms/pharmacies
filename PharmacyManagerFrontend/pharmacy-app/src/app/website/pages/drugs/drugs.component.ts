@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Drug} from "../../../models/drug.model";
 import {DrugsService} from "../../../services/drugs.service";
 import {StoreService} from "../../../services/store.service";
+import {PurchaseItemDto} from "../../../models/Dto/purchase-item-dto.model";
 
 @Component({
   selector: 'app-drugs',
@@ -11,7 +12,7 @@ import {StoreService} from "../../../services/store.service";
 export class DrugsComponent implements OnInit {
 
   @Input() drugs: Drug[] = []
-  myShoppingCart : Drug[] = []
+  myShoppingCart : PurchaseItemDto[] = []
 
   constructor(private drugsService: DrugsService, private storeService: StoreService,) {
     this.myShoppingCart = this.storeService.getShoppingCart();
@@ -33,7 +34,7 @@ export class DrugsComponent implements OnInit {
     window.alert("Error getting pharmacies")
   }
 
-  onAddToShoppingCart(drug: Drug) {
-    this.storeService.addDrug(drug)
+  onAddToShoppingCart(purchaseDrug: PurchaseItemDto) {
+    this.storeService.addDrug(purchaseDrug)
   }
 }

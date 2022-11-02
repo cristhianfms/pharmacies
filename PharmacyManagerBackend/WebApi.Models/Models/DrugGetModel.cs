@@ -13,6 +13,7 @@ public class DrugGetModel
     public int Stock { get; set; }
     public bool NeedsPrescription { get; set; }
     public int PharmacyId { get; set; }
+    public string PharmacyName { get; set; }
 
     public override bool Equals(object? obj)
     {
