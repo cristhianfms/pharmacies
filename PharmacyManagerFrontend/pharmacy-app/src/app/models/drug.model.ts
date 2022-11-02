@@ -9,8 +9,9 @@ export interface Drug {
     unitOfMeasurement: string,
     needsPrescription: boolean,
     pharmacyId: number,
-    stock: number
+    stock: number,
+    pharmacyName: string
 }
 
-export interface CreateDrugDTO extends Omit<Drug, 'id' | 'stock' | 'pharmacyName'> {
+export interface CreateDrugDTO extends Omit<Drug, 'id' | 'stock'> {
 }

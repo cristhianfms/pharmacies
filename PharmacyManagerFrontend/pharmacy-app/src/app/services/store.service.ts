@@ -18,9 +18,23 @@ export class StoreService {
     return this.myShoppingCart;
   }
 
-  addDrug(purchaseDrug: PurchaseDrugDto){
-    // TODO: ADD ONLY ONCE!
-    this.myShoppingCart.push(purchaseDrug)
+  addDrug(purchaseToAdd: PurchaseDrugDto){
+    let purchase = this.myShoppingCart.find(p =>
+        p.pharmacyName === purchaseToAdd.pharmacyName && p.drugCode === purchaseToAdd.drugCode)
+    if (purchase) {
+      purchase.quantity = purchase.quantity + purchaseToAdd.quantity;
+    } else {
+      this.myShoppingCart.push(purchaseToAdd)
+    }
+
+    this.myCart.next(this.myShoppingCart);
+  }
+
+  removeDrug(purchaseToDelete: PurchaseDrugDto) {
+    const index = this.myShoppingCart.findIndex(p =>
+        p.drugCode === purchaseToDelete.drugCode && p.pharmacyName === purchaseToDelete.pharmacyName);
+    this.myShoppingCart.splice(index, 1);
+
     this.myCart.next(this.myShoppingCart);
   }
 }

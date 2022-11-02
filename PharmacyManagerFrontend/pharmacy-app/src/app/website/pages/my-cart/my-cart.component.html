@@ -1,1 +1,44 @@
-<p>my-cart works!</p>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Drug code</th>
+        <th scope="col">Pharmacy Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let p of myShoppingCart">
+        <td>{{p.drugCode}}</td>
+        <td>{{p.pharmacyName}}</td>
+        <td>
+            <input id="amountInput" type="number" [(ngModel)]="p.quantity" min="1" max="999">
+        </td>
+        <td>
+            <button (click)="onDelete(p)" class="btn btn-primary btn-sm">Delete</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="purchase-form" *ngIf="myShoppingCart.length >= 1">
+    <div class="row">
+        <div class="form-group">
+            <label for="email">Enter your email</label>
+            <input required id="email" class="form-control" type="text" [(ngModel)]="userEmail">
+        </div>
+        <div class="buttons">
+            <button type="submit" (click)="onSubmit()" [disabled]="isDisable()" class="btn btn-primary">Finish purchase</button>
+        </div>
+        <div>
+            <div *ngIf="purchaseStatus=='success'" class="alert alert-success" role="alert">
+                You can follow your purchase with this code: {{createdPurchase.code}}
+            </div>
+            <div *ngIf="purchaseStatus=='error'"class="alert alert-danger" role="alert">
+                {{errorMessage}}
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -20,7 +20,8 @@ export class DrugComponent implements OnInit {
     unitOfMeasurement: '',
     needsPrescription: true,
     stock: 0,
-    pharmacyId: 0
+    pharmacyId: 0,
+    pharmacyName: ''
   }
   @Output() addedProduct = new EventEmitter<PurchaseDrugDto>();
   amount : number = 1
@@ -34,7 +35,7 @@ export class DrugComponent implements OnInit {
     event.preventDefault()
 
     let purchaseDrug : PurchaseDrugDto = {
-      pharmacyName: "",
+      pharmacyName: this.drug.pharmacyName,
       drugCode: this.drug.drugCode,
       quantity: this.amount
     }
