@@ -9,5 +9,6 @@ public interface IPurchaseLogic
     PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto);
     IEnumerable<PurchaseItemStatusDto> GetPurchaseStatus(string purchaseCode);
     Purchase Update(int id, Purchase purchase);
+    Purchase Get(string code);
 }
 

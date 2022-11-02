@@ -52,11 +52,12 @@ public class PurchasesController : ControllerBase
     }
 
     [HttpGet("{code}")]
-    public IActionResult GetPurchaseStatus(string code)
+    public IActionResult GetPurchase(string code)
     {
-        IEnumerable<PurchaseItemStatusModel> purchaseItemModel = PurchaseModelsMapper.ToModelList(_purchaseLogic.GetPurchaseStatus(code));
-    
-        return Ok(purchaseItemModel);
+        Purchase purchase = _purchaseLogic.Get(code);
+        PurchaseResponseModel purchaseResponseModel = PurchaseModelsMapper.ToModel(purchase);
+
+        return Ok(purchaseResponseModel);
     }
 }
 

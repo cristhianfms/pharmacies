@@ -9,6 +9,7 @@ import {PurchaseListGetDto} from "../models/Dto/purchase-list-dto.model";
 import {PurchaseItem} from "../models/purchase-item.model";
 import {PurchaseItemGetDto} from "../models/Dto/purchase-item-dto.model";
 import {PurchaseState} from "../models/Dto/purchase-state-dto.model";
+import {Drug} from "../models/drug.model";
 
 @Injectable({
   providedIn: 'root'
@@ -72,5 +73,10 @@ export class PurchasesService {
       })
     }
     return purchase
+  }
+
+  getPurchase(purchaseCode: string) {
+    return this.http.get<PurchaseGetDto>(`${this.apiUrl}/${purchaseCode}`)
+        .pipe(map(this.purchaseDtoToModel));
   }
 }
