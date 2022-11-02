@@ -9,7 +9,8 @@ public class SessionModelMapper
         return new SessionProfileModel()
         {
             RoleName = session.User.Role.Name,
-            UserName = session.User.UserName
+            UserName = session.User.UserName,
+            PharmacyName = session.User.Pharmacy?.Name
         };
     }
 }

@@ -93,7 +93,8 @@ namespace DataAccess.Migrations
                     Stock = table.Column<int>(type: "int", nullable: false),
                     NeedsPrescription = table.Column<bool>(type: "bit", nullable: false),
                     DrugInfoId = table.Column<int>(type: "int", nullable: false),
-                    PharmacyId = table.Column<int>(type: "int", nullable: false)
+                    PharmacyId = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

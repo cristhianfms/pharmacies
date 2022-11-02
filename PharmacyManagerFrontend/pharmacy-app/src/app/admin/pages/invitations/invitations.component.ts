@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {InvitationQueryDto} from "../../../models/Dto/invitation-query.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-invitations',
@@ -18,7 +19,7 @@ export class InvitationsComponent implements OnInit {
     role: null
   }
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -31,4 +32,8 @@ export class InvitationsComponent implements OnInit {
       role: role
     }
   }
+
+    onCreateInvitation() {
+      this.router.navigate(['/admin/invitation-create']);
+    }
 }

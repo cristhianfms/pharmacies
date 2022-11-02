@@ -2,6 +2,13 @@ p, h2 {
   margin: 0
 }
 
+.control{
+  padding-top: 10px;
+}
+
 a {
-  margin-top: 10px
+  margin-left: 10px;
+}
+input[type=number]::-webkit-inner-spin-button {
+  opacity: 1
 }

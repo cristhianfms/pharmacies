@@ -9,6 +9,9 @@ import { InvitationListComponent } from './components/invitation-list/invitation
 import {FormsModule} from "@angular/forms";
 import { InvitationsFilterPipe } from './pipes/invitations-filter.pipe';
 import {InvitationEditComponent} from "./pages/invitation-edit/invitation-edit.component";
+import { InvitationCreateComponent } from './pages/invitation-create/invitation-create.component';
+import { PharmacyListComponent } from './components/pharmacy-list/pharmacy-list.component';
+import { PharmacyCreateComponent } from './pages/pharmacy-create/pharmacy-create.component';
 
 
 @NgModule({
@@ -18,7 +21,10 @@ import {InvitationEditComponent} from "./pages/invitation-edit/invitation-edit.c
         PharmaciesComponent,
         InvitationListComponent,
         InvitationsFilterPipe,
-        InvitationEditComponent
+        InvitationEditComponent,
+        InvitationCreateComponent,
+        PharmacyListComponent,
+        PharmacyCreateComponent
     ],
     imports: [
         CommonModule,

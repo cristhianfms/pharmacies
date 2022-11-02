@@ -143,7 +143,8 @@ public static class ModelsMapper
             Presentation = drug.DrugInfo.Presentation,
             QuantityPerPresentation = drug.DrugInfo.QuantityPerPresentation,
             UnitOfMeasurement = drug.DrugInfo.UnitOfMeasurement,
-            PharmacyId = drug.PharmacyId
+            PharmacyId = drug.PharmacyId,
+            PharmacyName = drug.Pharmacy.Name
         };
     }
 
