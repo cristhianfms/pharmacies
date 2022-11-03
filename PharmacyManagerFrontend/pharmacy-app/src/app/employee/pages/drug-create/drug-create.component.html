@@ -1,0 +1,55 @@
+<div class="page-edit-product">
+  <div class="row">
+      <div class="form-group">
+          <label for="drugCode">Code</label>
+          <input required id="drugCode" class="form-control" type="text" [(ngModel)]="newDrug.drugCode">
+      </div>
+      <div class="form-group">
+          <label for="name">Name</label>
+          <input required id="name" class="form-control" type="text" [(ngModel)]="newDrug.name">
+      </div>
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input required id="price" class="form-control" type="number" [(ngModel)]="newDrug.price">
+      </div>
+      <div class="form-group">
+        <label for="symptoms">Symptoms</label>
+        <input required id="symptoms" class="form-control" type="text" [(ngModel)]="newDrug.symptoms">
+      </div>
+      <div class="form-group">
+        <label for="presentation">Presentacion</label>
+        <input required id="presentation" class="form-control" type="text" [(ngModel)]="newDrug.presentation">
+      </div>
+      <div class="form-group">
+        <label for="quantityPerPresentation">Cantidad por Presentacion</label>
+        <input required id="quantityPerPresentation" class="form-control" type="text" [(ngModel)]="newDrug.quantityPerPresentation">
+      </div>
+      <div class="form-group">
+        <label for="unitOfMeasurement">Unidad de medida</label>
+        <input required id="unitOfMeasurement" class="form-control" type="text" [(ngModel)]="newDrug.unitOfMeasurement">
+      </div>
+<!--       <div class="form-group">
+       <label for="stock">Stock</label>
+        <input required id="stock" class="form-control" type="text" [(ngModel)]="newDrug.stock">
+      </div>-->
+      <div class="form-group">
+          <label for="needsPrescription">Necesita receta</label>
+          <select [(ngModel)]="newDrug.needsPrescription" class="custom-select form-control" id="needsPrescription">
+              <option [selected]="newDrug.needsPrescription == true" value="true">Si</option>
+              <option [selected]="newDrug.needsPrescription == false" value="false">No</option>
+          </select>
+      </div>
+      <div class="buttons">
+        <button type="submit" (click)="onSubmit()" class="btn btn-primary">Save</button>
+        <button type="button" (click)="goToDrugsHome()" class="btn btn-primary">Back</button>
+      </div>
+      <div>
+          <div *ngIf="createStatus=='success'" class="alert alert-success" role="alert">
+              The drug was created successfully.
+          </div>
+          <div *ngIf="createStatus=='error'"class="alert alert-danger" role="alert">
+              {{errorMessage}}
+          </div>
+      </div>
+  </div>
+</div>

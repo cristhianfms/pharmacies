@@ -3,6 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import {LayoutComponent} from "../employee/components/layout/layout.component";
 import {PurchaseDetailComponent} from "./pages/purchase-detail/purchase-detail.component";
 import {PurchasesComponent} from "./pages/purchases/purchases.component";
+import { DrugCreateComponent } from './pages/drug-create/drug-create.component';
+import { DrugDeleteComponent } from './pages/drug-delete/drug-delete.component';
+import { DrugsComponent } from './pages/drugs/drugs.component';
 
 const routes: Routes = [
   {
@@ -21,7 +24,18 @@ const routes: Routes = [
       {
         path: 'purchase-detail/:id',
         component: PurchaseDetailComponent
+      },{
+        path: 'drugs',
+        component: DrugsComponent
       },
+      {
+        path: 'drug-delete',
+        component: DrugDeleteComponent
+      },
+      {
+        path: 'drug-create',
+        component: DrugCreateComponent
+      }
     ]
   }
 ];
