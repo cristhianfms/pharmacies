@@ -6,8 +6,9 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { PurchaseDetailComponent } from './pages/purchase-detail/purchase-detail.component';
 import {PurchasesComponent} from "./pages/purchases/purchases.component";
 import { DrugCreateComponent } from './pages/drug-create/drug-create.component';
-import { DrugDeleteComponent } from './pages/drug-delete/drug-delete.component';
+//import { DrugDeleteComponent } from './pages/drug-delete/drug-delete.component';
 import { DrugsComponent } from './pages/drugs/drugs.component';
+import { DrugListComponent } from './components/drug-list/drug-list.component';
 
 
 @NgModule({
@@ -15,9 +16,10 @@ import { DrugsComponent } from './pages/drugs/drugs.component';
         LayoutComponent,
         PurchasesComponent,
         PurchaseDetailComponent,
+        DrugListComponent,
         DrugsComponent,
-        DrugCreateComponent,
-        DrugDeleteComponent
+        DrugCreateComponent
+        //DrugDeleteComponent
     ],
     exports: [
         PurchaseDetailComponent

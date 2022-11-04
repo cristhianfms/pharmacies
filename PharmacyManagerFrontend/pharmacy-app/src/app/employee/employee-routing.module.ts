@@ -4,7 +4,7 @@ import {LayoutComponent} from "../employee/components/layout/layout.component";
 import {PurchaseDetailComponent} from "./pages/purchase-detail/purchase-detail.component";
 import {PurchasesComponent} from "./pages/purchases/purchases.component";
 import { DrugCreateComponent } from './pages/drug-create/drug-create.component';
-import { DrugDeleteComponent } from './pages/drug-delete/drug-delete.component';
+//import { DrugDeleteComponent } from './pages/drug-delete/drug-delete.component';
 import { DrugsComponent } from './pages/drugs/drugs.component';
 
 const routes: Routes = [
@@ -27,10 +27,6 @@ const routes: Routes = [
       },{
         path: 'drugs',
         component: DrugsComponent
-      },
-      {
-        path: 'drugs/drug-delete',
-        component: DrugDeleteComponent
       },
       {
         path: 'drugs/drug-create',

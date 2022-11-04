@@ -36,7 +36,7 @@ export class DrugCreateComponent implements OnInit {
   }
 
   goToDrugsHome() {
-    this.router.navigate(['/drugs']);
+    this.router.navigate(['/employee/drugs']);
   }
 
   onSubmit() {

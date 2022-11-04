@@ -17,7 +17,4 @@ export class DrugsComponent implements OnInit {
     this.router.navigate(['/employee/drugs/drug-create']);
   }
 
-  onDeleteDrug(): void{
-    this.router.navigate(['/employee/drugs/drug-delete']);
-  }
 }
