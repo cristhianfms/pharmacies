@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode} from "@angular/common/http";
 import {CreateDrugDTO, Drug} from "../models/drug.model";
 import {environment} from "../../environments/environment";
-import {catchError, throwError} from "rxjs";
+import {BehaviorSubject, catchError, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,10 @@ export class DrugsService {
   apiUrl: string = `${environment.API_URL}/api/drugs`
 
   constructor( private http: HttpClient) { }
+
+  selectedDrugToDelete = new BehaviorSubject<Drug | null>(null)
+  selectedDrugToDelete$ = this.selectedDrugToDelete.asObservable();
+
 
   getAllDrugs(pharmacyName?: string, drugCode?:string) {
     let params = new HttpParams()

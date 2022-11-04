@@ -29,11 +29,11 @@ const routes: Routes = [
         component: DrugsComponent
       },
       {
-        path: 'drug-delete',
+        path: 'drugs/drug-delete',
         component: DrugDeleteComponent
       },
       {
-        path: 'drug-create',
+        path: 'drugs/drug-create',
         component: DrugCreateComponent
       }
     ]

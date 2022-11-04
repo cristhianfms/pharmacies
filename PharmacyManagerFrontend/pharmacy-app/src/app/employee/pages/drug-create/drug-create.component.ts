@@ -36,7 +36,7 @@ export class DrugCreateComponent implements OnInit {
   }
 
   goToDrugsHome() {
-    this.router.navigate(['/admin/drugs']);
+    this.router.navigate(['/drugs']);
   }
 
   onSubmit() {
@@ -51,6 +51,7 @@ export class DrugCreateComponent implements OnInit {
   handleUpdateResponse(data: any){
     this.createdDrug = data;
     this.createStatus = 'success'
+    this.goToDrugsHome();
   }
 
   handleUpdateError(error: any){

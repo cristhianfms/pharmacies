@@ -32,7 +32,6 @@ export class DrugDeleteComponent implements OnInit {
   deleteStatus: 'loading' | 'success' | 'error' | null = null
   errorMessage: string = ''
 
-
   ngOnInit(): void {
     this.drugService.selectedDrugToDelete$.subscribe((selectedDrug) => {
             if (selectedDrug){
