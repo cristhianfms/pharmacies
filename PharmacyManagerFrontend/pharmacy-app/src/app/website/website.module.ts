@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { WebsiteRoutingModule } from './website-routing.module';
 import { LayoutComponent } from './components/layout/layout.component';
 import { NavComponent } from './components/nav/nav.component';
@@ -28,7 +27,7 @@ import { PurchaseDetailComponent } from './components/purchase-detail/purchase-d
     ],
     imports: [
         CommonModule,
-        WebsiteRoutingModule, 
+        WebsiteRoutingModule,
         FormsModule
     ],
 })

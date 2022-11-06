@@ -1,16 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Drug } from '../../../models/drug.model';
 import { DrugsService } from '../../../services/drugs.service';
-//import {DrugQueryDto} from "../../../models/Dto/drug-query.model";
 import { Router } from '@angular/router';
-//import { DrugDeleteComponent } from '../../pages/drug-delete/drug-delete.component';
 
 @Component({
-  selector: 'app-drug-list',
-  templateUrl: './drug-list.component.html',
-  styleUrls: ['./drug-list.component.scss'],
+  selector: 'app-drug-list-delete',
+  templateUrl: './drug-list-delete.component.html',
+  styleUrls: ['./drug-list-delete.component.scss'],
 })
-export class DrugListComponent implements OnInit {
+export class DrugListDeleteComponent implements OnInit {
   drugs: Drug[] = [];
 
   drug: Drug = {
@@ -27,12 +25,6 @@ export class DrugListComponent implements OnInit {
     pharmacyId: 0,
     pharmacyName: '',
   };
-
-  /*@Input() DrugQuery: DrugQueryDto = {
-    pharmacyName: null,
-    userName: null,
-    role: null
-  }*/
 
   constructor(
     private drugService: DrugsService, private router: Router
@@ -51,6 +43,14 @@ export class DrugListComponent implements OnInit {
       });
   }
 
+  /*removeDrug(drugToDelete: Drug) {
+    const index = this.drugs.findIndex(d =>
+        d.drugCode === drugToDelete.drugCode);
+    this.drugs.splice(index, 1);
+
+    this.myCart.next(this.myShoppingCart);
+  }*/
+
   deleteStatus: 'loading' | 'success' | 'error' | null = null;
   errorMessage: string = '';
 
@@ -59,7 +59,7 @@ export class DrugListComponent implements OnInit {
   }
 
   refresh():void{
-    this.router.navigate(['/employee/drugs']);
+     this.drugs;
   }
 
   handleError(error: any) {
