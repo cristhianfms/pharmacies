@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20221030234046_PharmacyManagerMigration")]
+    [Migration("20221106210114_PharmacyManagerMigration")]
     partial class PharmacyManagerMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,11 @@ namespace DataAccess.Migrations
                         {
                             Id = 7,
                             Endpoint = "GET/api/drugs/.*"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Endpoint = "GET/api/drugs"
                         },
                         new
                         {
@@ -177,6 +182,11 @@ namespace DataAccess.Migrations
                         {
                             RoleId = 3,
                             PermissionId = 7
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 16
                         },
                         new
                         {
