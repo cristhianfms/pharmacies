@@ -12,6 +12,7 @@ import {InvitationEditComponent} from "./pages/invitation-edit/invitation-edit.c
 import { InvitationCreateComponent } from './pages/invitation-create/invitation-create.component';
 import { PharmacyListComponent } from './components/pharmacy-list/pharmacy-list.component';
 import { PharmacyCreateComponent } from './pages/pharmacy-create/pharmacy-create.component';
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { PharmacyCreateComponent } from './pages/pharmacy-create/pharmacy-create
     imports: [
         CommonModule,
         AdminRoutingModule,
-        FormsModule
+        FormsModule,
+        SharedModule
     ]
 })
 export class AdminModule { }
