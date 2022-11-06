@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {InvitationCreateComponent} from "./pages/invitation-create/invitation-create.component";
 import {LayoutComponent} from "./components/layout/layout.component";
+import {PurchaseReportComponent} from "./pages/purchase-report/purchase-report.component";
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
       {
         path: 'invitations',
         component: InvitationCreateComponent
+      },
+      {
+        path: 'purchase-report',
+        component: PurchaseReportComponent
       },
     ]
   }
