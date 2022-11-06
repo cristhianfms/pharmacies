@@ -6,6 +6,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { InvitationCreateComponent } from './pages/invitation-create/invitation-create.component';
 import {FormsModule} from "@angular/forms";
 import { PurchaseReportComponent } from './pages/purchase-report/purchase-report.component';
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -14,10 +15,11 @@ import { PurchaseReportComponent } from './pages/purchase-report/purchase-report
     InvitationCreateComponent,
     PurchaseReportComponent
   ],
-  imports: [
-    CommonModule,
-    OwnerRoutingModule,
-    FormsModule
-  ]
+    imports: [
+        CommonModule,
+        OwnerRoutingModule,
+        FormsModule,
+        SharedModule
+    ]
 })
 export class OwnerModule { }

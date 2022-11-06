@@ -7,6 +7,7 @@ import { PurchaseDetailComponent } from './pages/purchase-detail/purchase-detail
 import {PurchasesComponent} from "./pages/purchases/purchases.component";
 import { ExportDrugComponent } from './pages/export-drug/export-drug.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
         CommonModule,
         EmployeeRoutingModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SharedModule
     ]
 })
 export class EmployeeModule { }
