@@ -40,7 +40,6 @@ export class InvitationEditComponent implements OnInit {
 
     onSubmit() {
         this.updatingStatus = 'loading'
-        console.log(this.invitation)
         this.invitationService.updateAdmin(this.invitation.invitationCode, this.invitation).subscribe({
                 next: this.handleUpdateResponse.bind(this),
                 error: this.handleUpdateError.bind(this)

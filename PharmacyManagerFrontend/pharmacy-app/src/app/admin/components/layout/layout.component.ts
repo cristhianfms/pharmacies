@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { SessionsService } from 'src/app/services/sessions.service';
 
 @Component({
   selector: 'app-layout',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LayoutComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private sessionService: SessionsService) { }
 
   ngOnInit(): void {
-  }
 
+  }
+  logOut(){
+    this.sessionService.logout();
+    this.router.navigate([""]);}
 }

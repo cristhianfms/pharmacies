@@ -1,11 +1,16 @@
 <div>
     <header>
         <h3>Pharmacy Manager</h3>
+        <button  class="btn btn-secondary" type="button" (click)="logOut()">
+            LogOut
+        </button>
     </header>
     <nav>
         <ul>
             <li><a routerLinkActive="active" routerLink="purchases">Purchases</a></li>
             <li><a routerLinkActive="active" routerLink="export-drugs">Export drugs</a></li>
+            <li><a routerLinkActive="active" routerLink="solicitudes">Solicitudes</a></li>
+            <li><a  routerLink="X">Drugs(NotImplemented)</a></li>
         </ul>
     </nav>
     <main>

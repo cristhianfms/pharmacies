@@ -15,6 +15,4 @@ export interface UpdateInvitationDto {
     email: string;
     address: string;
     password:string;
-    roleName: string;
-    pharmacyName: string;
 }
