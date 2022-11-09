@@ -35,7 +35,7 @@ public static class ModelsMapper
 
     private static SolicitudeItem ToEntity(SolicitudeItemModel solicitudeItemModel)
     {
-        return new SolicitudeItem()
+        return new SolicitudeItem
         {
             DrugQuantity = solicitudeItemModel.DrugQuantity,
             DrugCode = solicitudeItemModel.DrugCode,

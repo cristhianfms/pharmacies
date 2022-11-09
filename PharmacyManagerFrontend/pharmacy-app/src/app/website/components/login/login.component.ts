@@ -10,6 +10,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  pressed: boolean = false;
+
   credential: Credential = {
       userName:"",
       password:""
@@ -20,7 +22,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl(this.credential.password, [Validators.required, Validators.minLength(7)])
   })
 
-  Status: 'loading' | 'success' | 'error' | null = null
+  status: 'loading' | 'success' | 'error' | null = null
   errorMessage: string = ''
 
   constructor(private http: HttpClient, private sessionService: SessionsService, private router: Router) { }
@@ -30,7 +32,8 @@ export class LoginComponent implements OnInit {
   }
 
   submitLogin() {
-    this.Status = 'loading';
+    this.pressed = true;
+    this.status = 'loading';
     this.sessionService.loginAndGet(this.credential.userName, this.credential.password)
     .subscribe({  
       next: this.handleOkResponse.bind(this),
@@ -39,12 +42,12 @@ export class LoginComponent implements OnInit {
 }
 
   handleOkResponse(data:any){
-    this.Status = 'success';
+    this.status = 'success';
     var roleNameLowerCase = (data.roleName).toLowerCase();
     this.router.navigate(['/' + roleNameLowerCase]);
   }
   handleErrorResponse(error:any){
-    this.Status = 'error';
+    this.status = 'error';
     this.errorMessage = error.error.message;
   }
 
