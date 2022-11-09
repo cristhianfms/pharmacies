@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {PurchaseDto, PurchaseGetDto, PurchasePutDto} from "../models/Dto/purchase-dto.model";
 import {PurchaseList} from "../models/purchase-list.model";
-import {BehaviorSubject, map} from "rxjs";
+import {BehaviorSubject, map, of} from "rxjs";
 import {Purchase} from "../models/purchase.model";
 import {PurchaseListGetDto} from "../models/Dto/purchase-list-dto.model";
 import {PurchaseItem} from "../models/purchase-item.model";
@@ -17,7 +17,8 @@ import {Drug} from "../models/drug.model";
 export class PurchasesService {
 
   apiUrl: string = `${environment.API_URL}/api/purchases`
-
+  dateFromQueryParam: string= 'dateFrom'
+  dateToQueryParam: string = 'dateTo'
   selectedPurchaseDetail = new BehaviorSubject<Purchase | null>(null)
   selectedPurchaseDetail$ = this.selectedPurchaseDetail.asObservable();
 
@@ -79,4 +80,33 @@ export class PurchasesService {
     return this.http.get<PurchaseGetDto>(`${this.apiUrl}/${purchaseCode}`)
         .pipe(map(this.purchaseDtoToModel));
   }
+
+    getPurchasesReport(dateFrom?: string, dateTo?: string) {
+      let params = new HttpParams()
+      if (dateFrom){
+        params.set(this.dateFromQueryParam, dateFrom)
+      }
+      if (dateTo){
+        params.set(this.dateToQueryParam, dateTo)
+      }
+
+      return of(
+          {
+            totalPrice: 1234.99,
+            purchases: [{
+                drugCode: "A01",
+                pharmacy: "pharmashop",
+                quantity: 100,
+                amount: 500.99
+              },
+              {
+              drugCode: "A02",
+              pharmacy: "pharmashop2",
+              quantity: 300,
+              amount: 55.99
+            }
+            ]
+          }
+      )
+    }
 }

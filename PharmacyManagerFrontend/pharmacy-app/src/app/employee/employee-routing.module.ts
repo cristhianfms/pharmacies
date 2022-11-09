@@ -5,6 +5,7 @@ import {PurchaseDetailComponent} from "./pages/purchase-detail/purchase-detail.c
 import {PurchasesComponent} from "./pages/purchases/purchases.component";
 import { DrugCreateComponent } from './pages/drug-create/drug-create.component';
 import { DrugsComponent } from './pages/drugs/drugs.component';
+import {ExportDrugComponent} from "./pages/export-drug/export-drug.component";
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
       {
         path: 'drugs/drug-create',
         component: DrugCreateComponent
+      },
+      {
+        path: 'export-drugs',
+        component: ExportDrugComponent
       }
     ]
   }

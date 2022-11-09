@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { LayoutComponent } from './components/layout/layout.component';
 import { PurchaseDetailComponent } from './pages/purchase-detail/purchase-detail.component';
@@ -8,6 +7,9 @@ import {PurchasesComponent} from "./pages/purchases/purchases.component";
 import { DrugCreateComponent } from './pages/drug-create/drug-create.component';
 import { DrugsComponent } from './pages/drugs/drugs.component';
 import { DrugListDeleteComponent } from './components/drug-list-delete/drug-list-delete.component';
+import { ExportDrugComponent } from './pages/export-drug/export-drug.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -17,7 +19,8 @@ import { DrugListDeleteComponent } from './components/drug-list-delete/drug-list
         PurchaseDetailComponent,
         DrugListDeleteComponent,
         DrugsComponent,
-        DrugCreateComponent
+        DrugCreateComponent,
+        ExportDrugComponent,
     ],
     exports: [
         PurchaseDetailComponent
@@ -25,7 +28,9 @@ import { DrugListDeleteComponent } from './components/drug-list-delete/drug-list
     imports: [
         CommonModule,
         EmployeeRoutingModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule
     ]
 })
 export class EmployeeModule { }

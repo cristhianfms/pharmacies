@@ -1,0 +1,37 @@
+.export-container {
+  width:80%;
+  background-color: #f3f8fb;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: #f3f8fb;
+  border: 0.5px solid lightgray;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.parameters-container {
+  margin-top: 30px;
+  width:80%;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: #f3f8fb;
+  border: 0.5px solid lightgray;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 15px;
+}
+
+.alert {
+  width:80%;
+  margin-right: auto;
+  margin-left: auto;
+}

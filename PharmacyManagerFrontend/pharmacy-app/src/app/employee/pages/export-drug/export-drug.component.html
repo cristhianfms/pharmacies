@@ -1,0 +1,30 @@
+<div>
+    <div class="export-container">
+        <h2>Exporter</h2>
+        <select [ngModel]="selectedExporter" (ngModelChange)="onChange($event)" class="col-sm-2" class="form-select" aria-label="Default select example">
+            <option *ngFor="let exporter of exporters" [ngValue]="exporter">{{exporter.name}}</option>
+        </select>
+    </div>
+
+    <div *ngIf="selectedExporter!==null" class="parameters-container">
+        <h2>Properties</h2>
+        <form (ngSubmit)="onSubmit()" [formGroup]="form" >
+            <div *ngFor="let prop of selectedExporter.props" class="mb-3">
+                <label for="{{prop.key}}" class="form-label">{{prop.key}}</label>
+                <input type="{{prop.type}}" class="form-control" id="{{prop.key}}" formControlName="{{prop.key}}">
+                <div class="errorMessage" *ngIf="!isValid(prop.key) && form.controls[prop.key].touched">*{{prop.key}} is required</div>
+            </div>
+
+            <button [disabled]="!form.valid" type="submit" class="btn btn-primary">Export</button>
+        </form>
+    </div>
+
+    <div>
+        <div *ngIf="exportStatus=='success'" class="alert alert-success" role="alert">
+            Export process finished successfully!
+        </div>
+        <div *ngIf="exportStatus=='error'"class="alert alert-danger" role="alert">
+            {{errorMessage}}
+        </div>
+    </div>
+</div>
