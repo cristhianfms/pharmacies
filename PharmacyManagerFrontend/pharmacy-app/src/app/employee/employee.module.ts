@@ -9,7 +9,9 @@ import { SolicitudesListComponent } from './components/solicitudes-list/solicitu
 import { PurchaseDetailComponent } from './pages/purchase-detail/purchase-detail.component';
 import {PurchasesComponent} from "./pages/purchases/purchases.component";
 import { ExportDrugComponent } from './pages/export-drug/export-drug.component';
-import { FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {SharedModule} from "../shared/shared.module";
+
 
 
 @NgModule({
@@ -27,10 +29,11 @@ import { FormsModule, ReactiveFormsModule} from "@angular/forms";
     EmployeeRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-
+    SharedModule
   ],
     exports: [
         PurchaseDetailComponent
+
     ]
     
 })

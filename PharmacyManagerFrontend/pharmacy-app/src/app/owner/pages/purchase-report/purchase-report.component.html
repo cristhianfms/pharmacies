@@ -1,0 +1,32 @@
+<div class="filter-container">
+    <label for="dateFrom">Date from:</label>
+    <input [(ngModel)]="dateFrom" type="date" id="dateFrom">
+    <label class="margin-left" for="dateTo">Date to:</label>
+    <input [(ngModel)]="dateTo" type="date" id="dateTo">
+    <button (click)="onSubmit()" type="submit" class="btn btn-primary margin-left">Search</button>
+</div>
+
+<div class="report-container" *ngIf="purchaseList">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Drug</th>
+            <th scope="col">Pharmacy</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Amount</th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        <tr *ngFor="let purchase of purchaseList">
+            <td>{{purchase.drugCode}}</td>
+            <td>{{purchase.pharmacy}}</td>
+            <td>{{purchase.quantity}}</td>
+            <td>{{purchase.amount}}</td>
+        </tr>
+        </tbody>
+        <tfoot class="table-group-divider bolded">
+            <td colspan="1">Total amount</td>
+            <td colspan="3">{{totalAmount}}</td>
+        </tfoot>
+    </table>
+</div>

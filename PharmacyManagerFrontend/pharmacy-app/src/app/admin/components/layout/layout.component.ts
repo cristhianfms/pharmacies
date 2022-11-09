@@ -1,20 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { SessionsService } from 'src/app/services/sessions.service';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+    selector: 'app-layout',
+    templateUrl: './layout.component.html',
+    styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit {
 
-  constructor(private router: Router, private sessionService: SessionsService) { }
 
-  ngOnInit(): void {
+    navOptions = [
+        {
+            router: "pharmacies",
+            name: "Pharmacies"
+        },
+        {
+            router: "invitations",
+            name: "Invitations"
+        },
+    ]
+
+    constructor() {
+    }
+
+    ngOnInit(): void {
+    }
 
   }
-  logOut(){
-    this.sessionService.logout();
-    this.router.navigate([""]);}
-}
+
