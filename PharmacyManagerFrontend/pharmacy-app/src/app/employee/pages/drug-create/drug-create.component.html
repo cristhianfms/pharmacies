@@ -18,26 +18,22 @@
         <input required id="symptoms" class="form-control" type="text" [(ngModel)]="newDrug.symptoms">
       </div>
       <div class="form-group">
-        <label for="presentation">Presentacion</label>
+        <label for="presentation">Presentation</label>
         <input required id="presentation" class="form-control" type="text" [(ngModel)]="newDrug.presentation">
       </div>
       <div class="form-group">
-        <label for="quantityPerPresentation">Cantidad por Presentacion</label>
+        <label for="quantityPerPresentation">Quantity Per Presentation</label>
         <input required id="quantityPerPresentation" class="form-control" type="text" [(ngModel)]="newDrug.quantityPerPresentation">
       </div>
       <div class="form-group">
-        <label for="unitOfMeasurement">Unidad de medida</label>
+        <label for="unitOfMeasurement">Unit of Measurement</label>
         <input required id="unitOfMeasurement" class="form-control" type="text" [(ngModel)]="newDrug.unitOfMeasurement">
       </div>
-<!--       <div class="form-group">
-       <label for="stock">Stock</label>
-        <input required id="stock" class="form-control" type="text" [(ngModel)]="newDrug.stock">
-      </div>-->
       <div class="form-group">
-          <label for="needsPrescription">Necesita receta</label>
+          <label for="needsPrescription">Needs Prescription</label>
           <select [(ngModel)]="newDrug.needsPrescription" class="custom-select form-control" id="needsPrescription">
-              <option [selected]="newDrug.needsPrescription == true" value="true">Si</option>
-              <option [selected]="newDrug.needsPrescription == false" value="false">No</option>
+              <option [ngValue]= "true">Yes</option>
+              <option [ngValue]= "false">No</option>
           </select>
       </div>
       <div class="buttons">

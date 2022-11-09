@@ -13,7 +13,7 @@ import { DrugQueryDto } from 'src/app/models/Dto/drug-query.model';
 export class DrugsComponent implements OnInit {
 
   filterDrugName: string | null = null
-  filterHasStock: boolean = false
+  filterHasStock: boolean | null = false
 
   drugQuery: DrugQueryDto = {
     drugName: null,
@@ -42,6 +42,7 @@ export class DrugsComponent implements OnInit {
       hasStock: this.filterHasStock
     }
   }
+
 
   handleGetAllResponse(data: any){
     this.drugs = data

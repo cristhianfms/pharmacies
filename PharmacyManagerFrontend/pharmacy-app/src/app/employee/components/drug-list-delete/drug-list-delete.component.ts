@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Drug } from '../../../models/drug.model';
 import { DrugsService } from '../../../services/drugs.service';
 import { Router } from '@angular/router';
+import {catchError, Observable, filter, of, take } from "rxjs";
 
 @Component({
   selector: 'app-drug-list-delete',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./drug-list-delete.component.scss'],
 })
 export class DrugListDeleteComponent implements OnInit {
-  drugs: Drug[] = [];
+  drugs: Drug[]= [];
 
   drug: Drug = {
     id: 0,
@@ -32,54 +33,69 @@ export class DrugListDeleteComponent implements OnInit {
   {}
 
   ngOnInit(): void {
-    this.drugService.getAllDrugs().subscribe({
-      next: this.handleGetAllResponse.bind(this),
-      error: this.handleError.bind(this),
-    }),
-      this.drugService.selectedDrugToDelete$.subscribe((selectedDrug) => {
-        if (selectedDrug) {
-          this.drug = selectedDrug;
-        }
-      });
+    this.drugService.getDrugs().pipe(
+      take(1),
+      catchError((err) => {
+        console.log({err});
+        return of(err);
+      }),
+    )
+    .subscribe((drugs: Drug[]) => {
+      this.setDrugs(drugs);
+    });
   }
-
-  /*removeDrug(drugToDelete: Drug) {
-    const index = this.drugs.findIndex(d =>
-        d.drugCode === drugToDelete.drugCode);
-    this.drugs.splice(index, 1);
-
-    this.myCart.next(this.myShoppingCart);
-  }*/
 
   deleteStatus: 'loading' | 'success' | 'error' | null = null;
   errorMessage: string = '';
 
-  handleGetAllResponse(data: any) {
-    this.drugs = data;
-  }
-
-  refresh():void{
-     this.drugs;
-  }
-
-  handleError(error: any) {
-    window.alert('Error getting Drugs');
-  }
 
   onDelete(drugId: number) {
     this.drugService.delete(drugId).subscribe({
-      next: this.handleDeleteResponse.bind(this),
+      next: this.handleDeleteResponse.bind(this, drugId),
       error: this.handleDeleteError.bind(this),
+    });
+    this.drugService.delete(drugId).pipe(
+      take(1),
+      catchError((err) => {
+        console.log({err});
+        return of(err);
+      }),
+    ).subscribe((response) => {
+      this.drugService.getAllDrugs()
+      .pipe(
+        take(1),
+        catchError((err) => {
+          console.log({err});
+          return of(err);
+        }),
+      ).subscribe((drugs: Drug[] | undefined) => {
+        this.setDrugs(drugs);
+      });
     });
   }
 
-  handleDeleteResponse(data: any) {
+  private setDrugs = (drugs: Drug[] | undefined) => {
+    if(!drugs) this.drugs = [];
+    else this.drugs = drugs;
+  };
+
+
+  handleDeleteResponse(data: any, drugId: number) {
     this.deleteStatus = 'success';
-    this.refresh();
+    const index = this.drugs.findIndex(d =>
+      d.id === drugId);
+    this.drugs.splice(index, 1);
+
   }
 
   handleDeleteError(error: any) {
     this.deleteStatus = 'error';
     this.errorMessage = error.error.message;
   }
+
+  private setMovies = (drugs: Drug[] | undefined) => {
+    if(!drugs) this.drugs = [];
+    else this.drugs = drugs;
+  };
+
 }

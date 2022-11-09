@@ -41,6 +41,7 @@ export class DrugCreateComponent implements OnInit {
 
   onSubmit() {
     this.createStatus = 'loading'
+
     this.drugService.create(this.newDrug).subscribe({
           next: this.handleUpdateResponse.bind(this),
           error: this.handleUpdateError.bind(this)
