@@ -11,7 +11,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import {DrugsComponent} from "./pages/drugs/drugs.component";
 import {DrugComponent} from "./components/drug/drug.component";
 import { PurchaseDetailComponent } from './components/purchase-detail/purchase-detail.component';
-import { DrugsFilterPipe } from '../website/components/drug-list/pipes/drug-filter.pipe';
+import { DrugsFilterPipe } from '../website/pages/drugs/pipes/drug-filter.pipe';
 
 
 @NgModule({

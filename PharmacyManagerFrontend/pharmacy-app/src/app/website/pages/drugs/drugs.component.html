@@ -18,7 +18,7 @@
 </div>
 <div class="drugs--grid">
     <app-drug
-            *ngFor="let drug of drugs"
+            *ngFor="let drug of drugs | drugsFilter: drugQuery"
             [drug]="drug"
             (addedProduct)="onAddToShoppingCart($event)"
     ></app-drug>

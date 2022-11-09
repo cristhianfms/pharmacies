@@ -9,7 +9,7 @@ export class DrugsFilterPipe implements PipeTransform {
 
   transform(value: Drug[], drugQueryDto: DrugQueryDto): Drug[] {
     return value.filter(d => {
-      return drugQueryDto.drugName ? d.name == drugQueryDto.drugName : true &&
+      return drugQueryDto.drugName ? d.name.toLowerCase() == drugQueryDto.drugName.toLowerCase() : true &&
               drugQueryDto.hasStock ? d.stock > 0 : true
     })
   }
