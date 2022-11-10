@@ -7,10 +7,10 @@ export interface SolicitudeItem {
 
 export interface Solicitude {
     state: string,
-    date: Date,
-    userName: string,
-    pharmacyName: string,
-    items:SolicitudeItem[],
+    date: string,
+    employeeUserName: string,
+    pharmacy: string,
+    solicitudeItems:SolicitudeItem[],
 }
 
 export interface CreateSolicitudeDto  {

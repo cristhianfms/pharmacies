@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SolicitudesCreateComponent } from './pages/solicitudes-create/solicitudes-create/solicitudes-create.component';
+import { SolicitudesCreateComponent } from './pages/solicitudes-create/solicitudes-create.component';
 import { SolicitudesListComponent } from './components/solicitudes-list/solicitudes-list.component';
-import { SolicitudesComponent } from './pages/solicitudes/solicitudes/solicitudes.component';
+import { SolicitudesComponent } from './pages/solicitudes/solicitudes.component';
 import {LayoutComponent} from "../employee/components/layout/layout.component";
 import {PurchaseDetailComponent} from "./pages/purchase-detail/purchase-detail.component";
 import {PurchasesComponent} from "./pages/purchases/purchases.component";
@@ -52,7 +52,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(routes)], 
   exports: [RouterModule]
 })
 export class EmployeeRoutingModule { }

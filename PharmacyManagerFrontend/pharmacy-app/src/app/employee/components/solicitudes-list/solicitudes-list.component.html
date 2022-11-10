@@ -1,5 +1,4 @@
-<p>solicitudes-list works!</p>
-<table class="table table-hover">
+<table class="table table-hover" >
     <thead>
     <tr>
         <th scope="col">Employee</th>
@@ -9,16 +8,25 @@
         <th scope="col"></th>
     </tr>
     </thead>
-    <tbody>
+    <tbody >
+        <!--p>{{solicitude.solicitudeItems.length}}</p-->
         <!--TODO: Faltan cosas en los for-->
-    <tr *ngFor="let solicitude of solicitudes ">
-        <td>{{solicitude.userName}}</td>
-        <td>{{solicitude.date}}</td>
-        <td>{{solicitude.state}}</td>
-        <!--td *ngFor="let item of items  | solicitudeFilter:solicitudeQuery.drugCode">{{solicitude.drugCode}}({{solicitude.quantity}})</td-->
-        <td>
-            vacio
-        </td>
+        <tr *ngFor="let solicitude of solicitudes | solicitudesFilter:solicitudeQuery">
+        <td rowspan="solicitude.solicitudeItems.length">{{solicitude.employeeUserName}}</td>
+        <td rowspan="solicitude.solicitudeItems.length">{{solicitude.date | date:'short':'-0300'}}</td>
+        <td rowspan="solicitude.solicitudeItems.length">{{solicitude.state}}</td>
+        <!--td *ngFor="let item of solicitude.solicitudeItems  | solicitudeFilter:solicitudeQuery.drugCode">{{item.drugCode}}({{item.quantity}})</td-->
+        <!--div *ngIf="solicitude.solicitudeItems[i-1] 
+        != solicitude.solicitudeItems[i] || (i==0)" 
+        [attr.rowspan]="solicitude.solicitudeItems.length"-->
+        <!--td *ngFor = "let item of solicitude.solicitudeItems; let i = index">
+            {{item.drugCode}} ({{item.drugQuantity}})
+        </td-->
+    <!--/div-->
+        <!--td>
+            {{solicitude.solicitudeItems.length}}
+            <button (click)="onDetails(solicitude)" class="btn btn-primary btn-sm">Items detail</button>
+        </td-->
     </tr>
     </tbody>
 </table>

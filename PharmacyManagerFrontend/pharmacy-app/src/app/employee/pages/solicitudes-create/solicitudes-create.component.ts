@@ -48,44 +48,6 @@ export class SolicitudesCreateComponent implements OnInit {
     this.form =  new FormGroup(group);
   }
 
-  /*onSubmitCreateSolicitude(){
-    this.pressed = true;
-    this.createStatus = 'loading';
-
-    //var raws = this.drugs.length;
-     var inputs = this.form.getRawValue();
-    this.drugs.forEach(drug => {
-      var item: SolicitudeItem 
-      var quantity = inputs[drug.drugCode]
-      if(quantity>0){
-        item = {
-          drugCode: drug.drugCode,
-          drugQuantity: quantity
-        }      
-        alert(item.drugCode);
-        alert(item.drugQuantity);
-       var length = this.newSolicitude.items.push(item);
-       alert(this.newSolicitude.items.length)
-      }
-  });
-
-this.newSolicitude.items.forEach(element => {
-  alert('1) ' + element.drugCode);
-  alert(element.drugQuantity)
-  
-});
-
-    console.log(this.form.getRawValue());
-
-    this.solicitudeService.create(this.newSolicitude)
-    .subscribe({
-      next: this.handleOkResponse.bind(this),
-      error: this.handleErrorResponse.bind(this)
-      
-    })
-
-  }*/
-
   addItem(drug: Drug){
     var inputs = this.form.getRawValue();
     var quantity = inputs[drug.drugCode];
@@ -100,23 +62,11 @@ this.newSolicitude.items.forEach(element => {
     else{
       alert('No se puede agregar, cant<0');
     }
+    if (this.myItems.length>0){
+      this.form.valid;
+    }
     this.mySolicitude.next(this.myItems);
-    
-    //this.newSolicitude.items = this.myItems;
-
-    /*this.myItems.forEach(element => {
-      alert('CODE: ' + element.drugCode + ' ' + element.drugQuantity);
-    });*/
-
-
-    
   }
-
-
-
-
-
-
 
   onSubmitCreateSolicitude(){
     this.pressed = true;
@@ -134,9 +84,9 @@ this.newSolicitude.items.forEach(element => {
   }
 
   handleOkResponse(data: any){
-    console.log("OK!!!!!!!");
     this.createdSolicitude = data;
     this.createStatus = 'success';
+    this.router.navigate(['/employee/solicitudes']);
     
   }
   

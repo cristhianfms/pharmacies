@@ -9,7 +9,6 @@ import {SessionsService} from "../../../services/sessions.service";
     styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
-    logged: boolean = false;
     counter: number = 0;
     profile: User | null = null;
 
@@ -23,9 +22,5 @@ export class NavComponent implements OnInit {
         this.sessionService.user$.subscribe(data => {
             this.profile = data;
         })
-    }
-    logOut(){
-        this.sessionService.logout();
-        this.logged = false;
     }
 }

@@ -20,12 +20,10 @@
         <button  class="btn btn-outline-success" type="button">
             <a id="signup" routerLink= "signup" >SignUp</a>
         </button>
-        <button  *ngIf="!logged" class="btn btn-outline-success" type="button">
+        <button  class="btn btn-outline-success" type="button">
             <a id="login" routerLink= "login" >LogIn</a>
         </button>
-        <button  class="btn btn-secondary" type="button" (click)="logOut()">
-            <a id="logout" routerLink= "" >LogOut</a>
-        </button>
+
         <div class="cart">
             <a routerLink="cart">
                 <img src="./assets/svg/icon_shopping_cart.svg" alt="logo">

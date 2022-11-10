@@ -36,6 +36,5 @@ export class PurchasesComponent implements OnInit {
   onDetails(purchase: Purchase) {
     this.purchasesService.selectedPurchaseDetail.next(purchase);
     this.router.navigate(['/employee/purchase-detail/' + purchase.code]);
-    console.log(purchase)
   }
 }

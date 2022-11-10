@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { SolicitudeQueryDto } from 'src/app/models/Dto/solicitude-query.model';
 import { Solicitude } from 'src/app/models/solicitude.model';
 import { SolicitudesService } from 'src/app/services/solicitudes.service';
@@ -17,7 +18,7 @@ export class SolicitudesListComponent implements OnInit {
     state: null,
     drugCode: null
   }
-  constructor(private solicitudeService: SolicitudesService) { }
+  constructor(private solicitudeService: SolicitudesService, private router: Router) { }
 
   ngOnInit(): void {
     this.solicitudeService.getAllSolicitudes().subscribe({
@@ -33,5 +34,8 @@ export class SolicitudesListComponent implements OnInit {
   handleError(error: any){
     window.alert("Error getting solicitudes")
   }
-
+  onDetails(solicitude: Solicitude) {
+    this.solicitudeService.selectedSolicitudeToEdit.next(solicitude);
+    this.router.navigate(['/employee/solicitude-detail/']);
+  }
 }

@@ -31,7 +31,6 @@
     <tbody>
     <!--div *ngIf="drugs!==null" class="solicitude-container"-->
             <tr *ngFor ="let drug of drugs" class="mb-3">
-            <!--div *ngFor="let drug of drugs" class="mb-3"-->
             <td>
                 <label for="{{drug.drugCode}}" class="form-label">
                     {{drug.drugCode}}
@@ -49,12 +48,12 @@
             </td>
             </tr>
             <div class="buttons">
-                <button  type="submit" class="btn btn-primary"> 
-                <!--[disabled]="!form.valid"-->>
+                <button  type="submit" class="btn btn-primary"  [disabled]="!form.valid">
                 <span *ngIf="pressed" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Submit
                 </button>
             </div>
+            
         </tbody>
     </table>
 </form>
