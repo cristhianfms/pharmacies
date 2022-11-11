@@ -7,7 +7,7 @@ export interface SolicitudeItem {
 
 export interface Solicitude {
     state: string,
-    date: string,
+    date: Date,
     employeeUserName: string,
     pharmacy: string,
     solicitudeItems:SolicitudeItem[],

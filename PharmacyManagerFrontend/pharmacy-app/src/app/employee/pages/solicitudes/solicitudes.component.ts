@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SolicitudeQueryDto } from 'src/app/models/Dto/solicitude-query.model';
+import { QuerySolicitudeDto } from 'src/app/models/Dto/solicitude-query.model';
 
 @Component({
   selector: 'app-solicitudes',
@@ -9,12 +9,12 @@ import { SolicitudeQueryDto } from 'src/app/models/Dto/solicitude-query.model';
 })
 export class SolicitudesComponent implements OnInit {
 
-  filterDateFrom: string | null = null;
-  filterDateTo: string | null = null;
+  filterDateFrom: Date | null = null;
+  filterDateTo: Date | null = null;
   filterState: string  | null = null;
   filterDrugCode: string | null = null;
 
-  solicitudeQuery: SolicitudeQueryDto = {
+  solicitudeQuery: QuerySolicitudeDto = {
     dateFrom: null,
     dateTo: null,
     state:null,
@@ -29,7 +29,8 @@ export class SolicitudesComponent implements OnInit {
     console.log("entra a obtain");
     event.preventDefault();
     let state = this.filterState == "All" ? null : this.filterState;
-    console.log(state);
+    console.log(this.filterDateFrom);
+    console.log(this.filterDateTo);
     this.solicitudeQuery = {
       dateFrom: this.filterDateFrom,
       dateTo: this.filterDateTo,

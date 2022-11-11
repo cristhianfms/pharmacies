@@ -1,0 +1,22 @@
+<table class="table table-hover" >
+    <thead class="table-primary">
+    <tr>
+        <th scope="col">Employee</th>
+        <th scope="col">Date</th>
+        <th scope="col">State</th>
+        <th scope="col">Items</th>
+    </tr>
+    </thead>
+    <tbody >
+        <ng-container *ngFor="let solicitude of solicitudes | solicitudesFilter:solicitudeQuery">
+            <tr >
+                <td [attr.rowspan]="solicitude.solicitudeItems.length + 1">{{solicitude.employeeUserName}}</td>
+                <td [attr.rowspan]="solicitude.solicitudeItems.length + 1">{{solicitude.date | date:'short':'-0300'}}</td>
+                <td [attr.rowspan]="solicitude.solicitudeItems.length + 1">{{solicitude.state}}</td>
+            </tr>
+            <tr  class="tr-items" *ngFor = "let item of solicitude.solicitudeItems; let i = index" >
+                <td><li><b>{{item.drugCode}}</b>({{item.drugQuantity}})</li></td>
+            </tr>
+        </ng-container>
+    </tbody>
+</table>

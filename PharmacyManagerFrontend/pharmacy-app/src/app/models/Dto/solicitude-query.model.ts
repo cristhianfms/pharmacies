@@ -1,6 +1,6 @@
-export interface SolicitudeQueryDto {
-    dateFrom : string | null,
-    dateTo: string | null,
+export interface QuerySolicitudeDto {
+    dateFrom : Date | null,
+    dateTo: Date | null,
     state: string | null,
     drugCode: string | null
 }

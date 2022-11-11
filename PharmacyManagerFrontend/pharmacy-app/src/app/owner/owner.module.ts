@@ -7,19 +7,22 @@ import { InvitationCreateComponent } from './pages/invitation-create/invitation-
 import {FormsModule} from "@angular/forms";
 import { PurchaseReportComponent } from './pages/purchase-report/purchase-report.component';
 import {SharedModule} from "../shared/shared.module";
+import { SolicitudesUpdateComponent } from './pages/solicitudes/solicitudes-update.component';
 
 
 @NgModule({
   declarations: [
     LayoutComponent,
     InvitationCreateComponent,
-    PurchaseReportComponent
+    PurchaseReportComponent,
+    SolicitudesUpdateComponent,
+    //SolicitudesListComponent
   ],
     imports: [
         CommonModule,
         OwnerRoutingModule,
         FormsModule,
-        SharedModule
+        SharedModule,
     ]
 })
 export class OwnerModule { }

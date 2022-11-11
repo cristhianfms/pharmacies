@@ -5,13 +5,13 @@ import { EmployeeRoutingModule } from './employee-routing.module';
 import { LayoutComponent } from './components/layout/layout.component';
 import { SolicitudesCreateComponent } from './pages/solicitudes-create/solicitudes-create.component';
 import { SolicitudesComponent } from './pages/solicitudes/solicitudes.component';
-import { SolicitudesListComponent } from './components/solicitudes-list/solicitudes-list.component';
 import { PurchaseDetailComponent } from './pages/purchase-detail/purchase-detail.component';
 import {PurchasesComponent} from "./pages/purchases/purchases.component";
 import { ExportDrugComponent } from './pages/export-drug/export-drug.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import { SolicitudesFilterPipe } from './pipes/solicitudes-filter.pipe';
+import { SolicitudesListComponent } from './components/layout/solicitudes-list/solicitudes-list.component';
 
 
 

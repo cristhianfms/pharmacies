@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SolicitudeQueryDto } from 'src/app/models/Dto/solicitude-query.model';
+import { QuerySolicitudeDto } from 'src/app/models/Dto/solicitude-query.model';
 import { Solicitude } from 'src/app/models/solicitude.model';
 import { SolicitudesService } from 'src/app/services/solicitudes.service';
 
@@ -12,7 +12,7 @@ import { SolicitudesService } from 'src/app/services/solicitudes.service';
 export class SolicitudesListComponent implements OnInit {
   solicitudes: Solicitude[] = [];
 
-  @Input() solicitudeQuery: SolicitudeQueryDto = {
+  @Input() solicitudeQuery: QuerySolicitudeDto = {
     dateFrom: null,
     dateTo: null,
     state: null,
