@@ -62,6 +62,7 @@ public class PurchaseLogic : IPurchaseLogic
 
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
     {
+        
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
         IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p =>
             p.Items.Any(i => i.Pharmacy.Id == pharmacyOfCurrentUser.Id) &&
