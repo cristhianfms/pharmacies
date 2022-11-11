@@ -28,10 +28,14 @@
             
             <div class="buttons">
                 <button type="submit" class="btn btn-primary"
-                [disabled]="!form.form.valid">
+                [disabled]="!form.form.valid" >
+                <span *ngIf="pressed" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     Submit
                 </button>
-                <a routerLink= "/home/signup">New in Pharmacy Manager?</a>
+                <a routerLink= "../signup">New in Pharmacy Manager?</a>
+            </div>
+            <div *ngIf="status=='error'"class="alert alert-danger" role="alert">
+                {{errorMessage}}
             </div>
         </div>
 </form>

@@ -1,0 +1,22 @@
+import { SolicitudeItemDto } from "./Dto/solicitude-item-dto.model";
+
+export interface SolicitudeItem {
+    drugCode: string,
+    drugQuantity: string,
+}
+
+export interface Solicitude {
+    state: string,
+    date: Date,
+    userName: string,
+    pharmacyName: string,
+    items:SolicitudeItem[],
+}
+
+export interface CreateSolicitudeDto  {
+    solicitudeItems: SolicitudeItemDto[]
+}
+
+export interface UpdateSolicitudeDto {
+//TODO:
+}
