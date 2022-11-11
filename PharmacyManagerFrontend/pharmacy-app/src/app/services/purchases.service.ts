@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {PurchaseDto, PurchaseGetDto, PurchasePutDto} from "../models/Dto/purchase-dto.model";
 import {PurchaseList} from "../models/purchase-list.model";
-import {BehaviorSubject, map, of} from "rxjs";
+import {BehaviorSubject, map, of, catchError, tap} from "rxjs";
 import {Purchase} from "../models/purchase.model";
 import {PurchaseListGetDto} from "../models/Dto/purchase-list-dto.model";
 import {PurchaseItem} from "../models/purchase-item.model";
 import {PurchaseItemGetDto} from "../models/Dto/purchase-item-dto.model";
 import {PurchaseState} from "../models/Dto/purchase-state-dto.model";
-import {Drug} from "../models/drug.model";
+import {PurchaseReportDto} from "../models/Dto/purchase-report-dto.model";
+import { PurchaseItemReportDto } from '../models/Dto/purchase-item-report-dto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,12 @@ export class PurchasesService {
   dateToQueryParam: string = 'dateTo'
   selectedPurchaseDetail = new BehaviorSubject<Purchase | null>(null)
   selectedPurchaseDetail$ = this.selectedPurchaseDetail.asObservable();
+  _purchaseItemReportBehaviorSubject$: BehaviorSubject<PurchaseItemReportDto[] | undefined>;
 
-  constructor( private http: HttpClient) { }
+
+  constructor( private http: HttpClient) {
+    this._purchaseItemReportBehaviorSubject$ = new BehaviorSubject<PurchaseItemReportDto[] | undefined>(undefined);
+   }
 
   create(purchase: PurchaseDto){
     return this.http.post(`${this.apiUrl}`, purchase)
@@ -54,7 +59,6 @@ export class PurchasesService {
         .pipe(map(this.purchaseDtoToModel));
   }
 
-
   purchaseDtoToModel(p: PurchaseGetDto){
     let purchase: Purchase = {
       id: p.id,
@@ -81,32 +85,11 @@ export class PurchasesService {
         .pipe(map(this.purchaseDtoToModel));
   }
 
-    getPurchasesReport(dateFrom?: string, dateTo?: string) {
-      let params = new HttpParams()
-      if (dateFrom){
-        params.set(this.dateFromQueryParam, dateFrom)
-      }
-      if (dateTo){
-        params.set(this.dateToQueryParam, dateTo)
-      }
+  getPurchasesReport(dateFrom?: string, dateTo?: string) {
 
-      return of(
-          {
-            totalPrice: 1234.99,
-            purchases: [{
-                drugCode: "A01",
-                pharmacy: "pharmashop",
-                quantity: 100,
-                amount: 500.99
-              },
-              {
-              drugCode: "A02",
-              pharmacy: "pharmashop2",
-              quantity: 300,
-              amount: 55.99
-            }
-            ]
-          }
-      )
+      return this.http.get<PurchaseReportDto>(`${this.apiUrl}`+ "?dateFrom="+dateFrom + "&dateTo=" + dateTo)
+      .pipe(tap((report: PurchaseReportDto) => this._purchaseItemReportBehaviorSubject$.next(report.purchases)))
+
     }
+
 }

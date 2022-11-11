@@ -86,7 +86,7 @@ public class PurchaseLogic : IPurchaseLogic
         return purchaseReport;
 
     }
-
+        
     private List<PurchaseItemReportDto> ProcessItemsForReport(List<PurchaseItem> purchaseItems, List<PurchaseItemReportDto> result)
     {
         foreach (var purchaseItem in purchaseItems)
