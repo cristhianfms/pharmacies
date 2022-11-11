@@ -1,6 +1,25 @@
+<div class="search-container">
+  <form class="row gx-3 gy-2 align-items-center">
+         <div class="col-sm-3">
+          <label for="specificSizeInputName1">Drug name</label>
+          <input [(ngModel)]="filterDrugName" type="text" class="form-control" id="specificSizeInputName1" name= "specificSizeInputName1" placeholder="">
+      </div>
+      <div class="col-sm-3">
+        <label for="specificSizeSelect">Has Stock</label>
+        <select [(ngModel)]="filterHasStock"  class="form-select" id="specificSizeSelect"  name= "specificSizeSelect" >
+          <option selected [ngValue]= "null">All</option>
+          <option [ngValue]= "true">Yes</option>
+          <option [ngValue]= "false">No</option>
+        </select>
+    </div>
+      <div class="col-auto align-items-baseline">
+          <button (click)="updateDrugQuery($event)" type="submit" class="btn btn-primary">Search</button>
+      </div>
+  </form>
+</div>
 <div class="drugs--grid">
     <app-drug
-            *ngFor="let drug of drugs"
+            *ngFor="let drug of drugs | drugsFilter: drugQuery"
             [drug]="drug"
             (addedProduct)="onAddToShoppingCart($event)"
     ></app-drug>
