@@ -41,7 +41,7 @@ public class PurchasesController : ControllerBase
         return Ok(purchaseUpdatedModel);
     }
 
-    [HttpGet]
+    [HttpGet("report")]
     [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult GetPurchasesReport([FromQuery] QueryPurchaseDto queryPurchaseDto)
     {

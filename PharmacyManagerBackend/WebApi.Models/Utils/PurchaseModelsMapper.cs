@@ -40,16 +40,26 @@ public static class PurchaseModelsMapper
         };
     }
 
+    private static PurchaseItemReportModel ToModel(PurchaseItemReportDto purchaseItem)
+    {
+        return new PurchaseItemReportModel
+        {
+            Name = purchaseItem.Name,
+            Quantity = purchaseItem.Quantity,
+            Amount = purchaseItem.Amount
+        };
+    }
+
     public static PurchaseReportModel ToModel(PurchaseReportDto purchaseReport)
     {
-        List<PurchaseResponseModel> purchaseModels = purchaseReport.Purchases.Select(p => ToModel(p)).ToList();
+        List<PurchaseItemReportModel> purchaseItemModels = purchaseReport.Purchases.Select(p => ToModel(p)).ToList();
         return new PurchaseReportModel
         {
             TotalPrice = purchaseReport.TotalPrice,
-            Purchases = purchaseModels
+            Purchases = purchaseItemModels
         };
     }
-    
+
     public static Purchase ToEntity(PurchaseRequestModel purchaseRequestModel)
     {
         List<PurchaseItem> purchaseItems = purchaseRequestModel.Items.Select(i => ToEntity(i)).ToList();
@@ -59,7 +69,7 @@ public static class PurchaseModelsMapper
             Items = purchaseItems
         };
     }
-    
+
     private static PurchaseItem ToEntity(PurchaseItemModel purchaseItemModel)
     {
         return new PurchaseItem
@@ -75,7 +85,7 @@ public static class PurchaseModelsMapper
             }
         };
     }
-    
+
     public static Purchase ToEntity(PurchasePutModel purchasePutModel)
     {
         List<PurchaseItem> purchaseItems = purchasePutModel.Items.Select(i => ToEntity(i)).ToList();
@@ -84,7 +94,7 @@ public static class PurchaseModelsMapper
             Items = purchaseItems
         };
     }
-    
+
     private static PurchaseItem ToEntity(PurchaseItemPutModel purchaseItemPutModel)
     {
         return new PurchaseItem
@@ -101,7 +111,7 @@ public static class PurchaseModelsMapper
     {
         List<PurchaseItemStatusModel> purchaseItemModels = new List<PurchaseItemStatusModel>();
 
-        foreach(var pi in purchaseItems)
+        foreach (var pi in purchaseItems)
             purchaseItemModels.Add(ToModel(pi));
 
         return purchaseItemModels;
