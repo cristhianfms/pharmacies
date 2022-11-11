@@ -49,7 +49,7 @@ public class QueryPurchaseDto
 
     public DateTime? GetParsedDateTo()
     {
-        return _dateTo != null ? new DateTime(_dateTo.Value.Year, _dateTo.Value.Month, _dateTo.Value.Day, 23, 59, 59) : DateTime.Now;
+        return _dateTo != null ? new DateTime(_dateTo.Value.Year, _dateTo.Value.Month, _dateTo.Value.Day, 23, 59, 59) : new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23,59,59);
     }
 
 
