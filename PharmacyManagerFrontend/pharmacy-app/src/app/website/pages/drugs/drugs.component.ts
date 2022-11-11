@@ -13,11 +13,11 @@ import { DrugQueryDto } from 'src/app/models/Dto/drug-query.model';
 export class DrugsComponent implements OnInit {
 
   filterDrugName: string | null = null
-  filterHasStock: boolean | null = false
+  filterHasStock: boolean | null = null
 
   drugQuery: DrugQueryDto = {
     drugName: null,
-    hasStock: false
+    hasStock: null
   }
 
   @Input() drugs: Drug[] = []

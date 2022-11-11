@@ -12,7 +12,6 @@ import { DrugsComponent } from './pages/drugs/drugs.component';
 import { DrugComponent } from './components/drug/drug.component';
 import { PurchaseDetailComponent } from './components/purchase-detail/purchase-detail.component';
 import { DrugsFilterPipe } from '../website/pages/drugs/pipes/drug-filter.pipe';
-import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +26,6 @@ import { SharedModule } from '../shared/shared.module';
     PurchaseDetailComponent,
     DrugsFilterPipe,
   ],
-  imports: [CommonModule, WebsiteRoutingModule, FormsModule, SharedModule],
+  imports: [CommonModule, WebsiteRoutingModule, FormsModule],
 })
 export class WebsiteModule {}

@@ -93,9 +93,4 @@ export class DrugListDeleteComponent implements OnInit {
     this.errorMessage = error.error.message;
   }
 
-  private setMovies = (drugs: Drug[] | undefined) => {
-    if(!drugs) this.drugs = [];
-    else this.drugs = drugs;
-  };
-
 }
