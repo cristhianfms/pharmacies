@@ -76,7 +76,7 @@ public class PharmacyManagerContext : DbContext
         Permission createInvitation = new Permission() { Id = 1, Endpoint = "POST/api/invitations" };
         Permission updateInvitation = new Permission() { Id = 10, Endpoint = "PUT/api/invitations/.*" };
         Permission getAllInvitations = new Permission() { Id = 11, Endpoint = "GET/api/invitations" };
-        
+
         //Pharmacy permissions
         Permission createPharmacy = new Permission() { Id = 8, Endpoint = "POST/api/pharmacies" };
         Permission getPharmacies = new Permission() { Id = 15, Endpoint = "GET/api/pharmacies" };
@@ -90,15 +90,16 @@ public class PharmacyManagerContext : DbContext
         Permission createDrug = new Permission() { Id = 5, Endpoint = "POST/api/drugs" };
         Permission deleteDrug = new Permission() { Id = 6, Endpoint = "DELETE/api/drugs/.*" };
         Permission getDrug = new Permission() { Id = 7, Endpoint = "GET/api/drugs/.*" };
+        Permission getAllDrugs = new Permission() { Id = 16, Endpoint = "GET/api/drugs" };
 
         //Purchase Permissions
         Permission getAllPurchases = new Permission() { Id = 9, Endpoint = "GET/api/purchases" };
         Permission updatePurchase = new Permission() { Id = 12, Endpoint = "PUT/api/purchases/.*" };
-        
+
         //Drug Exporter permissons 
         Permission getDrugExporters = new Permission() { Id = 13, Endpoint = "GET/api/drug-exporters" };
         Permission exportDrugs = new Permission() { Id = 14, Endpoint = "POST/api/drug-exporters/export" };
-        
+
         modelBuilder.Entity<Permission>().HasData(
             createInvitation,
             createSolicitude,
@@ -107,6 +108,7 @@ public class PharmacyManagerContext : DbContext
             createDrug,
             deleteDrug,
             getDrug,
+            getAllDrugs,
             createPharmacy,
             getPharmacies,
             getAllPurchases,
@@ -127,6 +129,7 @@ public class PharmacyManagerContext : DbContext
             new PermissionRole() { PermissionId = createDrug.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = deleteDrug.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = getDrug.Id, RoleId = employee.Id },
+            new PermissionRole() { PermissionId = getAllDrugs.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = createPharmacy.Id, RoleId = admin.Id },
             new PermissionRole() { PermissionId = getPharmacies.Id, RoleId = admin.Id },
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = admin.Id },

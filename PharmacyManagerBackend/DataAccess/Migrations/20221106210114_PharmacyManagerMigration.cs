@@ -327,7 +327,8 @@ namespace DataAccess.Migrations
                     { 12, "PUT/api/purchases/.*" },
                     { 13, "GET/api/drug-exporters" },
                     { 14, "POST/api/drug-exporters/export" },
-                    { 15, "GET/api/pharmacies" }
+                    { 15, "GET/api/pharmacies" },
+                    { 16, "GET/api/drugs" }
                 });
 
             migrationBuilder.InsertData(
@@ -363,7 +364,8 @@ namespace DataAccess.Migrations
                     { 9, 3 },
                     { 12, 3 },
                     { 13, 3 },
-                    { 14, 3 }
+                    { 14, 3 },
+                    { 16, 3 }
                 });
 
             migrationBuilder.InsertData(

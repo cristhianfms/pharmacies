@@ -48,6 +48,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [ServiceFilter(typeof(AuthorizationAttributePublicFilter))]
         public IActionResult Get([FromQuery] QueryDrugDto queryDrugDto)
         {
             IEnumerable<Drug> drugs = _drugLogic.GetAll(queryDrugDto);
