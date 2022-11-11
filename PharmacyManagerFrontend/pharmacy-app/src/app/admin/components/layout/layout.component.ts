@@ -7,6 +7,7 @@ import {Component, OnInit} from '@angular/core';
 })
 export class LayoutComponent implements OnInit {
 
+
     navOptions = [
         {
             router: "pharmacies",
@@ -24,4 +25,5 @@ export class LayoutComponent implements OnInit {
     ngOnInit(): void {
     }
 
-}
+  }
+

@@ -12,7 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20221030234046_PharmacyManagerMigration")]
+<<<<<<<< HEAD:PharmacyManagerBackend/DataAccess/Migrations/20221111190532_PharmacyManagerMigration.Designer.cs
+    [Migration("20221111190532_PharmacyManagerMigration")]
+========
+    [Migration("20221106210114_PharmacyManagerMigration")]
+>>>>>>>> f9e145e78c2a33826d73eaf02c503954cd2d5d18:PharmacyManagerBackend/DataAccess/Migrations/20221106210114_PharmacyManagerMigration.Designer.cs
     partial class PharmacyManagerMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,6 +82,11 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
+                            Id = 16,
+                            Endpoint = "GET/api/drugs"
+                        },
+                        new
+                        {
                             Id = 8,
                             Endpoint = "POST/api/pharmacies"
                         },
@@ -90,6 +99,11 @@ namespace DataAccess.Migrations
                         {
                             Id = 9,
                             Endpoint = "GET/api/purchases"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Endpoint = "GET/api/purchases/report"
                         },
                         new
                         {
@@ -180,6 +194,11 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
+                            RoleId = 3,
+                            PermissionId = 16
+                        },
+                        new
+                        {
                             RoleId = 1,
                             PermissionId = 8
                         },
@@ -202,6 +221,11 @@ namespace DataAccess.Migrations
                         {
                             RoleId = 2,
                             PermissionId = 9
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 16
                         },
                         new
                         {

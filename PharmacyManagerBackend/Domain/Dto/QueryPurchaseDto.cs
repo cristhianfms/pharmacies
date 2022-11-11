@@ -39,23 +39,23 @@ public class QueryPurchaseDto
                 throw new ValidationException("DateTo: invalid format");
             }
         }
-        
+
     }
-    
+
     public DateTime? GetParsedDateFrom()
     {
-        return _dateFrom != null ? _dateFrom : new DateTime(DateTime.Now.Year, DateTime.Now.Month, 01);
+        return _dateFrom != null ? new DateTime(_dateFrom.Value.Year, _dateFrom.Value.Month, _dateFrom.Value.Day, 0, 0, 0) : new DateTime(DateTime.Now.Year, DateTime.Now.Month, 01);
     }
-    
+
     public DateTime? GetParsedDateTo()
     {
-        return _dateTo != null ? _dateTo : DateTime.Now;
+        return _dateTo != null ? new DateTime(_dateTo.Value.Year, _dateTo.Value.Month, _dateTo.Value.Day, 23, 59, 59) : new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23,59,59);
     }
-    
-    
+
+
     private void checkTimeLine()
     {
-        if (_dateFrom != null && _dateTo != null && _dateFrom >= _dateTo)
+        if (_dateFrom != null && _dateTo != null && _dateFrom > _dateTo)
         {
             throw new ValidationException("DateTo must be after DateFrom");
         }

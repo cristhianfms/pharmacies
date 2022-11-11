@@ -14,8 +14,6 @@ export class SignupComponent implements OnInit {
   code: string = "";
   invitation: UpdateInvitationDto = {
     userName: "",
-    roleName: "",
-    pharmacyName: "",
     email: "",
     address: "",
     password:"",
@@ -46,7 +44,7 @@ export class SignupComponent implements OnInit {
   }
   handleOkResponse(data:any){
     this.Status = 'success';
-    this.router.navigate(['/home/login']);
+    this.router.navigate(['/login']);
   }
   handleErrorResponse(error: any){
     this.Status = 'error';

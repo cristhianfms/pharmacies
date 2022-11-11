@@ -327,7 +327,12 @@ namespace DataAccess.Migrations
                     { 12, "PUT/api/purchases/.*" },
                     { 13, "GET/api/drug-exporters" },
                     { 14, "POST/api/drug-exporters/export" },
-                    { 15, "GET/api/pharmacies" }
+                    { 15, "GET/api/pharmacies" },
+<<<<<<<< HEAD:PharmacyManagerBackend/DataAccess/Migrations/20221111190532_PharmacyManagerMigration.cs
+                    { 16, "GET/api/purchases/report" }
+========
+                    { 16, "GET/api/drugs" }
+>>>>>>>> f9e145e78c2a33826d73eaf02c503954cd2d5d18:PharmacyManagerBackend/DataAccess/Migrations/20221106210114_PharmacyManagerMigration.cs
                 });
 
             migrationBuilder.InsertData(
@@ -355,6 +360,7 @@ namespace DataAccess.Migrations
                     { 3, 2 },
                     { 4, 2 },
                     { 9, 2 },
+                    { 16, 2 },
                     { 2, 3 },
                     { 3, 3 },
                     { 5, 3 },
@@ -363,7 +369,8 @@ namespace DataAccess.Migrations
                     { 9, 3 },
                     { 12, 3 },
                     { 13, 3 },
-                    { 14, 3 }
+                    { 14, 3 },
+                    { 16, 3 }
                 });
 
             migrationBuilder.InsertData(
