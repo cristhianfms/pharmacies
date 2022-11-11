@@ -3,6 +3,7 @@ using Domain.Dtos;
 using Exceptions;
 using IBusinessLogic;
 using IDataAccess;
+using System;
 using System.Linq;
 
 namespace BusinessLogic;
@@ -46,7 +47,7 @@ public class PurchaseLogic : IPurchaseLogic
 
         Purchase purchase = _purchaseRepository.GetFirst(p => p.Code == purchaseCode);
         List<PurchaseItemStatusDto> result = new List<PurchaseItemStatusDto>();
-        foreach( var pi in purchase.Items)
+        foreach (var pi in purchase.Items)
         {
             PurchaseItemStatusDto itemDto = new PurchaseItemStatusDto
             {
@@ -67,51 +68,70 @@ public class PurchaseLogic : IPurchaseLogic
             p.Date >= queryPurchaseDto.GetParsedDateFrom() &&
             p.Date <= queryPurchaseDto.GetParsedDateTo());
 
-
         double totalPrice = 0;
-        List<Purchase> purchasesToReport = new List<Purchase>();
+        List<PurchaseItemReportDto> purchaseItemReports = new List<PurchaseItemReportDto>();
+
         foreach (var purchase in purchases)
         {
-            List<PurchaseItem> purchaseItems = new List<PurchaseItem>();
-            purchaseItems = purchase.Items.FindAll(i => i.PharmacyId == pharmacyOfCurrentUser.Id);
-
+            List<PurchaseItem> purchaseItems = purchase.Items.FindAll(i => i.PharmacyId == pharmacyOfCurrentUser.Id);
             totalPrice += CalculateTotalPrice(purchaseItems);
-
-            Purchase purchaseToReport = new Purchase()
-            {
-                Id = purchase.Id,
-                UserEmail = purchase.UserEmail,
-                Items = purchaseItems,
-                Date = purchase.Date,
-                TotalPrice = CalculateTotalPrice(purchaseItems),
-                Code = purchase.Code
-            };
-            purchasesToReport.Add(purchaseToReport);
+            purchaseItemReports = ProcessItemsForReport(purchaseItems, purchaseItemReports);           
         }
         PurchaseReportDto purchaseReport = new PurchaseReportDto()
         {
-
-            Purchases = purchasesToReport,
+            Purchases = purchaseItemReports,
             TotalPrice = totalPrice
         };
 
         return purchaseReport;
+
     }
-        
+
+    private List<PurchaseItemReportDto> ProcessItemsForReport(List<PurchaseItem> purchaseItems, List<PurchaseItemReportDto> result)
+    {
+        foreach (var purchaseItem in purchaseItems)
+        {
+            var name = purchaseItem.Drug.DrugCode + " - " + purchaseItem.Drug.DrugInfo.Name;
+            var quantity = purchaseItem.Quantity;
+            var unitaryPrice = purchaseItem.Drug.Price;
+            var amount = quantity * unitaryPrice;
+
+            PurchaseItemReportDto purchaseItemDto = result.FirstOrDefault(pi => pi.Name== name);
+
+            if (purchaseItemDto == null)
+            {
+                PurchaseItemReportDto purchaseItemReportDto = new PurchaseItemReportDto()
+                {
+                    Name = name,
+                    Quantity = quantity,
+                    Amount = amount
+                };
+                result.Add(purchaseItemReportDto);
+            }
+            else
+            {
+                purchaseItemDto.Quantity += quantity;
+                purchaseItemDto.Amount += amount;
+            }
+        }
+
+        return result;
+    }
+
     public Purchase Update(int id, Purchase purchase)
     {
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
         Purchase currentPurchase = GetPurchase(id);
         List<PurchaseItem> currentUserPurchaseItems = currentPurchase.Items.FindAll(i => i.PharmacyId == pharmacyOfCurrentUser.Id);
-        
+
         foreach (var itemToUpdate in purchase.Items)
         {
             PurchaseItem existentItem = TryGetItemFromPharmacyItems(itemToUpdate, currentUserPurchaseItems);
             TryUpdateStatusAndStock(existentItem, itemToUpdate.State);
         }
-        
+
         _purchaseRepository.Update(currentPurchase);
-        
+
         return new Purchase()
         {
             Id = id,
@@ -161,7 +181,7 @@ public class PurchaseLogic : IPurchaseLogic
         {
             var quantity = purchaseItem.Quantity;
             var unitaryPrice = purchaseItem.Drug.Price;
-            totalPrice += quantity *unitaryPrice;
+            totalPrice += quantity * unitaryPrice;
         }
 
         return totalPrice;
@@ -190,7 +210,7 @@ public class PurchaseLogic : IPurchaseLogic
     {
         Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode && d.IsActive);
 
-        if (drug == null)   
+        if (drug == null)
         {
             throw new ValidationException($"{drugCode} not exist in pharmacy {pharmacy.Name}");
         }
@@ -224,7 +244,7 @@ public class PurchaseLogic : IPurchaseLogic
 
         return invitationExists;
     }
-    
+
     private Purchase GetPurchase(int purchaseId)
     {
         Purchase purchase;
@@ -239,7 +259,7 @@ public class PurchaseLogic : IPurchaseLogic
 
         return purchase;
     }
-    
+
     private PurchaseItem TryGetItemFromPharmacyItems(PurchaseItem item, List<PurchaseItem> currentPharmacyItems)
     {
         PurchaseItem existentItem = currentPharmacyItems.Find(i => i.Drug.DrugCode == item.Drug.DrugCode);
@@ -250,7 +270,7 @@ public class PurchaseLogic : IPurchaseLogic
 
         return existentItem;
     }
-    
+
     private void TryUpdateStatusAndStock(PurchaseItem purchaseItem, PurchaseState newState)
     {
         if (purchaseItem.State.Equals(PurchaseState.ACCEPTED) || purchaseItem.State.Equals(PurchaseState.REJECTED))
