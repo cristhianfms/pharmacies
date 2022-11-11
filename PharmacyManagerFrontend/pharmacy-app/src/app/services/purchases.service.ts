@@ -101,7 +101,7 @@ export class PurchasesService {
   getPurchasesReport(dateFrom?: string, dateTo?: string) {
     return this.http
       .get<PurchaseReportDto>(
-        `${this.apiUrl}` + '?dateFrom=' + dateFrom + '&dateTo=' + dateTo
+        `${this.apiUrl}/report` + '?dateFrom=' + dateFrom + '&dateTo=' + dateTo
       )
       .pipe(
         tap((report: PurchaseReportDto) =>

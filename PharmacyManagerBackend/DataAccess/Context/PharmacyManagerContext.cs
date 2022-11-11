@@ -94,7 +94,8 @@ public class PharmacyManagerContext : DbContext
         //Purchase Permissions
         Permission getAllPurchases = new Permission() { Id = 9, Endpoint = "GET/api/purchases" };
         Permission updatePurchase = new Permission() { Id = 12, Endpoint = "PUT/api/purchases/.*" };
-        
+        Permission getPurchaseReport = new Permission() { Id = 16, Endpoint = "GET/api/purchases/report" };
+
         //Drug Exporter permissons 
         Permission getDrugExporters = new Permission() { Id = 13, Endpoint = "GET/api/drug-exporters" };
         Permission exportDrugs = new Permission() { Id = 14, Endpoint = "POST/api/drug-exporters/export" };
@@ -110,6 +111,7 @@ public class PharmacyManagerContext : DbContext
             createPharmacy,
             getPharmacies,
             getAllPurchases,
+            getPurchaseReport,
             updateInvitation,
             getAllInvitations,
             updatePurchase,
@@ -132,6 +134,7 @@ public class PharmacyManagerContext : DbContext
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = admin.Id },
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = getAllPurchases.Id, RoleId = owner.Id },
+            new PermissionRole() { PermissionId = getPurchaseReport.Id, RoleId = owner.Id },
             new PermissionRole() { PermissionId = updatePurchase.Id, RoleId = employee.Id },
             new PermissionRole() { PermissionId = updateInvitation.Id, RoleId = admin.Id },
             new PermissionRole() { PermissionId = getAllInvitations.Id, RoleId = admin.Id },

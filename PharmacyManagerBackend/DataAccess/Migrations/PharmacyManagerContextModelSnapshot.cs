@@ -91,6 +91,11 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
+                            Id = 16,
+                            Endpoint = "GET/api/purchases/report"
+                        },
+                        new
+                        {
                             Id = 10,
                             Endpoint = "PUT/api/invitations/.*"
                         },
@@ -200,6 +205,11 @@ namespace DataAccess.Migrations
                         {
                             RoleId = 2,
                             PermissionId = 9
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 16
                         },
                         new
                         {
