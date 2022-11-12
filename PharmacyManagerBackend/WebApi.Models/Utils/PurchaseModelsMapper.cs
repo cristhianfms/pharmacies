@@ -116,4 +116,14 @@ public static class PurchaseModelsMapper
 
         return purchaseItemModels;
     }
+    
+    public static IEnumerable<PurchaseResponseModel> ToModelList(IEnumerable<Purchase> purchases)
+    {
+        List<PurchaseResponseModel> purchaseModels = new List<PurchaseResponseModel>();
+
+        foreach (var p in purchases)
+            purchaseModels.Add(ToModel(p));
+
+        return purchaseModels;
+    }
 }

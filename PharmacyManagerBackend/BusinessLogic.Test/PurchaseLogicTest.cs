@@ -848,5 +848,52 @@ public class PurchaseLogicTest
         Assert.AreEqual(purchaseRepository, purchaseObtained);
         _purchaseRepositoryMock.VerifyAll();
     }
+    
+    [TestMethod]
+    public void TestGetAllPurchasesOK()
+    {
 
+        string drugCode = "A01";
+        string pharmacyName = "PharmacyName";
+        Drug drug = new Drug()
+        {
+            DrugCode = drugCode,
+            Stock = 2,
+            PharmacyId = 1
+        };
+        Pharmacy pharmacyRepository = new Pharmacy()
+        {
+            Id = 1,
+            Name = pharmacyName,
+            Drugs = new List<Drug>() { drug }
+        };
+        Purchase purchaseRepository = new Purchase()
+        {
+            Id = 1,
+            Code = "1234",
+            TotalPrice = 100.50,
+            UserEmail = "email@email.com",
+            Items = new List<PurchaseItem>()
+            {
+                new PurchaseItem()
+                {
+                    Quantity = 2,
+                    Drug = drug,
+                    Pharmacy = pharmacyRepository,
+                    PharmacyId = 1,
+                    State = PurchaseState.PENDING
+                },
+            },
+        };
+        List<Purchase> purchases = new List<Purchase>()
+        {
+            purchaseRepository
+        };
+        _purchaseRepositoryMock.Setup(m => m.GetAll(It.IsAny<Func<Purchase, bool>>())).Returns(purchases);
+
+        List<Purchase> purchasesReturned = _purchaseLogic.GetAll().ToList();
+
+        CollectionAssert.AreEqual(purchases, purchasesReturned);
+        _purchaseRepositoryMock.VerifyAll();
+    }
 }
