@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuerySolicitudeDto } from 'src/app/models/Dto/solicitude-query.model';
-import { Solicitude } from 'src/app/models/solicitude.model';
+import { Solicitude, SolicitudePutModel } from 'src/app/models/solicitude.model';
 import { SolicitudesService } from 'src/app/services/solicitudes.service';
 
 @Component({
@@ -12,9 +12,18 @@ import { SolicitudesService } from 'src/app/services/solicitudes.service';
 export class SolicitudesUpdateComponent implements OnInit {
   solicitudes: Solicitude[] = [];
 
+  solicitude: Solicitude = {
+    id: 0,
+    state: 'PENDING',
+    date: new Date(''),
+    employeeUserName: '',
+    pharmacy: '',
+    solicitudeItems: []
+  }
 
   updatingStatus: 'loading' | 'success' | 'error' | null = null
   errorMessage: string = ''
+
   constructor(private solicitudeService: SolicitudesService, private router: Router) { }
 
   ngOnInit(): void {
@@ -23,6 +32,11 @@ export class SolicitudesUpdateComponent implements OnInit {
       error: this.handleError.bind(this)
         }
     )
+    this.solicitudeService.selectedSolicitudeToEdit$.subscribe((selectedSolicitude)=>{
+        if(selectedSolicitude){
+          this.solicitude = selectedSolicitude
+        }
+    })
   }
   handleGetAllResponse(data: any){
     this.solicitudes = data
@@ -32,31 +46,44 @@ export class SolicitudesUpdateComponent implements OnInit {
     window.alert("Error getting solicitudes")
   }
   onAccept(solicitude: Solicitude) {
-    this.updateSolicitudeStatus(solicitude, 'Accepted')
+    this.updateSolicitudeStatus(solicitude, 'ACCEPTED')
   }
 
   isAcceptDisable(solicitude: Solicitude) {
-    return solicitude.state === 'Accepted'|| solicitude.state === 'Rejected'
+    return solicitude.state === 'ACCEPTED'|| solicitude.state === 'REJECTED'
   }
 
   onReject(solicitude: Solicitude) {
-    this.updateSolicitudeStatus(solicitude, 'Rejected')
+    this.updateSolicitudeStatus(solicitude, 'REJECTED')
   }
 
   isRejectDisable(solicitude: Solicitude) {
-    return solicitude.state === 'Accepted'|| solicitude.state === 'Rejected'
+    return solicitude.state === 'ACCEPTED'|| solicitude.state === 'REJECTED'
   }
 
-  updateSolicitudeStatus(solicitude: Solicitude, status: any){
-    this.updatingStatus = 'loading'
-   /* let itemToUpdate: PurchaseItem = { ...item }
-    itemToUpdate.state = status
-    let purchaseToUpdate: Purchase = {...this.purchase}
-    purchaseToUpdate.items = [itemToUpdate]
-    this.purchasesService.updatePurchase(this.purchase.id, purchaseToUpdate).subscribe({
-          next: this.handleUpdateResponse.bind(this),
+  updateSolicitudeStatus(solicitude: Solicitude, state: any){
+    this.updatingStatus = 'loading';
+    let solicitudeToUpdate: SolicitudePutModel =
+    {
+      state: state
+    } 
+    this.solicitudeService.updateSolicitude(solicitude.id, solicitudeToUpdate)
+    .subscribe({
+      next: this.handleUpdateResponse.bind(this),
           error: this.handleUpdateError.bind(this)
-        }
-    )*/
+    })
+    
   }
+  handleUpdateResponse(data: any){
+    this.solicitude = data;
+    this.updatingStatus = 'success'
+    setTimeout(() => this.updatingStatus = null,2000)
+  }
+
+  handleUpdateError(error: any){
+    this.updatingStatus = 'error'
+    this.errorMessage = error.error.message
+    setTimeout(() => this.updatingStatus = null,2000)
+  }
+
 }

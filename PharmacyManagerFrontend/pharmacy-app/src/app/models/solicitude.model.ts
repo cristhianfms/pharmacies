@@ -6,7 +6,8 @@ export interface SolicitudeItem {
 }
 
 export interface Solicitude {
-    state: string,
+    id: number,
+    state: "PENDING" | "ACCEPTED" | "REJECTED";
     date: Date,
     employeeUserName: string,
     pharmacy: string,
@@ -17,6 +18,7 @@ export interface CreateSolicitudeDto  {
     solicitudeItems: SolicitudeItemDto[]
 }
 
-export interface UpdateSolicitudeDto {
-//TODO:
+export interface SolicitudePutModel {
+   // state: "PENDING" | "ACCEPTED" | "REJECTED";
+    state: number
 }

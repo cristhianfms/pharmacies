@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { environment } from "src/environments/environment";
-import { CreateSolicitudeDto, Solicitude } from "../models/solicitude.model";
+import { CreateSolicitudeDto, Solicitude, SolicitudePutModel } from "../models/solicitude.model";
 
 @Injectable({
     providedIn: 'root'
@@ -23,5 +23,11 @@ import { CreateSolicitudeDto, Solicitude } from "../models/solicitude.model";
     getAllSolicitudes() {
       return this.http.get<Solicitude[]>(`${this.apiUrl}`)
     }
+
+    updateSolicitude(id: number, solicitude: SolicitudePutModel){
+      return this.http.put(`${this.apiUrl}/${id}`, solicitude)
+    }
+
+
   }
   

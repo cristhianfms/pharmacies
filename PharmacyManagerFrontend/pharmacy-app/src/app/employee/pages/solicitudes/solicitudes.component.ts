@@ -25,8 +25,8 @@ export class SolicitudesComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
   obtainSolicitudeQuery(event: Event){
-    console.log("entra a obtain");
     event.preventDefault();
     let state = this.filterState == "All" ? null : this.filterState;
     console.log(this.filterDateFrom);
