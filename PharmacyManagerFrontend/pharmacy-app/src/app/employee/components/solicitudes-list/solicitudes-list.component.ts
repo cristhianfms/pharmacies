@@ -34,8 +34,4 @@ export class SolicitudesListComponent implements OnInit {
   handleError(error: any){
     window.alert("Error getting solicitudes")
   }
-  onDetails(solicitude: Solicitude) {
-    this.solicitudeService.selectedSolicitudeToEdit.next(solicitude);
-    this.router.navigate(['/employee/solicitude-detail/']);
-  }
 }

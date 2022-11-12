@@ -8,23 +8,11 @@ import { Solicitude, SolicitudeItem } from 'src/app/models/solicitude.model';
 export class SolicitudesFilterPipe implements PipeTransform {
 
   transform(value: Solicitude[], querySolicitudeDto: QuerySolicitudeDto):  Solicitude[] {
-    console.log(querySolicitudeDto.state);
-    console.log(querySolicitudeDto.dateFrom);
+    console.log(querySolicitudeDto)
     return value.filter(i => {
-      return (querySolicitudeDto.dateFrom && querySolicitudeDto.dateTo) ? 
-      ((i.date > querySolicitudeDto.dateFrom) &&(i.date < querySolicitudeDto.dateTo)): true  
-      && querySolicitudeDto.state ? i.state == querySolicitudeDto.state : true &&
-      querySolicitudeDto.drugCode ? i.solicitudeItems.filter(
-        x => { x.drugCode == querySolicitudeDto.drugCode}) : true } )
-      //querySolicitudeDto.dateTo ? i.date < querySolicitudeDto.dateTo : true &&
-      //TODO: filter de drugCode
-      //querySolicitudeDto.drugCode ? i.solicitudeItems.includes() 
-  }
-/*
-searchDrug(items: SolicitudeItem[], drugCode : string){
-  return items.filter(i=>{
-    return i.drugCode == drugCode : true
-  })
-}*/
-
+      return (querySolicitudeDto?.dateFrom ? i.date >= querySolicitudeDto.dateFrom : true) &&
+            (querySolicitudeDto?.dateTo ? i.date <= querySolicitudeDto.dateTo : true) &&
+            (querySolicitudeDto?.state ? i.state == querySolicitudeDto.state : true) &&
+            (querySolicitudeDto?.drugCode ? i.solicitudeItems.findIndex(x => x.drugCode == querySolicitudeDto.drugCode) > -1 : true)
+    })};
 }

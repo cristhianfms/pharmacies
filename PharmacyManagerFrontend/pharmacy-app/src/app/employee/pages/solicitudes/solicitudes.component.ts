@@ -17,7 +17,7 @@ export class SolicitudesComponent implements OnInit {
   solicitudeQuery: QuerySolicitudeDto = {
     dateFrom: null,
     dateTo: null,
-    state:null,
+    state: null,
     drugCode: null
   }
 
@@ -25,20 +25,18 @@ export class SolicitudesComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  
+
   obtainSolicitudeQuery(event: Event){
     event.preventDefault();
     let state = this.filterState == "All" ? null : this.filterState;
-    console.log(this.filterDateFrom);
-    console.log(this.filterDateTo);
     this.solicitudeQuery = {
       dateFrom: this.filterDateFrom,
       dateTo: this.filterDateTo,
       state: state,
       drugCode: this.filterDrugCode
     }
-    console.log(this.filterState);
-  } 
+  }
+
   onCreateSolicitude(){
     this.router.navigate(['/employee/solicitudes-create']);
   }
