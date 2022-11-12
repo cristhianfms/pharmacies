@@ -1,0 +1,108 @@
+<a routerLink="/employee/solicitudes">&lt;&lt; back</a>
+<form (ngSubmit)="onSubmitCreateSolicitude(); form.reset()" [formGroup]="form" >
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Drug code</th>
+            <th scope="col">Amount</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let drug of drugs" class="mb-3">
+            <td>
+                <label for="{{drug.drugCode}}" class="form-label">
+                    {{drug.drugCode}}
+                </label>
+            </td>
+            <td>
+                <input type="number"  class="form-control" id="{{drug.drugCode}}" formControlName="{{drug.drugCode}}" min="1" max="999" (change)="onChangeInput()">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="buttons">
+        <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
+            <span *ngIf="pressed" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Submit
+        </button>
+    </div>
+</form>
+
+<div>
+    <div *ngIf="createStatus=='success'" class="alert alert-success" role="alert">
+        Solicitude created!
+    </div>
+    <div *ngIf="createStatus=='error'"class="alert alert-danger" role="alert">
+        {{errorMessage}}
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--table class="table table-hover" >
+    <thead>
+        <tr>
+            <th scope="col">Drug code</th>
+            <th scope="col">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <form [formGroup]="form" (ngSubmit)="onSubmitCreateSolicitude(); form.reset()"  >
+    <tr *ngFor="let drug of drugs">
+
+        <td>{{drug.drugCode}}
+            <label for="{{drug.drugCode}}" class="form-label">{{drug.drugCode}}</label>
+        </td>
+        <td>
+            <div class="form">
+                <div class="form-group">
+                    <div class="control" >
+
+                    <input id="{{drug.drugCode}}" name="{{drug.drugCode}}"  type="number" class="form-control" formControlName="{{drug.drugCode}}" min="1" max="999">
+
+                   </div>
+                </div>
+            </div>
+    </td>
+    <td>   <a class="btn btn-primary">Add to cart</a></td>
+
+
+
+    </tr>
+    <div class="buttons">
+    <button type="submit" class="btn btn-primary"
+    [disabled]="!form.valid">
+    <span *ngIf="pressed" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Submit
+    </button>
+    </div>
+</form>
+</tbody>
+</table-->

@@ -1,0 +1,45 @@
+<h3>Solicitudes menu</h3>
+<hr>
+<button (click)="onCreateSolicitude()" id="button-create" type="button" class="btn btn-primary btn-sm">
+    Create solicitude
+</button>
+<hr>
+<div class="search-container">
+    <form class="row gx-3 gy-2 align-items-center">
+        <div class="col-sm-3">
+            <label for="specificSizeInputName1">Drug Code:</label>
+            <input [(ngModel)]="filterDrugCode" type="text" class="form-control" id="specificSizeInputName1" name= "specificSizeInputName1" placeholder="">
+        </div>
+        <div class="col-sm-3">
+
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm-1">Date From:</span>
+                <input [(ngModel)]="filterDateFrom" type="date" id="dateFrom" name="dateFrom" data-date-format="yyyy-mm-dd">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm-1">Date To:</span>
+                <input [(ngModel)]="filterDateTo" type="date" id="dateTo" name="dateTo" data-date-format="yyyy-mm-dd">
+            </div>
+
+        </div>
+        <div class="col-sm-3">
+            <label for="specificSizeSelect">State</label>
+            <select [(ngModel)]="filterState" class="form-select" id="inputGroupSelect01" name= "specificSizeSelect">
+                <option selected value="All">All</option>
+                <option value="1">ACCEPTED</option>
+                <option value="0">PENDING</option>
+                <option value="2">REJECTED</option>
+            </select>
+        </div>
+        <div class="col-auto align-items-baseline">
+
+            <button (click)="obtainSolicitudeQuery($event)" class="btn btn-primary" type="button">Search</button>
+            <button type="reset"  class="btn btn-secondary">Reset</button>
+        </div>
+        </form>
+        </div>
+   
+        <app-solicitudes-list [solicitudeQuery]="solicitudeQuery"></app-solicitudes-list>
+        

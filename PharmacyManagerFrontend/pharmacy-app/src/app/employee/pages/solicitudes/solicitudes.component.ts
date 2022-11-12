@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SolicitudeQueryDto } from 'src/app/models/Dto/solicitude-query.model';
+import { QuerySolicitudeDto } from 'src/app/models/Dto/solicitude-query.model';
 
 @Component({
   selector: 'app-solicitudes',
@@ -14,7 +14,7 @@ export class SolicitudesComponent implements OnInit {
   filterState: string  | null = null;
   filterDrugCode: string | null = null;
 
-  solicitudeQuery: SolicitudeQueryDto = {
+  solicitudeQuery: QuerySolicitudeDto = {
     dateFrom: null,
     dateTo: null,
     state:null,
@@ -25,14 +25,19 @@ export class SolicitudesComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  obtainSolicitudeQuery(){
+  
+  obtainSolicitudeQuery(event: Event){
+    event.preventDefault();
     let state = this.filterState == "All" ? null : this.filterState;
-  this.solicitudeQuery = {
-    dateFrom: this.filterDateFrom,
-    dateTo: this.filterDateTo,
-    state: state,
-    drugCode: this.filterDrugCode
-  }
+    console.log(this.filterDateFrom);
+    console.log(this.filterDateTo);
+    this.solicitudeQuery = {
+      dateFrom: this.filterDateFrom,
+      dateTo: this.filterDateTo,
+      state: state,
+      drugCode: this.filterDrugCode
+    }
+    console.log(this.filterState);
   } 
   onCreateSolicitude(){
     this.router.navigate(['/employee/solicitudes-create']);

@@ -2,21 +2,18 @@ import { SolicitudeItemDto } from "./Dto/solicitude-item-dto.model";
 
 export interface SolicitudeItem {
     drugCode: string,
-    drugQuantity: string,
+    drugQuantity: number,
 }
 
 export interface Solicitude {
-    state: string,
+    id: number,
+    state: "Pending" | "Accepted" | "Rejected",
     date: Date,
-    userName: string,
-    pharmacyName: string,
-    items:SolicitudeItem[],
+    employeeUserName: string,
+    pharmacy: string,
+    solicitudeItems:SolicitudeItem[],
 }
 
 export interface CreateSolicitudeDto  {
     solicitudeItems: SolicitudeItemDto[]
-}
-
-export interface UpdateSolicitudeDto {
-//TODO:
 }
