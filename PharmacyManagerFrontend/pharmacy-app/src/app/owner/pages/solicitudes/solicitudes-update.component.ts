@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { QuerySolicitudeDto } from 'src/app/models/Dto/solicitude-query.model';
-import { Solicitude, SolicitudePutModel } from 'src/app/models/solicitude.model';
+import { Solicitude } from 'src/app/models/solicitude.model';
 import { SolicitudesService } from 'src/app/services/solicitudes.service';
 
 @Component({
@@ -12,9 +11,9 @@ import { SolicitudesService } from 'src/app/services/solicitudes.service';
 export class SolicitudesUpdateComponent implements OnInit {
   solicitudes: Solicitude[] = [];
 
-  solicitude: Solicitude = {
+  selectedSolicitude: Solicitude = {
     id: 0,
-    state: 'PENDING',
+    state: "Pending",
     date: new Date(''),
     employeeUserName: '',
     pharmacy: '',
@@ -32,11 +31,6 @@ export class SolicitudesUpdateComponent implements OnInit {
       error: this.handleError.bind(this)
         }
     )
-    this.solicitudeService.selectedSolicitudeToEdit$.subscribe((selectedSolicitude)=>{
-        if(selectedSolicitude){
-          this.solicitude = selectedSolicitude
-        }
-    })
   }
   handleGetAllResponse(data: any){
     this.solicitudes = data
@@ -46,36 +40,35 @@ export class SolicitudesUpdateComponent implements OnInit {
     window.alert("Error getting solicitudes")
   }
   onAccept(solicitude: Solicitude) {
-    this.updateSolicitudeStatus(solicitude, 'ACCEPTED')
+    this.updateSolicitudeStatus(solicitude, 'Accepted')
   }
 
   isAcceptDisable(solicitude: Solicitude) {
-    return solicitude.state === 'ACCEPTED'|| solicitude.state === 'REJECTED'
+    return solicitude.state === 'Accepted'|| solicitude.state === 'Rejected'
   }
 
   onReject(solicitude: Solicitude) {
-    this.updateSolicitudeStatus(solicitude, 'REJECTED')
+    this.updateSolicitudeStatus(solicitude, 'Rejected')
   }
 
   isRejectDisable(solicitude: Solicitude) {
-    return solicitude.state === 'ACCEPTED'|| solicitude.state === 'REJECTED'
+    return solicitude.state === 'Accepted'|| solicitude.state === 'Rejected'
   }
 
   updateSolicitudeStatus(solicitude: Solicitude, state: any){
-    this.updatingStatus = 'loading';
-    let solicitudeToUpdate: SolicitudePutModel =
-    {
-      state: state
-    } 
+    this.updatingStatus = 'loading'
+    this.selectedSolicitude = solicitude
+    let solicitudeToUpdate: Solicitude = {...solicitude}
+    solicitudeToUpdate.state = state
     this.solicitudeService.updateSolicitude(solicitude.id, solicitudeToUpdate)
     .subscribe({
       next: this.handleUpdateResponse.bind(this),
-          error: this.handleUpdateError.bind(this)
+      error: this.handleUpdateError.bind(this)
     })
-    
+
   }
   handleUpdateResponse(data: any){
-    this.solicitude = data;
+    this.selectedSolicitude.state = data.state;
     this.updatingStatus = 'success'
     setTimeout(() => this.updatingStatus = null,2000)
   }

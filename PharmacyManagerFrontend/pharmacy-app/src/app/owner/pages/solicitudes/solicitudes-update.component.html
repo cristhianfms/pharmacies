@@ -1,4 +1,3 @@
-<p>solicitudes works!</p>
 <table class="table table-hover" >
     <thead class="table-primary">
     <tr>
@@ -7,7 +6,7 @@
         <th scope="col">Date</th>
         <th scope="col">State</th>
         <th scope="col">Items</th>
- 
+
     </tr>
     </thead>
     <tbody >
@@ -16,9 +15,9 @@
                 <td [attr.rowspan] ="solicitude.solicitudeItems.length + 1">
                     {{solicitude.id}}
                     <button (click)="onAccept(solicitude)" [disabled]="isAcceptDisable(solicitude)" class="btn btn-success btn-sm">Accept</button>
-        
+
                      <button (click)="onReject(solicitude)" [disabled]="isRejectDisable(solicitude)" class="btn btn-danger btn-sm">Reject</button>
-                    
+
                 </td>
                 <td [attr.rowspan]="solicitude.solicitudeItems.length + 1">{{solicitude.employeeUserName}}</td>
                 <td [attr.rowspan]="solicitude.solicitudeItems.length + 1">{{solicitude.date | date:'short':'-0300'}}</td>
@@ -40,4 +39,3 @@
     </div>
 </div>
 
-    

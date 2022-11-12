@@ -2,12 +2,12 @@ import { SolicitudeItemDto } from "./Dto/solicitude-item-dto.model";
 
 export interface SolicitudeItem {
     drugCode: string,
-    drugQuantity: string,
+    drugQuantity: number,
 }
 
 export interface Solicitude {
     id: number,
-    state: "PENDING" | "ACCEPTED" | "REJECTED";
+    state: "Pending" | "Accepted" | "Rejected",
     date: Date,
     employeeUserName: string,
     pharmacy: string,
@@ -16,9 +16,4 @@ export interface Solicitude {
 
 export interface CreateSolicitudeDto  {
     solicitudeItems: SolicitudeItemDto[]
-}
-
-export interface SolicitudePutModel {
-   // state: "PENDING" | "ACCEPTED" | "REJECTED";
-    state: number
 }

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
-import {CreateInvitationDto, Invitation} from "../models/invitation.model";
 import {HttpClient} from "@angular/common/http";
 import {Pharmacy} from "../models/pharmacy.model";
 
@@ -14,7 +13,7 @@ export class PharmaciesService {
   constructor(private http: HttpClient) { }
 
   getAllPharmacies() {
-    return this.http.get<Invitation[]>(`${this.apiUrl}`)
+    return this.http.get<Pharmacy[]>(`${this.apiUrl}`)
   }
 
     create(pharmacy: Pharmacy) {

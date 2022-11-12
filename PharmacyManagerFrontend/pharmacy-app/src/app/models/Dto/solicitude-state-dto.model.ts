@@ -1,5 +1,5 @@
-export enum State {
-    PENDING,
-    ACCEPTED,
-    REJECTED
+export enum SolicitudeState {
+    Pending,
+    Accepted,
+    Rejected
 }
