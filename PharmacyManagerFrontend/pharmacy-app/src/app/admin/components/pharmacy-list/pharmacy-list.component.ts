@@ -16,17 +16,12 @@ export class PharmacyListComponent implements OnInit {
 
   ngOnInit(): void {
     this.pharmacyService.getAllPharmacies().subscribe({
-          next: this.handleGetAllResponse.bind(this),
-          error: this.handleError.bind(this)
+          next: this.handleGetAllResponse.bind(this)
         }
     )
   }
 
   handleGetAllResponse(data: any){
     this.pharmacies = data
-  }
-
-  handleError(error: any){
-    window.alert("Error getting pharmacies")
   }
 }

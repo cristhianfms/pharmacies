@@ -32,8 +32,7 @@ export class DrugsComponent implements OnInit {
 
   ngOnInit(): void {
     this.drugsService.getAllDrugs().subscribe({
-          next: this.handleGetAllResponse.bind(this),
-          error: this.handleError.bind(this)
+          next: this.handleGetAllResponse.bind(this)
         }
     )
   }
@@ -48,10 +47,6 @@ export class DrugsComponent implements OnInit {
 
   handleGetAllResponse(data: any){
     this.drugs = data
-  }
-
-  handleError(error: any){
-    window.alert("Error getting pharmacies")
   }
 
   onAddToShoppingCart(purchaseDrug: PurchaseItemDto) {

@@ -4,6 +4,7 @@ import {CreateDrugDTO, Drug} from "../models/drug.model";
 import {environment} from "../../environments/environment";
 import {BehaviorSubject, catchError, throwError, tap, Observable} from "rxjs";
 import { DrugQueryDto } from '../models/Dto/drug-query.model';
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class DrugsService {
 
   private _drugsBehaviorSubject$: BehaviorSubject<Drug[] | undefined>;
 
-  constructor( private http: HttpClient) {
+  constructor( private http: HttpClient, private router: Router) {
     this._drugsBehaviorSubject$ = new BehaviorSubject<Drug[] | undefined>(undefined);
   }
 
@@ -31,14 +32,6 @@ export class DrugsService {
     }
 
     return this.http.get<Drug[]>(`${this.apiUrl}`, {params})
-        .pipe(
-            catchError((error: HttpErrorResponse) => {
-              if (error.status === HttpStatusCode.InternalServerError) {
-                return throwError(() => new Error("Issue with the server"));
-              }
-              return throwError(() => new Error("Something went wrong"))
-            })
-        )
   }
 
   getDrugs(): Observable<Drug[]> {

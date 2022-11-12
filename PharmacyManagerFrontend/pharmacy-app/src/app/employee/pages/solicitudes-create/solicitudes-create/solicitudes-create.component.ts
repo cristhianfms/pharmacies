@@ -21,26 +21,26 @@ export class SolicitudesCreateComponent implements OnInit {
   mySolicitude$ = this.mySolicitude.asObservable();
   form!:FormGroup;
 
-  
+
   newSolicitude : CreateSolicitudeDto = {
     solicitudeItems: [],
   }
 
   createdSolicitude: Solicitude | null = null;
-  
-  
+
+
   createStatus: 'loading' | 'success' | 'error' | null = null
   errorMessage: string = ''
-  
+
   constructor(private router: Router,  private drugService: DrugsService, private solicitudeService: SolicitudesService) {
     this.myItems = this.myItems
    }
-  
+
   ngOnInit(): void {
     this.drugService.getAllDrugs().subscribe({
       next: this.handleGetAllResponse.bind(this),
       error: this.handleError.bind(this)
-    })    
+    })
     const group: any = {};
     this.drugs.forEach(drug=> {
       group[drug.drugCode] = new FormControl('')
@@ -55,13 +55,13 @@ export class SolicitudesCreateComponent implements OnInit {
     //var raws = this.drugs.length;
      var inputs = this.form.getRawValue();
     this.drugs.forEach(drug => {
-      var item: SolicitudeItem 
+      var item: SolicitudeItem
       var quantity = inputs[drug.drugCode]
       if(quantity>0){
         item = {
           drugCode: drug.drugCode,
           drugQuantity: quantity
-        }      
+        }
         alert(item.drugCode);
         alert(item.drugQuantity);
        var length = this.newSolicitude.items.push(item);
@@ -72,7 +72,7 @@ export class SolicitudesCreateComponent implements OnInit {
 this.newSolicitude.items.forEach(element => {
   alert('1) ' + element.drugCode);
   alert(element.drugQuantity)
-  
+
 });
 
     console.log(this.form.getRawValue());
@@ -81,7 +81,7 @@ this.newSolicitude.items.forEach(element => {
     .subscribe({
       next: this.handleOkResponse.bind(this),
       error: this.handleErrorResponse.bind(this)
-      
+
     })
 
   }*/
@@ -89,19 +89,19 @@ this.newSolicitude.items.forEach(element => {
   addItem(drug: Drug){
     var inputs = this.form.getRawValue();
     var quantity = inputs[drug.drugCode];
-   
+
     if (quantity > 0){
      let item: SolicitudeItemDto = {
         drugCode: drug.drugCode,
         drugQuantity: quantity
-      }      
+      }
       this.myItems.push(item);
     }
     else{
       alert('No se puede agregar, cant<0');
     }
     this.mySolicitude.next(this.myItems);
-    
+
     //this.newSolicitude.items = this.myItems;
 
     /*this.myItems.forEach(element => {
@@ -109,7 +109,7 @@ this.newSolicitude.items.forEach(element => {
     });*/
 
 
-    
+
   }
 
 
@@ -124,22 +124,21 @@ this.newSolicitude.items.forEach(element => {
    const solicitude: CreateSolicitudeDto ={
       solicitudeItems: [...this.myItems]
     }
-  
+
     this.solicitudeService.create(solicitude)
     .subscribe({
       next: this.handleOkResponse.bind(this),
       error: this.handleErrorResponse.bind(this)
-      
+
     })
   }
 
   handleOkResponse(data: any){
-    console.log("OK!!!!!!!");
     this.createdSolicitude = data;
     this.createStatus = 'success';
-    
+
   }
-  
+
   handleErrorResponse(error:any){
     this.createStatus = 'error';
     this.errorMessage = error.error.message;

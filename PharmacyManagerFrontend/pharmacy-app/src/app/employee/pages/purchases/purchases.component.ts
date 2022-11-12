@@ -18,18 +18,13 @@ export class PurchasesComponent implements OnInit {
 
   ngOnInit(): void {
     this.purchasesService.getAllPurchases().subscribe({
-          next: this.handleGetAllResponse.bind(this),
-          error: this.handleError.bind(this)
+          next: this.handleGetAllResponse.bind(this)
         }
     )
   }
 
   handleGetAllResponse(data: any){
     this.purchases = data
-  }
-
-  handleError(error: any){
-    window.alert("Error getting invitations")
   }
 
   onDetails(purchase: Purchase) {

@@ -21,18 +21,13 @@ export class ExportDrugComponent implements OnInit {
 
   ngOnInit(): void {
     this.drugExporterService.getAllExporters().subscribe({
-          next: this.handleGetAllResponse.bind(this),
-          error: this.handleError.bind(this)
+          next: this.handleGetAllResponse.bind(this)
         }
     )
   }
 
   handleGetAllResponse(data: any){
     this.exporters = data
-  }
-
-  handleError(error: any){
-    window.alert("Error getting exporter list")
   }
 
   onChange(drugExporter: DrugExporter) {

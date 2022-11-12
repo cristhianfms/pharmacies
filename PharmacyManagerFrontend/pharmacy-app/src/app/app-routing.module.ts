@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NotFoundComponent } from './not-found/not-found.component';
+import { NotFoundComponent } from './shared/pages/not-found/not-found.component';
 import {AdminGuard} from "./guards/admin.guard";
 import {EmployeeGuard} from "./guards/employee.guard";
 import {OwnerGuard} from "./guards/owner.guard";
+import {InternalServerErrorComponent} from "./shared/pages/internal-server-error/internal-server-error.component";
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
     path: 'owner',
     canActivate: [OwnerGuard],
     loadChildren: () => import('./owner/owner.module').then(m => m.OwnerModule),
+  },
+  {
+    path: 'internal-server-error',
+    component: InternalServerErrorComponent
   },
   {
     path: '**',
