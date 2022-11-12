@@ -45,14 +45,8 @@ export class PurchasesService {
   }
 
   getAllPurchases() {
-    return this.http.get<PurchaseListGetDto>(`${this.apiUrl}`).pipe(
-      map((list: PurchaseListGetDto) => {
-        let purchaseList: PurchaseList = {
-          totalPrice: list.totalPrice,
-          purchases: list.purchases.map(this.purchaseDtoToModel),
-        };
-        return purchaseList;
-      })
+    return this.http.get<PurchaseGetDto[]>(`${this.apiUrl}`).pipe(
+      map(list => list.map(this.purchaseDtoToModel))
     );
   }
 

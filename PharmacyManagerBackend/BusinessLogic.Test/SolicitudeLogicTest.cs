@@ -116,7 +116,9 @@ namespace BusinessLogic.Test
             _pharmacyLogicMock.Setup(p => p.ExistsDrug(It.IsAny<string>(), It.IsAny<int>()));
             _solicitudeRepositoryMock.Setup(s => s.Create(solicitudeToCreate)).Returns(solicitudeRepository);
             _userLogicMock.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>())).Returns(_userEmployeeForTest);
-
+            _drugLogicMock.Setup(m => m.DrugIsActive(It.IsAny<string>()));
+                
+                
             Solicitude createdSolicitude = _solicitudeLogic.Create(solicitudeToCreate);
 
 
@@ -128,7 +130,7 @@ namespace BusinessLogic.Test
             Assert.AreEqual(solicitudeRepository.PharmacyId, createdSolicitude.PharmacyId);
             CollectionAssert.AreEqual(solicitudeRepository.Items, createdSolicitude.Items);
             _solicitudeRepositoryMock.VerifyAll();
-            
+            _drugLogicMock.VerifyAll();
         }
 
         [TestMethod]

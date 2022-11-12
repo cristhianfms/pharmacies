@@ -145,6 +145,13 @@ public class PurchaseLogic : IPurchaseLogic
         return _purchaseRepository.GetFirst(p => p.Code == code);
     }
 
+    public IEnumerable<Purchase> GetAll()
+    {
+        var purchases = _purchaseRepository.GetAll();
+        
+        return _purchaseRepository.GetAll();
+    }
+
     private Pharmacy GetPharmacyByName(string pharmacyName)
     {
         Pharmacy pharmacy;

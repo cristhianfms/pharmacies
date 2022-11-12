@@ -14,3 +14,14 @@
   position: relative;
   bottom: 0;
 }
+
+.new-invitation-container {
+  align-items: center;
+  height: 45px;
+}
+
+.new-invitation-container button {
+  display: flex;
+  float: right;
+  margin-right: 2em;
+}

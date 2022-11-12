@@ -3,6 +3,7 @@ import {PurchasesService} from "../../../services/purchases.service";
 import {PurchaseList} from "../../../models/purchase-list.model";
 import {Purchase} from "../../../models/purchase.model";
 import {Router} from "@angular/router";
+import {PurchaseGetDto} from "../../../models/Dto/purchase-dto.model";
 
 @Component({
   selector: 'app-purchases',
@@ -11,26 +12,19 @@ import {Router} from "@angular/router";
 })
 export class PurchasesComponent implements OnInit {
 
-  purchaseList: PurchaseList = {
-    purchases : [],
-    totalPrice: 0
-  }
+  purchases: Purchase[] = []
+
   constructor(private purchasesService: PurchasesService, private router: Router) { }
 
   ngOnInit(): void {
     this.purchasesService.getAllPurchases().subscribe({
-          next: this.handleGetAllResponse.bind(this),
-          error: this.handleError.bind(this)
+          next: this.handleGetAllResponse.bind(this)
         }
     )
   }
 
   handleGetAllResponse(data: any){
-    this.purchaseList = data
-  }
-
-  handleError(error: any){
-    window.alert("Error getting invitations")
+    this.purchases = data
   }
 
   onDetails(purchase: Purchase) {

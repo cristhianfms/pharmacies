@@ -12,6 +12,8 @@ import { DrugsComponent } from './pages/drugs/drugs.component';
 import { DrugComponent } from './components/drug/drug.component';
 import { PurchaseDetailComponent } from './components/purchase-detail/purchase-detail.component';
 import { DrugsFilterPipe } from '../website/pages/drugs/pipes/drug-filter.pipe';
+import { DrugDetailComponent } from './components/drug-detail/drug-detail.component';
+import { InternalServerErrorComponent } from '../shared/pages/internal-server-error/internal-server-error.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { DrugsFilterPipe } from '../website/pages/drugs/pipes/drug-filter.pipe';
     DrugComponent,
     PurchaseDetailComponent,
     DrugsFilterPipe,
+    DrugDetailComponent,
+    InternalServerErrorComponent,
   ],
   imports: [CommonModule, WebsiteRoutingModule, FormsModule],
 })

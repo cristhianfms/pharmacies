@@ -1,24 +1,27 @@
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th scope="col">Username</th>
-        <th scope="col">Role</th>
-        <th scope="col">Pharmacy</th>
-        <th scope="col">Code</th>
-        <th scope="col">Used</th>
-        <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let invitation of invitations | invitationsFilter:invitationQuery">
-        <td>{{invitation.userName}}</td>
-        <td>{{invitation.roleName}}</td>
-        <td>{{invitation.pharmacyName}}</td>
-        <td>{{invitation.invitationCode}}</td>
-        <td>{{invitation.used}}</td>
-        <td>
-            <button (click)="onEdit(invitation)" [disabled]="isDisable(invitation)" class="btn btn-primary btn-sm">Edit</button>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Role</th>
+            <th scope="col">Pharmacy</th>
+            <th scope="col">Code</th>
+            <th scope="col">Used</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let invitation of invitations | invitationsFilter:invitationQuery">
+            <td>{{invitation.userName}}</td>
+            <td>{{invitation.roleName}}</td>
+            <td>{{invitation.pharmacyName}}</td>
+            <td>{{invitation.invitationCode}}</td>
+            <td>{{invitation.used}}</td>
+            <td>
+                <button (click)="onEdit(invitation)" [disabled]="isDisable(invitation)" class="btn btn-primary btn-sm">Edit</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+

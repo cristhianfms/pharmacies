@@ -149,7 +149,7 @@ namespace BusinessLogic
             return drugToUpdate;
         }
 
-        public void DrugIsActive(string drugCode)
+        public virtual void DrugIsActive(string drugCode)
         {
             try
             {

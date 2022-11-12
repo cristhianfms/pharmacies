@@ -74,32 +74,32 @@ public class PharmacyManagerContext : DbContext
 
         // Invitations Permissions
         Permission createInvitation = new Permission() { Id = 1, Endpoint = "POST/api/invitations" };
-        Permission updateInvitation = new Permission() { Id = 10, Endpoint = "PUT/api/invitations/.*" };
-        Permission getAllInvitations = new Permission() { Id = 11, Endpoint = "GET/api/invitations" };
+        Permission updateInvitation = new Permission() { Id = 2, Endpoint = "PUT/api/invitations/.*" };
+        Permission getAllInvitations = new Permission() { Id = 3, Endpoint = "GET/api/invitations" };
 
         //Pharmacy permissions
-        Permission createPharmacy = new Permission() { Id = 8, Endpoint = "POST/api/pharmacies" };
-        Permission getPharmacies = new Permission() { Id = 15, Endpoint = "GET/api/pharmacies" };
+        Permission createPharmacy = new Permission() { Id = 4, Endpoint = "POST/api/pharmacies" };
+        Permission getPharmacies = new Permission() { Id = 5, Endpoint = "GET/api/pharmacies" };
 
         //Solicitude Permissions
-        Permission createSolicitude = new Permission() { Id = 2, Endpoint = "POST/api/solicitudes" };
-        Permission getSolicitudes = new Permission() { Id = 3, Endpoint = "GET/api/solicitudes" };
-        Permission updateSolicitude = new Permission() { Id = 4, Endpoint = "PUT/api/solicitudes/.*" };
+        Permission createSolicitude = new Permission() { Id = 6, Endpoint = "POST/api/solicitudes" };
+        Permission getSolicitudes = new Permission() { Id = 7, Endpoint = "GET/api/solicitudes" };
+        Permission updateSolicitude = new Permission() { Id = 8, Endpoint = "PUT/api/solicitudes/.*" };
 
         //Drug Permissions
-        Permission createDrug = new Permission() { Id = 5, Endpoint = "POST/api/drugs" };
-        Permission deleteDrug = new Permission() { Id = 6, Endpoint = "DELETE/api/drugs/.*" };
-        Permission getDrug = new Permission() { Id = 7, Endpoint = "GET/api/drugs/.*" };
-        Permission getAllDrugs = new Permission() { Id = 16, Endpoint = "GET/api/drugs" };
+        Permission createDrug = new Permission() { Id = 9, Endpoint = "POST/api/drugs" };
+        Permission deleteDrug = new Permission() { Id = 10, Endpoint = "DELETE/api/drugs/.*" };
+        Permission getDrug = new Permission() { Id = 11, Endpoint = "GET/api/drugs/.*" };
+        Permission getAllDrugs = new Permission() { Id = 12, Endpoint = "GET/api/drugs" };
 
         //Purchase Permissions
-        Permission getAllPurchases = new Permission() { Id = 9, Endpoint = "GET/api/purchases" };
-        Permission updatePurchase = new Permission() { Id = 12, Endpoint = "PUT/api/purchases/.*" };
-        Permission getPurchaseReport = new Permission() { Id = 16, Endpoint = "GET/api/purchases/report" };
+        Permission getAllPurchases = new Permission() { Id = 13, Endpoint = "GET/api/purchases" };
+        Permission updatePurchase = new Permission() { Id = 14, Endpoint = "PUT/api/purchases/.*" };
+        Permission getPurchaseReport = new Permission() { Id = 15, Endpoint = "GET/api/purchases/report" };
 
         //Drug Exporter permissons 
-        Permission getDrugExporters = new Permission() { Id = 13, Endpoint = "GET/api/drug-exporters" };
-        Permission exportDrugs = new Permission() { Id = 14, Endpoint = "POST/api/drug-exporters/export" };
+        Permission getDrugExporters = new Permission() { Id = 16, Endpoint = "GET/api/drug-exporters" };
+        Permission exportDrugs = new Permission() { Id = 17, Endpoint = "POST/api/drug-exporters/export" };
 
         modelBuilder.Entity<Permission>().HasData(
             createInvitation,

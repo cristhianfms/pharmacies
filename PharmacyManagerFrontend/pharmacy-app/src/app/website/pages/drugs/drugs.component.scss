@@ -3,3 +3,21 @@
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 15px;
 }
+
+
+button {
+  margin-left: 2em;
+}
+
+.search-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0.5px solid lightgray;
+  border-radius: 5px;
+  padding: 10px;
+  align-items: baseline;
+}
+
+#exampleModal{
+  position: fixed;
+}
