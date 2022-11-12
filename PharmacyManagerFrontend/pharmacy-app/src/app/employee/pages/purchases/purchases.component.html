@@ -9,7 +9,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let purchase of purchaseList.purchases">
+    <tr *ngFor="let purchase of purchases">
         <td>{{purchase.code}}</td>
         <td>{{purchase.userEmail}}</td>
         <td>{{purchase.createdDate | date:'short':'-0300' }}</td>

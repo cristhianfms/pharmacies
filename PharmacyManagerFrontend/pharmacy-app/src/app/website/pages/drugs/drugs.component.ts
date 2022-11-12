@@ -4,6 +4,7 @@ import {DrugsService} from "../../../services/drugs.service";
 import {StoreService} from "../../../services/store.service";
 import {PurchaseItemDto} from "../../../models/Dto/purchase-item-dto.model";
 import { DrugQueryDto } from 'src/app/models/Dto/drug-query.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-drugs',
@@ -20,10 +21,12 @@ export class DrugsComponent implements OnInit {
     hasStock: null
   }
 
+  selectedDrugDetail: Drug | null = null
+
   @Input() drugs: Drug[] = []
   myShoppingCart : PurchaseItemDto[] = []
 
-  constructor(private drugsService: DrugsService, private storeService: StoreService,) {
+  constructor(private drugsService: DrugsService, private storeService: StoreService, private modalService: NgbModal) {
     this.myShoppingCart = this.storeService.getShoppingCart();
   }
 
@@ -43,7 +46,6 @@ export class DrugsComponent implements OnInit {
     }
   }
 
-
   handleGetAllResponse(data: any){
     this.drugs = data
   }
@@ -54,5 +56,17 @@ export class DrugsComponent implements OnInit {
 
   onAddToShoppingCart(purchaseDrug: PurchaseItemDto) {
     this.storeService.addDrug(purchaseDrug)
+  }
+
+  open(content: any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' })
+  }
+
+  handleOnDrugDetail(drug: Drug) {
+    this.selectedDrugDetail = drug
+  }
+
+  handleCloseDrugDetail() {
+    this.selectedDrugDetail = null
   }
 }

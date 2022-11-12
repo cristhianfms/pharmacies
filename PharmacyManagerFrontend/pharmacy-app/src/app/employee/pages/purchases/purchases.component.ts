@@ -3,6 +3,7 @@ import {PurchasesService} from "../../../services/purchases.service";
 import {PurchaseList} from "../../../models/purchase-list.model";
 import {Purchase} from "../../../models/purchase.model";
 import {Router} from "@angular/router";
+import {PurchaseGetDto} from "../../../models/Dto/purchase-dto.model";
 
 @Component({
   selector: 'app-purchases',
@@ -11,10 +12,8 @@ import {Router} from "@angular/router";
 })
 export class PurchasesComponent implements OnInit {
 
-  purchaseList: PurchaseList = {
-    purchases : [],
-    totalPrice: 0
-  }
+  purchases: Purchase[] = []
+
   constructor(private purchasesService: PurchasesService, private router: Router) { }
 
   ngOnInit(): void {
@@ -26,7 +25,7 @@ export class PurchasesComponent implements OnInit {
   }
 
   handleGetAllResponse(data: any){
-    this.purchaseList = data
+    this.purchases = data
   }
 
   handleError(error: any){

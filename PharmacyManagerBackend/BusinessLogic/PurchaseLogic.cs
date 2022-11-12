@@ -149,7 +149,7 @@ public class PurchaseLogic : IPurchaseLogic
     {
         var purchases = _purchaseRepository.GetAll();
         
-        return purchases;
+        return _purchaseRepository.GetAll();
     }
 
     private Pharmacy GetPharmacyByName(string pharmacyName)
