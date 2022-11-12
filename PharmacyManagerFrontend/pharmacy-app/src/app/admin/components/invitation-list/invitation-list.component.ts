@@ -23,18 +23,13 @@ export class InvitationListComponent implements OnInit {
 
   ngOnInit(): void {
     this.invitationService.getAllInvitations().subscribe({
-          next: this.handleGetAllResponse.bind(this),
-          error: this.handleError.bind(this)
+          next: this.handleGetAllResponse.bind(this)
         }
     )
   }
 
   handleGetAllResponse(data: any){
     this.invitations = data
-  }
-
-  handleError(error: any){
-    window.alert("Error getting invitations")
   }
 
   onEdit(invitation: Invitation) {

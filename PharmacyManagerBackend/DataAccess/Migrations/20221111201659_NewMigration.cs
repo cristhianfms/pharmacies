@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class PharmacyManagerMigration : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -314,20 +314,22 @@ namespace DataAccess.Migrations
                 values: new object[,]
                 {
                     { 1, "POST/api/invitations" },
-                    { 2, "POST/api/solicitudes" },
-                    { 3, "GET/api/solicitudes" },
-                    { 4, "PUT/api/solicitudes/.*" },
-                    { 5, "POST/api/drugs" },
-                    { 6, "DELETE/api/drugs/.*" },
-                    { 7, "GET/api/drugs/.*" },
-                    { 8, "POST/api/pharmacies" },
-                    { 9, "GET/api/purchases" },
-                    { 10, "PUT/api/invitations/.*" },
-                    { 11, "GET/api/invitations" },
-                    { 12, "PUT/api/purchases/.*" },
-                    { 13, "GET/api/drug-exporters" },
-                    { 14, "POST/api/drug-exporters/export" },
-                    { 15, "GET/api/pharmacies" }
+                    { 2, "PUT/api/invitations/.*" },
+                    { 3, "GET/api/invitations" },
+                    { 4, "POST/api/pharmacies" },
+                    { 5, "GET/api/pharmacies" },
+                    { 6, "POST/api/solicitudes" },
+                    { 7, "GET/api/solicitudes" },
+                    { 8, "PUT/api/solicitudes/.*" },
+                    { 9, "POST/api/drugs" },
+                    { 10, "DELETE/api/drugs/.*" },
+                    { 11, "GET/api/drugs/.*" },
+                    { 12, "GET/api/drugs" },
+                    { 13, "GET/api/purchases" },
+                    { 14, "PUT/api/purchases/.*" },
+                    { 15, "GET/api/purchases/report" },
+                    { 16, "GET/api/drug-exporters" },
+                    { 17, "POST/api/drug-exporters/export" }
                 });
 
             migrationBuilder.InsertData(
@@ -346,24 +348,26 @@ namespace DataAccess.Migrations
                 values: new object[,]
                 {
                     { 1, 1 },
-                    { 8, 1 },
-                    { 9, 1 },
-                    { 10, 1 },
-                    { 11, 1 },
-                    { 15, 1 },
+                    { 2, 1 },
+                    { 3, 1 },
+                    { 4, 1 },
+                    { 5, 1 },
+                    { 13, 1 },
                     { 1, 2 },
-                    { 3, 2 },
-                    { 4, 2 },
-                    { 9, 2 },
-                    { 2, 3 },
-                    { 3, 3 },
-                    { 5, 3 },
+                    { 7, 2 },
+                    { 8, 2 },
+                    { 13, 2 },
+                    { 15, 2 },
                     { 6, 3 },
                     { 7, 3 },
                     { 9, 3 },
+                    { 10, 3 },
+                    { 11, 3 },
                     { 12, 3 },
                     { 13, 3 },
-                    { 14, 3 }
+                    { 14, 3 },
+                    { 16, 3 },
+                    { 17, 3 }
                 });
 
             migrationBuilder.InsertData(

@@ -46,72 +46,82 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            Id = 6,
                             Endpoint = "POST/api/solicitudes"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 7,
                             Endpoint = "GET/api/solicitudes"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = 8,
                             Endpoint = "PUT/api/solicitudes/.*"
                         },
                         new
                         {
-                            Id = 5,
+                            Id = 9,
                             Endpoint = "POST/api/drugs"
                         },
                         new
                         {
-                            Id = 6,
+                            Id = 10,
                             Endpoint = "DELETE/api/drugs/.*"
                         },
                         new
                         {
-                            Id = 7,
+                            Id = 11,
                             Endpoint = "GET/api/drugs/.*"
                         },
                         new
                         {
-                            Id = 8,
+                            Id = 12,
+                            Endpoint = "GET/api/drugs"
+                        },
+                        new
+                        {
+                            Id = 4,
                             Endpoint = "POST/api/pharmacies"
                         },
                         new
                         {
-                            Id = 15,
+                            Id = 5,
                             Endpoint = "GET/api/pharmacies"
                         },
                         new
                         {
-                            Id = 9,
+                            Id = 13,
                             Endpoint = "GET/api/purchases"
                         },
                         new
                         {
-                            Id = 10,
+                            Id = 15,
+                            Endpoint = "GET/api/purchases/report"
+                        },
+                        new
+                        {
+                            Id = 2,
                             Endpoint = "PUT/api/invitations/.*"
                         },
                         new
                         {
-                            Id = 11,
+                            Id = 3,
                             Endpoint = "GET/api/invitations"
                         },
                         new
                         {
-                            Id = 12,
+                            Id = 14,
                             Endpoint = "PUT/api/purchases/.*"
                         },
                         new
                         {
-                            Id = 13,
+                            Id = 16,
                             Endpoint = "GET/api/drug-exporters"
                         },
                         new
                         {
-                            Id = 14,
+                            Id = 17,
                             Endpoint = "POST/api/drug-exporters/export"
                         });
                 });
@@ -144,31 +154,6 @@ namespace DataAccess.Migrations
                         new
                         {
                             RoleId = 3,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 3
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 3
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 4
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 5
-                        },
-                        new
-                        {
-                            RoleId = 3,
                             PermissionId = 6
                         },
                         new
@@ -178,18 +163,13 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            RoleId = 1,
+                            RoleId = 2,
+                            PermissionId = 7
+                        },
+                        new
+                        {
+                            RoleId = 2,
                             PermissionId = 8
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 15
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 9
                         },
                         new
                         {
@@ -198,8 +178,13 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            RoleId = 2,
-                            PermissionId = 9
+                            RoleId = 3,
+                            PermissionId = 10
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 11
                         },
                         new
                         {
@@ -209,12 +194,17 @@ namespace DataAccess.Migrations
                         new
                         {
                             RoleId = 1,
-                            PermissionId = 10
+                            PermissionId = 4
                         },
                         new
                         {
                             RoleId = 1,
-                            PermissionId = 11
+                            PermissionId = 5
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 13
                         },
                         new
                         {
@@ -223,8 +213,38 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
+                            RoleId = 2,
+                            PermissionId = 13
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 15
+                        },
+                        new
+                        {
                             RoleId = 3,
                             PermissionId = 14
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 2
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 16
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 17
                         });
                 });
 

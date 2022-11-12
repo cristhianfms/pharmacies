@@ -41,14 +41,15 @@ public class InvitationRepository : BaseRepository<Invitation>, IInvitationRepos
 
         if (expresion == null)
         {
-            entities = _table.
-                Include(i => i.Pharmacy);
+            entities = _table.Include(i => i.Pharmacy)
+                .Include(i => i.Role);
         }
         else
         {
 
             entities = _table
                 .Include(i => i.Pharmacy)
+                .Include(i => i.Role)
                 .Where(expresion);
         }
 

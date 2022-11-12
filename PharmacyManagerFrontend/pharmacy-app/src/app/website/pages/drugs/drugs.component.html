@@ -1,7 +1,34 @@
+<app-drug-detail *ngIf="selectedDrugDetail!=null" [drug]="selectedDrugDetail" (close)="handleCloseDrugDetail()"></app-drug-detail>
+
+<div class="search-container">
+  <form class="row g-3 align-items-center">
+      <div class="col-auto">
+          <label for="specificSizeInputName1" class="col-form-label">Drug name</label>
+      </div>
+      <div class="col-auto">
+          <input [(ngModel)]="filterDrugName" type="text" class="form-control" id="specificSizeInputName1" name= "specificSizeInputName1" placeholder="">
+      </div>
+      <div class="col-auto">
+          <label for="specificSizeSelect" class="col-form-label">Has Stock</label>
+      </div>
+      <div class="col-auto">
+          <select [(ngModel)]="filterHasStock"  class="form-select" id="specificSizeSelect"  name= "specificSizeSelect" >
+              <option selected [ngValue]= "null">All</option>
+              <option [ngValue]= "true">Yes</option>
+              <option [ngValue]= "false">No</option>
+          </select>
+      </div>
+      <div class="col-auto submit-button">
+          <button (click)="updateDrugQuery($event)" type="submit" class="btn btn-success">Search</button>
+      </div>
+  </form>
+</div>
+
 <div class="drugs--grid">
     <app-drug
-            *ngFor="let drug of drugs"
+            *ngFor="let drug of drugs | drugsFilter: drugQuery"
             [drug]="drug"
             (addedProduct)="onAddToShoppingCart($event)"
+            (onDrugDetails)="handleOnDrugDetail($event)"
     ></app-drug>
 </div>

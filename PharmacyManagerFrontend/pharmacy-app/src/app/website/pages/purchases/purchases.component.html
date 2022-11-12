@@ -6,11 +6,11 @@
                 <div class="input-group-text">#</div>
                 <input name="code" type="text" class="form-control" id="specificSizeInputGroupUsername" placeholder="Code"
                        [(ngModel)]="purchaseCode"
-                       (change)="onInputChange()">
+                       (keydown)="onInputChange()">
             </div>
         </div>
         <div class="col-auto">
-            <button [disabled]="isButtonDisabled()" (click)="onSearchCode()" type="submit" class="btn btn-primary">Search</button>
+            <button [disabled]="isButtonDisabled()" (click)="onSearchCode()" type="submit" class="btn btn-success">Search</button>
         </div>
         <div class="col-auto">
             <div *ngIf="findStatus =='error'" class="alert alert-primary messages"  role="alert">

@@ -62,21 +62,43 @@ namespace BusinessLogic
         {
             IEnumerable<Drug> drugs = new List<Drug>();
 
-            if (queryDrugDto.DrugName == null &&
-                queryDrugDto.WithStock == false)
-                drugs = _drugRepository.GetAll();
+            if (_context.CurrentUser == null)
+            {
+                if (queryDrugDto.DrugName == null &&
+                    queryDrugDto.WithStock == false)
+                    drugs = _drugRepository.GetAll();
 
-            if (queryDrugDto.DrugName == null &&
-                queryDrugDto.WithStock == true)
-                drugs = _drugRepository.GetAll(d => d.Stock > 0);
+                if (queryDrugDto.DrugName == null &&
+                    queryDrugDto.WithStock == true)
+                    drugs = _drugRepository.GetAll(d => d.Stock > 0);
 
-            if (queryDrugDto.DrugName != null &&
-                queryDrugDto.WithStock == false)
-                drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName);
+                if (queryDrugDto.DrugName != null &&
+                    queryDrugDto.WithStock == false)
+                    drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName);
 
-            if (queryDrugDto.DrugName != null &&
-                queryDrugDto.WithStock == true)
-                drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName && d.Stock > 0);
+                if (queryDrugDto.DrugName != null &&
+                    queryDrugDto.WithStock == true)
+                    drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName && d.Stock > 0);
+            }
+            else
+            {
+                if (queryDrugDto.DrugName == null &&
+                    queryDrugDto.WithStock == false)
+                    drugs = _drugRepository.GetAll(d => d.Pharmacy.Name == _context.CurrentUser.Pharmacy.Name);
+
+                if (queryDrugDto.DrugName == null &&
+                    queryDrugDto.WithStock == true)
+                    drugs = _drugRepository.GetAll(d => d.Stock > 0 && d.Pharmacy.Name == _context.CurrentUser.Pharmacy.Name);
+
+                if (queryDrugDto.DrugName != null &&
+                    queryDrugDto.WithStock == false)
+                    drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName && d.Pharmacy.Name == _context.CurrentUser.Pharmacy.Name);
+
+                if (queryDrugDto.DrugName != null &&
+                    queryDrugDto.WithStock == true)
+                    drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName && d.Stock > 0 && d.Pharmacy.Name == _context.CurrentUser.Pharmacy.Name);
+            }
+
 
             return drugs;
         }
@@ -127,12 +149,12 @@ namespace BusinessLogic
             return drugToUpdate;
         }
 
-        public void DrugIsActive(string drugCode)
+        public virtual void DrugIsActive(string drugCode)
         {
             try
             {
                 Drug drug = _drugRepository.GetFirst(d => d.DrugCode == drugCode);
-                if(!drug.IsActive)
+                if (!drug.IsActive)
                     throw new ResourceNotFoundException("resource does not exist");
             }
             catch (InvalidOperationException)

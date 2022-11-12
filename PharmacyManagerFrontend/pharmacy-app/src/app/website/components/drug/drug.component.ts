@@ -24,6 +24,8 @@ export class DrugComponent implements OnInit {
     pharmacyName: ''
   }
   @Output() addedProduct = new EventEmitter<PurchaseItemDto>();
+  @Output() onDrugDetails = new EventEmitter<Drug>();
+
   amount : number = 1
 
   constructor() { }
@@ -41,5 +43,10 @@ export class DrugComponent implements OnInit {
     }
     this.addedProduct.emit(purchaseDrug)
     this.amount = 1
+  }
+
+  onMoreInfo(event: Event) {
+    event.preventDefault()
+    this.onDrugDetails.emit(this.drug)
   }
 }

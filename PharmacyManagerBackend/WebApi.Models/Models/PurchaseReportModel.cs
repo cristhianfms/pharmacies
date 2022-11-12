@@ -6,5 +6,5 @@ namespace WebApi.Models;
 public class PurchaseReportModel
 {
     public double TotalPrice { get; set; }
-    public List<PurchaseResponseModel> Purchases { get; set; }
+    public List<PurchaseItemReportModel> Purchases { get; set; }
 }

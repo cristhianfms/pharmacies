@@ -41,7 +41,7 @@ public class PurchasesController : ControllerBase
         return Ok(purchaseUpdatedModel);
     }
 
-    [HttpGet]
+    [HttpGet("report")]
     [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult GetPurchasesReport([FromQuery] QueryPurchaseDto queryPurchaseDto)
     {
@@ -58,6 +58,16 @@ public class PurchasesController : ControllerBase
         PurchaseResponseModel purchaseResponseModel = PurchaseModelsMapper.ToModel(purchase);
 
         return Ok(purchaseResponseModel);
+    }
+    
+    [HttpGet]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
+    public IActionResult GetAllPurchases()
+    {
+        IEnumerable<Purchase> purchases = _purchaseLogic.GetAll();
+        IEnumerable<PurchaseResponseModel> purchaseModels = PurchaseModelsMapper.ToModelList(purchases);
+
+        return Ok(purchaseModels);
     }
 }
 

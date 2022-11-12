@@ -25,7 +25,8 @@ public class PurchaseRepository : BaseRepository<Purchase>, IPurchaseRepository
         {
             entities = _table
                 .Include(p => p.Items)
-                .ThenInclude(i => i.Drug);
+                .ThenInclude(i => i.Drug)
+                .ThenInclude(i => i.DrugInfo);
         }
         else
         {
@@ -33,6 +34,7 @@ public class PurchaseRepository : BaseRepository<Purchase>, IPurchaseRepository
             entities = _table
                 .Include(p => p.Items)
                 .ThenInclude(i => i.Drug)
+                .ThenInclude(i => i.DrugInfo)
                 .Where(expresion);
         }
 
@@ -43,7 +45,8 @@ public class PurchaseRepository : BaseRepository<Purchase>, IPurchaseRepository
     {
         IEnumerable<Purchase> entities = this._table
             .Include(p => p.Items)
-            .ThenInclude(i => i.Drug )
+            .ThenInclude(i => i.Drug)
+            .ThenInclude(i=>i.DrugInfo)
             .Include(p => p.Items)
             .ThenInclude(i => i.Pharmacy)
             .Where(expresion);
