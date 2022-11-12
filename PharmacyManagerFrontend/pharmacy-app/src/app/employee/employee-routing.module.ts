@@ -8,7 +8,7 @@ import {PurchasesComponent} from "./pages/purchases/purchases.component";
 import { DrugCreateComponent } from './pages/drug-create/drug-create.component';
 import { DrugsComponent } from './pages/drugs/drugs.component';
 import {ExportDrugComponent} from "./pages/export-drug/export-drug.component";
-import { SolicitudesListComponent } from './components/layout/solicitudes-list/solicitudes-list.component';
+import { SolicitudesListComponent } from './components/solicitudes-list/solicitudes-list.component';
 
 const routes: Routes = [
   {
@@ -61,7 +61,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)], 
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class EmployeeRoutingModule { }
