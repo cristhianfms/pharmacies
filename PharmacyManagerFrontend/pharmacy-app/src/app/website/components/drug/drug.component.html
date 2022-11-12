@@ -2,7 +2,7 @@
     <div class="card-body">
         <h5 class="card-title">{{drug.name | uppercase}}</h5>
         <h5 class="card-title">$ {{drug.price}}</h5>
-        <p class="card-text">PharmacyId: {{drug.pharmacyId}}</p>
+        <p class="card-text">Pharmacy: {{drug.pharmacyName}}</p>
         <p class="card-text">Presentation type: {{drug.presentation}}</p>
         <p class="card-text">Presentation: {{drug.quantityPerPresentation}} {{drug.unitOfMeasurement}}</p>
         <a href="#" (click)="onMoreInfo($event)">More info</a>

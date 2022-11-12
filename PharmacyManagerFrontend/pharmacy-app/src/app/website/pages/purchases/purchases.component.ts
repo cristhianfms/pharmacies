@@ -42,6 +42,7 @@ export class PurchasesComponent implements OnInit {
 
   onInputChange() {
     this.errorMessage = ''
+    this.findStatus = null
   }
 
   isButtonDisabled() {
