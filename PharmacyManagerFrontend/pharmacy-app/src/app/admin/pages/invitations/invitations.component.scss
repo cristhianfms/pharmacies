@@ -2,12 +2,27 @@
   margin-bottom: 1em;
 }
 
+.col-auto #button-search{
+  display: flex;
+  float: right;
+  top: 11px;
+  margin: 40px;
+}
+.col-sm-3 {
+  padding: 20px;
+}
+
+label{
+  
+  font-weight: 600;
+}
+
 .search-container {
   margin-top: 20px;
   margin-bottom: 20px;
   border: 0.5px solid lightgray;
   border-radius: 5px;
-  padding: 10px;
+  padding: 15px;
 }
 
 .search-container button {
@@ -24,4 +39,7 @@
   display: flex;
   float: right;
   margin-right: 2em;
+}
+i{
+  margin-right:3px;
 }

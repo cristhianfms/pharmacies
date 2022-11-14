@@ -1,6 +1,6 @@
 <div class="new-invitation-container">
     <button (click)="onCreateInvitation()" id="button-create" type="button" class="btn btn-primary">
-        <i class="bi bi-plus fa-lg"></i>
+        <i class="bi bi-plus-circle-fill"></i>
         Create invitation
     </button>
 </div>
@@ -25,7 +25,9 @@
             </select>
         </div>
         <div class="col-auto align-items-baseline">
-            <button (click)="updateInvitationQuery($event)" type="submit" class="btn btn-primary">Search</button>
+            <button id="button-search" (click)="updateInvitationQuery($event)" type="submit" class="btn btn-primary">
+                <i class="bi bi-search"></i>
+                Search</button>
         </div>
     </form>
 </div>

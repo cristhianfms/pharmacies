@@ -14,9 +14,11 @@
             <tr id="tr-solicitude">
                 <td [attr.rowspan] ="solicitude.solicitudeItems.length + 1">
                     {{solicitude.id}}
-                    <button (click)="onAccept(solicitude)" [disabled]="isAcceptDisable(solicitude)" class="btn btn-success btn-sm">Accept</button>
+                    <button (click)="onAccept(solicitude)" [disabled]="isAcceptDisable(solicitude)" class="btn btn-success btn-sm">
+                        <i class="bi bi-check-circle-fill"></i>Accept</button>
 
-                     <button (click)="onReject(solicitude)" [disabled]="isRejectDisable(solicitude)" class="btn btn-danger btn-sm">Reject</button>
+                     <button (click)="onReject(solicitude)" [disabled]="isRejectDisable(solicitude)" class="btn btn-danger btn-sm">
+                        <i class="bi bi-x-octagon-fill"></i>Reject</button>
 
                 </td>
                 <td [attr.rowspan]="solicitude.solicitudeItems.length + 1">{{solicitude.employeeUserName}}</td>
