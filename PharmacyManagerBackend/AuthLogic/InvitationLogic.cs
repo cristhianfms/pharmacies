@@ -8,7 +8,6 @@ using Domain.Dto;
 
 namespace AuthLogic
 {
-
     public class InvitationLogic : IInvitationLogic
     {
         private IInvitationRepository _invitationRepository;
@@ -177,7 +176,8 @@ namespace AuthLogic
 
         public virtual Invitation GetInvitationByCode(string invitationCode)
         {
-            return _invitationRepository.GetFirst(i => i.Code == invitationCode);
+            Invitation fetchedInvitation = _invitationRepository.GetFirst(i => i.Code == invitationCode);
+            return fetchedInvitation;
         }
 
         private void checkIfUserNameIsRepeated(string userName)

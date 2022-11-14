@@ -19,12 +19,13 @@ public class ExporterManager : IExporterManager
     
     public List<ExportDto> GetAllExporters()
     {
-        return GetExporters()
+        List<ExportDto> exporters = GetExporters()
             .Select(e => new ExportDto()
             {
                 Name = e.GetName(),
                 Props = e.GetProperties()
             }).ToList();
+        return exporters;
     }
 
     public void ExportDrugs(ExportDto exportDto)

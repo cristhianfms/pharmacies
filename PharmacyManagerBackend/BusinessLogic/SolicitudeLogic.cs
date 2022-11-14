@@ -88,8 +88,10 @@ namespace BusinessLogic
         }
         private DateTime toDateTime(string stringDate)
         {
-            return DateTime.Parse(stringDate);
+            DateTime parsedStringToDate = DateTime.Parse(stringDate);
+            return parsedStringToDate;
         }
+
         private void validateDates(DateTime dateFrom, DateTime dateTo)
         {
             if (dateFrom > dateTo)
@@ -114,7 +116,6 @@ namespace BusinessLogic
             }
 
             return solicitudeToUpdate;
-
 
         }
 

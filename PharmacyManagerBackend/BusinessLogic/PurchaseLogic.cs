@@ -36,8 +36,9 @@ public class PurchaseLogic : IPurchaseLogic
         purchase.TotalPrice = totalPrice;
         purchase.Date = DateTime.Now;
         purchase.Code = GenerateNewInvitationCode();
+        Purchase createdPurchase = _purchaseRepository.Create(purchase);
 
-        return _purchaseRepository.Create(purchase);
+        return createdPurchase;
     }
 
     public IEnumerable<PurchaseItemStatusDto> GetPurchaseStatus(string purchaseCode)
@@ -62,7 +63,7 @@ public class PurchaseLogic : IPurchaseLogic
 
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
     {
-        
+
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
         IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p =>
             p.Items.Any(i => i.Pharmacy.Id == pharmacyOfCurrentUser.Id) &&
@@ -76,7 +77,7 @@ public class PurchaseLogic : IPurchaseLogic
         {
             List<PurchaseItem> purchaseItems = purchase.Items.FindAll(i => i.PharmacyId == pharmacyOfCurrentUser.Id);
             totalPrice += CalculateTotalPrice(purchaseItems);
-            purchaseItemReports = ProcessItemsForReport(purchaseItems, purchaseItemReports);           
+            purchaseItemReports = ProcessItemsForReport(purchaseItems, purchaseItemReports);
         }
         PurchaseReportDto purchaseReport = new PurchaseReportDto()
         {
@@ -87,7 +88,7 @@ public class PurchaseLogic : IPurchaseLogic
         return purchaseReport;
 
     }
-        
+
     private List<PurchaseItemReportDto> ProcessItemsForReport(List<PurchaseItem> purchaseItems, List<PurchaseItemReportDto> result)
     {
         foreach (var purchaseItem in purchaseItems)
@@ -97,7 +98,7 @@ public class PurchaseLogic : IPurchaseLogic
             var unitaryPrice = purchaseItem.Drug.Price;
             var amount = quantity * unitaryPrice;
 
-            PurchaseItemReportDto purchaseItemDto = result.FirstOrDefault(pi => pi.Name== name);
+            PurchaseItemReportDto purchaseItemDto = result.FirstOrDefault(pi => pi.Name == name);
 
             if (purchaseItemDto == null)
             {
@@ -133,23 +134,46 @@ public class PurchaseLogic : IPurchaseLogic
 
         _purchaseRepository.Update(currentPurchase);
 
-        return new Purchase()
+        Purchase updatedPurchase = new Purchase()
         {
             Id = id,
             Items = currentPurchase.Items.FindAll(i => i.PharmacyId == pharmacyOfCurrentUser.Id).ToList()
         };
+
+        return updatedPurchase;
     }
 
     public Purchase Get(string code)
     {
-        return _purchaseRepository.GetFirst(p => p.Code == code);
+        Purchase fetchedPurchase = _purchaseRepository.GetFirst(p => p.Code == code);
+        return fetchedPurchase;
     }
 
     public IEnumerable<Purchase> GetAll()
     {
+        Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
+        List<Purchase> filteredList = new List<Purchase>();
         var purchases = _purchaseRepository.GetAll();
-        
-        return _purchaseRepository.GetAll();
+
+        foreach (Purchase p in purchases)
+        {
+            IEnumerable<PurchaseItem> items = p.Items.FindAll(p => p.Pharmacy == pharmacyOfCurrentUser);
+            if (items.Count() > 0)
+            {
+                Purchase purchase = new Purchase()
+                {
+                    Id = p.Id,
+                    TotalPrice = p.TotalPrice,
+                    Code = p.Code,
+                    Date = p.Date,
+                    UserEmail = p.UserEmail,
+                    Items = items.ToList()
+                };
+                filteredList.Add(purchase);
+            }
+        }
+
+        return filteredList;
     }
 
     private Pharmacy GetPharmacyByName(string pharmacyName)
