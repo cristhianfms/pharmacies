@@ -1,8 +1,8 @@
-<h3>Solicitudes menu</h3>
-<hr>
+<div class="new-container">
 <button (click)="onCreateSolicitude()" id="button-create" type="button" class="btn btn-primary btn-sm">
-    Create solicitude
+    <i class="bi bi-plus-circle-fill"></i> Create solicitude
 </button>
+</div>
 <hr>
 <div class="search-container">
     <form class="row gx-3 gy-2 align-items-center">
@@ -37,8 +37,10 @@
         </div>
         <div class="col-auto align-items-baseline">
 
-            <button (click)="obtainSolicitudeQuery($event)" class="btn btn-primary" type="button">Search</button>
-            <button type="reset" class="btn btn-secondary">Reset</button>
+            <button (click)="obtainSolicitudeQuery($event)" class="btn btn-primary" type="button">
+                <i class="bi bi-search"></i>Search</button>
+            <button type="reset" class="btn btn-secondary">
+                <i class="bi bi-arrow-clockwise"></i>Reset</button>
         </div>
     </form>
 </div>

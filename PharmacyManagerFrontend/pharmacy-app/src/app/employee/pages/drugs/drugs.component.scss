@@ -1,3 +1,16 @@
 #button-create{
   margin-bottom: 1em;
 }
+i{
+  margin-right:3px;
+}
+.new-container {
+  align-items: center;
+  height: 45px;
+}
+
+.new-container button {
+  display: flex;
+  float: right;
+  margin-right: 2em;
+}

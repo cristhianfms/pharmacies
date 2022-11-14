@@ -1,6 +1,6 @@
 <div class="container">
     <table class="table table-hover">
-        <thead>
+        <thead class="table-primary">
         <tr>
             <th scope="col">Username</th>
             <th scope="col">Role</th>
@@ -18,7 +18,8 @@
             <td>{{invitation.invitationCode}}</td>
             <td>{{invitation.used}}</td>
             <td>
-                <button (click)="onEdit(invitation)" [disabled]="isDisable(invitation)" class="btn btn-primary btn-sm">Edit</button>
+                <button (click)="onEdit(invitation)" [disabled]="isDisable(invitation)" class="btn btn-primary btn-sm">
+                    <i class="bi bi-pencil-fill"></i>Edit</button>
             </td>
         </tr>
         </tbody>

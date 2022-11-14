@@ -13,7 +13,8 @@
             <input required disabled id="pharmacyName" class="form-control" type="text" [value]="ownerProfile?.pharmacyName">
         </div>
         <div class="buttons">
-            <button type="submit" (click)="onSubmit()" class="btn btn-primary">Create</button>
+            <button type="submit" (click)="onSubmit()" class="btn btn-primary">
+                <i class="bi bi-plus-circle-fill"></i>Create</button>
         </div>
         <div>
             <div *ngIf="createStatus=='success'" class="alert alert-success" role="alert">

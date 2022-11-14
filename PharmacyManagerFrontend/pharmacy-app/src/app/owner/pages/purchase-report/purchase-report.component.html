@@ -3,7 +3,8 @@
     <input id="dateFrom" type="date" [ngModel] ="dateFrom | date:'yyyy-MM-dd'" (ngModelChange)="dateFrom = $event">
     <label class="margin-left" for="dateTo">Date to:</label>
     <input id="dateTo" type="date" [ngModel] ="dateTo | date:'yyyy-MM-dd'" (ngModelChange)="dateTo = $event">
-    <button (click)="onSubmit()" type="submit" class="btn btn-primary margin-left">Search</button>
+    <button (click)="onSubmit()" type="submit" class="btn btn-primary margin-left">
+        <i class="bi bi-search"></i>Search</button>
 </div>
 
 <div class="report-container" *ngIf="purchaseItemList">

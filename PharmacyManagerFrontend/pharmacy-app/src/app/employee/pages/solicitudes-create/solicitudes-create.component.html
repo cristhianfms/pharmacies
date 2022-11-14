@@ -1,4 +1,4 @@
-<a routerLink="/employee/solicitudes">&lt;&lt; back</a>
+<a routerLink="/employee/solicitudes"><i class="bi bi-arrow-left-circle-fill"></i> back</a>
 <form (ngSubmit)="onSubmitCreateSolicitude(); form.reset()" [formGroup]="form" >
     <table class="table table-hover">
         <thead>
@@ -25,7 +25,7 @@
     <div class="buttons">
         <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
             <span *ngIf="pressed" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Submit
+            <i class="bi bi-check-circle-fill"></i> Submit
         </button>
     </div>
 </form>
