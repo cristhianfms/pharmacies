@@ -1,12 +1,9 @@
-using System.Security.Authentication;
 using Domain;
 using Domain.AuthDomain;
 using Exceptions;
 using IAuthLogic;
-using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Primitives;
 using WebApi.Filter.Models;
 
 namespace WebApi.Filter;

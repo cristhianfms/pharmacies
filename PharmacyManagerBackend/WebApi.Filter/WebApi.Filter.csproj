@@ -9,7 +9,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
       <ProjectReference Include="..\IAuthLogic\IAuthLogic.csproj" />
-      <ProjectReference Include="..\IBusinessLogic\IBusinessLogic.csproj" />
     </ItemGroup>
 
     <ItemGroup>

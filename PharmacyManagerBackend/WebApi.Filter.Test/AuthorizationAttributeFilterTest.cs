@@ -3,14 +3,12 @@ using Domain;
 using Domain.AuthDomain;
 using Exceptions;
 using IAuthLogic;
-using IBusinessLogic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Moq;
-using WebApi.Filter.Models;
 
 namespace WebApi.Filter.Test;
 
@@ -20,9 +18,6 @@ public class AuthorizationAttributeFilterTest
     private AuthorizationAttributeFilter _authFilter;
     private Mock<ISessionLogic> _sessionLogicMock;
     private Mock<IPermissionLogic> _permissionLogicMock;
-    private Mock<ISolicitudeLogic> _solicitudeLogicMock;
-    private Mock<IDrugLogic> _drugLogicMock;
-    private Mock<IPurchaseLogic> _purchaseLogicMock;
     private Mock<Context> _context;
 
     [TestInitialize]
