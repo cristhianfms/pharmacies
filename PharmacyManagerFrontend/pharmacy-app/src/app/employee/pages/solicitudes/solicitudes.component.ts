@@ -1,3 +1,4 @@
+import { formatCurrency } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuerySolicitudeDto } from 'src/app/models/Dto/solicitude-query.model';
@@ -34,6 +35,15 @@ export class SolicitudesComponent implements OnInit {
       dateTo: this.filterDateTo,
       state: state,
       drugCode: this.filterDrugCode
+    }
+  }
+  resetSolicitudeQuery(event: Event){
+    let state = this.filterState == "All" ? null : this.filterState;
+    this.solicitudeQuery = {
+      dateFrom: null,
+      dateTo: null,
+      state: null,
+      drugCode: null
     }
   }
 

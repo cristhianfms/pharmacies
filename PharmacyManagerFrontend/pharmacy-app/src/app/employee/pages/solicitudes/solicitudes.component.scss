@@ -13,5 +13,19 @@
   }
   button{
     text-align: center;
+    display: flex;
+    float: left;
+    margin-right: 2em;
     margin: 10px;
   }
+  input, select {
+  display: flex;
+    width: 10em;
+    margin-right: 2em;
+}
+label {
+  display: flex;
+    margin-right: 2em;
+    padding-top: 1.5em;
+    text-align:center;
+}

@@ -9,9 +9,10 @@ export class InvitationsFilterPipe implements PipeTransform {
 
   transform(value: Invitation[], invitationQueryDto: InvitationQueryDto):  Invitation[] {
     return value.filter(i => {
-      return invitationQueryDto.userName ? i.userName == invitationQueryDto.userName : true &&
-              invitationQueryDto.pharmacyName ? i.pharmacyName == invitationQueryDto.pharmacyName : true &&
-              invitationQueryDto.role ? i.roleName == invitationQueryDto.role : true
+      return  (invitationQueryDto.role? i.roleName == invitationQueryDto.role : true) &&
+      (invitationQueryDto.pharmacyName? i.pharmacyName == invitationQueryDto.pharmacyName : true) &&
+      (invitationQueryDto.userName? i.userName == invitationQueryDto.userName : true)
+
     })
   }
 

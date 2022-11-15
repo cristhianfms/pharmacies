@@ -10,7 +10,7 @@
     <tbody >
         <ng-container *ngFor="let solicitude of solicitudes | solicitudesFilter:solicitudeQuery">
             <tr >
-                <td [attr.rowspan]="solicitude.solicitudeItems.length + 1">{{solicitude.date | date:'short':'-0300'}}</td>
+                <td [attr.rowspan]="solicitude.solicitudeItems.length + 1">{{solicitude.date | date:'short'}}</td>
                 <td [attr.rowspan]="solicitude.solicitudeItems.length + 1">{{solicitude.state}}</td>
             </tr>
             <tr  class="tr-items" *ngFor = "let item of solicitude.solicitudeItems; let i = index" >
