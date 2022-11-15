@@ -14,7 +14,6 @@ import {SolicitudesService} from 'src/app/services/solicitudes.service';
     styleUrls: ['./solicitudes-create.component.scss']
 })
 export class SolicitudesCreateComponent implements OnInit {
-    pressed: boolean = false;
     drugs: Drug[] = [];
     myItems: SolicitudeItemDto [] = [];
     mySolicitude = new BehaviorSubject<SolicitudeItemDto[]>([])
@@ -29,7 +28,7 @@ export class SolicitudesCreateComponent implements OnInit {
     createdSolicitude: Solicitude | null = null;
 
 
-    createStatus: 'loading' | 'success' | 'error' | null = null
+    status: 'loading' | 'success' | 'error' | null = null
     errorMessage: string = ''
 
     constructor(private router: Router, private drugService: DrugsService, private solicitudeService: SolicitudesService) {
@@ -49,7 +48,7 @@ export class SolicitudesCreateComponent implements OnInit {
     }
 
     onSubmitCreateSolicitude() {
-        this.createStatus = 'loading';
+        this.status = 'loading';
         let items: SolicitudeItem[] = []
         let drugCodes = Object.keys(this.form.getRawValue())
         drugCodes.forEach(code => {
@@ -61,7 +60,7 @@ export class SolicitudesCreateComponent implements OnInit {
         items = items.filter(i => i.drugQuantity > 0);
 
         if (!this.isFormQuantitiesOK(items)){
-            this.createStatus = 'error';
+            this.status = 'error';
             this.errorMessage = 'Enter at least one solicitude'
             return;
         };
@@ -79,11 +78,11 @@ export class SolicitudesCreateComponent implements OnInit {
 
     handleOkResponse(data: any) {
         this.createdSolicitude = data;
-        this.createStatus = 'success';
+        this.status = 'success';
     }
 
     handleErrorResponse(error: any) {
-        this.createStatus = 'error';
+        this.status = 'error';
         this.errorMessage = error.error.message;
     }
 
@@ -105,7 +104,7 @@ export class SolicitudesCreateComponent implements OnInit {
     }
 
     onChangeInput() {
-        this.createStatus = null
+        this.status = null
         this.errorMessage = ''
     }
 }

@@ -40,6 +40,7 @@ export class ExportDrugComponent implements OnInit {
   }
 
   onSubmit() {
+    this.exportStatus = 'loading';
     this.selectedExporter!.props.forEach( prop =>
         prop.value = this.form.getRawValue()[prop.key]
     )

@@ -1,5 +1,22 @@
 nav {
-  margin: 10px;
+    grid-area: nav;
+    background-color: #3E51B5;
+    color: white;
+    padding: 1em;
+    box-shadow: 1px 2px 4px 0 rgb(21 99 157 / 16%);
+    border-bottom: 1px solid rgba(21,99,157,0.16);
+   .nav-link {
+      color:azure;
+      padding: 10px;
+      margin-right: 10px;
+    }
+    .navbar-brand{
+      color:white;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      font-family:Georgia, 'Times New Roman', Times, serif;
+      font-size: 20px;
+    }
   .info {
     display: flex;
     align-items: center;
@@ -9,6 +26,7 @@ nav {
     .cart {
       position: relative;
       margin-right: 2em;
+      margin-left: 1em;
       .counter {
         width: 20px;
         height: 20px;
@@ -29,14 +47,11 @@ nav {
 
 
 .active{
-  border: 1px solid #ACD9B2;
-  color: #ACD9B2;
+  border: 1px solid #5f9df7;
+  color: #5f9df7;
   border-radius: 5px;
 }
 #logout, #signup, #login {
-  color:black;
+  color:white;
   text-decoration: none;
-}
-.btn{
-  margin:0.5%;
 }
