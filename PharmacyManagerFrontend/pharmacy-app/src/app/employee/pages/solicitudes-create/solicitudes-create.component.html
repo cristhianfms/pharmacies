@@ -24,17 +24,17 @@
 
     <div class="buttons">
         <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
-            <span *ngIf="pressed" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span *ngIf="status == 'loading'" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <i class="bi bi-check-circle-fill"></i> Submit
         </button>
     </div>
 </form>
 
 <div>
-    <div *ngIf="createStatus=='success'" class="alert alert-success" role="alert">
+    <div *ngIf="status=='success'" class="alert alert-success" role="alert">
         Solicitude created!
     </div>
-    <div *ngIf="createStatus=='error'"class="alert alert-danger" role="alert">
+    <div *ngIf="status=='error'"class="alert alert-danger" role="alert">
         {{errorMessage}}
     </div>
 </div>

@@ -15,7 +15,9 @@
                 <div class="errorMessage" *ngIf="!isValid(prop.key) && form.controls[prop.key].touched">*{{prop.key}} is required</div>
             </div>
 
-            <button [disabled]="!form.valid" type="submit" class="btn btn-primary">Export</button>
+            <button [disabled]="!form.valid" type="submit" class="btn btn-primary">
+                <span *ngIf="exportStatus == 'loading'" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <i class="bi bi-download"></i>Export</button>
         </form>
     </div>
 
