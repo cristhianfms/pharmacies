@@ -5,28 +5,13 @@
 </div>
 <hr>
 <div class="search-container">
-    <form class="row gx-3 gy-2 align-items-center">
-        <div class="col-sm-3">
+    <form class="row gx-4 gy-2 align-items-center"  #form="ngForm">
+        <div class="col-auto">
             <label for="specificSizeInputName1">Drug Code:</label>
             <input [(ngModel)]="filterDrugCode" type="text" class="form-control" id="specificSizeInputName1"
                    name="specificSizeInputName1" placeholder="">
         </div>
-        <div class="col-sm-3">
-
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm-1">Date From:</span>
-                <input [(ngModel)]="filterDateFrom" type="date" id="dateFrom" name="dateFrom"
-                       data-date-format="yyyy-mm-dd">
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm-1">Date To:</span>
-                <input [(ngModel)]="filterDateTo" type="date" id="dateTo" name="dateTo" data-date-format="yyyy-mm-dd">
-            </div>
-
-        </div>
-        <div class="col-sm-3">
+        <div class="col-auto">
             <label for="specificSizeSelect">State</label>
             <select [(ngModel)]="filterState" class="form-select" id="inputGroupSelect01" name="specificSizeSelect">
                 <option selected value="All">All</option>
@@ -35,11 +20,23 @@
                 <option value="Rejected">REJECTED</option>
             </select>
         </div>
-        <div class="col-auto align-items-baseline">
+        <div class="col-auto">
+                <label for="dateFrom">Date From:</label>
+                <input [(ngModel)]="filterDateFrom" type="date" id="dateFrom" name="dateFrom"
+                       data-date-format="yyyy-mm-dd">
+        </div>
+        <div class="col-auto">
+      
+                <label for="dateTo">Date To:</label>
+                <input [(ngModel)]="filterDateTo" type="date" id="dateTo" name="dateTo" data-date-format="yyyy-mm-dd">
+           
+
+        </div>
+        <div class="align-items-baseline">
 
             <button (click)="obtainSolicitudeQuery($event)" class="btn btn-primary" type="button">
                 <i class="bi bi-search"></i>Search</button>
-            <button type="reset" class="btn btn-secondary">
+            <button type="button" class="btn btn-secondary" (click)="form.reset(); resetSolicitudeQuery($event)">
                 <i class="bi bi-arrow-clockwise"></i>Reset</button>
         </div>
     </form>
