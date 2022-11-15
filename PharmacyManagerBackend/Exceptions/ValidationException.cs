@@ -5,8 +5,4 @@ public class ValidationException : Exception
         : base(message)
     {
     }
-    public ValidationException(string message, Exception inner)
-        : base(message, inner)
-    {
-    }
 }

@@ -2,7 +2,6 @@ using System.Text.Json.Serialization;
 using Factory;
 using Microsoft.AspNetCore.Http.Json;
 using WebApi.Filter;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.DefaultIgnoreCondition 

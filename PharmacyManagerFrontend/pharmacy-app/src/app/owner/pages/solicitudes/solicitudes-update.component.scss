@@ -5,3 +5,12 @@
 i{
     margin-right:3px;
 }
+button {
+    margin: 1px 10px;
+}
+.container-button {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    margin-left: 20px;
+}

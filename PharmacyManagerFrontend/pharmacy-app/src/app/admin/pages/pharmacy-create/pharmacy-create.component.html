@@ -9,10 +9,11 @@
             <input required id="address" class="form-control" type="text" [(ngModel)]="newPharmacy.address">
         </div>
         <div class="buttons">
+            <button type="submit" (click)="onSubmit()" class="btn btn-primary">
+                <span *ngIf="createStatus == 'loading'" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <i class="bi bi-check-circle-fill"></i> Create</button>
             <button type="button" (click)="goToPharmaciesHome()" class="btn btn-primary">
                 <i class="bi bi-arrow-left-circle-fill"></i>Back</button>
-            <button type="submit" (click)="onSubmit()" class="btn btn-primary">
-                <i class="bi bi-check-circle-fill"></i> Create</button>
         </div>
         <div>
             <div *ngIf="createStatus=='success'" class="alert alert-success" role="alert">

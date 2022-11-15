@@ -1,4 +1,4 @@
-<h2>Login</h2> 
+<h2 id="login">Welcome to Pharmacy Manager</h2> 
 <form  (ngSubmit)="submitLogin(); form.reset()" #form="ngForm">
 
     <div class="form">
@@ -29,7 +29,7 @@
             <div class="buttons">
                 <button id="btnSubmit" type="submit" class="btn btn-primary"
                 [disabled]="!form.form.valid" >
-                <span *ngIf="pressed" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span *ngIf="status == 'loading'" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     Submit
                 </button>
                 <a routerLink= "../signup">New in Pharmacy Manager?</a>

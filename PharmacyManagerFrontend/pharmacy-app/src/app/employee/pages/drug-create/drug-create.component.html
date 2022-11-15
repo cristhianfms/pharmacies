@@ -11,7 +11,7 @@
       </div>
       <div class="form-group">
         <label for="price">Price</label>
-        <input required id="price" class="form-control" type="number" [(ngModel)]="newDrug.price">
+        <input required id="price" class="form-control" type="number" min="1"[(ngModel)]="newDrug.price">
       </div>
       <div class="form-group">
         <label for="symptoms">Symptoms</label>
@@ -23,7 +23,7 @@
       </div>
       <div class="form-group">
         <label for="quantityPerPresentation">Quantity Per Presentation</label>
-        <input required id="quantityPerPresentation" class="form-control" type="text" [(ngModel)]="newDrug.quantityPerPresentation">
+        <input required id="quantityPerPresentation" class="form-control" type="number" min="1" [(ngModel)]="newDrug.quantityPerPresentation">
       </div>
       <div class="form-group">
         <label for="unitOfMeasurement">Unit of Measurement</label>
@@ -38,7 +38,8 @@
       </div>
       <div class="buttons">
         <button type="submit" (click)="onSubmit()" class="btn btn-primary">
-          <i class="bi bi-check-circle-fill"></i>Save</button>
+          <span *ngIf="createStatus == 'loading'" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <i class="bi bi-check-circle-fill"></i>Submit</button>
         <button type="button" (click)="goToDrugsHome()" class="btn btn-primary">
           <i class="bi bi-arrow-left-circle-fill"></i>Back</button>
       </div>

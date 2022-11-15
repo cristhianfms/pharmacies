@@ -10,7 +10,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  pressed: boolean = false;
 
   credential: Credential = {
       userName:"",
@@ -32,7 +31,6 @@ export class LoginComponent implements OnInit {
   }
 
   submitLogin() {
-    this.pressed = true;
     this.status = 'loading';
     this.sessionService.loginAndGet(this.credential.userName, this.credential.password)
     .subscribe({  

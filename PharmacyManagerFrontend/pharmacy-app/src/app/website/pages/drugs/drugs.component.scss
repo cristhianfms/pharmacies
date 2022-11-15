@@ -1,7 +1,11 @@
+
 .drugs--grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 15px;
+  margin:10px;
+  padding: 10px;
+  border-radius: 0.5em;
 }
 
 
@@ -16,8 +20,13 @@ button {
   border-radius: 5px;
   padding: 10px;
   align-items: baseline;
+  background-color: lightblue;
+  margin: 10px;
 }
 
 #exampleModal{
   position: fixed;
+}
+i{
+  margin-right: 3px;
 }
