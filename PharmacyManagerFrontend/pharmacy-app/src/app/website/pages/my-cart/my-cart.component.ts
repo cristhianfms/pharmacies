@@ -3,6 +3,7 @@ import {StoreService} from "../../../services/store.service";
 import {PurchaseItemDto} from "../../../models/Dto/purchase-item-dto.model";
 import {PurchasesService} from "../../../services/purchases.service";
 import {PurchaseDto} from "../../../models/Dto/purchase-dto.model";
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-my-cart',
@@ -17,6 +18,9 @@ export class MyCartComponent implements OnInit {
   errorMessage: string = ''
   createdPurchaseCode: string = ''
 
+  form = new FormGroup({
+    userName: new FormControl(this.userEmail, [Validators.required, Validators.email])
+  })
   constructor(private storeService: StoreService, private purchasesService: PurchasesService) {
     this.myShoppingCart = this.storeService.getShoppingCart();
   }
