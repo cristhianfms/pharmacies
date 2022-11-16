@@ -30,16 +30,7 @@ public static class PurchaseModelsMapper
             State = purchaseItem.State
         };
     }
-
-    private static PurchaseItemStatusModel ToModel(PurchaseItemStatusDto purchaseItem)
-    {
-        return new PurchaseItemStatusModel
-        {
-            DrugCode = purchaseItem.DrugCode,
-            State = purchaseItem.State
-        };
-    }
-
+    
     private static PurchaseItemReportModel ToModel(PurchaseItemReportDto purchaseItem)
     {
         return new PurchaseItemReportModel
@@ -106,16 +97,7 @@ public static class PurchaseModelsMapper
             State = purchaseItemPutModel.State
         };
     }
-
-    public static IEnumerable<PurchaseItemStatusModel> ToModelList(IEnumerable<PurchaseItemStatusDto> purchaseItems)
-    {
-        List<PurchaseItemStatusModel> purchaseItemModels = new List<PurchaseItemStatusModel>();
-
-        foreach (var pi in purchaseItems)
-            purchaseItemModels.Add(ToModel(pi));
-
-        return purchaseItemModels;
-    }
+    
     
     public static IEnumerable<PurchaseResponseModel> ToModelList(IEnumerable<Purchase> purchases)
     {

@@ -889,8 +889,17 @@ public class PurchaseLogicTest
         {
             purchaseRepository
         };
+        User currentUser = new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.EMPLOYEE
+            },
+            Pharmacy = pharmacyRepository
+        };
         _purchaseRepositoryMock.Setup(m => m.GetAll(It.IsAny<Func<Purchase, bool>>())).Returns(purchases);
-
+        _context.Setup(m => m.CurrentUser).Returns(currentUser);
+        
         List<Purchase> purchasesReturned = _purchaseLogic.GetAll().ToList();
 
         CollectionAssert.AreEqual(purchases, purchasesReturned);
