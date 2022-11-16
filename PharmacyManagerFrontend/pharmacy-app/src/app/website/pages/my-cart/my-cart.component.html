@@ -22,13 +22,15 @@
 </table>
 <hr>
 <div class="purchase-form" *ngIf="myShoppingCart.length >= 1">
+    <form #form="ngForm">
     <div class="row">
         <div class="form-group">
-            <label for="email">Enter your email</label>
-            <input (change)="onEmailChange()"  required id="email" class="form-control" type="text" [(ngModel)]="userEmail">
+            <label for="userEmail">Enter your email</label>
+            <input (change)="onEmailChange()"  required id="userEmail" class="form-control" type="email" 
+            [(ngModel)]="userEmail" name="userEmail">
         </div>
         <div class="buttons">
-            <button type="submit" (click)="onSubmit()" [disabled]="isDisable()" class="btn btn-primary">Finish purchase</button>
+            <button type="submit" (click)="onSubmit(); form.reset()" [disabled]="!form.valid" class="btn btn-primary">Finish purchase</button>
         </div>
         <div class="messages">
             <div *ngIf="purchaseStatus=='success'" class="alert alert-success" role="alert">
@@ -39,6 +41,7 @@
             </div>
         </div>
     </div>
+    </form>
 </div>
 
 
