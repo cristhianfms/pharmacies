@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Domain;
 using Domain.AuthDomain;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DataAccess.Context;
 
+[ExcludeFromCodeCoverage]
 public class PharmacyManagerContext : DbContext
 {
     public DbSet<User> UserSet { get; set; }

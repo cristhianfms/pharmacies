@@ -5,8 +5,4 @@ public class AuthenticationException : Exception
         : base(message)
     {
     }
-    public AuthenticationException(string message, Exception inner)
-        : base(message, inner)
-    {
-    }
 }

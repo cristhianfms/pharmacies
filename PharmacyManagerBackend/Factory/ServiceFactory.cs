@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using AuthLogic;
 using BusinessLogic;
 using DataAccess;
@@ -14,6 +15,7 @@ using WebApi.Filter;
 
 namespace Factory;
 
+[ExcludeFromCodeCoverage]
 public class ServiceFactory
 {
     private readonly IServiceCollection _services;

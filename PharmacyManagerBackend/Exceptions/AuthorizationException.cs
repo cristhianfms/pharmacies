@@ -5,8 +5,4 @@ public class AuthorizationException : Exception
         : base(message)
     {
     }
-    public AuthorizationException(string message, Exception inner)
-        : base(message, inner)
-    {
-    }
 }
