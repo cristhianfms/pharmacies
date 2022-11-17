@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PharmacyManagerContext))]
-    [Migration("20221113214318_PharmacyManagerMigration")]
+    [Migration("20221117035017_PharmacyManagerMigration")]
     partial class PharmacyManagerMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
