@@ -1,10 +1,26 @@
+using System.Text.Json.Serialization;
 using Factory;
+using Microsoft.AspNetCore.Http.Json;
 using WebApi.Filter;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.DefaultIgnoreCondition 
+    = JsonIgnoreCondition.WhenWritingNull);
 
+// Eable cors
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
+// Add services to the container.
 builder.Services.AddControllers();
 
 //Filters 
@@ -29,6 +45,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 

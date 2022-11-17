@@ -29,8 +29,19 @@ public class PurchasesController : ControllerBase
 
         return Ok(purchaseResponseModel);
     }
+    
+    [HttpPut("{purchaseId}")]
+    [ServiceFilter(typeof(AuthorizationAttributePublicFilter))]
+    public IActionResult Update(int purchaseId, [FromBody] PurchasePutModel purchasePutModel)
+    {
+        Purchase purchaseToUpdate = PurchaseModelsMapper.ToEntity(purchasePutModel);
+        Purchase purchaseUpdated = _purchaseLogic.Update(purchaseId, purchaseToUpdate);
+        PurchaseResponseModel purchaseUpdatedModel = PurchaseModelsMapper.ToModel(purchaseUpdated);
 
-    [HttpGet]
+        return Ok(purchaseUpdatedModel);
+    }
+
+    [HttpGet("report")]
     [ServiceFilter(typeof(AuthorizationAttributeFilter))]
     public IActionResult GetPurchasesReport([FromQuery] QueryPurchaseDto queryPurchaseDto)
     {
@@ -38,6 +49,25 @@ public class PurchasesController : ControllerBase
         PurchaseReportModel purchaseReportModel = PurchaseModelsMapper.ToModel(purchaseReport);
 
         return Ok(purchaseReportModel);
+    }
+
+    [HttpGet("{code}")]
+    public IActionResult GetPurchase(string code)
+    {
+        Purchase purchase = _purchaseLogic.Get(code);
+        PurchaseResponseModel purchaseResponseModel = PurchaseModelsMapper.ToModel(purchase);
+
+        return Ok(purchaseResponseModel);
+    }
+    
+    [HttpGet]
+    [ServiceFilter(typeof(AuthorizationAttributeFilter))]
+    public IActionResult GetAllPurchases()
+    {
+        IEnumerable<Purchase> purchases = _purchaseLogic.GetAll();
+        IEnumerable<PurchaseResponseModel> purchaseModels = PurchaseModelsMapper.ToModelList(purchases);
+
+        return Ok(purchaseModels);
     }
 }
 

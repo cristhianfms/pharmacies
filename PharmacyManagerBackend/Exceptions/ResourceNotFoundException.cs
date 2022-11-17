@@ -5,8 +5,4 @@ public class ResourceNotFoundException : Exception
         : base(message)
     {
     }
-    public ResourceNotFoundException(string message, Exception inner)
-        : base(message, inner)
-    {
-    }
 }

@@ -9,6 +9,9 @@ public class PurchaseItem
     public int Id { get; set; }
     public int DrugId { get; set; }
     public Drug Drug { get; set; }
+    public int PharmacyId { get; set; }
+    public Pharmacy Pharmacy { get; set; }
+    public PurchaseState State { get; set; }
     public int Quantity
     {
         get { return _quantity; }
@@ -21,5 +24,15 @@ public class PurchaseItem
 
             _quantity = value;
         }
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is PurchaseItem item &&
+               Id == item.Id &&
+               DrugId == item.DrugId &&
+               PharmacyId == item.PharmacyId &&
+               State == item.State &&
+               Quantity == item.Quantity;
     }
 }

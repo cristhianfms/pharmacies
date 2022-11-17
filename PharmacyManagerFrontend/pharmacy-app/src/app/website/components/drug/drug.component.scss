@@ -1,0 +1,25 @@
+p, h2 {
+  margin: 0
+}
+
+.control{
+  padding-top: 10px;
+}
+.card{
+  margin:5px;
+}
+
+.control a {
+  margin-left: 10px;
+}
+input[type=number]::-webkit-inner-spin-button {
+  opacity: 1
+}
+.card-header{
+  text-align: center;
+  background-color: lightblue;
+/*background-color: #0dcaf0;*/
+}
+.card-title{
+  color:black;
+}

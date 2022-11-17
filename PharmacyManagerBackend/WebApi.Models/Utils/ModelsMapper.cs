@@ -1,30 +1,11 @@
-
 using Domain;
 using Domain.Dtos;
-
+using ExporterDomain;
 
 namespace WebApi.Models.Utils;
 
 public static class ModelsMapper
 {
-    public static Pharmacy ToEntity(PharmacyModel pharmacyModel)
-    {
-        return new Pharmacy
-        {
-            Name = pharmacyModel.Name,
-            Address = pharmacyModel.Address
-        };
-    }
-
-    public static PharmacyModel ToModel(Pharmacy pharmacy)
-    {
-        return new PharmacyModel
-        {
-            Name = pharmacy.Name,
-            Address = pharmacy.Address
-        };
-    }
-
     public static CredentialsDto ToEntity(CredentialsModel credentialsModel)
     {
         return new CredentialsDto
@@ -54,7 +35,7 @@ public static class ModelsMapper
 
     private static SolicitudeItem ToEntity(SolicitudeItemModel solicitudeItemModel)
     {
-        return new SolicitudeItem()
+        return new SolicitudeItem
         {
             DrugQuantity = solicitudeItemModel.DrugQuantity,
             DrugCode = solicitudeItemModel.DrugCode,
@@ -91,6 +72,7 @@ public static class ModelsMapper
             DrugCode = solicitudeItem.DrugCode
         };
     }
+
     public static List<SolicitudeResponseModel> ToModelList(List<Solicitude> solicitudes)
     {
         List<SolicitudeResponseModel> solicitudeResponseModels = new List<SolicitudeResponseModel>();
@@ -109,9 +91,9 @@ public static class ModelsMapper
         };
     }
 
-    public static Drug ToEntity(DrugRequestModel drugModel)
+    public static Domain.Drug ToEntity(DrugRequestModel drugModel)
     {
-        DrugInfo drugInfo  = new DrugInfo
+        DrugInfo drugInfo = new DrugInfo
         {
             Id = drugModel.Id,
             Name = drugModel.Name,
@@ -121,7 +103,7 @@ public static class ModelsMapper
             UnitOfMeasurement = drugModel.UnitOfMeasurement
         };
 
-        return new Drug
+        return new Domain.Drug
         {
             Id = drugModel.Id,
             DrugCode = drugModel.DrugCode,
@@ -132,7 +114,7 @@ public static class ModelsMapper
         };
     }
 
-    public static DrugRequestModel ToModel(Drug drug)
+    public static DrugRequestModel ToModel(Domain.Drug drug)
     {
         return new DrugRequestModel
         {
@@ -144,10 +126,10 @@ public static class ModelsMapper
             Symptoms = drug.DrugInfo.Symptoms,
             Presentation = drug.DrugInfo.Presentation,
             QuantityPerPresentation = drug.DrugInfo.QuantityPerPresentation,
-            UnitOfMeasurement= drug.DrugInfo.UnitOfMeasurement,
+            UnitOfMeasurement = drug.DrugInfo.UnitOfMeasurement,
         };
     }
-    public static DrugGetModel ToGetModel(Drug drug)
+    public static DrugGetModel ToGetModel(Domain.Drug drug)
     {
         return new DrugGetModel
         {
@@ -161,16 +143,19 @@ public static class ModelsMapper
             Presentation = drug.DrugInfo.Presentation,
             QuantityPerPresentation = drug.DrugInfo.QuantityPerPresentation,
             UnitOfMeasurement = drug.DrugInfo.UnitOfMeasurement,
-            PharmacyId = drug.PharmacyId
+            PharmacyId = drug.PharmacyId,
+            PharmacyName = drug.Pharmacy.Name
         };
     }
-    public static IEnumerable<DrugGetModel> ToModelList(IEnumerable<Drug> drugs)
+
+    public static IEnumerable<DrugGetModel> ToModelList(IEnumerable<Domain.Drug> drugs)
     {
         List<DrugGetModel> drugGetModel = new List<DrugGetModel>();
-        foreach (Drug _drug in drugs)
+        foreach (Domain.Drug _drug in drugs)
         {
             drugGetModel.Add(ToGetModel(_drug));
         }
         return drugGetModel;
     }
+
 }

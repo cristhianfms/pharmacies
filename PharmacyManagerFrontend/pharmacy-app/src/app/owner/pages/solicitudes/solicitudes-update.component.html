@@ -1,0 +1,45 @@
+<table class="table table-hover" >
+    <thead class="table-primary">
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Employee</th>
+        <th scope="col">Date</th>
+        <th scope="col">State</th>
+        <th scope="col">Items</th>
+
+    </tr>
+    </thead>
+    <tbody >
+        <ng-container *ngFor="let solicitude of solicitudes" >
+            <tr id="tr-solicitude">
+                <td [attr.rowspan] ="solicitude.solicitudeItems.length + 1">
+                    {{solicitude.id}}
+                    <div class="container-button">
+
+                        <button (click)="onAccept(solicitude)" [disabled]="isAcceptDisable(solicitude)" class="btn btn-success btn-sm">
+                            <i class="bi bi-check-circle-fill"></i>Accept</button>
+                            
+                            <button (click)="onReject(solicitude)" [disabled]="isRejectDisable(solicitude)" class="btn btn-danger btn-sm">
+                                <i class="bi bi-x-octagon-fill"></i>Reject</button>
+                    </div>
+                </td>
+                <td [attr.rowspan]="solicitude.solicitudeItems.length + 1">{{solicitude.employeeUserName}}</td>
+                <td [attr.rowspan]="solicitude.solicitudeItems.length + 1">{{solicitude.date | date:'short':'-0300'}}</td>
+                <td [attr.rowspan]="solicitude.solicitudeItems.length + 1">{{solicitude.state}}</td>
+            </tr>
+            <tr  class="tr-items" *ngFor = "let item of solicitude.solicitudeItems; let i = index" >
+                <td><li><b>{{item.drugCode}}</b>({{item.drugQuantity}})</li></td>
+            </tr>
+
+        </ng-container>
+    </tbody>
+</table>
+<div class="messages">
+    <div *ngIf="updatingStatus=='success'" class="alert alert-success" role="alert">
+        The solicitude state has been updated
+    </div>
+    <div *ngIf="updatingStatus=='error'"class="alert alert-danger" role="alert">
+        {{errorMessage}}
+    </div>
+</div>
+

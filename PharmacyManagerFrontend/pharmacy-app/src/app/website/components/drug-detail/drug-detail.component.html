@@ -1,0 +1,26 @@
+<div class="backdrop" (click)="onClose()"></div>
+<div class="alert-box">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">{{drug?.name | uppercase}}</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onClose()"></button>
+            </div>
+            <hr>
+            <div class="modal-body">
+                <p> {{drug?.drugCode}}</p>
+                <p>Pharmacy: {{drug?.pharmacyName}}</p>
+                <p>Symptoms: {{drug?.symptoms}}</p>
+                <p>Presentation type: {{drug?.presentation}}</p>
+                <p>Presentation: {{drug?.quantityPerPresentation}} {{drug?.unitOfMeasurement}}</p>
+                <p>Stock: {{drug?.stock}}</p>
+                <p *ngIf="drug?.needsPrescription">Needs prescription</p>
+            </div>
+            <hr>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"  (click)="onClose()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

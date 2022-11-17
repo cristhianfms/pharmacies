@@ -1,0 +1,31 @@
+.new-container {
+    align-items: center;
+    height: 45px;
+  }
+  
+  .new-container button {
+    display: flex;
+    float: right;
+    margin-right: 2em;
+  }
+  i{
+    margin-right: 3px;
+  }
+  button{
+    text-align: center;
+    display: flex;
+    float: left;
+    margin-right: 2em;
+    margin: 10px;
+  }
+  input, select {
+  display: flex;
+    width: 10em;
+    margin-right: 2em;
+}
+label {
+  display: flex;
+    margin-right: 2em;
+    padding-top: 1.5em;
+    text-align:center;
+}

@@ -43,6 +43,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Models.Test", "WebAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IAuthLogic", "IAuthLogic\IAuthLogic.csproj", "{68A11C78-39E9-40AC-83FE-DA10CE98798C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExporterInterface", "ExporterInterface\ExporterInterface.csproj", "{717E418D-4B97-4AD2-8A6C-423D437466CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExporterDomain", "ExporterDomain\ExporterDomain.csproj", "{2D2F297D-364F-4CCE-A2C7-2B0C432B6504}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +133,14 @@ Global
 		{68A11C78-39E9-40AC-83FE-DA10CE98798C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68A11C78-39E9-40AC-83FE-DA10CE98798C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68A11C78-39E9-40AC-83FE-DA10CE98798C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{717E418D-4B97-4AD2-8A6C-423D437466CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{717E418D-4B97-4AD2-8A6C-423D437466CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{717E418D-4B97-4AD2-8A6C-423D437466CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{717E418D-4B97-4AD2-8A6C-423D437466CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D2F297D-364F-4CCE-A2C7-2B0C432B6504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D2F297D-364F-4CCE-A2C7-2B0C432B6504}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D2F297D-364F-4CCE-A2C7-2B0C432B6504}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D2F297D-364F-4CCE-A2C7-2B0C432B6504}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

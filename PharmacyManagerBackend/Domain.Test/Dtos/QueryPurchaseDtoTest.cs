@@ -10,7 +10,7 @@ public class QueryPurchaseDtoTest
     public void DatesOk()
     {
         string dateFrom = "2022-09-01T00:00:00";
-        string dateTo = "2022-09-30T00:00:00";
+        string dateTo = "2022-09-30T23:59:59";
         QueryPurchaseDto queryPurchaseDto = new QueryPurchaseDto()
         {
             DateTo = dateTo,
@@ -26,8 +26,8 @@ public class QueryPurchaseDtoTest
     {
         QueryPurchaseDto queryPurchaseDto = new QueryPurchaseDto(){ };
         
-        Assert.AreEqual(DateTime.MinValue, queryPurchaseDto.GetParsedDateFrom());
-        Assert.AreEqual(DateTime.MaxValue, queryPurchaseDto.GetParsedDateTo());
+        Assert.AreEqual(new DateTime(DateTime.Now.Year, DateTime.Now.Month, 01), queryPurchaseDto.GetParsedDateFrom());
+        Assert.AreEqual(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59), queryPurchaseDto.GetParsedDateTo());
     }
     
     [TestMethod]

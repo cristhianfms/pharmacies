@@ -9,8 +9,7 @@ public class Purchase
     public int Id { get; set; }
     public double TotalPrice { get; set; }
     public DateTime Date { get; set; }
-    public int PharmacyId { get; set; }
-    public Pharmacy Pharmacy { get; set; }
+    public string Code { get; set; }
     public string UserEmail
     {
         get
@@ -46,8 +45,7 @@ public class Purchase
                Id == purchase.Id &&
                TotalPrice == purchase.TotalPrice &&
                Date == purchase.Date &&
-               Pharmacy == purchase.Pharmacy &&
                UserEmail == purchase.UserEmail &&
-               EqualityComparer<List<PurchaseItem>>.Default.Equals(Items, purchase.Items);
+               Items.SequenceEqual(purchase.Items);
     }
 }

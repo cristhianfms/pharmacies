@@ -19,6 +19,7 @@ namespace BusinessLogic.Test
         private Mock<DrugLogic> _drugLogicMock;
         private Mock<UserLogic> _userLogicMock;
         private Mock<PharmacyLogic> _pharmacyLogicMock;
+        private Mock<Context> _context;
         private SolicitudeLogic _solicitudeLogic;
         private User _userEmployeeForTest;
         private Solicitude _solicitudeForTest;
@@ -26,11 +27,15 @@ namespace BusinessLogic.Test
         [TestInitialize]
         public void Initialize()
         {
+            this._context = new Mock<Context>(MockBehavior.Strict);
             this._solicitudeRepositoryMock = new Mock<ISolicitudeRepository>(MockBehavior.Strict);
-            this._drugLogicMock = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null);
+            this._drugLogicMock = new Mock<DrugLogic>(MockBehavior.Strict, null, null, null, null);
             this._pharmacyLogicMock = new Mock<PharmacyLogic>(MockBehavior.Strict, null);
             this._userLogicMock = new Mock<UserLogic>(MockBehavior.Strict, null);
-            this._solicitudeLogic = new SolicitudeLogic(this._solicitudeRepositoryMock.Object, this._drugLogicMock.Object, this._pharmacyLogicMock.Object);
+            this._solicitudeLogic = new SolicitudeLogic(this._solicitudeRepositoryMock.Object,
+                this._drugLogicMock.Object,
+                this._pharmacyLogicMock.Object,
+                this._context.Object);
 
             _userEmployeeForTest = new User()
             {
@@ -49,7 +54,7 @@ namespace BusinessLogic.Test
                     Name = "Employee"
                 }
             };
-            _solicitudeLogic.SetContext(_userEmployeeForTest);
+            _context.Setup(m => m.CurrentUser).Returns(_userEmployeeForTest);
             SolicitudeItem solicitudeItem3 = new SolicitudeItem()
             {
                 DrugQuantity = 20,
@@ -111,7 +116,9 @@ namespace BusinessLogic.Test
             _pharmacyLogicMock.Setup(p => p.ExistsDrug(It.IsAny<string>(), It.IsAny<int>()));
             _solicitudeRepositoryMock.Setup(s => s.Create(solicitudeToCreate)).Returns(solicitudeRepository);
             _userLogicMock.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>())).Returns(_userEmployeeForTest);
-
+            _drugLogicMock.Setup(m => m.DrugIsActive(It.IsAny<string>()));
+                
+                
             Solicitude createdSolicitude = _solicitudeLogic.Create(solicitudeToCreate);
 
 
@@ -123,7 +130,7 @@ namespace BusinessLogic.Test
             Assert.AreEqual(solicitudeRepository.PharmacyId, createdSolicitude.PharmacyId);
             CollectionAssert.AreEqual(solicitudeRepository.Items, createdSolicitude.Items);
             _solicitudeRepositoryMock.VerifyAll();
-            
+            _drugLogicMock.VerifyAll();
         }
 
         [TestMethod]
@@ -174,7 +181,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void TestGetSolicitudesForEmployee()
         {
-            this._solicitudeLogic.SetContext(_userEmployeeForTest);
+            _context.Setup(m => m.CurrentUser).Returns(_userEmployeeForTest);
 
             QuerySolicitudeDto querysolicitudeDto = new QuerySolicitudeDto()
             {
@@ -232,7 +239,7 @@ namespace BusinessLogic.Test
                 }
             };
 
-             this._solicitudeLogic.SetContext(userOwnerForTest);
+            _context.Setup(m => m.CurrentUser).Returns(_userEmployeeForTest);
 
             QuerySolicitudeDto querysolicitudeDto = new QuerySolicitudeDto()
             {
@@ -273,7 +280,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void TestGetSolicitudesByState()
         {
-            this._solicitudeLogic.SetContext(_userEmployeeForTest);
+            _context.Setup(m => m.CurrentUser).Returns(_userEmployeeForTest);
 
             QuerySolicitudeDto querysolicitudeDto = new QuerySolicitudeDto()
             {
@@ -315,7 +322,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void TestGetSolicitudesByDrugCode()
         {
-            this._solicitudeLogic.SetContext(_userEmployeeForTest);
+            _context.Setup(m => m.CurrentUser).Returns(_userEmployeeForTest);
 
             QuerySolicitudeDto querysolicitudeDto = new QuerySolicitudeDto()
             {
@@ -356,12 +363,12 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void TestGetSolicitudesByDates()
         {
-            this._solicitudeLogic.SetContext(_userEmployeeForTest);
+            _context.Setup(m => m.CurrentUser).Returns(_userEmployeeForTest);
 
             QuerySolicitudeDto querysolicitudeDto = new QuerySolicitudeDto()
             {
                 DateFrom = "2020-05-08",
-                DateTo = "2022-10-08"
+                DateTo = "2022-12-30"
             };
 
             SolicitudeItem solicitudeItem = new SolicitudeItem()
@@ -412,7 +419,7 @@ namespace BusinessLogic.Test
                 }
             };
 
-            this._solicitudeLogic.SetContext(userOwnerForTest);
+            _context.Setup(m => m.CurrentUser).Returns(_userEmployeeForTest);
 
             SolicitudeItem solicitudeItem = new SolicitudeItem()
             {
@@ -473,7 +480,7 @@ namespace BusinessLogic.Test
                 }
             };
 
-            this._solicitudeLogic.SetContext(userOwnerForTest);
+            _context.Setup(m => m.CurrentUser).Returns(_userEmployeeForTest);
 
             SolicitudeItem solicitudeItem = new SolicitudeItem()
             {

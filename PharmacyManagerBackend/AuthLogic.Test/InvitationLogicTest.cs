@@ -1,6 +1,5 @@
-using System;
-using AuthLogic;
 using Domain;
+using Domain.Dto;
 using Domain.Dtos;
 using Exceptions;
 using IBusinessLogic;
@@ -15,20 +14,26 @@ namespace AuthLogic.Test;
 public class InvitationLogicTest
 {
     private InvitationLogic _invitationLogic;
-    private Mock<IInvitationRepository> _invitationRepository;
-    private Mock<IUserLogic> _userLogic;
-    private Mock<IRoleLogic> _roleLogic;
-    private Mock<IPharmacyLogic> _pharmacyLogic;
+    private Mock<IInvitationRepository> _invitationRepositoryMock;
+    private Mock<IUserLogic> _userLogicMock;
+    private Mock<IRoleLogic> _roleLogicMock;
+    private Mock<IPharmacyLogic> _pharmacyLogicMock;
+    private Mock<Context> _currentContextMock;
 
     [TestInitialize]
     public void Initialize()
     {
-        this._userLogic = new Mock<IUserLogic>(MockBehavior.Strict);
-        this._roleLogic = new Mock<IRoleLogic>(MockBehavior.Strict);
-        this._pharmacyLogic = new Mock<IPharmacyLogic>(MockBehavior.Strict);
-        this._invitationRepository = new Mock<IInvitationRepository>(MockBehavior.Strict);
-        this._invitationLogic = new InvitationLogic(this._invitationRepository.Object, this._userLogic.Object,
-            this._roleLogic.Object, this._pharmacyLogic.Object);
+        this._userLogicMock = new Mock<IUserLogic>(MockBehavior.Strict);
+        this._roleLogicMock = new Mock<IRoleLogic>(MockBehavior.Strict);
+        this._pharmacyLogicMock = new Mock<IPharmacyLogic>(MockBehavior.Strict);
+        this._invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
+        this._currentContextMock = new Mock<Context>(MockBehavior.Strict);
+        this._invitationLogic = new InvitationLogic(
+            this._invitationRepositoryMock.Object,
+            this._userLogicMock.Object,
+            this._roleLogicMock.Object,
+            this._pharmacyLogicMock.Object,
+            this._currentContextMock.Object);
     }
 
     [TestMethod]
@@ -55,18 +60,26 @@ public class InvitationLogicTest
             PharmacyName = "PharmacyB"
         };
 
-        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>()))
+        _userLogicMock.Setup(u => u.GetFirst(It.IsAny<Func<User, bool>>()))
             .Throws(new ResourceNotFoundException(""));
-        _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
-        _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
+        _invitationRepositoryMock.Setup(i => i.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
+        _invitationRepositoryMock.Setup(i => i.GetFirst(It.IsAny<Func<Invitation, bool>>()))
             .Throws(new ResourceNotFoundException(""));
-        _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy()
+        _pharmacyLogicMock.Setup(p => p.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy()
         {
             Name = invitationToCreate.PharmacyName
         });
-        _roleLogic.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
+        _roleLogicMock.Setup(r => r.GetRoleByName(It.IsAny<string>())).Returns(new Role()
         {
             Name = invitationToCreate.RoleName
+        });
+        _currentContextMock.Setup(m => m.CurrentUser).Returns(new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.ADMIN
+
+            }
         });
 
         Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
@@ -76,10 +89,11 @@ public class InvitationLogicTest
         Assert.AreEqual(invitationRepository.Role.Name, createdInvitation.Role.Name);
         Assert.AreEqual(invitationRepository.Pharmacy.Name, createdInvitation.Pharmacy.Name);
         Assert.IsTrue(createdInvitation.Code.Length == 6);
-        _userLogic.VerifyAll();
-        _invitationRepository.VerifyAll();
-        _pharmacyLogic.VerifyAll();
-        _roleLogic.VerifyAll();
+        _userLogicMock.VerifyAll();
+        _invitationRepositoryMock.VerifyAll();
+        _pharmacyLogicMock.VerifyAll();
+        _roleLogicMock.VerifyAll();
+        _currentContextMock.VerifyAll();
     }
 
     [TestMethod]
@@ -101,14 +115,22 @@ public class InvitationLogicTest
             RoleName = "Admin"
         };
 
-        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>()))
+        _userLogicMock.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>()))
             .Throws(new ResourceNotFoundException(""));
-        _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
-        _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
+        _invitationRepositoryMock.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
+        _invitationRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
             .Throws(new ResourceNotFoundException(""));
-        _roleLogic.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
+        _roleLogicMock.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
         {
             Name = invitationToCreate.RoleName
+        });
+        _currentContextMock.Setup(m => m.CurrentUser).Returns(new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.ADMIN
+
+            }
         });
 
         Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
@@ -117,10 +139,100 @@ public class InvitationLogicTest
         Assert.AreEqual(invitationRepository.UserName, createdInvitation.UserName);
         Assert.AreEqual(invitationRepository.Role.Name, createdInvitation.Role.Name);
         Assert.IsTrue(createdInvitation.Code.Length == 6);
-        _userLogic.VerifyAll();
-        _invitationRepository.VerifyAll();
-        _pharmacyLogic.VerifyAll();
-        _roleLogic.VerifyAll();
+        _userLogicMock.VerifyAll();
+        _invitationRepositoryMock.VerifyAll();
+        _pharmacyLogicMock.VerifyAll();
+        _roleLogicMock.VerifyAll();
+        _currentContextMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void CreateNewInvitationByOwnerUserOk()
+    {
+        Pharmacy pharmacyOfOwner = new Pharmacy()
+        {
+            Name = "pharmacy"
+        };
+        Invitation invitationRepository = new Invitation()
+        {
+            Id = 1,
+            UserName = "cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = "123456",
+            Pharmacy = pharmacyOfOwner
+        };
+        InvitationDto invitationToCreate = new InvitationDto()
+        {
+            UserName = "cris01"
+        };
+
+
+        _userLogicMock.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>()))
+            .Throws(new ResourceNotFoundException(""));
+        _invitationRepositoryMock.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
+        _invitationRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
+            .Throws(new ResourceNotFoundException(""));
+
+        _currentContextMock.Setup(m => m.CurrentUser).Returns(new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.OWNER
+
+            },
+            Pharmacy = pharmacyOfOwner
+        });
+        _roleLogicMock.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
+        {
+            Name = Role.EMPLOYEE
+        });
+
+        Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
+
+        Assert.AreEqual(invitationRepository.Id, createdInvitation.Id);
+        Assert.AreEqual(invitationRepository.UserName, createdInvitation.UserName);
+        Assert.AreEqual(invitationRepository.Role.Name, createdInvitation.Role.Name);
+        Assert.AreEqual(invitationRepository.Pharmacy.Name, createdInvitation.Pharmacy.Name);
+        Assert.IsTrue(createdInvitation.Code.Length == 6);
+        _userLogicMock.VerifyAll();
+        _invitationRepositoryMock.VerifyAll();
+        _currentContextMock.VerifyAll();
+        _roleLogicMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void CreateInvitationForInvitationAlreadyCreated()
+    {
+        Invitation invitationRepository = new Invitation()
+        {
+            Id = 1,
+            UserName = "cris01",
+            Role = new Role()
+            {
+                Name = "Admin"
+            },
+            Code = "123456"
+        };
+        InvitationDto invitationToCreate = new InvitationDto()
+        {
+            UserName = "cris01",
+            RoleName = "Admin"
+        };
+
+        _invitationRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
+            .Returns(invitationRepository);
+
+        Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
+
+        Assert.AreEqual(invitationRepository.Id, createdInvitation.Id);
+        Assert.AreEqual(invitationRepository.UserName, createdInvitation.UserName);
+        Assert.AreEqual(invitationRepository.Role.Name, createdInvitation.Role.Name);
+        Assert.IsTrue(createdInvitation.Code.Length == 6);
+
+        _invitationRepositoryMock.VerifyAll();
     }
 
     [TestMethod]
@@ -143,20 +255,28 @@ public class InvitationLogicTest
             PharmacyName = "Farmashop"
         };
 
-        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>()))
+        _userLogicMock.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>()))
             .Throws(new ResourceNotFoundException(""));
-        _invitationRepository.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
-        _invitationRepository.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
+        _invitationRepositoryMock.Setup(m => m.Create(It.IsAny<Invitation>())).Returns(invitationRepository);
+        _invitationRepositoryMock.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
             .Throws(new ResourceNotFoundException(""))
             .Returns(new Invitation() { })
             .Throws(new ResourceNotFoundException(""));
-        _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy()
+        _pharmacyLogicMock.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy()
         {
             Name = invitationToCreate.PharmacyName
         });
-        _roleLogic.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
+        _roleLogicMock.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
         {
             Name = invitationToCreate.RoleName
+        });
+        _currentContextMock.Setup(m => m.CurrentUser).Returns(new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.ADMIN
+
+            }
         });
 
         Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
@@ -166,10 +286,11 @@ public class InvitationLogicTest
         Assert.AreEqual(invitationRepository.Role.Name, createdInvitation.Role.Name);
         const int invitationCodeRequiredLength = 6;
         Assert.IsTrue(createdInvitation.Code.Length == invitationCodeRequiredLength);
-        _userLogic.VerifyAll();
-        _invitationRepository.VerifyAll();
-        _pharmacyLogic.VerifyAll();
-        _roleLogic.VerifyAll();
+        _userLogicMock.VerifyAll();
+        _invitationRepositoryMock.VerifyAll();
+        _pharmacyLogicMock.VerifyAll();
+        _roleLogicMock.VerifyAll();
+        _currentContextMock.VerifyAll();
     }
 
     [TestMethod]
@@ -191,9 +312,9 @@ public class InvitationLogicTest
             RoleName = "Employee"
         };
 
-        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>()))
+        _userLogicMock.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>()))
             .Returns(new User());
-        _invitationRepository.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
+        _invitationRepositoryMock.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
             .Throws(new ResourceNotFoundException(""))
             .Returns(invitationRepository);
 
@@ -211,15 +332,23 @@ public class InvitationLogicTest
             PharmacyName = "Farmashop"
         };
 
-        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>()))
+        _userLogicMock.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>()))
             .Throws(new ResourceNotFoundException(""));
-        _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy()
+        _pharmacyLogicMock.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy()
         {
             Name = invitationToCreate.PharmacyName
         });
-        _roleLogic.Setup(m => m.GetRoleByName(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
-        _invitationRepository.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
+        _roleLogicMock.Setup(m => m.GetRoleByName(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
+        _invitationRepositoryMock.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
             .Throws(new ResourceNotFoundException(""));
+        _currentContextMock.Setup(m => m.CurrentUser).Returns(new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.ADMIN
+
+            }
+        });
 
         Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
     }
@@ -235,14 +364,22 @@ public class InvitationLogicTest
             PharmacyName = "Farmashop"
         };
 
-        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User,bool>>()))
+        _userLogicMock.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>()))
             .Throws(new ResourceNotFoundException(""));
-        _roleLogic.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
+        _roleLogicMock.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
         {
             Name = invitationToCreate.RoleName
         });
-        _pharmacyLogic.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
-        _invitationRepository.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
+        _currentContextMock.Setup(m => m.CurrentUser).Returns(new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.ADMIN
+
+            }
+        });
+        _pharmacyLogicMock.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
+        _invitationRepositoryMock.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
             .Throws(new ResourceNotFoundException(""));
 
         Invitation createdInvitation = _invitationLogic.Create(invitationToCreate);
@@ -264,7 +401,7 @@ public class InvitationLogicTest
             Code = invitationCode
         };
 
-        _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(invitationRepository);
+        _invitationRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(invitationRepository);
 
 
         Invitation invitationReturned = _invitationLogic.GetInvitationByCode(invitationCode);
@@ -322,17 +459,114 @@ public class InvitationLogicTest
                 Name = "PharmacyName"
             }
         };
-        _userLogic.Setup(m => m.Create(It.IsAny<User>())).Returns(userRepository);
-        _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
-        _invitationRepository.Setup(m => m.Delete(It.IsAny<Invitation>())).Callback(() => { });
-        _userLogic.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>()))
+        _userLogicMock.Setup(m => m.Create(It.IsAny<User>())).Returns(userRepository);
+        _invitationRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
+        _invitationRepositoryMock.Setup(m => m.Update(It.IsAny<Invitation>())).Callback(() => { });
+        _userLogicMock.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>()))
             .Throws(new ResourceNotFoundException(""));
-        
+        _currentContextMock.Setup(m => m.CurrentUser).Returns((User)null);
+
         InvitationDto invitationDtoUpdated = _invitationLogic.Update(invitationCode, invitationToUpdate);
 
         Assert.AreEqual(invitationExpected, invitationDtoUpdated);
-        _userLogic.VerifyAll();
-        _invitationRepository.VerifyAll();
+        _userLogicMock.VerifyAll();
+        _invitationRepositoryMock.VerifyAll();
+        _currentContextMock.VerifyAll();
+    }
+
+
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void UpdateInvitationUsedShouldThrowError()
+    {
+        string invitationCode = "111111";
+        InvitationDto invitationToUpdate = new InvitationDto()
+        {
+            UserName = "Cris01",
+            Code = invitationCode,
+            Email = "cris@gmail.com",
+            Address = "Road A 1234",
+            RoleName = "Employee",
+            PharmacyName = "PharmacyName",
+            Password = "Contraseña-"
+        };
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            UserName = "Cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = invitationToUpdate.Code,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "PharmacyName"
+            },
+            Used = true
+        };
+        _invitationRepositoryMock.Setup(i => i.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
+
+        _invitationLogic.Update(invitationCode, invitationToUpdate);
+    }
+
+
+    [TestMethod]
+    public void UpdateInvitationAsAdminOk()
+    {
+        string invitationCode = "111111";
+        InvitationDto invitationToUpdate = new InvitationDto()
+        {
+            UserName = "Cris01",
+            RoleName = "Employee",
+            PharmacyName = "PharmacyName"
+        };
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            UserName = "Cris02",
+            Role = new Role()
+            {
+                Name = "Owner"
+            },
+            Code = invitationToUpdate.Code,
+            Pharmacy = new Pharmacy()
+            {
+                Name = "PharmacyName2"
+            }
+        };
+
+        _invitationRepositoryMock.SetupSequence(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
+            .Returns(userInvitation)
+            .Throws(new ResourceNotFoundException(""));
+        _invitationRepositoryMock.Setup(m => m.Update(It.IsAny<Invitation>())).Callback(() => { });
+        _userLogicMock.Setup(m => m.GetFirst(It.IsAny<Func<User, bool>>()))
+            .Throws(new ResourceNotFoundException(""));
+        _currentContextMock.Setup(m => m.CurrentUser).Returns(new User()
+        {
+            Role = new Role()
+            {
+                Name = Role.ADMIN
+            }
+        });
+        _pharmacyLogicMock.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy()
+        {
+            Name = invitationToUpdate.PharmacyName
+        });
+        _roleLogicMock.Setup(m => m.GetRoleByName(It.IsAny<string>())).Returns(new Role()
+        {
+            Name = invitationToUpdate.RoleName
+        });
+
+        InvitationDto invitationDtoUpdated = _invitationLogic.Update(invitationCode, invitationToUpdate);
+
+        Assert.AreEqual(invitationToUpdate.UserName, invitationDtoUpdated.UserName);
+        Assert.AreEqual(invitationToUpdate.PharmacyName, invitationDtoUpdated.PharmacyName);
+        Assert.AreEqual(invitationToUpdate.RoleName, invitationDtoUpdated.RoleName);
+        Assert.IsNotNull(invitationDtoUpdated.Code);
+        _userLogicMock.VerifyAll();
+        _invitationRepositoryMock.VerifyAll();
+        _currentContextMock.VerifyAll();
     }
 
 
@@ -360,7 +594,7 @@ public class InvitationLogicTest
             },
             Code = invitationToUpdate.Code
         };
-        _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
+        _invitationRepositoryMock.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>()))
             .Throws(new ResourceNotFoundException(""));
 
         _invitationLogic.Update(invitationCode, invitationToUpdate);
@@ -403,9 +637,278 @@ public class InvitationLogicTest
             },
             Code = "OtherInvitationCode"
         };
-        _invitationRepository.Setup(m => m.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
-        _invitationRepository.Setup(m => m.Delete(It.IsAny<Invitation>())).Callback(() => { });
+        _invitationRepositoryMock.Setup(i => i.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
+        _invitationRepositoryMock.Setup(i => i.Delete(It.IsAny<Invitation>())).Callback(() => { });
+        _currentContextMock.Setup(c => c.CurrentUser).Returns((User)null);
 
         _invitationLogic.Update(invitationCode, invitationToUpdate);
     }
+
+    [TestMethod]
+    public void TestGetAllInvitationsOK()
+    {
+
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            UserName = "Cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = "OtherInvitationCode",
+            Used = false
+        };
+        List<Invitation> invitationItems = new List<Invitation>()
+        {
+            userInvitation
+        };
+        QueryInvitationDto queryInvitationDto = new QueryInvitationDto()
+        {
+
+        };
+        _invitationRepositoryMock.Setup(s => s.GetAll(It.IsAny<Func<Invitation, bool>>())).Returns(invitationItems);
+
+        List<Invitation> invitationsReturned = _invitationLogic.GetInvitations(queryInvitationDto).ToList();
+
+        CollectionAssert.AreEqual(invitationItems, invitationsReturned);
+        _invitationRepositoryMock.VerifyAll();
+    }
+
+
+    [TestMethod]
+    public void TestGetInvitationsByPharmacyName()
+    {
+
+        QueryInvitationDto queryInvitationDto = new QueryInvitationDto()
+        {
+            PharmacyName = "Farmashop"
+        };
+
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Id = 1,
+                Name = "Farmashop",
+            },
+            UserName = "Cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = "OtherInvitationCode",
+            Used = false
+        };
+        List<Invitation> invitationItems = new List<Invitation>()
+        {
+            userInvitation
+        };
+
+
+        _pharmacyLogicMock.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Returns(new Pharmacy()
+        {
+            Name = userInvitation.Pharmacy.Name
+        });
+        _invitationRepositoryMock.Setup(s => s.GetAll(It.IsAny<Func<Invitation, bool>>())).Returns(invitationItems);
+        List<Invitation> invitationsReturned = _invitationLogic.GetInvitations(queryInvitationDto).ToList();
+
+        CollectionAssert.AreEqual(invitationItems, invitationsReturned);
+        _invitationRepositoryMock.VerifyAll();
+        _pharmacyLogicMock.VerifyAll();
+
+    }
+
+    [TestMethod]
+    public void TestGetInvitationsByUserName()
+    {
+
+        QueryInvitationDto queryInvitationDto = new QueryInvitationDto()
+        {
+            UserName = "Cris01"
+        };
+
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Id = 1,
+                Name = "Farmashop",
+            },
+            UserName = "Cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = "OtherInvitationCode",
+            Used = false
+        };
+        List<Invitation> invitationItems = new List<Invitation>()
+        {
+            userInvitation
+        };
+        _invitationRepositoryMock.Setup(i => i.GetAll(It.IsAny<Func<Invitation, bool>>())).Returns(invitationItems);
+        _invitationRepositoryMock.Setup(i => i.GetFirst(It.IsAny<Func<Invitation, bool>>())).Returns(userInvitation);
+
+        List<Invitation> invitationsReturned = _invitationLogic.GetInvitations(queryInvitationDto).ToList();
+
+        CollectionAssert.AreEqual(invitationItems, invitationsReturned);
+        _invitationRepositoryMock.VerifyAll();
+
+    }
+
+    [TestMethod]
+    public void TestGetInvitationsByRole()
+    {
+
+        QueryInvitationDto queryInvitationDto = new QueryInvitationDto()
+        {
+            Role = "Employee"
+        };
+
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Id = 1,
+                Name = "Farmashop",
+            },
+            UserName = "Cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = "OtherInvitationCode",
+            Used = false
+        };
+        List<Invitation> invitationItems = new List<Invitation>()
+        {
+            userInvitation
+        };
+        _roleLogicMock.Setup(m => m.GetRoleByName(queryInvitationDto.Role)).Returns(new Role()
+        {
+            Name = userInvitation.Role.Name
+        });
+
+        _invitationRepositoryMock.Setup(i => i.GetAll(It.IsAny<Func<Invitation, bool>>())).Returns(invitationItems);
+
+        List<Invitation> invitationsReturned = _invitationLogic.GetInvitations(queryInvitationDto).ToList();
+
+        CollectionAssert.AreEqual(invitationItems, invitationsReturned);
+        _invitationRepositoryMock.VerifyAll();
+
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void GetInvitationsByNotExistantPharmacy()
+    {
+        QueryInvitationDto queryInvitationDto = new QueryInvitationDto()
+        {
+            PharmacyName = "NotExistantPharmacy"
+        };
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Id = 1,
+                Name = "Farmashop",
+            },
+            UserName = "Cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = "OtherInvitationCode",
+            Used = false
+        };
+        List<Invitation> invitationItems = new List<Invitation>()
+        {
+            userInvitation
+        };
+
+
+        _pharmacyLogicMock.Setup(m => m.GetPharmacyByName(It.IsAny<string>())).Throws(new ResourceNotFoundException(""));
+        _invitationRepositoryMock.Setup(s => s.GetAll(It.IsAny<Func<Invitation, bool>>())).Returns(invitationItems);
+
+
+        List<Invitation> invitationsReturned = _invitationLogic.GetInvitations(queryInvitationDto).ToList();
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void GetInvitationsByNotExistantUser()
+    {
+        QueryInvitationDto queryInvitationDto = new QueryInvitationDto()
+        {
+            UserName = "NotExistantUser"
+        };
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Id = 1,
+                Name = "Farmashop",
+            },
+            UserName = "Cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = "OtherInvitationCode",
+            Used = false
+        };
+        List<Invitation> invitationItems = new List<Invitation>()
+        {
+            userInvitation
+        };
+        _invitationRepositoryMock.Setup(i => i.GetFirst(It.IsAny<Func<Invitation, bool>>())).Throws(new ValidationException(""));
+        _invitationRepositoryMock.Setup(s => s.GetAll(It.IsAny<Func<Invitation, bool>>())).Returns(invitationItems);
+
+
+        List<Invitation> invitationsReturned = _invitationLogic.GetInvitations(queryInvitationDto).ToList();
+
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ValidationException))]
+    public void GetInvitationsByInvalidRole()
+    {
+        QueryInvitationDto queryInvitationDto = new QueryInvitationDto()
+        {
+            Role = "Engineer"
+        };
+        Invitation userInvitation = new Invitation
+        {
+            Id = 1,
+            Pharmacy = new Pharmacy()
+            {
+                Id = 1,
+                Name = "Farmashop",
+            },
+            UserName = "Cris01",
+            Role = new Role()
+            {
+                Name = "Employee"
+            },
+            Code = "OtherInvitationCode",
+            Used = false
+        };
+        List<Invitation> invitationItems = new List<Invitation>()
+        {
+            userInvitation
+        };
+        _roleLogicMock.Setup(r => r.GetRoleByName(It.IsAny<string>())).Throws(new ValidationException(""));
+        _invitationRepositoryMock.Setup(s => s.GetAll(It.IsAny<Func<Invitation, bool>>())).Returns(invitationItems);
+
+
+        List<Invitation> invitationsReturned = _invitationLogic.GetInvitations(queryInvitationDto).ToList();
+
+    }
 }
+

@@ -34,5 +34,26 @@ public class InvitationRepository : BaseRepository<Invitation>, IInvitationRepos
 
         return entityToReturn;
     }
+    
+    public override IEnumerable<Invitation> GetAll(Func<Invitation, bool> expresion = null)
+    {
+        IEnumerable<Invitation> entities;
+
+        if (expresion == null)
+        {
+            entities = _table.Include(i => i.Pharmacy)
+                .Include(i => i.Role);
+        }
+        else
+        {
+
+            entities = _table
+                .Include(i => i.Pharmacy)
+                .Include(i => i.Role)
+                .Where(expresion);
+        }
+
+        return entities;
+    }
 }
 

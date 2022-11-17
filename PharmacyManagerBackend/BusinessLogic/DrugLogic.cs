@@ -15,19 +15,15 @@ namespace BusinessLogic
         private PharmacyLogic _pharmacyLogic;
         private Context _context;
 
-        public DrugLogic(IDrugRepository drugRepository, IDrugInfoRepository drugInfoRepository, PharmacyLogic pharmacyLogic)
+        public DrugLogic(IDrugRepository drugRepository,
+            IDrugInfoRepository drugInfoRepository,
+            PharmacyLogic pharmacyLogic,
+            Context currentContext)
         {
             this._drugRepository = drugRepository;
             this._drugInfoRepository = drugInfoRepository;
             this._pharmacyLogic = pharmacyLogic;
-        }
-
-        public void SetContext(User currentUser)
-        {
-            _context = new Context()
-            {
-                CurrentUser = currentUser
-            };
+            this._context = currentContext;
         }
 
         public Drug Create(Drug drug)
@@ -65,29 +61,51 @@ namespace BusinessLogic
         public IEnumerable<Drug> GetAll(QueryDrugDto queryDrugDto)
         {
             IEnumerable<Drug> drugs = new List<Drug>();
-            
-            if (queryDrugDto.DrugName == null &&
-                queryDrugDto.WithStock == false)
-                drugs = _drugRepository.GetAll();
-            
-            if (queryDrugDto.DrugName == null &&
-                queryDrugDto.WithStock == true)
-                drugs = _drugRepository.GetAll(d => d.Stock > 0);
-            
-            if (queryDrugDto.DrugName != null &&
-                queryDrugDto.WithStock == false)
-                drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName);
-            
-            if (queryDrugDto.DrugName != null &&
-                queryDrugDto.WithStock == true)
-                drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName && d.Stock > 0);
+
+            if (_context.CurrentUser == null)
+            {
+                if (queryDrugDto.DrugName == null &&
+                    queryDrugDto.WithStock == false)
+                    drugs = _drugRepository.GetAll();
+
+                if (queryDrugDto.DrugName == null &&
+                    queryDrugDto.WithStock == true)
+                    drugs = _drugRepository.GetAll(d => d.Stock > 0);
+
+                if (queryDrugDto.DrugName != null &&
+                    queryDrugDto.WithStock == false)
+                    drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName);
+
+                if (queryDrugDto.DrugName != null &&
+                    queryDrugDto.WithStock == true)
+                    drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName && d.Stock > 0);
+            }
+            else
+            {
+                if (queryDrugDto.DrugName == null &&
+                    queryDrugDto.WithStock == false)
+                    drugs = _drugRepository.GetAll(d => d.Pharmacy.Name == _context.CurrentUser.Pharmacy.Name);
+
+                if (queryDrugDto.DrugName == null &&
+                    queryDrugDto.WithStock == true)
+                    drugs = _drugRepository.GetAll(d => d.Stock > 0 && d.Pharmacy.Name == _context.CurrentUser.Pharmacy.Name);
+
+                if (queryDrugDto.DrugName != null &&
+                    queryDrugDto.WithStock == false)
+                    drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName && d.Pharmacy.Name == _context.CurrentUser.Pharmacy.Name);
+
+                if (queryDrugDto.DrugName != null &&
+                    queryDrugDto.WithStock == true)
+                    drugs = _drugRepository.GetAll(d => d.DrugInfo.Name == queryDrugDto.DrugName && d.Stock > 0 && d.Pharmacy.Name == _context.CurrentUser.Pharmacy.Name);
+            }
+
 
             return drugs;
         }
 
         private void DrugCodeNotRepeatedInPharmacy(string drugCode, Pharmacy pharmacy)
         {
-            if (pharmacy.Drugs.Exists(d => d.DrugCode == drugCode))
+            if (pharmacy.Drugs.Exists(d => d.DrugCode == drugCode && d.IsActive))
                 throw new ValidationException("The drug code already exists in this pharmacy");
         }
 
@@ -95,30 +113,27 @@ namespace BusinessLogic
         {
             Drug drug = Get(drugId);
             Pharmacy pharmacy = _pharmacyLogic.GetPharmacyByName(_context.CurrentUser.Pharmacy.Name);
-            pharmacy.Drugs.Remove(drug);
+            pharmacy.Drugs = ChangeDrugToDeactivated(pharmacy, drug);
             _pharmacyLogic.UpdatePharmacy(pharmacy);
-            DrugInfo drugInfo = FindDrugInfo(drug.DrugInfoId);
-            _drugInfoRepository.Delete(drugInfo);
         }
 
-        private DrugInfo FindDrugInfo(int drugInfoId)
+        private List<Drug> ChangeDrugToDeactivated(Pharmacy pharmacy, Drug drug)
         {
-            try
-            {
-                DrugInfo drugInfo = _drugInfoRepository.GetFirst(di => di.Id == drugInfoId);
-                return drugInfo;
-            }
-            catch (ResourceNotFoundException e)
-            {
-                throw new ResourceNotFoundException("There is no info on the drug available");
-            }
-        }
+            List<Drug> drugs = pharmacy.Drugs;
 
+            foreach (var d in drugs)
+            {
+                if (d.Equals(drug))
+                    d.IsActive = false;
+            }
+
+            return drugs;
+        }
         public virtual void AddStock(IEnumerable<SolicitudeItem> drugsToAddStock)
         {
             foreach (var drugSolicitude in drugsToAddStock)
             {
-                Drug drugToUpdate = _drugRepository.GetFirst(d => d.DrugCode == drugSolicitude.DrugCode);
+                Drug drugToUpdate = _drugRepository.GetFirst(d => d.DrugCode == drugSolicitude.DrugCode && d.IsActive);
                 drugToUpdate.Stock = drugToUpdate.Stock + drugSolicitude.DrugQuantity;
                 _drugRepository.Update(drugToUpdate);
             }
@@ -126,12 +141,26 @@ namespace BusinessLogic
 
         public virtual Drug Update(int drugId, Drug drug)
         {
-            Drug drugToUpdate = Get(drugId);
+            Drug drugToUpdate = _drugRepository.GetFirst(d => d.Id == drugId);
             drugToUpdate.Stock = drug.Stock;
 
             _drugRepository.Update(drugToUpdate);
 
             return drugToUpdate;
+        }
+
+        public virtual void DrugIsActive(string drugCode)
+        {
+            try
+            {
+                Drug drug = _drugRepository.GetFirst(d => d.DrugCode == drugCode);
+                if (!drug.IsActive)
+                    throw new ResourceNotFoundException("resource does not exist");
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ResourceNotFoundException("resource does not exist");
+            }
         }
     }
 }

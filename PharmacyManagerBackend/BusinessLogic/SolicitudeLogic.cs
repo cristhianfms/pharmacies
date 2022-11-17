@@ -18,19 +18,15 @@ namespace BusinessLogic
         private readonly PharmacyLogic _pharmacyLogic;
         private Context _context;
 
-        public SolicitudeLogic(ISolicitudeRepository solicitudeRepository, DrugLogic drugLogic, PharmacyLogic pharmacyLogic)
+        public SolicitudeLogic(ISolicitudeRepository solicitudeRepository, 
+            DrugLogic drugLogic, 
+            PharmacyLogic pharmacyLogic,
+            Context currentContext)
         {
             this._solicitudeRepository = solicitudeRepository;
             this._drugLogic = drugLogic;
             this._pharmacyLogic = pharmacyLogic;
-        }
-
-        public void SetContext(User currentUser)
-        {
-            _context = new Context()
-            {
-                CurrentUser = currentUser
-            };
+            this._context = currentContext;
         }
 
         public virtual Solicitude Create(Solicitude solicitude)
@@ -43,6 +39,7 @@ namespace BusinessLogic
                 foreach (SolicitudeItem itemToCheck in solicitude.Items)
                 {
                     _pharmacyLogic.ExistsDrug(itemToCheck.DrugCode, solicitude.PharmacyId);
+                    _drugLogic.DrugIsActive(itemToCheck.DrugCode);
                 }
             }
             catch (NullReferenceException)
@@ -91,8 +88,10 @@ namespace BusinessLogic
         }
         private DateTime toDateTime(string stringDate)
         {
-            return DateTime.Parse(stringDate);
+            DateTime parsedStringToDate = DateTime.Parse(stringDate);
+            return parsedStringToDate;
         }
+
         private void validateDates(DateTime dateFrom, DateTime dateTo)
         {
             if (dateFrom > dateTo)
@@ -109,7 +108,6 @@ namespace BusinessLogic
             {
                 if (newSolicitude.State.Equals(State.ACCEPTED))
                 {
-
                     _drugLogic.AddStock(solicitudeToUpdate.Items);
                 }
 
@@ -118,7 +116,6 @@ namespace BusinessLogic
             }
 
             return solicitudeToUpdate;
-
 
         }
 

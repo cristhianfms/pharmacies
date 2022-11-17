@@ -1,0 +1,27 @@
+form{
+    margin: auto;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    padding: 20px 10px 10px 10px;
+    border: 1px solid black;
+    height: 50%;
+    width: 50%;
+}
+.form-group{
+    padding: 5%;
+}
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
+  }
+  
+  .ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
+  }
+  .headerForm{
+    border-radius: 2em;
+    padding: 1%;
+  }
+.buttons {
+    text-align: center;
+
+}

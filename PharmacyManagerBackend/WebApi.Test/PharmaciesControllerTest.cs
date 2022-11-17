@@ -30,7 +30,6 @@ public class PharmaciesControllerTest
         };
     }
 
-
     [TestMethod]
     public void CreatePharmacyOk()
     {
@@ -47,6 +46,32 @@ public class PharmaciesControllerTest
         var createdPharmacy = okResult.Value as PharmacyModel;
 
         Assert.IsTrue(ModelsComparer.PharmacyCompare(pharmacyModel, createdPharmacy));
+        _pharmacyLogicMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void GetAllPharmaciesOk()
+    {
+        List<Pharmacy> pharmacies = new List<Pharmacy>
+        {
+            _pharmacy
+        };
+        _pharmacyLogicMock.Setup(m => m.GetAll()).Returns(pharmacies);
+        var pharmacyModel = new PharmacyModel()
+        {
+            Name = "Farmashop",
+            Address = "Rivera 2030"
+        };
+
+        var result = _pharmacyApiController.Get();
+        var okResult = result as OkObjectResult;
+        var createdPharmacyList = okResult.Value as List<PharmacyModel>;
+
+        List<PharmacyModel> pharmaciesModel = new List<PharmacyModel>
+        {
+            pharmacyModel
+        };
+        Assert.IsTrue(ModelsComparer.PharmacyCompare(createdPharmacyList[0], pharmaciesModel[0]));
         _pharmacyLogicMock.VerifyAll();
     }
 }

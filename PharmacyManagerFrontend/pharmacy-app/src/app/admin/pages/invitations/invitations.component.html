@@ -1,0 +1,35 @@
+<div class="new-invitation-container">
+    <button (click)="onCreateInvitation()" id="button-create" type="button" class="btn btn-primary">
+        <i class="bi bi-plus-circle-fill"></i>
+        Create invitation
+    </button>
+</div>
+
+<div class="search-container">
+    <form class="row gx-3 gy-2 align-items-center">
+        <div class="col-sm-3">
+            <label for="specificSizeInputName1">Pharmacy name</label>
+            <input [(ngModel)]="filterPharmacyName" type="text" class="form-control" id="specificSizeInputName1" name= "specificSizeInputName1" placeholder="">
+        </div>
+        <div class="col-sm-3">
+            <label for="specificSizeInputName2">User name</label>
+            <input [(ngModel)]="filterUserName"  type="text" class="form-control" id="specificSizeInputName2" name= "specificSizeInputName2" placeholder="">
+        </div>
+        <div class="col-sm-3">
+            <label for="specificSizeSelect">Role</label>
+            <select  [(ngModel)]="filterRole"  class="form-select" id="specificSizeSelect"  name= "specificSizeSelect" >
+                <option selected value="All">All</option>
+                <option value="Admin">Admin</option>
+                <option value="Employee">Employee</option>
+                <option value="Owner">Owner</option>
+            </select>
+        </div>
+        <div class="col-auto align-items-baseline">
+            <button id="button-search" (click)="updateInvitationQuery($event)" type="submit" class="btn btn-primary">
+                <i class="bi bi-search"></i>
+                Search</button>
+        </div>
+    </form>
+</div>
+
+<app-invitation-list [invitationQuery]="invitationQuery"></app-invitation-list>

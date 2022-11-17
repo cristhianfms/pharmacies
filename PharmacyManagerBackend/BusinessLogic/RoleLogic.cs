@@ -15,7 +15,8 @@ public class RoleLogic : IRoleLogic
 
     public virtual Role GetRoleByName(string roleName)
     {
-        return _roleRepository.GetFirst(r => r.Name == roleName);
+        Role fetchedRole = _roleRepository.GetFirst(r => r.Name == roleName);
+        return fetchedRole;
     }
 }
 

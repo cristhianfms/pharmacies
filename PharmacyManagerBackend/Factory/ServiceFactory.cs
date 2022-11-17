@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using AuthLogic;
 using BusinessLogic;
 using DataAccess;
@@ -14,6 +15,7 @@ using WebApi.Filter;
 
 namespace Factory;
 
+[ExcludeFromCodeCoverage]
 public class ServiceFactory
 {
     private readonly IServiceCollection _services;
@@ -35,6 +37,8 @@ public class ServiceFactory
         _services.AddScoped<PharmacyLogic>();
         _services.AddScoped<IPermissionLogic, PermissionLogic>();
         _services.AddScoped<IPurchaseLogic, PurchaseLogic>();
+        _services.AddScoped<IExporterManager, ExporterManager>();
+        _services.AddScoped<Context>();
 
         _services.AddScoped<IRoleRepository, RoleRepository>();
         _services.AddScoped<IUserRepository, UserRepository>();
@@ -48,6 +52,7 @@ public class ServiceFactory
         _services.AddScoped<IPurchaseRepository, PurchaseRepository>();
         
         _services.AddScoped<AuthorizationAttributeFilter>();
+        _services.AddScoped<AuthorizationAttributePublicFilter>();
     }
     public void AddDbContextService()
     {

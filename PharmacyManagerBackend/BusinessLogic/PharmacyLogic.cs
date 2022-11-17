@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Domain;
 using Exceptions;
 using IBusinessLogic;
@@ -23,12 +24,13 @@ public class PharmacyLogic : IPharmacyLogic
         }
         else
         {
-            return this._pharmacyRepository.Create(pharmacy);
+            Pharmacy createdPharmacy = this._pharmacyRepository.Create(pharmacy);
+            return createdPharmacy;
         }
     }
 
     private bool ExistsPharmacy(string name)
-    {        
+    {
         try
         {
             Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Name == name);
@@ -41,15 +43,22 @@ public class PharmacyLogic : IPharmacyLogic
         }
     }
 
+    public IEnumerable<Pharmacy> GetAll()
+    {
+        IEnumerable<Pharmacy> pharmacies = _pharmacyRepository.GetAll();
+        return pharmacies;
+    }
+
     public virtual Pharmacy GetPharmacyByName(string pharmacyName)
     {
-        return this._pharmacyRepository.GetFirst(f => f.Name.Equals(pharmacyName));
+        Pharmacy fetchedPharmacy = this._pharmacyRepository.GetFirst(f => f.Name.Equals(pharmacyName));
+        return fetchedPharmacy;
     }
 
     public virtual void ExistsDrug(string drugCode, int pharmacyId)
     {
         Pharmacy pharmacy = this._pharmacyRepository.GetFirst(p => p.Id == pharmacyId);
-        
+
         if (pharmacy == null || !pharmacy.Drugs.Exists(d => d.DrugCode == drugCode))
         {
             throw new ResourceNotFoundException("resource does not exist");
@@ -65,7 +74,6 @@ public class PharmacyLogic : IPharmacyLogic
         {
             throw new ResourceNotFoundException("The drug code already exists in this pharmacy");
         }
-
     }
 
     public virtual void UpdatePharmacy(Pharmacy pharmacy)

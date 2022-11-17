@@ -1,0 +1,17 @@
+<div class="card" style="width: 18rem;">
+    <div class="card-header ">
+        <h5 class="card-title">{{drug.name | uppercase}}</h5>
+
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">$ {{drug.price}}</h5>
+        <p class="card-text">Pharmacy: {{drug.pharmacyName}}</p>
+        <p class="card-text">Presentation type: {{drug.presentation}}</p>
+        <p class="card-text">Presentation: {{drug.quantityPerPresentation}} {{drug.unitOfMeasurement}}</p>
+        <a href="#" (click)="onMoreInfo($event)">More info</a>
+        <div class="control">
+            <input id="amountInput" type="number" [(ngModel)]="amount" min="1" max="999">
+            <a (click)="onAddToCart($event) "class="btn btn-primary">Add to cart</a>
+        </div>
+    </div>
+</div>

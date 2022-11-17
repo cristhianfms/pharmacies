@@ -49,4 +49,33 @@ public class PermissionLogicTest
         Assert.IsTrue(actualResult);
         _permissionRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void HasPermissionFalseOk()
+    {
+        string endpoint = "put/api/pharmacies";
+        string roleName = "Admin";
+        Role role = new Role
+        {
+            Id = 1,
+            Name = roleName
+        };
+        Permission permission = new Permission
+        {
+            Endpoint = endpoint
+        };
+        List<PermissionRole> permissionRoles = new List<PermissionRole>{
+            new PermissionRole {
+                Role = role,
+                Permission = permission
+            }
+        };
+        permission.PermissionRoles = permissionRoles;
+        _permissionRepository.Setup(m => m.GetFirst(It.IsAny<Func<Permission, bool>>())).Returns(permission);
+
+        bool actualResult = _permissionLogic.HasPermission("Employye", endpoint);
+        
+        Assert.IsFalse(actualResult);
+        _permissionRepository.VerifyAll();
+    }
 }

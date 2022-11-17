@@ -7,6 +7,9 @@ public interface IPurchaseLogic
 {
     Purchase Create(Purchase purchase);
     PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto);
-    void SetContext(User user);
+    IEnumerable<PurchaseItemStatusDto> GetPurchaseStatus(string purchaseCode);
+    Purchase Update(int id, Purchase purchase);
+    Purchase Get(string code);
+    IEnumerable<Purchase> GetAll();
 }
 

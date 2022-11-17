@@ -18,6 +18,12 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
     <ProjectReference Include="..\IDataAccess\IDataAccess.csproj" />
+    <ProjectReference Include="..\ExporterInterface\ExporterInterface.csproj" />
+    <ProjectReference Include="..\ExporterDomain\ExporterDomain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
   <PropertyGroup>

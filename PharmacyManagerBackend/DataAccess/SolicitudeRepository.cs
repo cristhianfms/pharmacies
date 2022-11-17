@@ -11,8 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DataAccess
 {
     public class
-    SolicitudeRepository
-    : BaseRepository<Solicitude>, ISolicitudeRepository
+    SolicitudeRepository : BaseRepository<Solicitude>, ISolicitudeRepository
     {
         private readonly DbContext _context;
 

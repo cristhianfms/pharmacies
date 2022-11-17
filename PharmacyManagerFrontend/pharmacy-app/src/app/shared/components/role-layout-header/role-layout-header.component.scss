@@ -1,0 +1,29 @@
+.account-info {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-right: 1em;
+  float:right;
+}
+
+.account-img {
+  width: 20px;
+  height: 20px;
+}
+
+.user {
+  vertical-align: center;
+  margin-right: 1em;
+  font-size: 17px;
+}
+
+h3 {
+  display: inline;
+}
+.navbar-brand{
+  color:white;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  font-size: 20px;
+}

@@ -3,7 +3,8 @@ using Domain.Dtos;
 using Exceptions;
 using IBusinessLogic;
 using IDataAccess;
-using ValidationException = Exceptions.ValidationException;
+using System;
+using System.Linq;
 
 namespace BusinessLogic;
 
@@ -14,57 +15,165 @@ public class PurchaseLogic : IPurchaseLogic
     private DrugLogic _drugLogic;
     private Context _context;
 
-    public PurchaseLogic(IPurchaseRepository purchaseRepository, PharmacyLogic pharmacyLogic, DrugLogic drugLogic)
+    public PurchaseLogic(IPurchaseRepository purchaseRepository,
+        PharmacyLogic pharmacyLogic,
+        DrugLogic drugLogic,
+        Context currentContext)
     {
         this._purchaseRepository = purchaseRepository;
         this._pharmacyLogic = pharmacyLogic;
         this._drugLogic = drugLogic;
-    }
-
-    public void SetContext(User user)
-    {
-        _context = new Context()
-        {
-            CurrentUser = user
-        };
+        this._context = currentContext;
     }
 
     public Purchase Create(Purchase purchase)
     {
-        Pharmacy pharmacy = GetPharmacyByName(purchase.Pharmacy.Name);
-        CheckAndBindExistentDrugs(pharmacy, purchase.Items);
+        CheckAndBindExistentDrugs(purchase.Items);
+        SetPendingState(purchase.Items);
         CheckDrugsStock(purchase.Items);
-        UpdateDrugStock(purchase.Items);
-        double totalPrice = CalculateTotalPrice(pharmacy, purchase.Items);
+        double totalPrice = CalculateTotalPrice(purchase.Items);
 
-        purchase.Pharmacy = pharmacy;
         purchase.TotalPrice = totalPrice;
         purchase.Date = DateTime.Now;
+        purchase.Code = GenerateNewInvitationCode();
+        Purchase createdPurchase = _purchaseRepository.Create(purchase);
 
-        return _purchaseRepository.Create(purchase);
+        return createdPurchase;
     }
 
+    public IEnumerable<PurchaseItemStatusDto> GetPurchaseStatus(string purchaseCode)
+    {
+        if (!IsExistantCode(purchaseCode))
+            throw new ValidationException("The code doesn't belong to a purchase");
+
+        Purchase purchase = _purchaseRepository.GetFirst(p => p.Code == purchaseCode);
+        List<PurchaseItemStatusDto> result = new List<PurchaseItemStatusDto>();
+        foreach (var pi in purchase.Items)
+        {
+            PurchaseItemStatusDto itemDto = new PurchaseItemStatusDto
+            {
+                DrugCode = pi.Drug.DrugCode,
+                State = Enum.GetName(typeof(PurchaseState), pi.State)
+            };
+            result.Add(itemDto);
+        }
+        return result;
+    }
+
+
     public PurchaseReportDto GetPurchasesReport(QueryPurchaseDto queryPurchaseDto)
-    { 
+    {
+
         Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
-        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p => 
-            p.PharmacyId == pharmacyOfCurrentUser.Id &&
+        IEnumerable<Purchase> purchases = _purchaseRepository.GetAll(p =>
+            p.Items.Any(i => i.Pharmacy.Id == pharmacyOfCurrentUser.Id) &&
             p.Date >= queryPurchaseDto.GetParsedDateFrom() &&
             p.Date <= queryPurchaseDto.GetParsedDateTo());
-        
+
         double totalPrice = 0;
+        List<PurchaseItemReportDto> purchaseItemReports = new List<PurchaseItemReportDto>();
+
         foreach (var purchase in purchases)
         {
-            totalPrice += purchase.TotalPrice;
+            List<PurchaseItem> purchaseItems = purchase.Items.FindAll(i => i.PharmacyId == pharmacyOfCurrentUser.Id);
+            totalPrice += CalculateTotalPrice(purchaseItems);
+            purchaseItemReports = ProcessItemsForReport(purchaseItems, purchaseItemReports);
         }
-
         PurchaseReportDto purchaseReport = new PurchaseReportDto()
         {
-            Purchases =  purchases,
+            Purchases = purchaseItemReports,
             TotalPrice = totalPrice
         };
 
         return purchaseReport;
+
+    }
+
+    private List<PurchaseItemReportDto> ProcessItemsForReport(List<PurchaseItem> purchaseItems, List<PurchaseItemReportDto> result)
+    {
+        foreach (var purchaseItem in purchaseItems)
+        {
+            var name = purchaseItem.Drug.DrugCode + " - " + purchaseItem.Drug.DrugInfo.Name;
+            var quantity = purchaseItem.Quantity;
+            var unitaryPrice = purchaseItem.Drug.Price;
+            var amount = quantity * unitaryPrice;
+
+            PurchaseItemReportDto purchaseItemDto = result.FirstOrDefault(pi => pi.Name == name);
+
+            if (purchaseItemDto == null)
+            {
+                PurchaseItemReportDto purchaseItemReportDto = new PurchaseItemReportDto()
+                {
+                    Name = name,
+                    Quantity = quantity,
+                    Amount = amount
+                };
+                result.Add(purchaseItemReportDto);
+            }
+            else
+            {
+                purchaseItemDto.Quantity += quantity;
+                purchaseItemDto.Amount += amount;
+            }
+        }
+
+        return result;
+    }
+
+    public Purchase Update(int id, Purchase purchase)
+    {
+        Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
+        Purchase currentPurchase = GetPurchase(id);
+        List<PurchaseItem> currentUserPurchaseItems = currentPurchase.Items.FindAll(i => i.PharmacyId == pharmacyOfCurrentUser.Id);
+
+        foreach (var itemToUpdate in purchase.Items)
+        {
+            PurchaseItem existentItem = TryGetItemFromPharmacyItems(itemToUpdate, currentUserPurchaseItems);
+            TryUpdateStatusAndStock(existentItem, itemToUpdate.State);
+        }
+
+        _purchaseRepository.Update(currentPurchase);
+
+        Purchase updatedPurchase = new Purchase()
+        {
+            Id = id,
+            Items = currentPurchase.Items.FindAll(i => i.PharmacyId == pharmacyOfCurrentUser.Id).ToList()
+        };
+
+        return updatedPurchase;
+    }
+
+    public Purchase Get(string code)
+    {
+        Purchase fetchedPurchase = _purchaseRepository.GetFirst(p => p.Code == code);
+        return fetchedPurchase;
+    }
+
+    public IEnumerable<Purchase> GetAll()
+    {
+        Pharmacy pharmacyOfCurrentUser = _context.CurrentUser.Pharmacy;
+        List<Purchase> filteredList = new List<Purchase>();
+        var purchases = _purchaseRepository.GetAll();
+
+        foreach (Purchase p in purchases)
+        {
+            IEnumerable<PurchaseItem> items = p.Items.FindAll(p => p.Pharmacy == pharmacyOfCurrentUser);
+            if (items.Count() > 0)
+            {
+                Purchase purchase = new Purchase()
+                {
+                    Id = p.Id,
+                    TotalPrice = p.TotalPrice,
+                    Code = p.Code,
+                    Date = p.Date,
+                    UserEmail = p.UserEmail,
+                    Items = items.ToList()
+                };
+                filteredList.Add(purchase);
+            }
+        }
+
+        return filteredList;
     }
 
     private Pharmacy GetPharmacyByName(string pharmacyName)
@@ -89,17 +198,6 @@ public class PurchaseLogic : IPurchaseLogic
             throw new ValidationException($"not enough stock for drug {drug.DrugCode}");
         }
     }
-
-    private void UpdateDrugStock(List<PurchaseItem> purchaseItems)
-    {
-        foreach (var purchaseItem in purchaseItems)
-        {
-            Drug drug = purchaseItem.Drug;
-            drug.Stock -= purchaseItem.Quantity;
-            _drugLogic.Update(drug.Id, drug);
-        }
-    }
-
     private void CheckDrugsStock(List<PurchaseItem> purchaseItems)
     {
         foreach (var purchaseItem in purchaseItems)
@@ -107,38 +205,119 @@ public class PurchaseLogic : IPurchaseLogic
             CheckStock(purchaseItem.Drug, purchaseItem.Quantity);
         }
     }
-    
-    private double CalculateTotalPrice(Pharmacy pharmacy, List<PurchaseItem> purchaseItems)
+
+    private double CalculateTotalPrice(List<PurchaseItem> purchaseItems)
     {
         double totalPrice = 0;
         foreach (var purchaseItem in purchaseItems)
         {
-            Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
-            totalPrice += drug.Price;
+            var quantity = purchaseItem.Quantity;
+            var unitaryPrice = purchaseItem.Drug.Price;
+            totalPrice += quantity * unitaryPrice;
         }
 
         return totalPrice;
     }
-    
-    private void CheckAndBindExistentDrugs(Pharmacy pharmacy, List<PurchaseItem> purchaseItems)
+
+    private void CheckAndBindExistentDrugs(List<PurchaseItem> purchaseItems)
     {
         foreach (var purchaseItem in purchaseItems)
         {
+            Pharmacy pharmacy = GetPharmacyByName(purchaseItem.Pharmacy.Name);
             Drug drug = GetDrug(pharmacy, purchaseItem.Drug.DrugCode);
             purchaseItem.Drug = drug;
+            purchaseItem.Pharmacy = pharmacy;
         }
     }
-    
-    
+
+    private void SetPendingState(List<PurchaseItem> purchaseItems)
+    {
+        foreach (var purchaseItem in purchaseItems)
+        {
+            purchaseItem.State = PurchaseState.PENDING;
+        }
+    }
+
     private Drug GetDrug(Pharmacy pharmacy, string drugCode)
     {
-        Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode);
+        Drug? drug = pharmacy.Drugs.Find(d => d.DrugCode == drugCode && d.IsActive);
 
         if (drug == null)
         {
             throw new ValidationException($"{drugCode} not exist in pharmacy {pharmacy.Name}");
         }
-        
+
         return drug;
+    }
+
+    private string GenerateNewInvitationCode()
+    {
+        Random generator = new Random();
+        String code;
+        do
+        {
+            code = generator.Next(0, 1000000).ToString("D6");
+        } while (IsExistantCode(code));
+
+        return code;
+    }
+
+    private bool IsExistantCode(string code)
+    {
+        bool invitationExists = true;
+        try
+        {
+            _purchaseRepository.GetFirst(i => i.Code == code);
+        }
+        catch (ResourceNotFoundException e)
+        {
+            invitationExists = false;
+        }
+
+        return invitationExists;
+    }
+
+    private Purchase GetPurchase(int purchaseId)
+    {
+        Purchase purchase;
+        try
+        {
+            purchase = _purchaseRepository.GetFirst(p => p.Id == purchaseId);
+        }
+        catch (ResourceNotFoundException e)
+        {
+            throw new ResourceNotFoundException("Purchase doesn't exist");
+        }
+
+        return purchase;
+    }
+
+    private PurchaseItem TryGetItemFromPharmacyItems(PurchaseItem item, List<PurchaseItem> currentPharmacyItems)
+    {
+        PurchaseItem existentItem = currentPharmacyItems.Find(i => i.Drug.DrugCode == item.Drug.DrugCode);
+        if (existentItem == null)
+        {
+            throw new ValidationException($"{item.Drug.DrugCode} can't be updated");
+        }
+
+        return existentItem;
+    }
+
+    private void TryUpdateStatusAndStock(PurchaseItem purchaseItem, PurchaseState newState)
+    {
+        if (purchaseItem.State.Equals(PurchaseState.ACCEPTED) || purchaseItem.State.Equals(PurchaseState.REJECTED))
+        {
+            throw new ValidationException($"Status of {purchaseItem.Drug.DrugCode} can't be updated");
+        }
+
+        if (newState.Equals(PurchaseState.ACCEPTED))
+        {
+            CheckStock(purchaseItem.Drug, purchaseItem.Quantity);
+            Drug drug = purchaseItem.Drug;
+            drug.Stock -= purchaseItem.Quantity;
+            _drugLogic.Update(drug.Id, drug);
+        }
+
+        purchaseItem.State = newState;
     }
 }
