@@ -128,7 +128,7 @@ A default admin user is predifined with the credentials:
 
 <br />
 
-![Product GIF][frontend-gif]
+![](Documentation/images/demo.gif)
 
 <br />
 
