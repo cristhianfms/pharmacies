@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Pharmacy Manager" height="80">
+    <img src="Documentation/images/logo.png" alt="Pharmacy Manager" height="80">
   </a>
 
   <p align="center">
@@ -33,26 +33,35 @@
   <li><a href="#contributors">Contributors</a></li>
 </ol>
 
-<br />
-
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Product Name Screen Shot][product-screenshot]
+The system can be devided in two main parts. A public website is a market of medicines where any user can buy medicines from diferente pharmacies. 
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+The second part is a CMS (Content Managment System) where user with different user roles and privileges are able to manage pharamacies, medicines with their stock, create reports, between others.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+The folowing are the main features segregated by the user role:
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
+__Anonymous:__
+* Search medicines by name or pharmacies with stock
+* Buy medicines and follow the purchase state
 
-Use the `BLANK_README.md` to get started.
+__Admin:__
+* Create/Edit registration invitations for any kind of user 
+* Create new pharamacies
 
-<br />
+__Employee:__
+* Create/Delete a medicine
+* Create/List his requests of medicine stock
+* List his pharmacy purchases
+* Aprove/Reject purchases
+* Export medicines to a json file 
+
+__Owner:__
+* Aprove/Reject requests of medicine stock 
+* Generate purchases reports between dates
+
 
 ### Built With
 
@@ -68,52 +77,56 @@ In the frontend:
 For building and deploying the hole environment:
 * [![Docker][Docker.com]][Net-url]
 
-<br />
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To get a local environment up and running follow these steps.
+
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+All the services, frontend, backend and data base are containerized with docker to make the bulding and deploying very simple. Make sure to have [docker](https://www.docker.com/) installed in your computer.
+
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+1. Clone the repo
+   ```sh
+   git clone https://github.com/cristhianfms/pharmacies.git
+   ```
+2. Go to the working directory
+   ```sh
+   cd project_folder/docker
+   ```
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
+3. Build docker images and run containers
+
    ```js
-   const API_KEY = 'ENTER YOUR API';
+   docker-compose up -d 
    ```
 
-<br />
-
+4. In the browser access to http://localhost
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+A default admin user is predifined with the credentials: 
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+`user: Admin`
+
+`password: admin1234-`
 
 <br />
+
+![Product GIF][frontend-gif]
+
+<br />
+
+
+_For a complete API documentation, please refer to the [API Documentation](Documentation/API_Documentation.pdf)_
+
 
 <!-- Contributors -->
 ## Contributors 
@@ -129,7 +142,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 [linkedin-url-fede]: https://www.linkedin.com/in/federico-czarnievicz-907a28200/
 [SQLServer.com]: https://img.shields.io/badge/SQLServer-CC2927?style=for-the-badge&logo=sqlserver&logoColor=white
 [SQLServer-url]: https://www.microsoft.com/en-us/sql-server/
-[NET.com]: https://img.shields.io/badge/NET-512BD4?style=for-the-badge&logo=net&logoColor=white
+[NET.com]: https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=net&logoColor=white
 [NET-url]: https://dotnet.microsoft.com/
 [Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
 [Angular-url]: https://angular.io/
