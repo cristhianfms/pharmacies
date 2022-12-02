@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/cristhianfms/pharmacies">
     <img src="Documentation/images/logo.png" alt="Pharmacy Manager" height="80">
   </a>
 
@@ -76,6 +76,13 @@ In the frontend:
 
 For building and deploying the hole environment:
 * [![Docker][Docker.com]][Net-url]
+* [![Nginx][Nginx.com]][Nginx-url]
+
+
+<!-- GETTING STARTED -->
+## Architecture
+
+<img src="Documentation/images/deploy_diagram.png" alt="Pharmacy Manager" height="350">
 
 
 <!-- GETTING STARTED -->
@@ -86,7 +93,7 @@ To get a local environment up and running follow these steps.
 
 ### Prerequisites
 
-All the services, frontend, backend and data base are containerized with docker to make the bulding and deploying very simple. Make sure to have [docker](https://www.docker.com/) installed in your computer.
+All the services, frontend, backend and data base are containerized with docker to make the bulding and deploying very simple. Make sure to have installed and running [docker](https://www.docker.com/) installed in your computer.
 
 
 ### Installation
@@ -95,15 +102,16 @@ All the services, frontend, backend and data base are containerized with docker 
    ```sh
    git clone https://github.com/cristhianfms/pharmacies.git
    ```
-2. Go to the working directory
-   ```sh
-   cd project_folder/docker
-   ```
 
+2. Go to the root directory of the project
+   ```sh
+   cd pharmacies
+   ```
 3. Build docker images and run containers
 
    ```js
-   docker-compose up -d 
+   docker-compose build
+   docker-compose up
    ```
 
 4. In the browser access to http://localhost
@@ -149,4 +157,6 @@ _For a complete API documentation, please refer to the [API Documentation](Docum
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
 [Docker.com]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=sqlserver&logoColor=white
-[Docker-url]: hhttps://www.docker.com/
+[Docker-url]: https://www.docker.com/
+[Nginx.com]: https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=sqlserver&logoColor=white
+[Nginx-url]: https://www.nginx.com/

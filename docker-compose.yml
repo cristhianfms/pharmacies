@@ -1,0 +1,31 @@
+version: "3"
+services: 
+    proxy:
+        build: 
+            context: ./Proxy
+            dockerfile: Dockerfile
+        ports: 
+            - "80:80"
+        restart: always
+    frontend:
+        build:
+            context: ./PharmacyManagerFrontend/pharmacy-app
+            dockerfile: Dockerfile
+        ports: 
+            - "9000:80"
+    backend:
+        build: 
+            context: ./PharmacyManagerBackend
+            dockerfile: Dockerfile
+        ports: 
+            - "5000:80"
+        depends_on:
+            - db
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+    db:
+        build: 
+            context: ./Database
+            dockerfile: Dockerfile
+        ports:
+            - "1433:1433"
