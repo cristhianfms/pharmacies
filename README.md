@@ -37,30 +37,37 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-The system can be devided in two main parts. A public website is a market of medicines where any user can buy medicines from diferente pharmacies. 
+The system can be divided in two main parts: 
 
-The second part is a CMS (Content Managment System) where user with different user roles and privileges are able to manage pharamacies, medicines with their stock, create reports, between others.
+* A public website where anyone can purchase medicines from a variety of drug stores/chemists.
 
-The folowing are the main features segregated by the user role:
+* The second part is a CMS (Content Managment System) where users with different roles; admin, employee, etc are able to manage drug stores/chemists, medicines and stocks, create reports, and others.
+
+The following are the main features for each user role:
 
 __Anonymous:__
-* Search medicines by name or pharmacies with stock
-* Buy medicines and follow the purchase state
+* Search medicines by name or drug stores/chemists with stock available
+* Purchase medicines and follow the purchase status
+
 
 __Admin:__
-* Create/Edit registration invitations for any kind of user 
-* Create new pharamacies
+* Create new invitations for any kind of user
+* Edit registration role, name and allocated outlet
+* Register new drug stores/chemists
+
 
 __Employee:__
-* Create/Delete a medicine
-* Create/List his requests of medicine stock
-* List his pharmacy purchases
-* Aprove/Reject purchases
-* Export medicines to a json file 
+* Create and delete a medicine
+* Request restocking of medicines
+* Help in the stock taking process
+* Follow users purchase history
+* Approve or reject purchases
+* Compatibility with JSON files
+* Export medicine lists to a JSON file
 
 __Owner:__
-* Aprove/Reject requests of medicine stock 
-* Generate purchases reports between dates
+* Approve or reject requests for medicine restocking
+* Generate purchases reports by date
 
 
 ### Built With
@@ -74,7 +81,7 @@ In the frontend:
 * [![Angular][Angular.io]][Angular-url]
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 
-For building and deploying the hole environment:
+For building and deploying the whole environment:
 * [![Docker][Docker.com]][Net-url]
 * [![Nginx][Nginx.com]][Nginx-url]
 
@@ -114,13 +121,13 @@ All the services, frontend, backend and data base are containerized with docker 
    docker-compose up
    ```
 
-4. In the browser access to http://localhost
+4. In the browser access http://localhost
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-A default admin user is predifined with the credentials: 
+A user and password is created automatically:
 
 `user: Admin`
 
